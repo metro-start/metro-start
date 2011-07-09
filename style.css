@@ -1,0 +1,47 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:100&v2);
+
+body {
+	background-color: black;
+	color: white;
+	font-family: "Raleway", sans-serif;
+}
+a {
+	color: white;
+	text-decoration: none;
+}
+h1 {
+	font-size:800%;
+	font-weight: normal;
+	font-style: normal;
+	margin: 0px;
+}
+ul {
+	font-family: "Raleway", sans-serif;
+	font-size: 200%;
+	list-style: none;
+}
+li {
+	line-height: 150%;
+}
+h3 {
+	font-size: 400%;
+	font-weight: normal;
+	font-style: normal;
+	position: absolute;
+	margin: 0px;
+	right: 10px;
+	bottom: 10px;
+}
+p {
+	margin: 0px;
+}
+.weather {
+	font-family: "Raleway", sans-serif;
+	font-weight: normal;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-style: normal;
+	margin: 0px;
+	font-size: 200%;
+}
