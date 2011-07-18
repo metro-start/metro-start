@@ -45,3 +45,17 @@ p {
 	margin: 0px;
 	font-size: 200%;
 }
+input {
+	margin-left: 100px;
+	background-color: black;
+	color: white;
+	margin-bottom: 20px;
+	font-size: 200%;
+	border: none;
+	border-bottom: solid;
+	border-color: white;
+	width: 900px;
+}
+label {
+	font-size: 400%;
+}
