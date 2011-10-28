@@ -1,0 +1,114 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:100&v2);
+
+body {
+	background-color: black;
+	font-size: 32px;
+	color: white;
+	font-family: "Raleway", sans-serif;
+}
+a {
+	color: white;*/
+	text-decoration: none;
+}
+ul, .add {
+	list-style: none;
+	margin-left: 50px;
+}
+li {
+	margin-bottom: 25px;
+}
+.menu {
+	margin-left: 50px;
+	margin-bottom: 10px;
+}
+.menu span {
+	margin-right: 10px;
+	color:  red;
+	cursor: pointer;
+	opacity: 1;
+}
+span.active {
+	color:  red;
+	opacity: 1;	
+}
+.weather {
+	font-family: "Raleway", sans-serif;
+	position: absolute;
+	top: 30px;
+	right: 15px;
+	font-style: normal;
+	font-size: 32px;
+}
+input {
+	background-color: red;
+	font-family: "Raleway", sans-serif;
+	color: white;
+	font-style: italic;
+	font-size: 32px;
+	border: solid 1px white;
+	width: 450px;
+}
+.add {
+	width: 62px;
+	cursor: pointer;
+}
+.remove, #edit {
+	cursor: pointer;
+}
+h1 {
+	font-size:132px;
+	font-weight: normal;
+	font-style: normal;
+	margin: 15px;
+	color: #4A4A4A;
+	margin-bottom: 20px;
+}
+h3 {
+	font-size: 24px;
+	font-weight: normal;
+	font-style: normal;
+	position: absolute;
+	margin: 0px;
+	right: 10px;
+	bottom: 10px;
+	color: #4A4A4A;
+}
+.wrench {
+	color: red;
+	cursor: pointer;
+	font-size: 32px;
+	position: absolute;
+	bottom: 15px;
+	left: 15px;
+}
+.option {
+	color: red;
+}
+.colors {
+	cursor: pointer;
+	font-size: 32px;
+	position: absolute;
+	bottom: 15px;
+	right: 15px;
+}
+#reset {
+	position: absolute;
+	bottom: 15px;
+	right: 150px;
+	cursor: pointer;
+}
+.picker {
+	position: absolute;
+	bottom: 75px;
+	right: 0px;
+}
+.picker > div {
+	display: inline-block;
+	margin-right: 15px;
+}
+.picker-text {
+	font-size: 24px;
+	text-align: center;
+	display: block;
+	margin: auto;
+}
