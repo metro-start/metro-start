@@ -7,7 +7,7 @@ body {
 	font-family: "Raleway", sans-serif;
 }
 a {
-	color: white;*/
+	color: white;
 	text-decoration: none;
 }
 ul, .add {
@@ -21,15 +21,10 @@ li {
 	margin-left: 50px;
 	margin-bottom: 10px;
 }
-.menu span {
-	margin-right: 10px;
+.menu span, .paging {
+	margin-right: 20px;
 	color:  red;
 	cursor: pointer;
-	opacity: 1;
-}
-span.active {
-	color:  red;
-	opacity: 1;	
 }
 .weather {
 	font-family: "Raleway", sans-serif;

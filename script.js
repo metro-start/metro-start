@@ -62,7 +62,7 @@ $(function() {
 	//mouse enters and leaves the menu area
 	$(".menu").mouseenter(function(){
 		$(".menu").append(detached);
-		detached.show("fast");
+		detached.show();
 	});
 
 	$(".menu").mouseleave(function(){
@@ -242,17 +242,32 @@ $(function() {
 			}
 		}
 	});
+
+	//attaches a next link to all app pages
+	$("#apps").delegate(".next", "click", function(event){
+		var x = parseInt($(event.target).attr("id").replace("next-", ""));
+		$("#apps-" + x).hide("fast");
+		$("#apps-" + (x+1)).show("fast");
+	});
+
+	//attaches a prev link to all app pages
+	$("#apps").delegate(".prev", "click", function(event){
+		var x = parseInt($(event.target).attr("id").replace("prev-", ""));
+		$("#apps-" + x).hide("fast");
+		$("#apps-" + (x-1)).show("fast");
+	});
 	
 	$(".option").hide();
 	$("input").hide();
 	$(".picker").hide();
+	
 	detached = $("#" + inactive + "-menu").detach();
 	
 	//show the right page and load list of apps on load
 	loadApps();
 	updateWeather(false);
 	updateStyle();	
-	changeView(active);	
+	changeView(active, true);	
 });
 
 function addItem(name, url) {
@@ -317,6 +332,7 @@ function updateStyle() {
 		$(".wrench").css("color", options_color);
 		$("input").css("background-color", options_color);
 		$(".menu").css("color", options_color);
+		$(".paging").css("color", options_color);
 	}	
 }
 
@@ -325,12 +341,34 @@ Get list of apps from chrome and filter out extensions
 */
 function loadApps() {
 	chrome.management.getAll(function(res){
-		count = 0;
-		for(i = 0; i < res.length; i++) {
-			if(res[i].isApp) {
-				$("#apps").append("<li><a href=\"" + res[i].appLaunchUrl + "\">" + res[i].name + "</a></li>");
-				if(++count >= 6) break;
+		var page = 0;
+		$("#apps").append('<ul id="apps-' + page + '"></ul>');
+		var res = res.filter(function(item) { return item.isApp; });
+		res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
+		console.log(res.length);
+		for(i in res) {
+			console.log(i);
+			if(i == 5 && i < res.length) {
+				$("#apps-" + page).append('<li><span class="paging" style="visibility: hidden">prev</span><span class="next paging" id="next-' + page + '">next</span></li>');
+				page++;
+				var page_sel = $('<ul id="apps-' + page + '"></ul>');
+				page_sel.hide();
+				$("#apps").append(page_sel);
+			} else if(i != 0 && i != 4 && i % 5 == 0) {
+				$("#apps-" + page).append('<li><span class="prev paging" id="prev-' + page + '">prev</span>' + 
+											'<span class="next paging" id="next-' + page + '">next</span></li>');
+				page++;
+				console.log("spawned new page");
+				var page_sel = $('<ul id="apps-' + page + '"></ul>');
+				page_sel.hide();
+				$("#apps").append(page_sel);
 			}
+			if(i == res.length-1 && page != 0) {
+				$("#apps-" + page).append("<li><a href=\"" + res[i].appLaunchUrl + "\">" + res[i].name + "</a></li>");
+				$("#apps-" + page).append('<li><span class="prev paging" id="prev-' + page + '">prev</span></li>');
+				return;			
+			}
+			$("#apps-" + page).append("<li><a href=\"" + res[i].appLaunchUrl + "\">" + res[i].name + "</a></li>");
 		}
 	});
 }
@@ -338,10 +376,12 @@ function loadApps() {
 /**
 Change the view to the active tab
 */
-function changeView(tar) {
+function changeView(tar, instant) {
 	localStorage.setItem("active", tar);
 	active = tar;
 	inactive = total.replace(tar, "");
-	$("." + inactive).hide("fast");
-	$("." + active).show("fast");
+	if(instant) $("." + inactive).hide();
+	else $("." + inactive).hide("fast");
+	if(instant) $("." + active).show();
+	else $("." + active).show("fast");
 }
