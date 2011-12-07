@@ -76,7 +76,7 @@ h3 {
 	bottom: 15px;
 	left: 15px;
 }
-.option {
+.option, .independent-option {
 	color: red;
 }
 .colors {

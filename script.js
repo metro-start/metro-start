@@ -295,8 +295,8 @@ function updateWeather(force) {
 				var city = result.location.city.toLowerCase() + ", "+ result.location.region.toLowerCase();
 				localStorage.setItem("where", city);
 				$("#where").html(city);
-				localStorage.setItem("temp", result.item.condition.temp + " degrees fahrenheit");
-				$("#temp").html(result.item.condition.temp + " degrees fahrenheit");
+				localStorage.setItem("temp", result.item.condition.temp + " / " + result.item.forecast[0].high + " <span class='independent-option'>hi</span> / " + result.item.forecast[0].low + " <span class='independent-option'>lo</span>");
+				$("#temp").html(result.item.condition.temp + " / " + result.item.forecast[0].high + " <span class='independent-option'>hi</span> / " + result.item.forecast[0].low + " <span class='independent-option'>lo</span>");
 				localStorage.setItem("condition", result.item.condition.text.toLowerCase());
 				$("#condition").html(result.item.condition.text.toLowerCase());
 			}
