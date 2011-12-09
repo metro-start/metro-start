@@ -1,0 +1,9 @@
+.sel-opt {
+    cursor: pointer;
+    opacity: 0.5;
+    -webkit-transition: opacity .25s linear;
+}
+.sel-active {
+    opacity: 1;
+    -webkit-transition: opacity .25s linear;
+}

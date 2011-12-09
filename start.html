@@ -2,11 +2,11 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="reset.css">	
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<link rel="stylesheet" type="text/css" href="farbtastic/farbtastic.css">
+        <link rel="stylesheet" type="text/css" href="farbtastic/farbtastic.css">
+        <link rel="stylesheet" type="text/css" href="metro-select/metro-select.css">
 		<script type="text/javascript" src="jquery.js"></script> 
 		<script type="text/javascript" src="farbtastic/farbtastic.js"></script> 
-		<style type="text/css">
-		</style>
+		<script type="text/javascript" src="metro-select/metro-select.js"></script> 
 		<title>start</title>
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
@@ -44,7 +44,13 @@
           		<span id="where"></span>
           		<span id="edit" class="option">edit</span>
           		<input type="text" id="zip" value="95112" style="width:240px" />
-          	</div>
+            </div>
+            <p id="units" class="option">
+            <select id="select-box">
+                <option>celcius</option>
+                <option>fahrenheit</option>
+            </select>
+            <p>
  			<p id="temp"></p>
  			<p id="condition"></p>
   		</div>

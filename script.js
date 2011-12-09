@@ -48,6 +48,9 @@ $(function() {
 		localStorage.setItem("zip", "95123"); 
 	}
 
+    if(!localStorage.getItem("unit")) {
+        localStorage.setItem("unit", "f");
+    }
 	/** 
 	Attaching event handlers
 	*/
@@ -95,6 +98,15 @@ $(function() {
 		$("#zip").focus();
 	});
 	
+    //attach the selectbox
+    $("body").metroSelect({
+        'onchange': function() {
+            console.log("changed");
+            localStorage.setItem("unit", $("#select-box").val()[0]);
+            updateWeather(true);
+        }
+    });
+
 	//attach a picker for the background color and also set its default if it hasn't been changed yet
 	$("#picker-background").farbtastic(function(color) {
 		localStorage.setItem("background-color", color);
@@ -280,6 +292,7 @@ Update the weather from yql.
 force: Bypasses the cache and force hits the server.
 */
 function updateWeather(force) {
+    var unit = localStorage.getItem("unit");
 	var zip = localStorage.getItem("zip");
 	var time = localStorage.getItem("time");
 	var cTime = new Date();
@@ -287,16 +300,19 @@ function updateWeather(force) {
 		//delay for an hour
 		localStorage.setItem("time", cTime.getTime() + 3600000);
 		$.get(
-			"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20location%3D"+zip+"&format=json",
+            "http://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20weather.bylocation%20WHERE%20location%3D'" + zip + "'%20AND%20unit%3D%22" + unit + "%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
+			//:
+            //:w
+            //"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.bylocation%20where%20location%3D"+zip+"%20AND%20unit%3D"+unit+"%20&format=json",
 			function(data) {
 				console.log("response from yql:")
 				console.log(data);
-				var result = data.query.results.channel;
+				var result = data.query.results.weather.rss.channel;
 				var city = result.location.city.toLowerCase() + ", "+ result.location.region.toLowerCase();
 				localStorage.setItem("where", city);
 				$("#where").html(city);
-				localStorage.setItem("temp", result.item.condition.temp + " / " + result.item.forecast[0].high + " <span class='independent-option'>hi</span> / " + result.item.forecast[0].low + " <span class='independent-option'>lo</span>");
-				$("#temp").html(result.item.condition.temp + " / " + result.item.forecast[0].high + " <span class='independent-option'>hi</span> / " + result.item.forecast[0].low + " <span class='independent-option'>lo</span>");
+				localStorage.setItem("temp", result.item.condition.temp + "<span class='independent-option'>&deg;" + unit + "</span> / " + result.item.forecast[0].high + " <span class='independent-option'>hi</span> / " + result.item.forecast[0].low + " <span class='independent-option'>lo</span>");
+				$("#temp").html(result.item.condition.temp  + "<span class='independent-option'>&deg;" + unit + "</span> / " + result.item.forecast[0].high + " <span class='independent-option'>hi</span> / " + result.item.forecast[0].low + " <span class='independent-option'>lo</span>");
 				localStorage.setItem("condition", result.item.condition.text.toLowerCase());
 				$("#condition").html(result.item.condition.text.toLowerCase());
 			}
