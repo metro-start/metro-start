@@ -271,7 +271,7 @@ $(function() {
 
 function addItem(name, url) {
 	_gaq.push(['_trackEvent', 'added a link']);
-	$("#links").append("<li><span class='remove option'>remove</span> <a href=\"" + url + "\">" + name + "</a></li>"); 
+	$("#links").append("<li><span class='remove option option-color'>remove</span> <a href=\"" + url + "\">" + name + "</a></li>"); 
 }
 
 /**
@@ -288,16 +288,13 @@ function updateWeather(force) {
 		localStorage.setItem("time", cTime.getTime() + 3600000);
 		$.get(
             "http://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20weather.bylocation%20WHERE%20location%3D'" + zip + "'%20AND%20unit%3D%22" + unit + "%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
-			//:
-            //:w
-            //"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.bylocation%20where%20location%3D"+zip+"%20AND%20unit%3D"+unit+"%20&format=json",
 			function(data) {
 				var result = data.query.results.weather.rss.channel;
 				var city = result.location.city.toLowerCase() + ", "+ result.location.region.toLowerCase();
 				localStorage.setItem("where", city);
 				$("#where").html(city);
-				localStorage.setItem("temp", result.item.condition.temp + "<span class='independent-option'>&deg;" + unit + "</span> / " + result.item.forecast[0].high + " <span class='independent-option'>hi</span> / " + result.item.forecast[0].low + " <span class='independent-option'>lo</span>");
-				$("#temp").html(result.item.condition.temp  + "<span class='independent-option'>&deg;" + unit + "</span> / " + result.item.forecast[0].high + " <span class='independent-option'>hi</span> / " + result.item.forecast[0].low + " <span class='independent-option'>lo</span>");
+				localStorage.setItem("temp", result.item.condition.temp + "<span class='option-color'>&deg;" + unit + "</span> / " + result.item.forecast[0].high + " <span class='option-color'>hi</span> / " + result.item.forecast[0].low + " <span class='option-color'>lo</span>");
+				$("#temp").html(result.item.condition.temp  + "<span class='option-color'>&deg;" + unit + "</span> / " + result.item.forecast[0].high + " <span class='option-color'>hi</span> / " + result.item.forecast[0].low + " <span class='option-color'>lo</span>");
 				localStorage.setItem("condition", result.item.condition.text.toLowerCase());
 				$("#condition").html(result.item.condition.text.toLowerCase());
 			}
@@ -309,31 +306,28 @@ function updateWeather(force) {
 Check for saved theme and load it
 */
 function updateStyle() {
-	if(localStorage.getItem("background-color")) {
-		$("body").css("background-color", localStorage.getItem("background-color"));
+	var styles = "";
+    if(localStorage.getItem("background-color")) {
+        styles += 'body {background-color: ' + localStorage.getItem("background-color") + '}';
 	}
 	
 	if(localStorage.getItem("title-color")) {
-		$("h1").css("color", localStorage.getItem("title-color"));
-		$("h3").css("color", localStorage.getItem("title-color"));
+        styles += ('.title-color {color: ' + localStorage.getItem("title-color") + '}');
 	}
 	
 	if(localStorage.getItem("main-color")) {
 		var main_color = localStorage.getItem("main-color");
-		$("body").css("color", main_color);
-		$("a").css("color", main_color);
-		$("input").css("color", main_color);
-		$("input").css("border-color", main_color);
+        styles += 'body {color: ' + main_color + '}';
+        styles += 'input {color: ' + main_color + '}';
 	}
 	
 	if(localStorage.getItem("options-color")) {
 		var options_color = localStorage.getItem("options-color");
-		$(".option").css("color", options_color);
-		$(".wrench").css("color", options_color);
-		$("input").css("background-color", options_color);
-		$(".menu").css("color", options_color);
-		$(".paging").css("color", options_color);
+        styles += '.option-color {color: ' + options_color + '}';
 	}	
+    
+    $("body > style").remove();
+    $("body").append("<style type='text/css'>" + styles + "</style>");
 }
 
 /**
@@ -347,14 +341,14 @@ function loadApps() {
 		res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
 		for(i in res) {
 			if(i == 5 && i < res.length) {
-				$("#apps-" + page).append('<li><span class="paging" style="visibility: hidden">prev</span><span class="next paging" id="next-' + page + '">next</span></li>');
+				$("#apps-" + page).append('<li><span class="paging option-color" style="visibility: hidden">prev</span><span class="next paging option-color" id="next-' + page + '">next</span></li>');
 				page++;
 				var page_sel = $('<ul id="apps-' + page + '"></ul>');
 				page_sel.hide();
 				$("#apps").append(page_sel);
 			} else if(i != 0 && i != 4 && i % 5 == 0) {
-				$("#apps-" + page).append('<li><span class="prev paging" id="prev-' + page + '">prev</span>' + 
-											'<span class="next paging" id="next-' + page + '">next</span></li>');
+				$("#apps-" + page).append('<li><span class="prev paging option-color" id="prev-' + page + '">prev</span>' + 
+											'<span class="next paging option-color" id="next-' + page + '">next</span></li>');
 				page++;
 				var page_sel = $('<ul id="apps-' + page + '"></ul>');
 				page_sel.hide();
@@ -362,7 +356,7 @@ function loadApps() {
 			}
 			if(i == res.length-1 && page != 0) {
 				$("#apps-" + page).append("<li><a href=\"" + res[i].appLaunchUrl + "\">" + res[i].name + "</a></li>");
-				$("#apps-" + page).append('<li><span class="prev paging" id="prev-' + page + '">prev</span></li>');
+				$("#apps-" + page).append('<li><span class="prev paging option-color" id="prev-' + page + '">prev</span></li>');
 				return;			
 			}
 			$("#apps-" + page).append("<li><a href=\"" + res[i].appLaunchUrl + "\">" + res[i].name + "</a></li>");
