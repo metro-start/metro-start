@@ -265,8 +265,8 @@ $(function() {
 	//show the right page and load list of apps on load
 	loadApps();
 	updateWeather(false);
-	updateStyle();	
 	changeView(active, true);	
+	updateStyle();	
 });
 
 function addItem(name, url) {

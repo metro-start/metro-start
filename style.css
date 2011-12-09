@@ -1,14 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:100&v2);
 
 body {
-	background-color: black;
 	font-size: 32px;
-	color: white;
 	font-family: "Raleway", sans-serif;
 }
 a {
-	color: white;
 	text-decoration: none;
+    color: inherit;
 }
 ul, .add {
 	list-style: none;
@@ -23,23 +21,18 @@ li {
 }
 .menu span, .paging {
 	margin-right: 20px;
-	color:  red;
 	cursor: pointer;
 }
 .weather {
-	font-family: "Raleway", sans-serif;
 	position: absolute;
 	top: 30px;
 	right: 15px;
 	font-style: normal;
-	font-size: 32px;
 }
 input {
-	background-color: red;
-	font-family: "Raleway", sans-serif;
-	color: white;
+	font-family: inherit;
 	font-style: italic;
-	font-size: 32px;
+	font-size: inherit;
 	border: solid 1px white;
 	width: 450px;
 }
@@ -55,7 +48,6 @@ h1 {
 	font-weight: normal;
 	font-style: normal;
 	margin: 15px;
-	color: #4A4A4A;
 	margin-bottom: 20px;
 }
 h3 {
@@ -66,22 +58,17 @@ h3 {
 	margin: 0px;
 	right: 10px;
 	bottom: 10px;
-	color: #4A4A4A;
 }
 .wrench {
-	color: red;
 	cursor: pointer;
-	font-size: 32px;
 	position: absolute;
 	bottom: 15px;
 	left: 15px;
 }
 .option, .independent-option {
-	color: red;
 }
 .colors {
 	cursor: pointer;
-	font-size: 32px;
 	position: absolute;
 	bottom: 15px;
 	right: 15px;
