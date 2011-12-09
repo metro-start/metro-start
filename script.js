@@ -49,8 +49,9 @@ $(function() {
 	}
 
     if(!localStorage.getItem("unit")) {
-        localStorage.setItem("unit", "f");
+        localStorage.setItem("unit", "fahrenheit");
     }
+    $("#select-box").val(localStorage.getItem("unit"));
 	/** 
 	Attaching event handlers
 	*/
@@ -82,7 +83,6 @@ $(function() {
 	
 	$("#add").click(function(){
 		_gaq.push(['_trackEvent', 'add clicked']);
-		console.log("clicked");
 		$("#add").hide("fast");
 		$("#url").show("fast");
 		$("#url").focus();
@@ -91,7 +91,6 @@ $(function() {
 	//handle clicking the edit link in weather section
 	$("#edit").click(function(){
 		_gaq.push(['_trackEvent', 'edit clicked']);
-		console.log("clicked");
 		$("#edit").hide("fast");
 		$("#where").hide("fast");
 		$("#zip").show("fast");
@@ -101,8 +100,7 @@ $(function() {
     //attach the selectbox
     $("body").metroSelect({
         'onchange': function() {
-            console.log("changed");
-            localStorage.setItem("unit", $("#select-box").val()[0]);
+            localStorage.setItem("unit", $("#select-box").val());
             updateWeather(true);
         }
     });
@@ -154,7 +152,6 @@ $(function() {
 	//show the color pickers
 	$("#colors").click(function(){
 		_gaq.push(['_trackEvent', 'colors clicked']);
-		console.log("show colors");
 		$(".picker").toggle("fast");
 		$("#reset").toggle("fast");
 	});
@@ -162,7 +159,6 @@ $(function() {
 	//reset all the colors to default.
 	$("#reset").click(function(){
 		_gaq.push(['_trackEvent', 'colors reset']);
-		console.log("reset colors");
 		
 		localStorage.setItem("options-color", "#FF0000");	
 		$.farbtastic("#picker-options").setColor("#FF0000");
@@ -181,14 +177,12 @@ $(function() {
 
 	//when you leave the url field
 	$("#url").blur(function() {
-		console.log("blur called");
 		$("#add").show();
 		$("#url").hide();
 	});
 
 	//when you leave the zip field
 	$("#zip").blur(function() {
-		console.log("blur called");
 		$("#edit").show();
 		$("#where").show();
 		$("#zip").hide();
@@ -196,9 +190,7 @@ $(function() {
 
 	//validate the url when the person hits enter
 	$("#url").keyup(function(event){
-		console.log("typed");
 		if(event.keyCode == 13){
-			console.log("submitting url to be stored");
 			var list = JSON.parse(localStorage.getItem("links"));
 			var name = $("#url").val().toLowerCase().replace(/^http\:\/\//i, "").replace(/^www\./i, "");
 			var url = $("#url").val();
@@ -206,7 +198,6 @@ $(function() {
 				return;
 			}
 			if(!url.match(/^([a-z]([a-z]|\d|\+|-|\.)*):(\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?((\[(|(v[\da-f]{1,}\.(([a-z]|\d|-|\.|_|~)|[!\$&'\(\)\*\+,;=]|:)+))\])|((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=])*)(:\d*)?)(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*|(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)){0})(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i)) {
-				console.log("Invalid URL");
 				//handle invalid url
 			}			
 			if(!url.match(/http\:\/\//)) {
@@ -227,7 +218,6 @@ $(function() {
 	//force update the wheather when they hit enter after zip
 	$("#zip").keyup(function(event){
 		if(event.keyCode == 13){
-			console.log("submitting zip to be stored");
 			var zip = $("#zip").val();
 			if(zip.trim() == "") {
 				return;
@@ -241,13 +231,10 @@ $(function() {
 	//attaches a remove link to all <li>
 	$("#links").delegate(".remove", "click", function(event){
 		var links = JSON.parse(localStorage.getItem("links"));
-		console.log("removing the link:");
-		console.log($(event.target).parent("li").children("a").attr("href"));
 		for(id in links) {
 			if(links[id].url == $(event.target).parent("li").children("a").attr("href")) {
 				_gaq.push(['_trackEvent', 'removed a link']);
 				links.splice(id, 1);
-				console.log("id = " + id);
 				localStorage.setItem("links", JSON.stringify(links));
 				$(event.target).parent("li").remove();
 				break;
@@ -292,7 +279,7 @@ Update the weather from yql.
 force: Bypasses the cache and force hits the server.
 */
 function updateWeather(force) {
-    var unit = localStorage.getItem("unit");
+    var unit = localStorage.getItem("unit")[0];
 	var zip = localStorage.getItem("zip");
 	var time = localStorage.getItem("time");
 	var cTime = new Date();
@@ -305,8 +292,6 @@ function updateWeather(force) {
             //:w
             //"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.bylocation%20where%20location%3D"+zip+"%20AND%20unit%3D"+unit+"%20&format=json",
 			function(data) {
-				console.log("response from yql:")
-				console.log(data);
 				var result = data.query.results.weather.rss.channel;
 				var city = result.location.city.toLowerCase() + ", "+ result.location.region.toLowerCase();
 				localStorage.setItem("where", city);
@@ -324,7 +309,6 @@ function updateWeather(force) {
 Check for saved theme and load it
 */
 function updateStyle() {
-	console.log("update styles");
 	if(localStorage.getItem("background-color")) {
 		$("body").css("background-color", localStorage.getItem("background-color"));
 	}
@@ -361,9 +345,7 @@ function loadApps() {
 		$("#apps").append('<ul id="apps-' + page + '"></ul>');
 		var res = res.filter(function(item) { return item.isApp; });
 		res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
-		console.log(res.length);
 		for(i in res) {
-			console.log(i);
 			if(i == 5 && i < res.length) {
 				$("#apps-" + page).append('<li><span class="paging" style="visibility: hidden">prev</span><span class="next paging" id="next-' + page + '">next</span></li>');
 				page++;
@@ -374,7 +356,6 @@ function loadApps() {
 				$("#apps-" + page).append('<li><span class="prev paging" id="prev-' + page + '">prev</span>' + 
 											'<span class="next paging" id="next-' + page + '">next</span></li>');
 				page++;
-				console.log("spawned new page");
 				var page_sel = $('<ul id="apps-' + page + '"></ul>');
 				page_sel.hide();
 				$("#apps").append(page_sel);

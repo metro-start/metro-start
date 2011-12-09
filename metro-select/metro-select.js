@@ -11,7 +11,9 @@
         select.parent().append(sel);
         isel = $("#inner-selector");
         
+        var original_val = select.val();
         select.hide();
+        select.val(original_val);
         var max_width = 0;
         var total_width = 0;
         select.children().each(function(key, val) {
@@ -48,10 +50,10 @@
         });
             
         //set the default visibilities
-        if(select.val() == $("#sel-1")) { 
-            $("#sel-1").addClass("sel-active");    
+        if(select.val() == $("#sel-1").text()) { 
+            $("#sel-1").click();
         } else {
-            $("#sel-0").addClass("sel-active");    
+            $("#sel-0").click();
         }
 
         //setup the view and show what needs to be shown

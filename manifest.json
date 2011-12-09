@@ -1,6 +1,7 @@
 {
 	"name": "Metro Start",
 	"version": "2.4",
+	"version": "2.5",
 	"description": "A new start screen based on the Metro UI",
 	"chrome_url_overrides": {
 		"newtab": "start.html"
