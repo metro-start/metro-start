@@ -41,7 +41,6 @@
                 select.val($("#sel-1").text());
                 $("#sel-0").removeClass('sel-active');
                 $("#sel-1").addClass('sel-active');
-                console.log($("#sel-1").offset());
                 $("#selector").animate({scrollLeft: $("#sel-1").offset().left}, "fast");
                 settings.onchange();
         });

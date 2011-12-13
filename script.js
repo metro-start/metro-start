@@ -79,6 +79,13 @@ $(function() {
 		$(".picker").hide("fast");
 		$(".option").toggle("fast");
 		$("#reset").hide();
+
+        //scroll metroSelect when the wrench is clicked.
+        if($("#select-box").val() == $("#sel-1").text()) { 
+            $("#sel-1").click();
+        } else {
+            $("#sel-0").click();
+        }
 	});
 	
 	$("#add").click(function(){

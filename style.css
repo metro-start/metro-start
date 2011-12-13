@@ -3,6 +3,7 @@
 body {
 	font-size: 32px;
 	font-family: "Raleway", sans-serif;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 a {
 	text-decoration: none;
@@ -26,7 +27,7 @@ li {
 .weather {
 	position: absolute;
 	top: 30px;
-	right: 15px;
+    right: 15px;
 	font-style: normal;
 }
 input {
