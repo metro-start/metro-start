@@ -1,3 +1,4 @@
+//TODO: Replace all references to hide and show with css that sets opacity to 0 and says hide afterwards
 //globals (kinda?)
 var total = "linksapps";
 var active = "";
