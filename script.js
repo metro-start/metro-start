@@ -106,7 +106,7 @@ $(function() {
 	});
 	
     //attach the selectbox
-    $("body").metroSelect({
+    $("#select-box").metroSelect({
         'onchange': function() {
             localStorage.setItem("unit", $("#select-box").val());
             updateWeather(true);

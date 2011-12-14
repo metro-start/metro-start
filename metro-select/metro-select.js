@@ -6,10 +6,11 @@
             'onchange'          : function(){}
         }, options);
 
-        var sel = $("<div id='selector'><div id='inner-selector'></div></div>");
-        var select = $("#select-box");
+        var uniq = this.attr("id") + "-";
+        var sel = $("<div id='" + uniq + "selector'><div id='" + uniq + "inner-selector'></div></div>");
+        var select = this;
         select.parent().append(sel);
-        isel = $("#inner-selector");
+        isel = $("#" + uniq + "inner-selector");
         
         var original_val = select.val();
         select.hide();
@@ -17,31 +18,29 @@
         var max_width = 0;
         var total_width = 0;
         select.children().each(function(key, val) {
-            var opt = $("<span class='sel-opt' id='sel-" + key + "'>" + val.text + "</span>");
+            var opt = $("<span class='sel-opt' id='" + uniq + "sel-" + key + "'>" + val.text + "</span>");
             isel.append(opt);
             max_width = Math.max(max_width, opt.width());
             total_width += opt.width();
         });
         
         //left side button
-        $("#sel-0").click(function () {
-            var select = $("#select-box");
+        $("#" + uniq + "sel-0").click(function () {
             //if left button clicked, swipe left
-                select.val($("#sel-0").text());
-                $("#sel-0").addClass('sel-active');
-                $("#sel-1").removeClass("sel-active");
-                $("#selector").animate({scrollLeft: 0}, "fast");
+                select.val($("#" + uniq + "sel-0").text());
+                $("#" + uniq + "sel-0").addClass(settings['active-class']);
+                $("#" + uniq + "sel-1").removeClass("sel-active");
+                $("#" + uniq + "selector").animate({scrollLeft: 0}, "fast");
                 settings.onchange();
         });
 
         //right side button
-        $("#sel-1").click(function () {
-            var select = $("#select-box");
+        $("#" + uniq + "sel-1").click(function () {
             //if the right button clicked swipe right
-                select.val($("#sel-1").text());
-                $("#sel-0").removeClass('sel-active');
-                $("#sel-1").addClass('sel-active');
-                $("#selector").animate({scrollLeft: $("#sel-1").offset().left}, "fast");
+                select.val($("#" + uniq + "sel-1").text());
+                $("#" + uniq + "sel-0").removeClass(settings['active-class']);
+                $("#" + uniq + "sel-1").addClass(settings['active-class']);
+                $("#" + uniq + "selector").animate({scrollLeft: $("#" + uniq + "sel-1").offset().left}, "fast");
                 settings.onchange();
         });
 
@@ -52,10 +51,10 @@
         sel.css('overflow', 'hidden');
         
         //set the default visibilities
-        if(select.val() == $("#sel-1").text()) { 
-            $("#sel-1").click();
+        if(select.val() == $("#" + uniq + "sel-1").text()) { 
+            $("#" + uniq + "sel-1").click();
         } else {
-            $("#sel-0").click();
+            $("#" + uniq + "sel-0").click();
         }
     };
 })(jQuery);
