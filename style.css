@@ -1,95 +1,97 @@
-@import url(http://fonts.googleapis.com/css?family=Raleway:100&v2);
-
+@font-face {  
+    font-family: Raleway;  
+    src: url(Raleway-Thin.ttf) format("truetype");  
+} 
 body {
-	font-size: 32px;
-	font-family: "Raleway", sans-serif;
-    -webkit-font-smoothing: subpixel-antialiased;
+    font-size: 32px;
+    font-family: "Raleway", sans-serif;
+    -webkit-font-smoothing: subpixel-antialiased, antialiased;
 }
 a {
-	text-decoration: none;
+    text-decoration: none;
     color: inherit;
 }
 ul, .add {
-	list-style: none;
-	margin-left: 50px;
+    list-style: none;
+    margin-left: 50px;
 }
 li {
-	margin-bottom: 25px;
+    margin-bottom: 25px;
 }
 .menu {
-	margin-left: 50px;
-	margin-bottom: 10px;
+    margin-left: 50px;
+    margin-bottom: 10px;
 }
-.menu span, .paging {
-	margin-right: 20px;
-	cursor: pointer;
+.paging {
+    margin-right: 20px;
+    cursor: pointer;
 }
 .weather {
-	position: absolute;
-	top: 30px;
+    position: absolute;
+    top: 30px;
     right: 15px;
-	font-style: normal;
+    font-style: normal;
 }
 input {
-	font-family: inherit;
-	font-style: italic;
-	font-size: inherit;
-	border: solid 1px white;
-	width: 450px;
+    font-family: inherit;
+    font-style: italic;
+    font-size: inherit;
+    border: solid 1px white;
+    width: 450px;
 }
 .add {
-	width: 62px;
-	cursor: pointer;
+    width: 62px;
+    cursor: pointer;
 }
 .remove, #edit {
-	cursor: pointer;
+    cursor: pointer;
 }
 h1 {
-	font-size:132px;
-	font-weight: normal;
-	font-style: normal;
-	margin: 15px;
-	margin-bottom: 20px;
+    font-size:132px;
+    font-weight: normal;
+    font-style: normal;
+    margin: 15px;
+    margin-bottom: 20px;
 }
 h3 {
-	font-size: 24px;
-	font-weight: normal;
-	font-style: normal;
-	position: absolute;
-	margin: 0px;
-	right: 10px;
-	bottom: 10px;
+    font-size: 24px;
+    font-weight: normal;
+    font-style: normal;
+    position: absolute;
+    margin: 0px;
+    right: 10px;
+    bottom: 10px;
 }
 .wrench {
-	cursor: pointer;
-	position: absolute;
-	bottom: 15px;
-	left: 15px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
 }
 .colors {
-	cursor: pointer;
-	position: absolute;
-	bottom: 15px;
-	right: 15px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
 }
 #reset {
-	position: absolute;
-	bottom: 15px;
-	right: 150px;
-	cursor: pointer;
+    position: absolute;
+    bottom: 15px;
+    right: 150px;
+    cursor: pointer;
 }
 .picker {
-	position: absolute;
-	bottom: 75px;
-	right: 0px;
+    position: absolute;
+    bottom: 75px;
+    right: 0px;
 }
 .picker > div {
-	display: inline-block;
-	margin-right: 15px;
+    display: inline-block;
+    margin-right: 15px;
 }
 .picker-text {
-	font-size: 24px;
-	text-align: center;
-	display: block;
-	margin: auto;
+    font-size: 24px;
+    text-align: center;
+    display: block;
+    margin: auto;
 }

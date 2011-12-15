@@ -1,7 +1,13 @@
+.inner-selector {
+    display: inline-block;
+    white-space: nowrap;
+}
 .sel-opt {
     cursor: pointer;
     opacity: 0.5;
+    margin-right: 5%;
     -webkit-transition: opacity .25s linear;
+    display: inline;
 }
 .sel-active {
     opacity: 1;

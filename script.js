@@ -1,20 +1,8 @@
 //TODO: Replace all references to hide and show with css that sets opacity to 0 and says hide afterwards
 //globals (kinda?)
 var total = "linksapps";
-var active = "";
-var inactive = "";
-var detached;
 
 $(function() {	
-	//get the currently active tab
-	active = localStorage.getItem("active");
-	if(active == null) {
-		active = "links";
-		inactive = "apps";
-	} else {
-		inactive = total.replace(active, "");
-	}
-	
 	//get links from localStorage and ensure they're empty	
 	var list = new Array();
 	var links = localStorage.getItem("links");
@@ -25,6 +13,13 @@ $(function() {
 		links = new Array();
 	}
 
+    if(localStorage.getItem("active")) {
+        if(localStorage.getItem("active") == "links") {
+            $("#menu").prop("selectedIndex", 0); //saved links
+        } else {
+            $("#menu").prop("selectedIndex", 1); //installed apps
+        }
+    }
 	//load saved links or load default material
 	if(links == null || links.length == 0) {
 		addItem("use the wrench to get started. . . ", "");
@@ -56,23 +51,6 @@ $(function() {
 	/** 
 	Attaching event handlers
 	*/
-	//handle clicking the links and apps ... links
-	$("#links-menu").click(function(){
-		changeView("links");
-	});
-	$("#apps-menu").click(function(){
-		changeView("apps");
-	});
-	
-	//mouse enters and leaves the menu area
-	$(".menu").mouseenter(function(){
-		$(".menu").append(detached);
-		detached.show();
-	});
-
-	$(".menu").mouseleave(function(){
-		detached = $("#" + inactive + "-menu").hide("fast").detach();
-	});
 
 	//show all options on the page.
 	$("#wrench").click(function(){		
@@ -82,10 +60,10 @@ $(function() {
 		$("#reset").hide();
 
         //scroll metroSelect when the wrench is clicked.
-        if($("#select-box").val() == $("#sel-1").text()) { 
-            $("#sel-1").click();
+        if($("#select-box").val() == $("#select-box-sel-1").text()) { 
+            $("#select-box-sel-1").click();
         } else {
-            $("#sel-0").click();
+            $("#select-box-sel-0").click();
         }
 	});
 	
@@ -104,14 +82,6 @@ $(function() {
 		$("#zip").show("fast");
 		$("#zip").focus();
 	});
-	
-    //attach the selectbox
-    $("#select-box").metroSelect({
-        'onchange': function() {
-            localStorage.setItem("unit", $("#select-box").val());
-            updateWeather(true);
-        }
-    });
 
 	//attach a picker for the background color and also set its default if it hasn't been changed yet
 	$("#picker-background").farbtastic(function(color) {
@@ -263,6 +233,25 @@ $(function() {
 		$("#apps-" + x).hide("fast");
 		$("#apps-" + (x-1)).show("fast");
 	});
+	
+    //attach the selectbox
+    $("#menu").metroSelect({
+        'onchange': function() {
+            if($("#menu").prop("selectedIndex") == 0) { //saved links
+                changeView("links");
+            } else {
+                changeView("apps");
+            }
+        }
+    });
+
+    //attach the selectbox
+    $("#select-box").metroSelect({
+        'onchange': function() {
+            localStorage.setItem("unit", $("#select-box").val());
+            updateWeather(true);
+        }
+    });
 	
 	$(".option").hide();
 	$("input").hide();

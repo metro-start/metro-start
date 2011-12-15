@@ -1,49 +1,61 @@
 <html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="reset.css">	
-		<link rel="stylesheet" type="text/css" href="style.css">
+    <head>
+        <link rel="stylesheet" type="text/css" href="reset.css">	
+        <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="stylesheet" type="text/css" href="farbtastic/farbtastic.css">
         <link rel="stylesheet" type="text/css" href="metro-select/metro-select.css">
-		<script type="text/javascript" src="jquery.js"></script> 
-		<script type="text/javascript" src="farbtastic/farbtastic.js"></script> 
-		<script type="text/javascript" src="metro-select/metro-select.js"></script> 
-		<title>start</title>
-		<script type="text/javascript">
-		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-25604585-1']);
-		  _gaq.push(['_trackPageview']);
+        <script type="text/javascript" src="jquery.js"></script> 
+        <script type="text/javascript" src="farbtastic/farbtastic.js"></script> 
+        <script type="text/javascript" src="metro-select/metro-select.js"></script> 
+        <title>start</title>
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-25604585-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+             })();
+        </script>
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-25604585-1']);
+            _gaq.push(['_trackPageview']);
 
-		  (function() {
-		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		    ga.src = 'https://ssl.google-analytics.com/ga.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
+            (function() {
+             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+             ga.src = 'https://ssl.google-analytics.com/ga.js';
+             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+             })();
 
-		</script>
-	</head>
-	<body>
-		<h1 class="title-color">start here . . .</h1>
-		<div class="option-color menu">
-			<span id="links-menu">saved links</span>
-			<span id="apps-menu">installed apps</span>
-		</div>
-		<div class="links">
-			<ul id="links">
-			</ul>
-          	<p class="add">
-                <span id="add" class="options-color option">add</span>
-  				<input class="option-color" type="text" id="url" value="http://" />
-    			</p>
-		</div>
-		<div class="apps">
-			<div id="apps">
-			</div>
-		</div>
-		<div class="weather">
-      		<div>
-          		<span id="where"></span>
-          		<span id="edit" class="option-color option">edit</span>
-          		<input class="option-color" type="text" id="zip" value="95112" style="width:240px" />
+        </script>
+    </head>
+    <body>
+        <h1 class="title-color">start here . . .</h1>
+        <div>
+            <select id="menu" class="option-color menu">
+                <option>saved links</option>
+                <option>installed apps</option>
+            </select>
+        </div>
+        <div class="links">
+            <ul id="links">
+            </ul>
+            <p class="add">
+            <span id="add" class="options-color option">add</span>
+            <input class="option-color" type="text" id="url" value="http://" />
+            </p>
+        </div>
+        <div class="apps">
+            <div id="apps">
+            </div>
+        </div>
+        <div class="weather">
+            <div>
+                <span id="where"></span>
+                <span id="edit" class="option-color option">edit</span>
+                <input class="option-color" type="text" id="zip" value="95112" style="width:240px" />
             </div>
             <p id="units" class="option-color option">
             <select id="select-box">
@@ -51,30 +63,30 @@
                 <option>celsius</option>
             </select>
             <p>
- 			<p id="temp"></p>
- 			<p id="condition"></p>
-  		</div>
-  		<p class="option-color wrench" id="wrench">wrench</p>
-		<p class="option-color option colors" id="colors">colors</p>
-		<p class="option-color option" id="reset">reset</p>
-		<div class="picker">
-			<div>
-				<span class="picker-text option-color option">background</span>
-				<div id="picker-background"></div>
-			</div>
-			<div>
-				<span class="picker-text option-color option">title</span>
-				<div id="picker-title"></div>
-			</div>
-			<div>
-				<span class="picker-text option-color option">main</span>
-				<div id="picker-main"></div>
-			</div>
-			<div>
-				<span class="picker-text option-color option">options</span>
-				<div id="picker-options"></div>
-			</div>
-		</div>
-  		<script type="text/javascript" src="script.js"></script>
-	</body>
+            <p id="temp"></p>
+            <p id="condition"></p>
+        </div>
+        <p class="option-color wrench" id="wrench">wrench</p>
+        <p class="option-color option colors" id="colors">colors</p>
+        <p class="option-color option" id="reset">reset</p>
+        <div class="picker">
+            <div>
+                <span class="picker-text option-color option">background</span>
+                <div id="picker-background"></div>
+            </div>
+            <div>
+                <span class="picker-text option-color option">title</span>
+                <div id="picker-title"></div>
+            </div>
+            <div>
+                <span class="picker-text option-color option">main</span>
+                <div id="picker-main"></div>
+            </div>
+            <div>
+                <span class="picker-text option-color option">options</span>
+                <div id="picker-options"></div>
+            </div>
+        </div>
+        <script type="text/javascript" src="script.js"></script>
+    </body>
 </html>
