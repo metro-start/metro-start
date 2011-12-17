@@ -220,19 +220,6 @@ $(function() {
 		}
 	});
 
-	//attaches a next link to all app pages
-	$("#apps").delegate(".next", "click", function(event){
-		var x = parseInt($(event.target).attr("id").replace("next-", ""));
-		$("#apps-" + x).hide("fast");
-		$("#apps-" + (x+1)).show("fast");
-	});
-
-	//attaches a prev link to all app pages
-	$("#apps").delegate(".prev", "click", function(event){
-		var x = parseInt($(event.target).attr("id").replace("prev-", ""));
-		$("#apps-" + x).hide("fast");
-		$("#apps-" + (x-1)).show("fast");
-	});
 	
     //attach the selectbox
     $("#menu").metroSelect({
@@ -244,6 +231,7 @@ $(function() {
             }
         }
     });
+
 
     //attach the selectbox
     $("#select-box").metroSelect({
@@ -332,32 +320,21 @@ Get list of apps from chrome and filter out extensions
 */
 function loadApps() {
 	chrome.management.getAll(function(res){
-		var page = 0;
-		$("#apps").append('<ul id="apps-' + page + '"></ul>');
+        var page = 0;
+        var apps = new Array();
 		var res = res.filter(function(item) { return item.isApp; });
 		res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
 		for(i in res) {
-			if(i == 5 && i < res.length) {
-				$("#apps-" + page).append('<li><span class="paging option-color" style="visibility: hidden">prev</span><span class="next paging option-color" id="next-' + page + '">next</span></li>');
-				page++;
-				var page_sel = $('<ul id="apps-' + page + '"></ul>');
-				page_sel.hide();
-				$("#apps").append(page_sel);
-			} else if(i != 0 && i != 4 && i % 5 == 0) {
-				$("#apps-" + page).append('<li><span class="prev paging option-color" id="prev-' + page + '">prev</span>' + 
-											'<span class="next paging option-color" id="next-' + page + '">next</span></li>');
-				page++;
-				var page_sel = $('<ul id="apps-' + page + '"></ul>');
-				page_sel.hide();
-				$("#apps").append(page_sel);
-			}
-			if(i == res.length-1 && page != 0) {
-				$("#apps-" + page).append("<li><a href=\"" + res[i].appLaunchUrl + "\">" + res[i].name + "</a></li>");
-				$("#apps-" + page).append('<li><span class="prev paging option-color" id="prev-' + page + '">prev</span></li>');
-				return;			
-			}
-			$("#apps-" + page).append("<li><a href=\"" + res[i].appLaunchUrl + "\">" + res[i].name + "</a></li>");
-		}
+            if(i == 0) apps.push(new Array());
+            apps[page].push($('<li><span><a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></span></li>'));
+           if((parseInt(i) + 1) % 5 == 0) {
+               page++;
+               apps.push(new Array());
+           }
+        }
+        $("#hinge").metroTabs({
+            'items': apps
+        });
 	});
 }
 
