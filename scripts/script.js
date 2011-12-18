@@ -247,7 +247,6 @@ $(function() {
 	//show the right page and load list of apps on load
 	loadApps();
 	updateWeather(false);
-	changeView(active, true);	
 	updateStyle();	
 });
 
@@ -329,9 +328,12 @@ function loadApps() {
                apps.push(new Array());
            }
         }
+
+        //load the list of links and change the view otherwise this stuff happens before the callback executes
         $("#hinge").metroTabs({
             'items': apps
         });
+	    changeView(localStorage.getItem("active"), true);	
 	});
 }
 
