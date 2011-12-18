@@ -245,8 +245,6 @@ $(function() {
 	$("input").hide();
 	$(".picker").hide();
 	
-	detached = $("#" + inactive + "-menu").detach();
-	
 	//show the right page and load list of apps on load
 	loadApps();
 	updateWeather(false);
