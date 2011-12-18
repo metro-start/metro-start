@@ -1,4 +1,3 @@
-//TODO: Replace all references to hide and show with css that sets opacity to 0 and says hide afterwards
 //globals (kinda?)
 var total = "linksapps";
 
@@ -221,7 +220,7 @@ $(function() {
 	});
 
 	
-    //attach the selectbox
+    //attach the menu selectbox
     $("#menu").metroSelect({
         'onchange': function() {
             if($("#menu").prop("selectedIndex") == 0) { //saved links
@@ -233,7 +232,7 @@ $(function() {
     });
 
 
-    //attach the selectbox
+    //attach the weather selectbox
     $("#select-box").metroSelect({
         'onchange': function() {
             localStorage.setItem("unit", $("#select-box").val());
