@@ -30,6 +30,7 @@ for (id in links) {
     addItem(links[id].name, links[id].url);
 }
 
+
 if(links != null && links.length >= 7) {
     $(".add").hide();
 }
@@ -290,6 +291,7 @@ function updateStyle() {
     var styles = "";
     if(localStorage.getItem("background-color")) {
         var background_color = localStorage.getItem('background-color');
+        styles += '.picker { background-color: ' + background_color+ '}';
         styles += 'body {background-color: ' + background_color + '}';
         styles += '::-webkit-scrollbar { background: ' + background_color + '}';
     }
