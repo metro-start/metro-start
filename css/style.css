@@ -95,6 +95,17 @@ h3 {
     display: block;
     margin: auto;
 }
+.external_selector {
+    overflow: auto;
+}
+.page {
+    display: inline-block;
+    margin-right: 5%;
+    vertical-align: top;
+}
+.page:last-child {
+    margin-right: 0px !important;
+}
 .internal_selector {
     display: inline-block;
     white-space: nowrap;
