@@ -95,3 +95,14 @@ h3 {
     display: block;
     margin: auto;
 }
+.internal_selector {
+    display: inline-block;
+    white-space: nowrap;
+}
+.external_selector {
+    overflow-y: auto;
+}
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
