@@ -324,7 +324,6 @@ function loadApps() {
         var page = $('<div class="page" id="page_' + index + '"></div>');
         internal_selector.append(page);
         var res = res.filter(function(item) { return item.isApp; });
-        var x = res.push.apply(res, res);
         res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
         for(i in res) {
             var item = $('<div class="item"><a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
