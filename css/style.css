@@ -106,10 +106,6 @@ h3 {
 .page:last-child {
     margin-right: 0px !important;
 }
-.internal_selector {
-    display: inline-block;
-    white-space: nowrap;
-}
 .external_selector {
     overflow-y: auto;
 }
