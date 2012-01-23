@@ -11,6 +11,9 @@ $(function() {
     else {
         links = new Array();
     }
+	if(!localStorage.getItem('hide_weather')) {
+		localStorage.setItem('hide_weather', false);
+	}
 
 if(localStorage.getItem("active")) {
     if(localStorage.getItem("active") == "links") {
@@ -72,6 +75,13 @@ $("#add").click(function(){
     $("#add").hide("fast");
     $("#url").show("fast");
     $("#url").focus();
+});
+
+//handle clicking the edit link in weather section
+$("#hide_weather").click(function(){
+	localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
+	updateStyle();
+    _gaq.push(['_trackEvent', 'hide weather clicked']);
 });
 
 //handle clicking the edit link in weather section
@@ -289,6 +299,13 @@ function updateWeather(force) {
   */
 function updateStyle() {
     var styles = "";
+	if(localStorage.getItem('hide_weather') == 'true') {
+		$('#hide_weather').text('show weather');
+		$('#weather').hide('fast');
+	} else {
+		$('#hide_weather').text('hide weather');
+		$('#weather').show('fast');
+	}
     if(localStorage.getItem("background-color")) {
         var background_color = localStorage.getItem('background-color');
         styles += '.picker { background-color: ' + background_color+ '}';
