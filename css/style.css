@@ -11,16 +11,23 @@ a {
     text-decoration: none;
     color: inherit;
 }
-.links, .external_selector, .add {
+.add {
     list-style: none;
     margin-left: 50px;
 }
 .item, #links li {
     margin-bottom: 25px;
 }
+#links {
+	margin-left: 50px;
+}
 .menu {
     margin-left: 50px;
     margin-bottom: 10px;
+}
+.collection {
+	position: absolute;	
+	width: 100%;
 }
 .paging {
     margin-right: 20px;
@@ -95,9 +102,6 @@ h3 {
     display: block;
     margin: auto;
 }
-.external_selector {
-    overflow: auto;
-}
 .page {
     display: inline-block;
     margin-right: 5%;
@@ -106,8 +110,17 @@ h3 {
 .page:last-child {
     margin-right: 0px !important;
 }
+.internal_selector {
+    display: inline-block;
+    white-space: nowrap;
+	margin-left: 50px;
+}
+#apps {
+	width: 100%;
+}
 .external_selector {
     overflow-y: auto;
+	width: 100%;
 }
 ::-webkit-scrollbar {
     height: 10px;

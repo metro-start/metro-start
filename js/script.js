@@ -1,5 +1,5 @@
 //globals (kinda?)
-var total = "linksapps";
+var total = ['links', 'apps', 'bookmarks'];
 
 $(function() {	
     //get links from localStorage and ensure they're empty	
@@ -16,7 +16,7 @@ $(function() {
 	}
 
 if(localStorage.getItem("active")) {
-    if(localStorage.getItem("active") == "links") {
+    if(localStorage.getItem("active") == "0") {
         $("#menu").prop("selectedIndex", 0); //saved links
     } else {
         $("#menu").prop("selectedIndex", 1); //installed apps
@@ -51,10 +51,10 @@ if(!localStorage.getItem("unit")) {
     localStorage.setItem("unit", "fahrenheit");
 }
 $("#select-box").val(localStorage.getItem("unit"));
+
 /** 
   Attaching event handlers
   */
-
 //show all options on the page.
 $("#wrench").click(function(){		
     _gaq.push(['_trackEvent', 'wrench clicked']);
@@ -223,18 +223,20 @@ $("#links").delegate(".remove", "click", function(event){
     }
 });
 
-
 //attach the menu selectbox
 $("#menu").metroSelect({
     'onchange': function() {
-        if($("#menu").prop("selectedIndex") == 0) { //saved links
+		
+        changeView($('#menu').attr('selectedIndex'));
+		/*
+		if($("#menu").prop("selectedIndex") == 0) { //saved links
             changeView("links");
         } else {
             changeView("apps");
         }
+		*/
     }
 });
-
 
 //attach the weather selectbox
 $("#select-box").metroSelect({
@@ -250,6 +252,7 @@ $(".picker").hide();
 
 //show the right page and load list of apps on load
 loadApps();
+loadBookmarks();
 updateWeather(false);
 updateStyle();	
 });
@@ -329,40 +332,52 @@ function updateStyle() {
 /**
   Get list of apps from chrome and filter out extensions
   */
-function loadApps() {
+var loadApps = function() {
     chrome.management.getAll(function(res){
         var index = 0;
         var internal_selector = $("#internal_selector");
         var page = $('<div class="page" id="page_' + index + '"></div>');
         internal_selector.append(page);
         res = res.filter(function(item) { return item.isApp; });
-        console.log(res);
         res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
         for(i in res) {
             var item = $('<div class="item"><a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
             page.append(item);
             if((parseInt(i) + 1) % 5 == 0) {
                 index++;
-                console.log(index + ':' + i);
                 page = $('<div class="page" id="page_' + index + '"></div>');
                 internal_selector.append(page);
             }
         }
 
-    //load the list of links and change the view otherwise this stuff happens before the callback executes
-    changeView(localStorage.getItem("active"), true);	
+    	//load the list of links and change the view otherwise this stuff happens before the callback executes
+    	changeView(localStorage.getItem("active"), true);	
     });
+}
+
+var loadBookmarks = function() {
 }
 
 /**
   Change the view to the active tab
   */
 function changeView(tar, instant) {
-    localStorage.setItem("active", tar);
-    active = tar;
-    inactive = total.replace(tar, "");
-    if(instant) $("." + inactive).hide();
-    else $("." + inactive).hide("fast");
-    if(instant) $("." + active).show();
-    else $("." + active).show("fast");
+	var cur = localStorage.getItem('active');
+    localStorage.setItem('active', tar);
+	if(instant) {
+		for(i in total) {
+			if(i == tar) {
+			    $("." + total[i]).show();
+			   } else {
+			    $("." + total[i]).hide();
+   	//		    else $("." + total[i]).hide("fast");
+			}
+		}
+	} else {
+		console.log(cur + tar);
+		var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
+		var oppose = direction == 'left' ? 'right' : 'left';
+		$("." + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
+	 	$("." + total[tar]).show('slide', {'direction': direction}, 'fast');					
+	}
 }

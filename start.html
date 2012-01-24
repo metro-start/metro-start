@@ -5,6 +5,7 @@
         <link rel="stylesheet" type="text/css" href="lib/farbtastic/farbtastic.css">
         <link rel="stylesheet" type="text/css" href="lib/metro-select/metro-select.css">
         <script type="text/javascript" src="lib/jquery.js"></script> 
+        <script type="text/javascript" src="lib/jquery-ui.js"></script> 
         <script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script> 
         <script type="text/javascript" src="lib/metro-select/metro-select.js"></script> 
         <script type="text/javascript">
@@ -40,7 +41,7 @@
                 <option>bookmarks</option>
             </select>
         </div>
-        <div class="links">
+        <div class="links collection">
             <ul id="links">
             </ul>
             <p class="add">
@@ -48,8 +49,15 @@
             <input class="option-color" type="text" id="url" value="http://" />
             </p>
         </div>
-        <div class="apps">
+        <div class="apps collection">
             <div id="apps">
+                <div class="external_selector" id="external_selector">
+                    <div class="internal_selector" id="internal_selector"></div>
+                </div>
+            </div>
+        </div>
+        <div class="bookmarks collection">
+            <div id="bookmarks">
                 <div class="external_selector" id="external_selector">
                     <div class="internal_selector" id="internal_selector"></div>
                 </div>
