@@ -15,12 +15,12 @@ $(function() {
 		localStorage.setItem('hide_weather', false);
 	}
 
-if(localStorage.getItem("active")) {
-    if(localStorage.getItem("active") == "0") {
-        $("#menu").prop("selectedIndex", 0); //saved links
-    } else {
-        $("#menu").prop("selectedIndex", 1); //installed apps
-    }
+if(localStorage.getItem('active')) {
+    if(localStorage.getItem('active')) {
+        $('#menu').prop('selectedIndex', localStorage.getItem('active')); //saved links
+	} else {
+		localStorage.setItem('active', 1);
+	}
 }
 //load saved links or load default material
 if(links == null || links.length == 0) {
