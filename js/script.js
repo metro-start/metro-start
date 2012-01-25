@@ -1,6 +1,6 @@
 //globals (kinda?)
 var total = ['links', 'apps', 'bookmarks'];
-
+var units = ['fahrenheit', 'celsius'];
 $(function() {	
     //get links from localStorage and ensure they're empty	
     var list = new Array();
@@ -226,22 +226,15 @@ $("#links").delegate(".remove", "click", function(event){
 //attach the menu selectbox
 $("#menu").metroSelect({
     'onchange': function() {
-		
         changeView($('#menu').attr('selectedIndex'));
-		/*
-		if($("#menu").prop("selectedIndex") == 0) { //saved links
-            changeView("links");
-        } else {
-            changeView("apps");
-        }
-		*/
     }
 });
 
 //attach the weather selectbox
 $("#select-box").metroSelect({
     'onchange': function() {
-        localStorage.setItem("unit", $("#select-box").val());
+		console.log($('#select-box'));
+        localStorage.setItem("unit", units[$("#select-box").attr('selectedIndex')]);
         updateWeather(true);
     }
 });
