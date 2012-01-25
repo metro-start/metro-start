@@ -6,6 +6,7 @@
 		"newtab": "start.html"
 	},
 	"permissions": [
-		"management"
+		"management",
+		"bookmarks"
 	]
 }

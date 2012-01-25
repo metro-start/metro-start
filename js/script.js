@@ -233,7 +233,6 @@ $("#menu").metroSelect({
 //attach the weather selectbox
 $("#select-box").metroSelect({
     'onchange': function() {
-		console.log($('#select-box'));
         localStorage.setItem("unit", units[$("#select-box").attr('selectedIndex')]);
         updateWeather(true);
     }
@@ -349,6 +348,28 @@ var loadApps = function() {
 }
 
 var loadBookmarks = function() {
+	chrome.bookmarks.getTree(function(res) {
+		var depth = 0;
+		var bookmark = $('#bookmarks');
+		var page = $('<div class="page" id="bookmark_page_' + depth + '"></div>');
+			for (j in res[0].children) {
+
+		//		buildListOfBookmarks(0, res[0].children[j]);
+			}
+		bookmark.append(page);
+	});
+}
+
+var buildListOfBookmarks = function(page, node) {
+	if(node.children) {
+		//console.log('folder');
+		for (i in node.children) {
+			
+			buildListOfBookmarks(page + 1, node.children[i]);
+		}
+	} else {
+	//	console.log('not folder');
+	}
 }
 
 /**
@@ -367,7 +388,6 @@ function changeView(tar, instant) {
 			}
 		}
 	} else {
-		console.log(cur + tar);
 		var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
 		var oppose = direction == 'left' ? 'right' : 'left';
 		$("." + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
