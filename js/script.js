@@ -350,26 +350,27 @@ var loadApps = function() {
 var loadBookmarks = function() {
 	chrome.bookmarks.getTree(function(res) {
 		var depth = 0;
-		var bookmark = $('#bookmarks');
-		var page = $('<div class="page" id="bookmark_page_' + depth + '"></div>');
 			for (j in res[0].children) {
-
-		//		buildListOfBookmarks(0, res[0].children[j]);
+				buildListOfBookmarks(0, res[0].children[j]);
 			}
-		bookmark.append(page);
 	});
 }
 
-var buildListOfBookmarks = function(page, node) {
+var buildListOfBookmarks = function(index, node) {
+	var bookmark = $('#bookmarks');
+	var page = $('<div class="page" id="bookmark_page_' + index + '"></div>');
+
 	if(node.children) {
-		//console.log('folder');
 		for (i in node.children) {
 			
-			buildListOfBookmarks(page + 1, node.children[i]);
+			buildListOfBookmarks(index + 1, node.children[i]);
 		}
 	} else {
+      	var item = $('<div class="item"><a href="' + node.url + '">' + node.title + '</a></div>');
+		page.append(item);
 	//	console.log('not folder');
 	}
+	bookmark.append(page);
 }
 
 /**
