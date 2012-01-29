@@ -15,76 +15,76 @@ $(function() {
 		localStorage.setItem('hide_weather', false);
 	}
 
-if(localStorage.getItem('active')) {
-    if(localStorage.getItem('active')) {
-        $('#menu').prop('selectedIndex', localStorage.getItem('active')); //saved links
-	} else {
-		localStorage.setItem('active', 1);
+	if(localStorage.getItem('active')) {
+		if(localStorage.getItem('active')) {
+			$('#menu').prop('selectedIndex', localStorage.getItem('active')); //saved links
+		} else {
+			localStorage.setItem('active', 1);
+		}
 	}
-}
-//load saved links or load default material
-if(links == null || links.length == 0) {
-    addItem("use the wrench to get started. . . ", "");
-    list.push({"name": "use the wrench to get started. . . ", "url": ""});
-    localStorage.setItem("links", JSON.stringify(list));
-}
+	//load saved links or load default material
+	if(links == null || links.length == 0) {
+		addItem("use the wrench to get started. . . ", "");
+		list.push({"name": "use the wrench to get started. . . ", "url": ""});
+		localStorage.setItem("links", JSON.stringify(list));
+	}
 
-for (id in links) {
-    addItem(links[id].name, links[id].url);
-}
+	for (id in links) {
+		addItem(links[id].name, links[id].url);
+	}
 
 
-if(links != null && links.length >= 7) {
-    $(".add").hide();
-}
+	if(links != null && links.length >= 7) {
+		$(".add").hide();
+	}
 
-//laod cached results for weather or set default zip
-$("#where").html(localStorage.getItem("where"));
-$("#temp").html(localStorage.getItem("temp"));
-$("#condition").html(localStorage.getItem("condition"));
+	//laod cached results for weather or set default zip
+	$("#where").html(localStorage.getItem("where"));
+	$("#temp").html(localStorage.getItem("temp"));
+	$("#condition").html(localStorage.getItem("condition"));
 
-if(!localStorage.getItem("zip")) {
-    localStorage.setItem("zip", "95123"); 
-}
+	if(!localStorage.getItem("zip")) {
+		localStorage.setItem("zip", "95123"); 
+	}
 
-if(!localStorage.getItem("unit")) {
-    localStorage.setItem("unit", "fahrenheit");
-}
-$("#select-box").val(localStorage.getItem("unit"));
+	if(!localStorage.getItem("unit")) {
+		localStorage.setItem("unit", "fahrenheit");
+	}
+	$("#select-box").val(localStorage.getItem("unit"));
 
-/** 
-  Attaching event handlers
-  */
-//show all options on the page.
-$("#wrench").click(function(){		
-    _gaq.push(['_trackEvent', 'wrench clicked']);
-    $(".picker").hide("fast");
-    $(".option").toggle("fast");
-    $("#reset").hide();
-});
+	/** 
+	  Attaching event handlers
+	 */
+	//show all options on the page.
+	$("#wrench").click(function(){		
+		_gaq.push(['_trackEvent', 'wrench clicked']);
+		$(".picker").hide("fast");
+		$(".option").toggle("fast");
+		$("#reset").hide();
+	});
 
-$("#add").click(function(){
-    _gaq.push(['_trackEvent', 'add clicked']);
-    $("#add").hide("fast");
-    $("#url").show("fast");
-    $("#url").focus();
-});
+	$("#add").click(function(){
+		_gaq.push(['_trackEvent', 'add clicked']);
+		$("#add").hide("fast");
+		$("#url").show("fast");
+		$("#url").focus();
+	});
 
-//handle clicking the edit link in weather section
-$("#hide_weather").click(function(){
-	localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
-	updateStyle();
-    _gaq.push(['_trackEvent', 'hide weather clicked']);
-});
+	//handle clicking the edit link in weather section
+	$("#hide_weather").click(function(){
+		localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
+		updateStyle();
+		_gaq.push(['_trackEvent', 'hide weather clicked']);
+	});
 
-//handle clicking the edit link in weather section
-$("#edit").click(function(){
-    _gaq.push(['_trackEvent', 'edit clicked']);
-    $("#edit").hide("fast");
-    $("#where").hide("fast");
-    $("#zip").show("fast");
-    $("#zip").focus();
-});
+	//handle clicking the edit link in weather section
+	$("#edit").click(function(){
+		_gaq.push(['_trackEvent', 'edit clicked']);
+		$("#edit").hide("fast");
+		$("#where").hide("fast");
+		$("#zip").show("fast");
+		$("#zip").focus();
+	});
 
 //attach a picker for the background color and also set its default if it hasn't been changed yet
 $("#picker-background").farbtastic(function(color) {
@@ -347,30 +347,61 @@ var loadApps = function() {
     });
 }
 
+//Starts from the root of all bookmark elements and builds out all pages.
 var loadBookmarks = function() {
 	chrome.bookmarks.getTree(function(res) {
-		var depth = 0;
-			for (j in res[0].children) {
-				buildListOfBookmarks(0, res[0].children[j]);
-			}
+		var internal_sel = $('#internal_selector_book');
+		var page = $('<div class="bookmark_page" id="bookmark_page_0"></div>'); //Creates the first page.
+		internal_sel.append(page);
+		for (j in res[0].children) {
+			buildListOfBookmarks(0, res[0].children[j]);
+		}
 	});
 }
 
-var buildListOfBookmarks = function(index, node) {
-	var bookmark = $('#bookmarks');
-	var page = $('<div class="page" id="bookmark_page_' + index + '"></div>');
+//Given a bookmark folder, builds a list of all its children and puts it in a page element.
+var buildListOfBookmarks = function(owner, node) {
+	var internal_sel = $('#internal_selector_book');
+	var page = $('#bookmark_page_' + owner);
+	var ellipses = function(title) {
+		return (title.length > 22 ? (title.substr(0, 17) + '...') : title);
+	}
 
+	//If the current node has any children, we need to add it as a directory.
 	if(node.children) {
-		for (i in node.children) {
-			
-			buildListOfBookmarks(index + 1, node.children[i]);
+		var item = $('<div class="item" id="bookmark_' + node.id + '">' + ellipses(node.title) + '<span class="option-color">/</span></div>');
+		page.append(item);
+		item.on('click', function() {
+			var page_id = $(this).prop('id').replace('bookmark_', '');
+			var parent_id = parseInt($(this).parent().prop('id').replace('bookmark_page_', ''));
+
+			//filter all the pages:
+			//If the page we're looking at has a higher index than the page we're on,
+			//it means that this new page is at a deeper index in the bookmark heirachy than
+			//the one that is currently enabled (indexes are assigned essentially BFS).
+			$('.bookmark_page').filter(function(index) {
+				var my_id = parseInt($(this).prop('id').replace('bookmark_page_', ''));
+				if(my_id == page_id) return false; //don't include the page we want to display
+				return my_id > parseInt(parent_id); //include all pages with a higher index
+			}).hide(); 
+			$('#bookmark_page_' + page_id).show(); //show the page we selected.
+		});
+
+		//if the current node actually has children, lets add its children in their own page
+		if(node.children.length > 0) {
+			//create a new page to store its children, hide it and add it to the DOM
+			var new_page = $('<div class="bookmark_page" id="bookmark_page_' + node.id + '"></div>');
+			new_page.hide();
+			internal_sel.append(new_page);
+			for (i in node.children) {
+				buildListOfBookmarks(node.id, node.children[i]);
+			}
 		}
 	} else {
-      	var item = $('<div class="item"><a href="' + node.url + '">' + node.title + '</a></div>');
+		//if the node has no children, then its just a link, so add it as a simple anchor.
+      	var item = $('<div class="item" id="bookmark_' + node.id + '"><a href="' + node.url + '">' + (node.title.length > 22 ? node.title.substr(0, 17) + '...' : node.title) + '</a></div>');
 		page.append(item);
-	//	console.log('not folder');
 	}
-	bookmark.append(page);
 }
 
 /**
