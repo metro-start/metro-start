@@ -17,6 +17,11 @@ $(function() {
 	} else {
 		localStorage.setItem('active', 1);
 	}
+	if(localStorage.getItem('font')) {
+		$('#font-chooser').prop('selectedIndex', localStorage.getItem('font')); //saved links
+	} else {
+		localStorage.setItem('font', 0);
+	}
 	//load saved links or load default material
     var list = new Array();
 	if(links == null || links.length == 0) {
@@ -145,6 +150,8 @@ $(function() {
 
 		localStorage.setItem("background-color", "#000000");	
 		$.farbtastic("#picker-background").setColor("#000000");
+	
+		localStorage.setItem('font', 0)
 
 		updateStyle();
 	});
@@ -231,6 +238,13 @@ $(function() {
 		}
 	});
 
+	$('#font-chooser').metroSelect({
+		'onchange': function() {
+			localStorage.setItem('font', $('#font-chooser').attr('selectedIndex'));
+			updateStyle();
+		}
+	});
+
 	$(".option").hide();
 	$("input").hide();
 	$(".picker").hide();
@@ -286,6 +300,14 @@ function updateStyle() {
 	} else {
 		$('#hide_weather').text('hide weather');
 		$('#weather').show('fast');
+	}
+	if(localStorage.getItem('font')) {
+		font = localStorage.getItem('font');
+		if(font == 0) {
+			styles += 'body { font-family: Raleway, sans-serif}';
+		} else {
+			styles += 'body { font-family: "Segoe UI", Helvetica, sans-serif}';
+		}
 	}
     if(localStorage.getItem("background-color")) {
         var background_color = localStorage.getItem('background-color');

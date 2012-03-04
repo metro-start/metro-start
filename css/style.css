@@ -4,7 +4,6 @@
 } 
 body {
     font-size: 32px;
-    font-family: "Raleway", sans-serif;
     -webkit-font-smoothing: subpixel-antialiased, antialiased;
 }
 a {
@@ -16,6 +15,7 @@ a {
     margin-left: 50px;
 }
 .item, #links li {
+	cursor: pointer;
     margin-bottom: 25px;
 }
 #links {
@@ -74,6 +74,12 @@ h3 {
     position: absolute;
     bottom: 15px;
     left: 15px;
+}
+.font-chooser {
+	cursor: pointer;
+	position: absolute;
+	bottom: 15px;
+	left: 150px;
 }
 .colors {
     cursor: pointer;
