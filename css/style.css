@@ -126,7 +126,6 @@ h3 {
 	width: 100%;
 }
 .external_selector {
-    overflow-y: auto;
 	width: 100%;
 }
 ::-webkit-scrollbar {
