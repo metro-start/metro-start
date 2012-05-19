@@ -126,6 +126,7 @@ h3 {
 	width: 100%;
 }
 .external_selector {
+	overflow: auto;
 	width: 100%;
 }
 ::-webkit-scrollbar {
@@ -137,9 +138,9 @@ h3 {
 	float: left;
 	width: 320px;
 	height: 285px;
+	overflow-x: auto;
 	overflow-y: auto;
-	overflow-x: hidden;
 }
 .item:last-child {
-	margin-bottom: 0px;
+	margin-bottom: 5px;
 }

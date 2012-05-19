@@ -55,14 +55,14 @@ $(function() {
 	//Attaching event handlers
 	//show all options on the page.
 	$("#wrench").click(function(){		
-		_gaq.push(['_trackEvent', 'wrench clicked']);
+		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
 		$(".picker").hide("fast");
 		$(".option").toggle("fast");
 		$("#reset").hide();
 	});
 
 	$("#add").click(function(){
-		_gaq.push(['_trackEvent', 'add clicked']);
+		_gaq.push(['_trackEvent', 'Page Action', 'add clicked']);
 		$("#add").hide("fast");
 		$("#url").show("fast");
 		$("#url").focus();
@@ -72,7 +72,7 @@ $(function() {
 	$("#hide_weather").click(function(){
 		localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
 		updateStyle();
-		_gaq.push(['_trackEvent', 'hide weather clicked']);
+		_gaq.push(['_trackEvent', 'Page Action', 'hide weather clicked']);
 	});
 
 	//handle clicking the edit link in weather section
@@ -130,14 +130,14 @@ $(function() {
 
 	//show the color pickers
 	$("#colors").click(function(){
-		_gaq.push(['_trackEvent', 'colors clicked']);
+		_gaq.push(['_trackEvent', 'Page Action',  'colors clicked']);
 		$(".picker").toggle("fast");
 		$("#reset").toggle("fast");
 	});
 
 	//reset all the colors to default.
 	$("#reset").click(function(){
-		_gaq.push(['_trackEvent', 'colors reset']);
+		_gaq.push(['_trackEvent', 'Page Action',  'colors reset']);
 
 		localStorage.setItem("options-color", "#FF0000");	
 		$.farbtastic("#picker-options").setColor("#FF0000");
@@ -214,7 +214,7 @@ $(function() {
 		var links = JSON.parse(localStorage.getItem("links"));
 		for(id in links) {
 			if(links[id].url == $(event.target).parent("li").children("a").attr("href")) {
-				_gaq.push(['_trackEvent', 'removed a link']);
+				_gaq.push(['_trackEvent', 'Page Action',  'removed a link']);
 				links.splice(id, 1);
 				localStorage.setItem("links", JSON.stringify(links));
 				$(event.target).parent("li").remove();
@@ -257,7 +257,7 @@ $(function() {
 });
 
 function addItem(name, url) {
-    _gaq.push(['_trackEvent', 'added a link']);
+    _gaq.push(['_trackEvent', 'Page Action',  'added a link']);
     $("#links").append("<li><span class='remove option option-color'>remove</span> <a href=\"" + url + "\">" + name + "</a></li>"); 
 }
 
@@ -414,7 +414,7 @@ var buildListOfBookmarks = function(owner, node) {
 		}
 	} else {
 		//if the node has no children, then its just a link, so add it as a simple anchor.
-      	var item = $('<div class="item" id="bookmark_' + node.id + '"><a href="' + node.url + '">' + (node.title.length > 22 ? node.title.substr(0, 17) + '...' : node.title) + '</a></div>');
+      	var item = $('<div class="item" id="bookmark_' + node.id + '"><a href="' + node.url + '">' + (node.title.length > 22 ? node.title.substr(0, 16) + '...' : node.title) + '</a></div>');
 		page.append(item);
 	}
 }
