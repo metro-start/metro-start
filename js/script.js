@@ -4,7 +4,7 @@ var units = ['fahrenheit', 'celsius'];
 
 $(function() {	
     //get links from localStorage and ensure they're empty	
-    var links = localStorage.getItem("links");
+    var links = localStorage.getItem('links');
     if(links) links = JSON.parse(links);
     else links = new Array();
 
@@ -17,17 +17,12 @@ $(function() {
 	} else {
 		localStorage.setItem('active', 1);
 	}
-	if(localStorage.getItem('font')) {
-		$('#font-chooser').prop('selectedIndex', localStorage.getItem('font')); //saved links
-	} else {
-		localStorage.setItem('font', 0);
-	}
 	//load saved links or load default material
     var list = new Array();
 	if(links == null || links.length == 0) {
-		addItem("use the wrench to get started. . . ", "");
-		list.push({"name": "use the wrench to get started. . . ", "url": ""});
-		localStorage.setItem("links", JSON.stringify(list));
+		addItem('use the wrench to get started. . . ', '');
+		list.push({'name': 'use the wrench to get started. . . ', 'url': ''});
+		localStorage.setItem('links', JSON.stringify(list));
 	}
 
 	for (id in links) {
@@ -35,121 +30,145 @@ $(function() {
 	}
 
 	if(links != null && links.length >= 7) {
-		$(".add").hide();
+		$('.add').hide();
 	}
 
-	//laod cached results for weather or set default zip
-	$("#where").html(localStorage.getItem("where"));
-	$("#temp").html(localStorage.getItem("temp"));
-	$("#condition").html(localStorage.getItem("condition"));
+	//laod cached results for weather or set default locat
+	$('#where').html(localStorage.getItem('where'));
+	$('#temp').html(localStorage.getItem('temp'));
+	$('#condition').html(localStorage.getItem('condition'));
+	$('#locat').val(localStorage.getItem('locat'));
 
-	if(!localStorage.getItem("zip")) {
-		localStorage.setItem("zip", "95123"); 
+	if(!localStorage.getItem('locat')) {
+		localStorage.setItem('locat', '95123'); 
 	}
 
-	if(!localStorage.getItem("unit")) {
-		localStorage.setItem("unit", "fahrenheit");
+	if(!localStorage.getItem('unit')) {
+		localStorage.setItem('unit', 'fahrenheit');
 	}
-	$("#select-box").val(localStorage.getItem("unit"));
+	$('#select-box').val(localStorage.getItem('unit'));
 
 	//Attaching event handlers
 	//show all options on the page.
-	$("#wrench").click(function(){		
+	$('#wrench').click(function(){		
 		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
-		$(".picker").hide("fast");
-		$(".option").toggle("fast");
-		$("#reset").hide();
+		$('.picker').hide('fast');
+		$('.option').toggle('fast');
+		$('#reset').hide();
 	});
 
-	$("#add").click(function(){
+	$('#add').click(function(){
 		_gaq.push(['_trackEvent', 'Page Action', 'add clicked']);
-		$("#add").hide("fast");
-		$("#url").show("fast");
-		$("#url").focus();
+		$('#add').hide('fast');
+		$('#url').show('fast');
+		$('#url').focus();
 	});
 
 	//handle clicking the edit link in weather section
-	$("#hide_weather").click(function(){
+	$('#hide_weather').click(function(){
 		localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
 		updateStyle();
 		_gaq.push(['_trackEvent', 'Page Action', 'hide weather clicked']);
 	});
 
 	//handle clicking the edit link in weather section
-	$("#edit").click(function(){
+	$('#edit').click(function(){
 		_gaq.push(['_trackEvent', 'edit clicked']);
-		$("#edit").hide("fast");
-		$("#where").hide("fast");
-		$("#zip").show("fast");
-		$("#zip").focus();
+
+		var done = function() {
+			var locat = $('#where').text();
+			if(locat.trim() == '') {
+				return;
+			}
+			$('#where').prop('contentEditable', 'false');
+			localStorage.setItem('locat', locat);
+			updateWeather(true);
+			$('#edit').text('edit');
+		};
+		if($('#where').prop('contentEditable') != 'true') {
+			$('#where').prop('contentEditable', 'true');
+			$('#where').focus();
+			document.execCommand('selectAll',false,null);
+			$('#where').keydown(function(e) {
+				if(event.keyCode == 13){
+					e.preventDefault();
+					done();
+				}
+			});
+			$('#edit').text('done');
+		} else {
+			done();
+		}
+		//$('#where').toggle('fast');
+	//	$('#locat').toggle('fast');
 	});
 
 	//attach a picker for the background color and also set its default if it hasn't been changed yet
-	$("#picker-background").farbtastic(function(color) {
-		localStorage.setItem("background-color", color);
+	$('#picker-background').farbtastic(function(color) {
+		localStorage.setItem('background-color', color);
 		updateStyle();
 	});
-	if(localStorage.getItem("background-color")) {
-		$.farbtastic("#picker-background").setColor(localStorage.getItem("background-color"));
+	if(localStorage.getItem('background-color')) {
+		$.farbtastic('#picker-background').setColor(localStorage.getItem('background-color'));
 	} else {
-		$.farbtastic("#picker-background").setColor("#000000")
+		$.farbtastic('#picker-background').setColor('#000000')
 	}
 
 	//attach a picker for the title color and also set its default if it hasn't been changed yet
-	$("#picker-title").farbtastic(function(color) {
-		localStorage.setItem("title-color", color);
+	$('#picker-title').farbtastic(function(color) {
+		localStorage.setItem('title-color', color);
 		updateStyle();
 	});
-	if(localStorage.getItem("title-color")) {
-		$.farbtastic("#picker-title").setColor(localStorage.getItem("title-color"));
+	if(localStorage.getItem('title-color')) {
+		$.farbtastic('#picker-title').setColor(localStorage.getItem('title-color'));
 	} else {
-		$.farbtastic("#picker-title").setColor("#4A4A4A")
+		$.farbtastic('#picker-title').setColor('#4A4A4A')
 	}
 
 	//attach a picker for the main color and also set its default if it hasn't been changed yet
-	$("#picker-main").farbtastic(function(color) {
-		localStorage.setItem("main-color", color);
+	$('#picker-main').farbtastic(function(color) {
+		localStorage.setItem('main-color', color);
 		updateStyle();
 	});
-	if(localStorage.getItem("main-color")) {
-		$.farbtastic("#picker-main").setColor(localStorage.getItem("main-color"));
+	if(localStorage.getItem('main-color')) {
+		$.farbtastic('#picker-main').setColor(localStorage.getItem('main-color'));
 	} else {
-		$.farbtastic("#picker-main").setColor("#FFFFFF")
+		$.farbtastic('#picker-main').setColor('#FFFFFF')
 	}
 
 	//attach a picker for the options color and also set its default if it hasn't been changed yet
-	$("#picker-options").farbtastic(function(color) {
-		localStorage.setItem("options-color", color);
+	$('#picker-options').farbtastic(function(color) {
+		localStorage.setItem('options-color', color);
 		updateStyle();
 	});
-	if(localStorage.getItem("options-color")) {
-		$.farbtastic("#picker-options").setColor(localStorage.getItem("options-color"));
+	if(localStorage.getItem('options-color')) {
+		$.farbtastic('#picker-options').setColor(localStorage.getItem('options-color'));
 	} else {
-		$.farbtastic("#picker-options").setColor("#FF0000");
+		$.farbtastic('#picker-options').setColor('#FF0000');
 	}
 
 	//show the color pickers
-	$("#colors").click(function(){
+	$('#colors').click(function(){
 		_gaq.push(['_trackEvent', 'Page Action',  'colors clicked']);
-		$(".picker").toggle("fast");
-		$("#reset").toggle("fast");
+		$('.picker').toggle('fast');
+		$('#reset').toggle('fast');
 	});
 
 	//reset all the colors to default.
-	$("#reset").click(function(){
+	$('#reset').click(function(){
 		_gaq.push(['_trackEvent', 'Page Action',  'colors reset']);
 
-		localStorage.setItem("options-color", "#FF0000");	
-		$.farbtastic("#picker-options").setColor("#FF0000");
+		localStorage.setItem('options-color', '#FF0000');	
+		$.farbtastic('#picker-options').setColor('#FF0000');
 
-		localStorage.setItem("main-color", "#FFFFFF");	
-		$.farbtastic("#picker-main").setColor("#FFFFFF");
+		localStorage.setItem('main-color', '#FFFFFF');	
+		$.farbtastic('#picker-main').setColor('#FFFFFF');
 
-		localStorage.setItem("title-color", "#4A4A4A");	
-		$.farbtastic("#picker-title").setColor("#4A4A4A");
+		localStorage.setItem('title-color', '#4A4A4A');	
+		$.farbtastic('#picker-title').setColor('#4A4A4A');
 
-		localStorage.setItem("background-color", "#000000");	
-		$.farbtastic("#picker-background").setColor("#000000");
+		localStorage.setItem('background-color', '#000000');	
+		$.farbtastic('#picker-background').setColor('#000000');
 	
 		localStorage.setItem('font', 0)
 
@@ -157,97 +176,77 @@ $(function() {
 	});
 
 	//when you leave the url field
-	$("#url").blur(function() {
-		$("#add").show();
-		$("#url").hide();
+	$('#url').blur(function() {
+		$('#add').show();
+		$('#url').hide();
 	});
 
-	//when you leave the zip field
-	$("#zip").blur(function() {
-		$("#edit").show();
-		$("#where").show();
-		$("#zip").hide();
+	//when you leave the locat field
+	$('#locat').blur(function() {
+		$('#edit').show();
+		$('#where').show();
+		$('#locat').hide();
 	});
 
 	//validate the url when the person hits enter
-	$("#url").keyup(function(event){
+	$('#url').keyup(function(event){
 		if(event.keyCode == 13){
-			var list = JSON.parse(localStorage.getItem("links"));
-			var name = $("#url").val().toLowerCase().replace(/^https?\:\/\//i, "").replace(/^www\./i, "");
-			var url = $("#url").val();
-			if(url.trim() == "") {
+			var list = JSON.parse(localStorage.getItem('links'));
+			var name = $('#url').val().toLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
+			var url = $('#url').val();
+			if(url.trim() == '') {
 				return;
 			}
 			if(!url.match(/^([a-z]([a-z]|\d|\+|-|\.)*):(\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?((\[(|(v[\da-f]{1,}\.(([a-z]|\d|-|\.|_|~)|[!\$&'\(\)\*\+,;=]|:)+))\])|((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=])*)(:\d*)?)(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*|(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)){0})(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i)) {
 				//handle invalid url
 			}			
 			if(!url.match(/https?\:\/\//)) {
-		url = "http://" + url;
+		url = 'http://' + url;
 		}
 		if (list == null) {
 			list = new Array();
 		}
-		list.push({"name": name, "url": url});
-		localStorage.setItem("links", JSON.stringify(list));
+		list.push({'name': name, 'url': url});
+		localStorage.setItem('links', JSON.stringify(list));
 
-		$("#url").blur();
+		$('#url').blur();
 		addItem(name, url);
-		if(list.length >= 7) $(".add").hide();
-		}
-	});
-
-	//force update the wheather when they hit enter after zip
-	$("#zip").keyup(function(event){
-		if(event.keyCode == 13){
-			var zip = $("#zip").val();
-			if(zip.trim() == "") {
-				return;
-			}
-			localStorage.setItem("zip", zip);
-			$("#zip").blur();
-			updateWeather(true);
+		if(list.length >= 7) $('.add').hide();
 		}
 	});
 
 	//attaches a remove link to all <li>
-	$("#links").delegate(".remove", "click", function(event){
-		var links = JSON.parse(localStorage.getItem("links"));
+	$('#links').delegate('.remove', 'click', function(event){
+		var links = JSON.parse(localStorage.getItem('links'));
 		for(id in links) {
-			if(links[id].url == $(event.target).parent("li").children("a").attr("href")) {
+			if(links[id].url == $(event.target).parent('li').children('a').attr('href')) {
 				_gaq.push(['_trackEvent', 'Page Action',  'removed a link']);
 				links.splice(id, 1);
-				localStorage.setItem("links", JSON.stringify(links));
-				$(event.target).parent("li").remove();
+				localStorage.setItem('links', JSON.stringify(links));
+				$(event.target).parent('li').remove();
 				break;
 			}
 		}
 	});
 
 	//attach the menu selectbox
-	$("#menu").metroSelect({
+	$('#menu').metroSelect({
 		'onchange': function() {
 			changeView($('#menu').attr('selectedIndex'));
 		}
 	});
 
 	//attach the weather selectbox
-	$("#select-box").metroSelect({
+	$('#select-box').metroSelect({
 		'onchange': function() {
-			localStorage.setItem("unit", units[$("#select-box").attr('selectedIndex')]);
+			localStorage.setItem('unit', units[$('#select-box').attr('selectedIndex')]);
 			updateWeather(true);
 		}
 	});
 
-	$('#font-chooser').metroSelect({
-		'onchange': function() {
-			localStorage.setItem('font', $('#font-chooser').attr('selectedIndex'));
-			updateStyle();
-		}
-	});
-
-	$(".option").hide();
-	$("input").hide();
-	$(".picker").hide();
+	$('.option').hide();
+	$('input').hide();
+	$('.picker').hide();
 
 	//show the right page and load list of apps on load
 	loadApps();
@@ -258,7 +257,7 @@ $(function() {
 
 function addItem(name, url) {
     _gaq.push(['_trackEvent', 'Page Action',  'added a link']);
-    $("#links").append("<li><span class='remove option option-color'>remove</span> <a href=\"" + url + "\">" + name + "</a></li>"); 
+    $('#links').append('<li><span class="remove option option-color">remove</span> <a href=\'' + url + '\'>' + name + '</a></li>'); 
 }
 
 /**
@@ -266,26 +265,33 @@ function addItem(name, url) {
   force: Bypasses the cache and force hits the server.
   */
 function updateWeather(force) {
-    var unit = localStorage.getItem("unit")[0];
-    var zip = localStorage.getItem("zip");
-    var time = localStorage.getItem("time");
+    var unit = localStorage.getItem('unit')[0];
+    var locat = localStorage.getItem('locat');
+    var time = localStorage.getItem('time');
     var cTime = new Date();
     if(force || cTime.getTime() > time) {
         //delay for an hour
-        localStorage.setItem("time", cTime.getTime() + 3600000);
-        $.get(
-				"http://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20weather.bylocation%20WHERE%20location%3D'" + zip + "'%20AND%20unit%3D%22" + unit + "%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys",
-				function(data) {
-					var result = data.query.results.weather.rss.channel;
-					var city = result.location.city.toLowerCase() + ", "+ result.location.region.toLowerCase();
-					localStorage.setItem("where", city);
-					$("#where").html(city);
-					localStorage.setItem("temp", result.item.condition.temp + "<span class='option-color'>&deg;" + unit + "</span> / " + result.item.forecast[0].high + " <span class='option-color'>hi</span> / " + result.item.forecast[0].low + " <span class='option-color'>lo</span>");
-					$("#temp").html(result.item.condition.temp  + "<span class='option-color'>&deg;" + unit + "</span> / " + result.item.forecast[0].high + " <span class='option-color'>hi</span> / " + result.item.forecast[0].low + " <span class='option-color'>lo</span>");
-					localStorage.setItem("condition", result.item.condition.text.toLowerCase());
-					$("#condition").html(result.item.condition.text.toLowerCase());
-				}
-			 );
+        localStorage.setItem('time', cTime.getTime() + 3600000);
+		var url = 'http://www.google.com/ig/api?weather=' + locat;
+		var xml = new JKL.ParseXML(url);
+		var data = xml.parse();
+
+		if (data.xml_api_reply && typeof(data.xml_api_reply) === 'object') {
+			var weather = data.xml_api_reply.weather;
+			var city = weather.forecast_information.city.data.toLowerCase();
+			localStorage.setItem('where', city);
+			$('#where').html(city);
+			
+			if (unit == 'f') {
+				localStorage.setItem('temp', weather.current_conditions.temp_f.data + '<span class="option-color">&deg;' + unit + '</span> / ' + weather.forecast_conditions[0].high.data + ' <span class="option-color">hi</span> / ' + weather.forecast_conditions[0].low.data + ' <span class="option-color">lo</span>');
+			} else {
+				localStorage.setItem('temp', weather.current_conditions.temp_c.data + '<span class="option-color">&deg;' + unit + '</span> / ' + toCelsius(weather.forecast_conditions[0].high.data) + ' <span class="option-color">hi</span> / ' + toCelsius(weather.forecast_conditions[0].low.data) + ' <span class="option-color">lo</span>');
+			}
+
+			$('#temp').html(localStorage.getItem('temp'));
+			localStorage.setItem('condition', weather.current_conditions.condition.data.toLowerCase());
+			$('#condition').html(weather.current_conditions.condition.data.toLowerCase());
+		}
 	}
 }
 
@@ -293,7 +299,7 @@ function updateWeather(force) {
   Check for saved theme and load it
   */
 function updateStyle() {
-    var styles = "";
+    var styles = '';
 	if(localStorage.getItem('hide_weather') == 'true') {
 		$('#hide_weather').text('show weather');
 		$('#weather').hide('fast');
@@ -301,39 +307,31 @@ function updateStyle() {
 		$('#hide_weather').text('hide weather');
 		$('#weather').show('fast');
 	}
-	if(localStorage.getItem('font')) {
-		font = localStorage.getItem('font');
-		if(font == 0) {
-			styles += 'body { font-family: Raleway, sans-serif}';
-		} else {
-			styles += 'body { font-family: "Segoe UI", Helvetica, sans-serif}';
-		}
-	}
-    if(localStorage.getItem("background-color")) {
+    if(localStorage.getItem('background-color')) {
         var background_color = localStorage.getItem('background-color');
         styles += '.picker { background-color: ' + background_color+ '}';
         styles += 'body {background-color: ' + background_color + '}';
         styles += '::-webkit-scrollbar { background: ' + background_color + '}';
     }
 
-    if(localStorage.getItem("title-color")) {
-        styles += ('.title-color {color: ' + localStorage.getItem("title-color") + '}');
+    if(localStorage.getItem('title-color')) {
+        styles += ('.title-color {color: ' + localStorage.getItem('title-color') + '}');
     }
 
-    if(localStorage.getItem("main-color")) {
-        var main_color = localStorage.getItem("main-color");
+    if(localStorage.getItem('main-color')) {
+        var main_color = localStorage.getItem('main-color');
         styles += 'body {color: ' + main_color + '}';
         styles += 'input {color: ' + main_color + '}';
     }
 
-    if(localStorage.getItem("options-color")) {
-        var options_color = localStorage.getItem("options-color");
+    if(localStorage.getItem('options-color')) {
+        var options_color = localStorage.getItem('options-color');
         styles += '.option-color {color: ' + options_color + '}';
         styles += '::-webkit-scrollbar-thumb {background: ' + options_color + '}';
     }	
 
-    $("body > style").remove();
-    $("body").append("<style type='text/css'>" + styles + "</style>");
+    $('body > style').remove();
+    $('body').append('<style type="text/css">' + styles + '</style>');
 }
 
 /**
@@ -342,7 +340,7 @@ function updateStyle() {
 var loadApps = function() {
     chrome.management.getAll(function(res){
         var index = 0;
-        var internal_selector = $("#internal_selector");
+        var internal_selector = $('#internal_selector');
         var page = $('<div class="page" id="page_' + index + '"></div>');
         internal_selector.append(page);
         res = res.filter(function(item) { return item.isApp; });
@@ -358,7 +356,7 @@ var loadApps = function() {
         }
 
     	//load the list of links and change the view otherwise this stuff happens before the callback executes
-    	changeView(localStorage.getItem("active"), true);	
+    	changeView(localStorage.getItem('active'), true);	
     });
 }
 
@@ -429,16 +427,20 @@ function changeView(tar, instant) {
 	if(instant) {
 		for(i in total) {
 			if(i == tar) {
-			    $("." + total[i]).show();
+			    $('.' + total[i]).show();
 			   } else {
-			    $("." + total[i]).hide();
+			    $('.' + total[i]).hide();
 			}
 		}
 	//if the page is changing slowly, use a slide and 'fast' timer.
 	} else {
 		var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
 		var oppose = direction == 'left' ? 'right' : 'left';
-		$("." + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
-	 	$("." + total[tar]).show('slide', {'direction': direction}, 'fast');					
+		$('.' + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
+	 	$('.' + total[tar]).show('slide', {'direction': direction}, 'fast');					
 	}
+}
+
+function toCelsius(fah) {
+	return Math.floor(((parseFloat(fah) - 32) * 5) / 9);
 }

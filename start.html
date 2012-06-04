@@ -6,8 +6,10 @@
         <link rel="stylesheet" type="text/css" href="lib/metro-select/metro-select.css">
         <script type="text/javascript" src="lib/jquery.js"></script> 
         <script type="text/javascript" src="lib/jquery-ui.js"></script> 
+        <script type="text/javascript" src="lib/jkl-parsexml.js"></script> 
         <script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script> 
         <script type="text/javascript" src="lib/metro-select/metro-select.js"></script> 
+        <script type="text/javascript" src="js/script.js"></script>
         <script type="text/javascript">
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-25604585-1']);
@@ -69,7 +71,6 @@
             <div>
                 <span id="where"></span>
                 <span id="edit" class="option-color option">edit</span>
-                <input class="option-color" type="text" id="zip" value="95112" style="width:240px" />
             </div>
             <p id="units" class="option-color option">
             <select id="select-box">
@@ -82,12 +83,6 @@
 			</div>
 	</div>
 	<p class="option-color wrench" id="wrench">wrench</p>
-	<div class="option-color font-chooser option">
-            <select id="font-chooser">
-                <option>regular fonts</option>
-                <option>alternative fonts</option>
-			</select>
-		</div>
         <p class="option-color option colors" id="colors">colors</p>
         <p class="option-color option" id="reset">reset</p>
         <div class="picker">
@@ -108,6 +103,5 @@
                 <div id="picker-options"></div>
             </div>
         </div>
-        <script type="text/javascript" src="js/script.js"></script>
     </body>
 </html>

@@ -1,10 +1,7 @@
-@font-face {  
-    font-family: Raleway;  
-    src: url(Raleway-Thin.ttf) format("truetype");  
-} 
 body {
     font-size: 32px;
-    -webkit-font-smoothing: subpixel-antialiased, antialiased;
+    -webkit-font-smoothing: antialiased;
+    font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
 }
 a {
     text-decoration: none;
@@ -58,7 +55,6 @@ h1 {
     font-weight: normal;
     font-style: normal;
     margin: 15px;
-    margin-bottom: 20px;
 }
 h3 {
     font-size: 24px;
@@ -74,13 +70,6 @@ h3 {
     position: absolute;
     bottom: 15px;
     left: 15px;
-}
-.font-chooser {
-	cursor: pointer;
-	position: absolute;
-	bottom: 15px;
-	left: 150px;
-	width: 600px;
 }
 .colors {
     cursor: pointer;
@@ -121,9 +110,13 @@ h3 {
     display: inline-block;
     white-space: nowrap;
 	margin-left: 50px;
+	margin-bottom: 10px;
 }
 #apps {
 	width: 100%;
+}
+#where {
+    outline: none;
 }
 .external_selector {
 	overflow: auto;
@@ -143,4 +136,16 @@ h3 {
 }
 .item:last-child {
 	margin-bottom: 5px;
+}
+
+@media only screen and (max-width: 1048px) {
+	body {
+		zoom: 0.9;
+	}
+}
+
+@media only screen and (max-width: 948px) {
+	body {
+		zoom: 0.8;
+	}
 }
