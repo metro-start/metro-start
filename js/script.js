@@ -1,6 +1,7 @@
 //globals (kinda?)
 var total = ['links', 'apps', 'bookmarks'];
 var units = ['fahrenheit', 'celsius'];
+var link_page = '';
 
 $(function() {	
     //get links from localStorage and ensure they're empty	
@@ -27,10 +28,6 @@ $(function() {
 
 	for (id in links) {
 		addItem(links[id].name, links[id].url);
-	}
-
-	if(links != null && links.length >= 7) {
-		$('.add').hide();
 	}
 
 	//laod cached results for weather or set default locat
@@ -215,15 +212,15 @@ $(function() {
 		}
 	});
 
-	//attaches a remove link to all <li>
-	$('#links').delegate('.remove', 'click', function(event){
+	//attaches a remove link to all remove elements for links
+	$('.page').delegate('.remove', 'click', function(event){
 		var links = JSON.parse(localStorage.getItem('links'));
 		for(id in links) {
-			if(links[id].url == $(event.target).parent('li').children('a').attr('href')) {
+			if(links[id].url == $(event.target).parent().children('a').attr('href')) {
 				_gaq.push(['_trackEvent', 'Page Action',  'removed a link']);
 				links.splice(id, 1);
 				localStorage.setItem('links', JSON.stringify(links));
-				$(event.target).parent('li').remove();
+				$(event.target).parent().remove();
 				break;
 			}
 		}
@@ -256,8 +253,24 @@ $(function() {
 });
 
 function addItem(name, url) {
+	var page = {};
+	var internal_selector = $('#internal_selector_links');
+	var create_page = function() {
+		link_page++;
+		page = $('<div class="page" id="link_page_' + link_page + '"></div>');
+		internal_selector.append(page);
+	}
+
+	if (link_page == 0) {
+		create_page();
+	} else {
+		page = $('#link_page_' + link_page);
+		if (page.children().length >= 5) {
+			create_page();
+		}
+	}
+	page.append('<div class="item"><span class="remove option option-color">remove</span> <a href="' + url + '">' + name + '</a></div>')
     _gaq.push(['_trackEvent', 'Page Action',  'added a link']);
-    $('#links').append('<li><span class="remove option option-color">remove</span> <a href=\'' + url + '\'>' + name + '</a></li>'); 
 }
 
 /**
