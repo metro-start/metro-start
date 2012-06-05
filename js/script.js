@@ -66,6 +66,8 @@ $(function() {
 			var name = $('#url').text().toLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
 			var url = $('#url').text();
 			if(name.trim() == '') {
+				$('#url').remove();
+				$('#add').text('add');
 				return;
 			}
 			if(!url.match(/https?\:\/\//)) {
@@ -241,7 +243,6 @@ $(function() {
 	});
 
 	$('.option').hide();
-	$('input').hide();
 	$('.picker').hide();
 
 	//show the right page and load list of apps on load
@@ -332,7 +333,6 @@ function updateStyle() {
     if(localStorage.getItem('main-color')) {
         var main_color = localStorage.getItem('main-color');
         styles += 'body {color: ' + main_color + '}';
-        styles += 'input {color: ' + main_color + '}';
     }
 
     if(localStorage.getItem('options-color')) {
