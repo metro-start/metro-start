@@ -2,13 +2,9 @@
 var total = ['links', 'apps', 'bookmarks'];
 var units = ['fahrenheit', 'celsius'];
 var link_page = '';
+var wrench = false;
 
 $(function() {	
-    //get links from localStorage and ensure they're empty	
-    var links = localStorage.getItem('links');
-    if(links) links = JSON.parse(links);
-    else links = new Array();
-
 	if(!localStorage.getItem('hide_weather')) {
 		localStorage.setItem('hide_weather', false);
 	}
@@ -18,18 +14,7 @@ $(function() {
 	} else {
 		localStorage.setItem('active', 1);
 	}
-	//load saved links or load default material
-    var list = new Array();
-	if(links == null || links.length == 0) {
-		addItem('use the wrench to get started. . . ', '');
-		list.push({'name': 'use the wrench to get started. . . ', 'url': ''});
-		localStorage.setItem('links', JSON.stringify(list));
-	}
-
-	for (id in links) {
-		addItem(links[id].name, links[id].url);
-	}
-
+	
 	//laod cached results for weather or set default locat
 	$('#where').html(localStorage.getItem('where'));
 	$('#temp').html(localStorage.getItem('temp'));
@@ -49,7 +34,9 @@ $(function() {
 	//show all options on the page.
 	$('#wrench').click(function(){		
 		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
-		$('.option').toggle('fast');
+		if (wrench) $('.option').hide();
+		else $('.option').show();
+		wrench = !wrench;
 		
 		//handle guys that have states that can be activated AFTER wrench.
 		$('.picker').hide('fast');
@@ -220,6 +207,9 @@ $(function() {
 				links.splice(id, 1);
 				localStorage.setItem('links', JSON.stringify(links));
 				$(event.target).parent().remove();
+				$('#internal_selector_links').empty();
+				loadLinks();
+				//reflow($('#internal_selector_links'));
 				break;
 			}
 		}
@@ -227,11 +217,12 @@ $(function() {
 
 	//attaches a remove link to all remove elements in apps
 	$('#internal_selector').on('click', '.remove', function(event){
-		var links = JSON.parse(localStorage.getItem('links'));
 		chrome.management.uninstall($(this).prop('id'));
 		$(this).parent().remove();
+		$('#internal_selector').empty();
+		loadApps(true);
+		//reflow($('#internal_selector'));
 	});
-
 
 	//attach the menu selectbox
 	$('#menu').metroSelect({
@@ -249,7 +240,8 @@ $(function() {
 	});
 
 	//show the right page and load list of apps on load
-	loadApps();
+	loadLinks();
+	loadApps(false);
 	loadBookmarks();
 	updateWeather(false);
 	updateStyle();	
@@ -258,7 +250,8 @@ $(function() {
 	$('.picker').hide();
 });
 
-function addItem(name, url) {
+
+var addItem = function(name, url) {
 	var page = {};
 	var internal_selector = $('#internal_selector_links');
 	var create_page = function() {
@@ -282,7 +275,7 @@ function addItem(name, url) {
   Update the weather from yql. 
   force: Bypasses the cache and force hits the server.
   */
-function updateWeather(force) {
+var updateWeather = function(force) {
     var unit = localStorage.getItem('unit')[0];
     var locat = localStorage.getItem('locat');
     var time = localStorage.getItem('time');
@@ -316,7 +309,7 @@ function updateWeather(force) {
 /**
   Check for saved theme and load it
   */
-function updateStyle() {
+var updateStyle = function() {
     var styles = '';
 	if(localStorage.getItem('hide_weather') == 'true') {
 		$('#hide_weather').text('show weather');
@@ -351,10 +344,30 @@ function updateStyle() {
     $('body').append('<style type="text/css">' + styles + '</style>');
 }
 
+var loadLinks = function() {
+	link_page = 0;
+    //get links from localStorage and ensure they're empty	
+    var links = localStorage.getItem('links');
+    if(links) links = JSON.parse(links);
+    else links = new Array();
+
+	//load saved links or load default material
+    var list = new Array();
+	if(links == null || links.length == 0) {
+		addItem('use the wrench to get started. . . ', '');
+		list.push({'name': 'use the wrench to get started. . . ', 'url': ''});
+		localStorage.setItem('links', JSON.stringify(list));
+	}
+
+	for (id in links) {
+		addItem(links[id].name, links[id].url);
+	}
+}
+
 /**
   Get list of apps from chrome and filter out extensions
   */
-var loadApps = function() {
+var loadApps = function(reflow) {
     chrome.management.getAll(function(res){
         var index = 0;
         var internal_selector = $('#internal_selector');
@@ -363,9 +376,8 @@ var loadApps = function() {
         res = res.filter(function(item) { return item.isApp; });
         res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
         for(i in res) {
-			console.log(res[i]);
             var item = $('<div class="item"><span class="remove option option-color" id="' + res[i].id + '">unistall</span> <a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
-			item.children('.remove').hide();
+			if (!reflow) item.children('.remove').hide();
             page.append(item);
             if((parseInt(i) + 1) % 5 == 0) {
                 index++;
