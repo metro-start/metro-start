@@ -51,14 +51,53 @@ $(function() {
 		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
 		$('.picker').hide('fast');
 		$('.option').toggle('fast');
+		
+		//handle guys that have states that can be activated AFTER wrench.
 		$('#reset').hide();
+		$('#where').prop('contentEditable', 'false');
+		if($('#url').length) $('#url').remove();
+
 	});
 
 	$('#add').click(function(){
 		_gaq.push(['_trackEvent', 'Page Action', 'add clicked']);
-		$('#add').hide('fast');
-		$('#url').show('fast');
-		$('#url').focus();
+		var save_link = function() {
+			var list = JSON.parse(localStorage.getItem('links'));
+			var name = $('#url').text().toLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
+			var url = $('#url').text();
+			if(name.trim() == '') {
+				return;
+			}
+			if(!url.match(/https?\:\/\//)) {
+				url = 'http://' + url;
+			}
+			if (list == null) {
+				list = new Array();
+			}
+			list.push({'name': name, 'url': url});
+			localStorage.setItem('links', JSON.stringify(list));
+
+			$('#url').remove();
+			$('#add').text('add');
+			addItem(name, url);
+		};
+		if ($('#url').length) {
+			save_link();
+		} else {
+			$('#add').text('done');
+			var element = $('<span class="url" id="url" contentEditable="true">http://</span>');
+			element.hide();
+			$(this).parent().append(element);
+			element.on('keydown', function(e) {
+				if(e.keyCode == 13) {
+					save_link();
+					return false;
+				}
+			});
+			element.show('fast');
+			element.focus();
+			document.execCommand('selectAll',false,null);
+		}
 	});
 
 	//handle clicking the edit link in weather section
@@ -86,7 +125,7 @@ $(function() {
 			$('#where').prop('contentEditable', 'true');
 			$('#where').focus();
 			document.execCommand('selectAll',false,null);
-			$('#where').keydown(function(e) {
+			$('#where').on('keydown', function(e) {
 				if(event.keyCode == 13){
 					e.preventDefault();
 					done();
@@ -172,48 +211,8 @@ $(function() {
 		updateStyle();
 	});
 
-	//when you leave the url field
-	$('#url').blur(function() {
-		$('#add').show();
-		$('#url').hide();
-	});
-
-	//when you leave the locat field
-	$('#locat').blur(function() {
-		$('#edit').show();
-		$('#where').show();
-		$('#locat').hide();
-	});
-
-	//validate the url when the person hits enter
-	$('#url').keyup(function(event){
-		if(event.keyCode == 13){
-			var list = JSON.parse(localStorage.getItem('links'));
-			var name = $('#url').val().toLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
-			var url = $('#url').val();
-			if(url.trim() == '') {
-				return;
-			}
-			if(!url.match(/^([a-z]([a-z]|\d|\+|-|\.)*):(\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?((\[(|(v[\da-f]{1,}\.(([a-z]|\d|-|\.|_|~)|[!\$&'\(\)\*\+,;=]|:)+))\])|((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=])*)(:\d*)?)(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*|(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)){0})(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i)) {
-				//handle invalid url
-			}			
-			if(!url.match(/https?\:\/\//)) {
-		url = 'http://' + url;
-		}
-		if (list == null) {
-			list = new Array();
-		}
-		list.push({'name': name, 'url': url});
-		localStorage.setItem('links', JSON.stringify(list));
-
-		$('#url').blur();
-		addItem(name, url);
-		if(list.length >= 7) $('.add').hide();
-		}
-	});
-
 	//attaches a remove link to all remove elements for links
-	$('.page').delegate('.remove', 'click', function(event){
+	$('#internal_selector_links').on('click', '.remove', function(event){
 		var links = JSON.parse(localStorage.getItem('links'));
 		for(id in links) {
 			if(links[id].url == $(event.target).parent().children('a').attr('href')) {
@@ -270,7 +269,6 @@ function addItem(name, url) {
 		}
 	}
 	page.append('<div class="item"><span class="remove option option-color">remove</span> <a href="' + url + '">' + name + '</a></div>')
-    _gaq.push(['_trackEvent', 'Page Action',  'added a link']);
 }
 
 /**

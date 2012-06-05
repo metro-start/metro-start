@@ -7,9 +7,13 @@ a {
     text-decoration: none;
     color: inherit;
 }
-.add {
-    list-style: none;
-    margin-left: 50px;
+#url {
+	margin-left: 35px;
+	min-width: 450px;
+	background-color: white;
+	color: red;
+	font-style: italic;
+	outline: none;
 }
 .item, #links li {
 	cursor: pointer;
@@ -40,8 +44,8 @@ input {
     border: solid 1px white;
     width: 450px;
 }
-.add {
-    width: 62px;
+#add {
+    margin-left: 50px;
     cursor: pointer;
 }
 .remove, #edit {
@@ -112,7 +116,10 @@ h3 {
 #apps {
 	width: 100%;
 }
-#where {
+#where[contenteditable=true] {
+	background-color: white;
+	color: red;
+	font-style: italic;
     outline: none;
 }
 .external_selector {
