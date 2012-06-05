@@ -49,10 +49,10 @@ $(function() {
 	//show all options on the page.
 	$('#wrench').click(function(){		
 		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
-		$('.picker').hide('fast');
 		$('.option').toggle('fast');
 		
 		//handle guys that have states that can be activated AFTER wrench.
+		$('.picker').hide('fast');
 		$('#reset').hide();
 		$('#where').prop('contentEditable', 'false');
 		if($('#url').length) $('#url').remove();
@@ -137,8 +137,6 @@ $(function() {
 		} else {
 			done();
 		}
-		//$('#where').toggle('fast');
-	//	$('#locat').toggle('fast');
 	});
 
 	//attach a picker for the background color and also set its default if it hasn't been changed yet
@@ -227,6 +225,14 @@ $(function() {
 		}
 	});
 
+	//attaches a remove link to all remove elements in apps
+	$('#internal_selector').on('click', '.remove', function(event){
+		var links = JSON.parse(localStorage.getItem('links'));
+		chrome.management.uninstall($(this).prop('id'));
+		$(this).parent().remove();
+	});
+
+
 	//attach the menu selectbox
 	$('#menu').metroSelect({
 		'onchange': function() {
@@ -242,14 +248,14 @@ $(function() {
 		}
 	});
 
-	$('.option').hide();
-	$('.picker').hide();
-
 	//show the right page and load list of apps on load
 	loadApps();
 	loadBookmarks();
 	updateWeather(false);
 	updateStyle();	
+	
+	$('.option').hide();
+	$('.picker').hide();
 });
 
 function addItem(name, url) {
@@ -357,7 +363,9 @@ var loadApps = function() {
         res = res.filter(function(item) { return item.isApp; });
         res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
         for(i in res) {
-            var item = $('<div class="item"><a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
+			console.log(res[i]);
+            var item = $('<div class="item"><span class="remove option option-color" id="' + res[i].id + '">unistall</span> <a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
+			item.children('.remove').hide();
             page.append(item);
             if((parseInt(i) + 1) % 5 == 0) {
                 index++;
