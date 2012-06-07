@@ -285,24 +285,25 @@ var updateWeather = function(force) {
         localStorage.setItem('time', cTime.getTime() + 3600000);
 		var url = 'http://www.google.com/ig/api?weather=' + locat;
 		var xml = new JKL.ParseXML(url);
-		var data = xml.parse();
+		xml.async(function (data) {
+			if (data.xml_api_reply && typeof(data.xml_api_reply) === 'object') {
+				var weather = data.xml_api_reply.weather;
+				var city = weather.forecast_information.city.data.toLowerCase();
+				localStorage.setItem('where', city);
+				$('#where').html(city);
 
-		if (data.xml_api_reply && typeof(data.xml_api_reply) === 'object') {
-			var weather = data.xml_api_reply.weather;
-			var city = weather.forecast_information.city.data.toLowerCase();
-			localStorage.setItem('where', city);
-			$('#where').html(city);
-			
-			if (unit == 'f') {
-				localStorage.setItem('temp', weather.current_conditions.temp_f.data + '<span class="option-color">&deg;' + unit + '</span> / ' + weather.forecast_conditions[0].high.data + ' <span class="option-color">hi</span> / ' + weather.forecast_conditions[0].low.data + ' <span class="option-color">lo</span>');
-			} else {
-				localStorage.setItem('temp', weather.current_conditions.temp_c.data + '<span class="option-color">&deg;' + unit + '</span> / ' + toCelsius(weather.forecast_conditions[0].high.data) + ' <span class="option-color">hi</span> / ' + toCelsius(weather.forecast_conditions[0].low.data) + ' <span class="option-color">lo</span>');
+				if (unit == 'f') {
+					localStorage.setItem('temp', weather.current_conditions.temp_f.data + '<span class="option-color">&deg;' + unit + '</span> / ' + weather.forecast_conditions[0].high.data + ' <span class="option-color">hi</span> / ' + weather.forecast_conditions[0].low.data + ' <span class="option-color">lo</span>');
+				} else {
+					localStorage.setItem('temp', weather.current_conditions.temp_c.data + '<span class="option-color">&deg;' + unit + '</span> / ' + toCelsius(weather.forecast_conditions[0].high.data) + ' <span class="option-color">hi</span> / ' + toCelsius(weather.forecast_conditions[0].low.data) + ' <span class="option-color">lo</span>');
+				}
+
+				$('#temp').html(localStorage.getItem('temp'));
+				localStorage.setItem('condition', weather.current_conditions.condition.data.toLowerCase());
+				$('#condition').html(weather.current_conditions.condition.data.toLowerCase());
 			}
-
-			$('#temp').html(localStorage.getItem('temp'));
-			localStorage.setItem('condition', weather.current_conditions.condition.data.toLowerCase());
-			$('#condition').html(weather.current_conditions.condition.data.toLowerCase());
-		}
+		});
+		xml.parse();
 	}
 }
 
