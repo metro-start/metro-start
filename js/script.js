@@ -34,8 +34,8 @@ $(function() {
 	//show all options on the page.
 	$('#wrench').click(function(){		
 		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
-		if (wrench) $('.option').hide();
-		else $('.option').show();
+		if (wrench) $('.option').hide('fast');
+		else $('.option').show('fast');
 		wrench = !wrench;
 		
 		//handle guys that have states that can be activated AFTER wrench.
