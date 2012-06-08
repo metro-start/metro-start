@@ -171,15 +171,15 @@ $(function() {
 	}
 
 	//show the color pickers
-	$('#colors').click(function(){
-		_gaq.push(['_trackEvent', 'Page Action',  'colors clicked']);
+	$('#theme').click(function(){
+		_gaq.push(['_trackEvent', 'Page Action',  'theme clicked']);
 		$('.picker').toggle('fast');
 		$('#reset').toggle('fast');
 	});
 
 	//reset all the colors to default.
 	$('#reset').click(function(){
-		_gaq.push(['_trackEvent', 'Page Action',  'colors reset']);
+		_gaq.push(['_trackEvent', 'Page Action',  'theme reset']);
 
 		localStorage.setItem('options-color', '#FF0000');	
 		$.farbtastic('#picker-options').setColor('#FF0000');
@@ -377,7 +377,7 @@ var loadApps = function(reflow) {
         res = res.filter(function(item) { return item.isApp; });
         res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
         for(i in res) {
-            var item = $('<div class="item"><span class="remove option option-color" id="' + res[i].id + '">unistall</span> <a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
+            var item = $('<div class="item"><span class="remove option option-color" id="' + res[i].id + '">uninstall</span> <a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
 			if (!reflow) item.children('.remove').hide();
             page.append(item);
             if((parseInt(i) + 1) % 5 == 0) {
