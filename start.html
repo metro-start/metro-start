@@ -1,109 +1,114 @@
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="css/reset.css">	
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <link rel="stylesheet" type="text/css" href="lib/farbtastic/farbtastic.css">
-        <link rel="stylesheet" type="text/css" href="lib/metro-select/metro-select.css">
-        <script type="text/javascript" src="lib/jquery.js"></script> 
-        <script type="text/javascript" src="lib/jquery-ui.js"></script> 
-        <script type="text/javascript" src="lib/jkl-parsexml.js"></script> 
-        <script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script> 
-        <script type="text/javascript" src="lib/metro-select/metro-select.js"></script> 
-        <script type="text/javascript" src="js/script.js"></script>
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-25604585-1']);
-            _gaq.push(['_trackPageview']);
-            (function() {
-             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-             ga.src = 'https://ssl.google-analytics.com/ga.js';
-             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-             })();
-        </script>
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-25604585-1']);
-            _gaq.push(['_trackPageview']);
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/reset.css">	
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="lib/farbtastic/farbtastic.css">
+		<link rel="stylesheet" type="text/css" href="lib/metro-select/metro-select.css">
+		<script type="text/javascript" src="lib/jquery.js"></script> 
+		<script type="text/javascript" src="lib/jquery-ui.js"></script> 
+		<script type="text/javascript" src="lib/jkl-parsexml.js"></script> 
+		<script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script> 
+		<script type="text/javascript" src="lib/metro-select/metro-select.js"></script> 
+		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-25604585-1']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+			 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			 ga.src = 'https://ssl.google-analytics.com/ga.js';
+			 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			 })();
+</script>
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-25604585-1']);
+	_gaq.push(['_trackPageview']);
 
-            (function() {
-             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-             ga.src = 'https://ssl.google-analytics.com/ga.js';
-             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-             })();
+	(function() {
+	 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	 ga.src = 'https://ssl.google-analytics.com/ga.js';
+	 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	 })();
 
-        </script>
-        <title>start</title>
-    </head>
-    <body>
-        <h1 class="title-color">start here . . .</h1>
-        <div>
-            <select id="menu" class="option-color menu">
-                <option>saved links</option>
-                <option>installed apps</option>
-                <option>bookmarks</option>
-            </select>
-        </div>
+</script>
+<title>start</title>
+	</head>
+	<body>
+		<h1 class="title-color">start here . . .</h1>
+		<div>
+			<select id="menu" class="option-color menu">
+				<option>saved links</option>
+				<option>installed apps</option>
+				<option>bookmarks</option>
+			</select>
+		</div>
 		<div class="links collection">
 			<div id="links">
 				<div class="external_selector" id="external_selector_links">
 					<div class="internal_selector" id="internal_selector_links"></div>
 				</div>
 				<div class="add">
-				<span id="add" class="option-color option">add</span>
+					<span id="add" class="option-color option">add</span>
 				</div>
 			</div>
-        </div>
-        <div class="apps collection">
-            <div id="apps">
-                <div class="external_selector" id="external_selector">
-                    <div class="internal_selector" id="internal_selector"></div>
-                </div>
-            </div>
-        </div>
-        <div class="bookmarks collection">
-            <div id="bookmarks">
-                <div class="external_selector" id="external_selector_book">
-                    <div class="internal_selector" id="internal_selector_book"></div>
-                </div>
-            </div>
-        </div>
-		<div class="weather">
-		<div id="hide_weather" class="option-color option">hide weather</div>
-        <div id="weather">
-            <div>
-                <span id="where"></span>
-                <span id="edit" class="option-color option">edit</span>
-            </div>
-            <p id="units" class="option-color option">
-            <select id="select-box">
-                <option>fahrenheit</option>
-                <option>celsius</option>
-            </select>
-            <p>
-            <p id="temp"></p>
-			<p id="condition"></p>
+		</div>
+		<div class="apps collection">
+			<div id="apps">
+				<div class="external_selector" id="external_selector">
+					<div class="internal_selector" id="internal_selector"></div>
+				</div>
 			</div>
-	</div>
-	<p class="option-color wrench" id="wrench">wrench</p>
-        <p class="option-color option theme" id="theme">theme</p>
-        <p class="option-color option" id="reset">reset</p>
-        <div class="picker">
-            <div>
-                <span class="picker-text option-color option">background</span>
-                <div id="picker-background"></div>
-            </div>
-            <div>
-                <span class="picker-text option-color option">title</span>
-                <div id="picker-title"></div>
-            </div>
-            <div>
-                <span class="picker-text option-color option">main</span>
-                <div id="picker-main"></div>
-            </div>
-            <div>
-                <span class="picker-text option-color option">options</span>
-                <div id="picker-options"></div>
-            </div>
-        </div>
-    </body>
+		</div>
+		<div class="bookmarks collection">
+			<div id="bookmarks">
+				<div class="external_selector" id="external_selector_book">
+					<div class="internal_selector" id="internal_selector_book"></div>
+				</div>
+			</div>
+		</div>
+		<div class="weather">
+			<div id="hide_weather" class="option-color option">hide weather</div>
+			<div id="weather">
+				<div>
+					<span id="where"></span>
+					<span id="edit" class="option-color option">edit</span>
+				</div>
+				<p id="units" class="option-color option">
+				<select id="select-box">
+					<option>fahrenheit</option>
+					<option>celsius</option>
+				</select>
+				<p>
+				<p id="temp"></p>
+				<p id="condition"></p>
+			</div>
+		</div>
+		<p class="option-color wrench" id="wrench">wrench</p>
+		<div class="themes">
+			<p class="option-theme option-color option" id="reset">reset</p>
+			<p class="option-theme option-color option" id="load-theme">load theme</p>
+			<p class="option-theme option-color option" id="save-theme">save theme</p>
+			<p class="option-color option theme" id="themes">themes</p>
+		</div>
+		<div class="picker">
+			<span class="overlay"></span>
+			<div>
+				<span class="picker-text option-color option">background</span>
+				<div id="picker-background"></div>
+			</div>
+			<div>
+				<span class="picker-text option-color option">title</span>
+				<div id="picker-title"></div>
+			</div>
+			<div>
+				<span class="picker-text option-color option">main</span>
+				<div id="picker-main"></div>
+			</div>
+			<div>
+				<span class="picker-text option-color option">options</span>
+				<div id="picker-options"></div>
+			</div>
+		</div>
+	</body>
 </html>

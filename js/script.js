@@ -5,6 +5,7 @@ var link_page = '';
 var wrench = false;
 
 $(function() {	
+	//set defaults
 	if(!localStorage.getItem('hide_weather')) {
 		localStorage.setItem('hide_weather', false);
 	}
@@ -15,12 +16,6 @@ $(function() {
 		localStorage.setItem('active', 1);
 	}
 	
-	//laod cached results for weather or set default locat
-	$('#where').html(localStorage.getItem('where'));
-	$('#temp').html(localStorage.getItem('temp'));
-	$('#condition').html(localStorage.getItem('condition'));
-	$('#locat').val(localStorage.getItem('locat'));
-
 	if(!localStorage.getItem('locat')) {
 		localStorage.setItem('locat', '95123'); 
 	}
@@ -28,7 +23,18 @@ $(function() {
 	if(!localStorage.getItem('unit')) {
 		localStorage.setItem('unit', 'fahrenheit');
 	}
+
+	if(!localStorage.getItem('themes')) {
+		localStorage.setItem('themes', []);
+	}
+
 	$('#select-box').val(localStorage.getItem('unit'));
+	
+	//laod cached results for weather or set default locat
+	$('#where').html(localStorage.getItem('where'));
+	$('#temp').html(localStorage.getItem('temp'));
+	$('#condition').html(localStorage.getItem('condition'));
+	$('#locat').val(localStorage.getItem('locat'));
 
 	//Attaching event handlers
 	//show all options on the page.
@@ -40,7 +46,7 @@ $(function() {
 		
 		//handle guys that have states that can be activated AFTER wrench.
 		$('.picker').hide('fast');
-		$('#reset').hide();
+		$('.option-theme').hide();
 		$('#where').prop('contentEditable', 'false');
 		if($('#url').length) $('#url').remove();
 
@@ -70,6 +76,7 @@ $(function() {
 			$('#add').text('add');
 			addItem(name, url);
 		};
+
 		if ($('#url').length) {
 			save_link();
 		} else {
@@ -171,10 +178,10 @@ $(function() {
 	}
 
 	//show the color pickers
-	$('#theme').click(function(){
+	$('#themes').click(function(){
 		_gaq.push(['_trackEvent', 'Page Action',  'theme clicked']);
-		$('.picker').toggle('fast');
-		$('#reset').toggle('fast');
+		$('.picker').fadeToggle('fast');
+		$('.option-theme').fadeToggle('fast');
 	});
 
 	//reset all the colors to default.
@@ -321,7 +328,8 @@ var updateStyle = function() {
 	}
     if(localStorage.getItem('background-color')) {
         var background_color = localStorage.getItem('background-color');
-        styles += '.picker { background-color: ' + background_color+ '}';
+        //styles += '.picker { background-color: ' + background_color+ '}';
+        styles += '.overlay { background-color: ' + background_color+ '}';
         styles += 'body {background-color: ' + background_color + '}';
         styles += '::-webkit-scrollbar { background: ' + background_color + '}';
     }
