@@ -63,26 +63,24 @@ h3 {
     bottom: 15px;
     left: 15px;
 }
-.themes {
+.option {
+	display: inline-block;
+}
+.colors {
     position: absolute;
     bottom: 15px;
     right: 15px;
 }
-.option-theme, .theme {
+.color-button {
 	display: inline;
     cursor: pointer;
-	margin-right: 50px;
-}
-.option {
-	display: inline-block;
-}
-#themes {
-	margin-right: 0px;
+	margin-left: 32px;
 }
 .picker {
     position: absolute;
-    bottom: 75px;
+    bottom: 50px;
     right: 0px;
+	padding-left: 10px;
 }
 
 .picker > div {
@@ -94,6 +92,12 @@ h3 {
     text-align: center;
     display: block;
 	position: relative;
+}
+.show-color {
+	outline: none;
+	font-size: 16px;
+	font-style: italic;
+	vertical-align: middle;
 }
 .page {
     display: inline-block;

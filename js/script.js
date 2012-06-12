@@ -6,6 +6,12 @@ var wrench = false;
 
 $(function() {	
 	//set defaults
+	var defaultColors = {
+		'options-color': '#ff0000',
+		'main-color': '#ffffff',
+		'title-color': '#4a4a4a',
+		'background-color': '#000000'
+	};
 	if(!localStorage.getItem('hide_weather')) {
 		localStorage.setItem('hide_weather', false);
 	}
@@ -24,8 +30,8 @@ $(function() {
 		localStorage.setItem('unit', 'fahrenheit');
 	}
 
-	if(!localStorage.getItem('themes')) {
-		localStorage.setItem('themes', []);
+	if(!localStorage.getItem('colors')) {
+		localStorage.setItem('colors', []);
 	}
 
 	$('#select-box').val(localStorage.getItem('unit'));
@@ -45,8 +51,7 @@ $(function() {
 		wrench = !wrench;
 		
 		//handle guys that have states that can be activated AFTER wrench.
-		$('.picker').hide('fast');
-		$('.option-theme').hide();
+		$('.picker').fadeOut('fast');
 		$('#where').prop('contentEditable', 'false');
 		if($('#url').length) $('#url').remove();
 
@@ -134,74 +139,42 @@ $(function() {
 	});
 
 	//attach a picker for the background color and also set its default if it hasn't been changed yet
-	$('#picker-background').farbtastic(function(color) {
-		localStorage.setItem('background-color', color);
-		updateStyle();
-	});
-	if(localStorage.getItem('background-color')) {
-		$.farbtastic('#picker-background').setColor(localStorage.getItem('background-color'));
-	} else {
-		$.farbtastic('#picker-background').setColor('#000000')
-	}
+	$.each(defaultColors, function(key, value) {
+		$('#' + key).farbtastic(function(color) {
+			localStorage.setItem(key, color);
+			$('#' + key + '-display').text(color);
+			updateStyle();
+		});
 
-	//attach a picker for the title color and also set its default if it hasn't been changed yet
-	$('#picker-title').farbtastic(function(color) {
-		localStorage.setItem('title-color', color);
-		updateStyle();
-	});
-	if(localStorage.getItem('title-color')) {
-		$.farbtastic('#picker-title').setColor(localStorage.getItem('title-color'));
-	} else {
-		$.farbtastic('#picker-title').setColor('#4A4A4A')
-	}
+		$('#' + key + '-display').on('keydown', function(e) {
+			if(e.keyCode == 13) {
+				$.farbtastic('#' + key).setColor($(this).text());
+				return false;
+			}
+		});
 
-	//attach a picker for the main color and also set its default if it hasn't been changed yet
-	$('#picker-main').farbtastic(function(color) {
-		localStorage.setItem('main-color', color);
-		updateStyle();
-	});
-	if(localStorage.getItem('main-color')) {
-		$.farbtastic('#picker-main').setColor(localStorage.getItem('main-color'));
-	} else {
-		$.farbtastic('#picker-main').setColor('#FFFFFF')
-	}
+		$('#' + key + '-display').on('blur', function(e) {
+			$.farbtastic('#' + key).setColor($(this).text());
+		});
 
-	//attach a picker for the options color and also set its default if it hasn't been changed yet
-	$('#picker-options').farbtastic(function(color) {
-		localStorage.setItem('options-color', color);
-		updateStyle();
+		if(localStorage.getItem(key)) {
+			$.farbtastic('#' + key).setColor(localStorage.getItem(key));
+		} else {
+			$.farbtastic('#' + key).setColor(value);
+		}
 	});
-	if(localStorage.getItem('options-color')) {
-		$.farbtastic('#picker-options').setColor(localStorage.getItem('options-color'));
-	} else {
-		$.farbtastic('#picker-options').setColor('#FF0000');
-	}
 
-	//show the color pickers
-	$('#themes').click(function(){
-		_gaq.push(['_trackEvent', 'Page Action',  'theme clicked']);
+	$('#edit-colors').click(function() {
 		$('.picker').fadeToggle('fast');
-		$('.option-theme').fadeToggle('fast');
 	});
 
 	//reset all the colors to default.
-	$('#reset').click(function(){
-		_gaq.push(['_trackEvent', 'Page Action',  'theme reset']);
-
-		localStorage.setItem('options-color', '#FF0000');	
-		$.farbtastic('#picker-options').setColor('#FF0000');
-
-		localStorage.setItem('main-color', '#FFFFFF');	
-		$.farbtastic('#picker-main').setColor('#FFFFFF');
-
-		localStorage.setItem('title-color', '#4A4A4A');	
-		$.farbtastic('#picker-title').setColor('#4A4A4A');
-
-		localStorage.setItem('background-color', '#000000');	
-		$.farbtastic('#picker-background').setColor('#000000');
-	
-		localStorage.setItem('font', 0)
-
+	$('#reset-colors').click(function(){
+		_gaq.push(['_trackEvent', 'Page Action',  'colors reset']);
+		$.each(defaultColors, function(key, value) {
+			localStorage.setItem(key, value);	
+			$.farbtastic('#' + key).setColor(value);
+		});
 		updateStyle();
 	});
 
@@ -275,7 +248,7 @@ var addItem = function(name, url) {
 			create_page();
 		}
 	}
-	page.append('<div class="item"><span class="remove option option-color">remove</span> <a href="' + url + '">' + name + '</a></div>')
+	page.append('<div class="item"><span class="remove option options-color">remove</span> <a href="' + url + '">' + name + '</a></div>')
 }
 
 /**
@@ -300,9 +273,9 @@ var updateWeather = function(force) {
 				$('#where').html(city);
 
 				if (unit == 'f') {
-					localStorage.setItem('temp', weather.current_conditions.temp_f.data + '<span class="option-color">&deg;' + unit + '</span> / ' + weather.forecast_conditions[0].high.data + ' <span class="option-color">hi</span> / ' + weather.forecast_conditions[0].low.data + ' <span class="option-color">lo</span>');
+					localStorage.setItem('temp', weather.current_conditions.temp_f.data + '<span class="options-color">&deg;' + unit + '</span> / ' + weather.forecast_conditions[0].high.data + ' <span class="options-color">hi</span> / ' + weather.forecast_conditions[0].low.data + ' <span class="options-color">lo</span>');
 				} else {
-					localStorage.setItem('temp', weather.current_conditions.temp_c.data + '<span class="option-color">&deg;' + unit + '</span> / ' + toCelsius(weather.forecast_conditions[0].high.data) + ' <span class="option-color">hi</span> / ' + toCelsius(weather.forecast_conditions[0].low.data) + ' <span class="option-color">lo</span>');
+					localStorage.setItem('temp', weather.current_conditions.temp_c.data + '<span class="options-color">&deg;' + unit + '</span> / ' + toCelsius(weather.forecast_conditions[0].high.data) + ' <span class="options-color">hi</span> / ' + toCelsius(weather.forecast_conditions[0].low.data) + ' <span class="options-color">lo</span>');
 				}
 
 				$('#temp').html(localStorage.getItem('temp'));
@@ -315,7 +288,7 @@ var updateWeather = function(force) {
 }
 
 /**
-  Check for saved theme and load it
+  Check for saved colors and load it
   */
 var updateStyle = function() {
     var styles = '';
@@ -345,7 +318,7 @@ var updateStyle = function() {
 
     if(localStorage.getItem('options-color')) {
         var options_color = localStorage.getItem('options-color');
-        styles += '.option-color {color: ' + options_color + '}';
+        styles += '.options-color {color: ' + options_color + '}';
         styles += '::-webkit-scrollbar-thumb {background: ' + options_color + '}';
     }	
 
@@ -385,7 +358,7 @@ var loadApps = function(reflow) {
         res = res.filter(function(item) { return item.isApp; });
         res.unshift({'name': 'Chrome Webstore', 'appLaunchUrl': 'https://chrome.google.com/webstore'})
         for(i in res) {
-            var item = $('<div class="item"><span class="remove option option-color" id="' + res[i].id + '">uninstall</span> <a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
+            var item = $('<div class="item"><span class="remove option options-color" id="' + res[i].id + '">uninstall</span> <a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
 			if (!reflow) item.children('.remove').hide();
             page.append(item);
             if((parseInt(i) + 1) % 5 == 0) {
@@ -422,7 +395,7 @@ var buildListOfBookmarks = function(owner, node) {
 
 	//If the current node has any children, we need to add it as a directory.
 	if(node.children) {
-		var item = $('<div class="item" id="bookmark_' + node.id + '">' + ellipses(node.title) + '<span class="option-color">/</span></div>');
+		var item = $('<div class="item" id="bookmark_' + node.id + '">' + ellipses(node.title) + '<span class="options-color">/</span></div>');
 		page.append(item);
 		item.on('click', function() {
 			var page_id = $(this).prop('id').replace('bookmark_', '');

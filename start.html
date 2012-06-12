@@ -37,7 +37,7 @@
 	<body>
 		<h1 class="title-color">start here . . .</h1>
 		<div>
-			<select id="menu" class="option-color menu">
+			<select id="menu" class="options-color menu">
 				<option>saved links</option>
 				<option>installed apps</option>
 				<option>bookmarks</option>
@@ -49,7 +49,7 @@
 					<div class="internal_selector" id="internal_selector_links"></div>
 				</div>
 				<div class="add">
-					<span id="add" class="option-color option">add</span>
+					<span id="add" class="options-color option">add</span>
 				</div>
 			</div>
 		</div>
@@ -68,13 +68,13 @@
 			</div>
 		</div>
 		<div class="weather">
-			<div id="hide_weather" class="option-color option">hide weather</div>
+			<div id="hide_weather" class="options-color option">hide weather</div>
 			<div id="weather">
 				<div>
 					<span id="where"></span>
-					<span id="edit" class="option-color option">edit</span>
+					<span id="edit" class="options-color option">edit</span>
 				</div>
-				<p id="units" class="option-color option">
+				<p id="units" class="options-color option">
 				<select id="select-box">
 					<option>fahrenheit</option>
 					<option>celsius</option>
@@ -84,30 +84,37 @@
 				<p id="condition"></p>
 			</div>
 		</div>
-		<p class="option-color wrench" id="wrench">wrench</p>
-		<div class="themes">
-			<p class="option-theme option-color option" id="reset">reset</p>
-			<p class="option-theme option-color option" id="load-theme">load theme</p>
-			<p class="option-theme option-color option" id="save-theme">save theme</p>
-			<p class="option-color option theme" id="themes">themes</p>
+		<p class="options-color wrench" id="wrench">wrench</p>
+		<div class="colors">
+			<p class="color-button options-color option" id="reset-colors">reset colors</p>
+			<p class="color-button options-color option" id="color-gallery">color gallery</p>
+			<p class="color-button options-color option" id="edit-colors">edit colors</p>
 		</div>
 		<div class="picker">
 			<span class="overlay"></span>
 			<div>
-				<span class="picker-text option-color option">background</span>
-				<div id="picker-background"></div>
+				<span class="picker-text options-color option">background
+					<span class="show-color" id="background-color-display" contenteditable="true"></span>
+				</span>
+				<div id="background-color"></div>
 			</div>
 			<div>
-				<span class="picker-text option-color option">title</span>
-				<div id="picker-title"></div>
+				<span class="picker-text options-color option">title
+					<span class="show-color" id="title-color-display" contenteditable="true"></span>
+				</span>
+				<div id="title-color"></div>
 			</div>
 			<div>
-				<span class="picker-text option-color option">main</span>
-				<div id="picker-main"></div>
+				<span class="picker-text options-color option">main
+					<span class="show-color" id="main-color-display" contenteditable="true"></span>
+				</span>
+				<div id="main-color"></div>
 			</div>
 			<div>
-				<span class="picker-text option-color option">options</span>
-				<div id="picker-options"></div>
+				<span class="picker-text options-color option">options
+					<span class="show-color" id="options-color-display" contenteditable="true"></span>
+				</span>
+				<div id="options-color"></div>
 			</div>
 		</div>
 	</body>
