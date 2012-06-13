@@ -12,6 +12,7 @@ $(function() {
 		'title-color': '#4a4a4a',
 		'background-color': '#000000'
 	};
+
 	if(!localStorage.getItem('hide_weather')) {
 		localStorage.setItem('hide_weather', false);
 	}
@@ -168,6 +169,11 @@ $(function() {
 		$('.picker').fadeToggle('fast');
 	});
 
+	$('#color-gallery-button').click(function() {
+		$('.picker:visible').fadeOut('fast');
+		$('#color-gallery').toggle();
+	});
+
 	//reset all the colors to default.
 	$('#reset-colors').click(function(){
 		_gaq.push(['_trackEvent', 'Page Action',  'colors reset']);
@@ -228,6 +234,7 @@ $(function() {
 	
 	$('.option').hide();
 	$('.picker').hide();
+	$('#color-gallery').hide();
 });
 
 

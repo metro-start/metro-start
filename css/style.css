@@ -76,6 +76,21 @@ h3 {
     cursor: pointer;
 	margin-left: 50px;
 }
+
+.gallery {
+    margin-right: 15px;
+	position: relative;
+	z-index: 2;
+}
+
+#color-gallery {
+	position: absolute;
+	bottom: 50px;
+	right: 0px;
+}
+.gallery-items {
+	padding-bottom: 10px;
+}
 .picker {
     position: absolute;
     bottom: 50px;
@@ -86,6 +101,8 @@ h3 {
 .picker > div {
     display: inline-block;
     margin-right: 15px;
+	z-index: 2;
+	position: relative;
 }
 .picker-text {
     font-size: 24px;
@@ -98,6 +115,15 @@ h3 {
 	font-size: 16px;
 	font-style: italic;
 	vertical-align: middle;
+}
+.overlay {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	opacity: 0.8;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
 }
 .page {
     display: inline-block;
@@ -138,15 +164,6 @@ h3 {
 }
 .item:last-child {
 	margin-bottom: 5px;
-}
-
-.overlay {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	opacity: 0.8;
-	width: 100%;
-	height: 100%;
 }
 
 @media only screen and (max-width: 1048px) {
