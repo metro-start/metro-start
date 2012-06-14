@@ -234,12 +234,26 @@ $(function() {
 		myList.empty();
 		var colors = JSON.parse(localStorage.getItem('colors'));
 		$.each(colors, function(key, elem) {
-			var title = $('<p class="gallery-title">' + elem.title + '</p>');
+			var title = $('<span class="gallery-title">' + elem.title + ' </span>');
 			title.on('click', function() {
 				changeColors(elem.colors);
 			});
+			var remove = $('<span class="remove options-color">remove</span>');
+			remove.on('click', function() {
+				var colors = JSON.parse(localStorage.getItem('colors'));
+				for(i = 0; i < colors.length; i++) {
+					if(colors[i].title === elem.title) {
+						colors.splice(i, 1);
+						$(this).parent().remove();
+						localStorage.setItem('colors', JSON.stringify(colors));
+						break;
+					}
+				}
+			});
+
 			var li = $('<li class="gallery-item"></li>');
 			li.append(title);
+			li.append(remove);
 			myList.append(li);
 		});
 
