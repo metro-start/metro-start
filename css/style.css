@@ -7,11 +7,15 @@ a {
     text-decoration: none;
     color: inherit;
 }
+*[contenteditable=true] {
+	font-style: italic;
+	outline: none;
+	text-decoration: underline;
+}
+
 #url {
 	margin-left: 35px;
 	min-width: 450px;
-	font-style: italic;
-	outline: none;
 }
 .item, #links li {
 	cursor: pointer;
@@ -107,6 +111,11 @@ h3 {
 	padding-left: 10px;
 }
 
+#edit-title {
+	display: block;
+	text-align: center;
+}
+
 .picker > div {
     display: inline-block;
     margin-right: 15px;
@@ -120,9 +129,7 @@ h3 {
 	position: relative;
 }
 .show-color {
-	outline: none;
 	font-size: 16px;
-	font-style: italic;
 	vertical-align: middle;
 }
 .overlay {
@@ -150,10 +157,6 @@ h3 {
 }
 #apps {
 	width: 100%;
-}
-#where[contenteditable=true] {
-	font-style: italic;
-    outline: none;
 }
 .external_selector {
 	overflow: auto;

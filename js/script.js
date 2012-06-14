@@ -58,7 +58,7 @@ $(function() {
 	}
 
 	if(!localStorage.getItem('colors')) {
-		localStorage.setItem('colors', []);
+		localStorage.setItem('colors', '[]');
 	}
 
 	$('#select-box').val(localStorage.getItem('unit'));
@@ -170,6 +170,7 @@ $(function() {
 		$('#' + key).farbtastic(function(color) {
 			localStorage.setItem(key, color);
 			$('#' + key + '-display').text(color);
+			updateStyle(false);
 		});
 
 		$('#' + key + '-display').on('keydown', function(e) {
@@ -191,13 +192,47 @@ $(function() {
 	});
 
 	$('#edit-colors').click(function() {
+		$('#color-gallery:visible').fadeOut('fast');
 		$('.picker').fadeToggle('fast');
+	
+		if($(this).text().trim() == 'edit colors') {
+			$(this).text('done editing');
+		} else {
+			$(this).text('edit colors');
+		}
+
+		if($('#edit-title').text().trim() !== 'untitled') {
+			var colors = JSON.parse(localStorage.getItem('colors'));
+			colors.push({
+				'title': $('#edit-title').text().trim(),
+				'colors': {
+					'options-color': localStorage.getItem('options-color'),
+					'main-color': localStorage.getItem('main-color'),
+					'title-color': localStorage.getItem('title-color'),
+					'background-color': localStorage.getItem('background-color')
+				}
+			});
+			localStorage.setItem('colors', JSON.stringify(colors));
+			$('#edit-title').text('untitled');
+		}
 	});
 
 	$('#color-gallery-button').click(function() {
 		$('.picker:visible').fadeOut('fast');
 		$('#color-gallery').toggle();
 		
+		var myList = $('#my-items');
+		var colors = JSON.parse(localStorage.getItem('colors'));
+		$.each(colors, function(key, elem) {
+			var title = $('<p class="gallery-title">' + elem.title + '</p>');
+			title.on('click', function() {
+				changeColors(elem.colors);
+			});
+			var li = $('<li class="gallery-item"></li>');
+			li.append(title);
+			myList.append(li);
+		});
+
 		var onlineList = $('#online-items');
 		onlineList.empty();
 		$.each(sampleOnline, function(key, elem) {
