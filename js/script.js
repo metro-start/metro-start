@@ -4,6 +4,32 @@ var units = ['fahrenheit', 'celsius'];
 var link_page = '';
 var wrench = false;
 
+var sampleOnline = 
+[
+	{
+		'title': 'summer bliss',
+		'author': 'chuma',
+		'link': 'twitter.com/chustar',
+		'colors': {
+			'options-color': '#ff0000',
+			'main-color': '#ffff00',
+			'title-color': '#4a114a',
+			'background-color': '#550000'
+		}
+	},
+	{
+		'title': 'midnight run',
+		'author': 'nnaji',
+		'link': 'chumannaji.com',
+		'colors': {
+			'options-color': '#bf0000',
+			'main-color': '#ff8f00',
+			'title-color': '#4a114a',
+			'background-color': '#050000'
+		}
+	}
+];
+
 $(function() {	
 	//set defaults
 	var defaultColors = {
@@ -105,7 +131,7 @@ $(function() {
 	//handle clicking the edit link in weather section
 	$('#hide_weather').click(function(){
 		localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
-		updateStyle();
+		updateStyle(false);
 		_gaq.push(['_trackEvent', 'Page Action', 'hide weather clicked']);
 	});
 
@@ -144,7 +170,6 @@ $(function() {
 		$('#' + key).farbtastic(function(color) {
 			localStorage.setItem(key, color);
 			$('#' + key + '-display').text(color);
-			updateStyle();
 		});
 
 		$('#' + key + '-display').on('keydown', function(e) {
@@ -172,16 +197,26 @@ $(function() {
 	$('#color-gallery-button').click(function() {
 		$('.picker:visible').fadeOut('fast');
 		$('#color-gallery').toggle();
+		
+		var onlineList = $('#online-items');
+		onlineList.empty();
+		$.each(sampleOnline, function(key, elem) {
+			var title = $('<p class="gallery-title">' + elem.title + '</p>');
+			title.on('click', function() {
+				changeColors(elem.colors);
+			});
+			var li = $('<li class="gallery-item"></li>');
+			li.append(title);
+			li.append('<a class="gallery-bio options-color" href="' + elem.link + '">' + elem.author + '</a></li>');
+			onlineList.append(li);
+		});
+		updateStyle(false);
 	});
 
 	//reset all the colors to default.
 	$('#reset-colors').click(function(){
 		_gaq.push(['_trackEvent', 'Page Action',  'colors reset']);
-		$.each(defaultColors, function(key, value) {
-			localStorage.setItem(key, value);	
-			$.farbtastic('#' + key).setColor(value);
-		});
-		updateStyle();
+		changeColors(defaultColors);
 	});
 
 	//attaches a remove link to all remove elements for links
@@ -230,7 +265,7 @@ $(function() {
 	loadApps(false);
 	loadBookmarks();
 	updateWeather(false);
-	updateStyle();	
+	updateStyle(false);
 	
 	$('.option').hide();
 	$('.picker').hide();
@@ -289,6 +324,7 @@ var updateWeather = function(force) {
 				localStorage.setItem('condition', weather.current_conditions.condition.data.toLowerCase());
 				$('#condition').html(weather.current_conditions.condition.data.toLowerCase());
 			}
+			updateStyle(false);
 		});
 		xml.parse();
 	}
@@ -297,7 +333,54 @@ var updateWeather = function(force) {
 /**
   Check for saved colors and load it
   */
-var updateStyle = function() {
+
+var changeColors = function(newColors) {
+	$.each(newColors, function(key, value) {
+		localStorage.setItem(key, value);	
+		$.farbtastic('#' + key).setColor(value);
+	});
+	updateStyle(true);
+};
+
+var updateStyle = function(transition) {
+	if(localStorage.getItem('hide_weather') == 'true') {
+		$('#hide_weather').text('show weather');
+		if (transition) $('#weather').hide('fast');
+		else $('#weather').hide();
+	} else {
+		$('#hide_weather').text('hide weather');
+		if (transition) $('#weather').show('fast');
+		else $('#weather').show();
+	}
+
+    //$('body').append('<style type="text/css">* { -webkit-transition: background 5s ease-in-out }</style>');
+	
+	var background_color = localStorage.getItem('background-color');
+	if (transition) {
+		$('.background-color').animate({'backgroundColor': background_color}, {duration: 200, queue: false});
+		$('::-webkit-scrollbar').animate({'background': background_color}, {duration: 200, queue: false}); 
+		$('.title-color').animate({'color': localStorage.getItem('title-color')}, {duration: 200, queue: false});
+
+		$('body').animate({'color': localStorage.getItem('main-color')});
+
+		var options_color = localStorage.getItem('options-color');
+		$('.options-color').animate({'color': options_color}, {duration: 200, queue: false});
+		$('::-webkit-scrollbar-thumb').animate({'background': options_color}, {duration: 200, queue: false});
+	} else {
+		$('.background-color').css('backgroundColor', background_color);
+		$('::-webkit-scrollbar').css('background', background_color); 
+		$('.title-color').css('color', localStorage.getItem('title-color'));
+
+		$('body').css('color', localStorage.getItem('main-color'));
+
+		var options_color = localStorage.getItem('options-color');
+		$('.options-color').css('color', options_color);
+		$('::-webkit-scrollbar-thumb').css('background', options_color);
+	}
+    //$('body > style').remove();
+}
+
+var updateStyles = function() {
     var styles = '';
 	if(localStorage.getItem('hide_weather') == 'true') {
 		$('#hide_weather').text('show weather');
@@ -306,6 +389,9 @@ var updateStyle = function() {
 		$('#hide_weather').text('hide weather');
 		$('#weather').show('fast');
 	}
+
+
+	styles += '* {transition: all 1s ease-in-out;}';
     if(localStorage.getItem('background-color')) {
         var background_color = localStorage.getItem('background-color');
         //styles += '.picker { background-color: ' + background_color+ '}';

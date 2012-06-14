@@ -91,6 +91,15 @@ h3 {
 .gallery-items {
 	padding-bottom: 10px;
 }
+.gallery-item {
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+.gallery-bio {
+	font-size: 24px;
+	font-style: italic;
+}
+
 .picker {
     position: absolute;
     bottom: 50px;
