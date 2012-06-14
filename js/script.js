@@ -352,8 +352,6 @@ var updateStyle = function(transition) {
 		if (transition) $('#weather').show('fast');
 		else $('#weather').show();
 	}
-
-    //$('body').append('<style type="text/css">* { -webkit-transition: background 5s ease-in-out }</style>');
 	
 	var background_color = localStorage.getItem('background-color');
 	if (transition) {
@@ -377,46 +375,6 @@ var updateStyle = function(transition) {
 		$('.options-color').css('color', options_color);
 		$('::-webkit-scrollbar-thumb').css('background', options_color);
 	}
-    //$('body > style').remove();
-}
-
-var updateStyles = function() {
-    var styles = '';
-	if(localStorage.getItem('hide_weather') == 'true') {
-		$('#hide_weather').text('show weather');
-		$('#weather').hide('fast');
-	} else {
-		$('#hide_weather').text('hide weather');
-		$('#weather').show('fast');
-	}
-
-
-	styles += '* {transition: all 1s ease-in-out;}';
-    if(localStorage.getItem('background-color')) {
-        var background_color = localStorage.getItem('background-color');
-        //styles += '.picker { background-color: ' + background_color+ '}';
-        styles += '.overlay { background-color: ' + background_color+ '}';
-        styles += 'body {background-color: ' + background_color + '}';
-        styles += '::-webkit-scrollbar { background: ' + background_color + '}';
-    }
-
-    if(localStorage.getItem('title-color')) {
-        styles += ('.title-color {color: ' + localStorage.getItem('title-color') + '}');
-    }
-
-    if(localStorage.getItem('main-color')) {
-        var main_color = localStorage.getItem('main-color');
-        styles += 'body {color: ' + main_color + '}';
-    }
-
-    if(localStorage.getItem('options-color')) {
-        var options_color = localStorage.getItem('options-color');
-        styles += '.options-color {color: ' + options_color + '}';
-        styles += '::-webkit-scrollbar-thumb {background: ' + options_color + '}';
-    }	
-
-    $('body > style').remove();
-    $('body').append('<style type="text/css">' + styles + '</style>');
 }
 
 var loadLinks = function() {
