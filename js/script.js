@@ -79,6 +79,7 @@ $(function() {
 		
 		//handle guys that have states that can be activated AFTER wrench.
 		$('.picker').fadeOut('fast');
+		$('#color-gallery').fadeOut('fast');
 		$('#where').prop('contentEditable', 'false');
 		if($('#url').length) $('#url').remove();
 
@@ -191,14 +192,11 @@ $(function() {
 		}
 	});
 
-	$('#edit-colors').click(function() {
-		$('#color-gallery:visible').fadeOut('fast');
-		$('.picker').fadeToggle('fast');
-	
-		if($(this).text().trim() == 'edit colors') {
-			$(this).text('done editing');
+	var doneEditing = function() {
+		if($('#edit-colors').text().trim() == 'edit colors') {
+			$('#edit-colors').text('done editing');
 		} else {
-			$(this).text('edit colors');
+			$('#edit-colors').text('edit colors');
 		}
 
 		if($('#edit-title').text().trim() !== 'untitled') {
@@ -215,6 +213,17 @@ $(function() {
 			localStorage.setItem('colors', JSON.stringify(colors));
 			$('#edit-title').text('untitled');
 		}
+	};
+
+	$('#edit-colors').click(function() {
+		$('#color-gallery:visible').fadeOut('fast');
+		$('.picker').fadeToggle('fast');
+
+		doneEditing();
+	});
+
+	$('#edit-colors').hide(function() {
+		doneEditing();
 	});
 
 	$('#color-gallery-button').click(function() {
@@ -222,6 +231,7 @@ $(function() {
 		$('#color-gallery').toggle();
 		
 		var myList = $('#my-items');
+		myList.empty();
 		var colors = JSON.parse(localStorage.getItem('colors'));
 		$.each(colors, function(key, elem) {
 			var title = $('<p class="gallery-title">' + elem.title + '</p>');
