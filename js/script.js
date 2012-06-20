@@ -124,6 +124,9 @@ $(function() {
 		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
 		if (wrench){
 			$('.option').hide('fast');
+			if(localStorage.getItem('active') == 3) {
+				$('#menu-sel-' + localStorage.getItem('previous')).click();
+			}
 		} else {
 			$('.option').show('fast');
 		}
