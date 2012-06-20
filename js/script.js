@@ -1,5 +1,5 @@
 //globals (kinda?)
-var total = ['links', 'apps', 'bookmarks'];
+var total = ['links', 'apps', 'bookmarks', 'colors'];
 var units = ['fahrenheit', 'celsius'];
 var link_page = '';
 var wrench = false;
@@ -44,7 +44,15 @@ $(function() {
 	}
 
 	if(localStorage.getItem('active')) {
-		$('#menu').prop('selectedIndex', localStorage.getItem('active')); //saved links
+		var active = localStorage.getItem('active');
+		if (active == 3) {
+			if (localStorage.getItem('previous')) {
+				active = localStorage.getItem('previous');
+			} else {
+				active = 1;
+			}
+		}
+		$('#menu').prop('selectedIndex', active); //saved links
 	} else {
 		localStorage.setItem('active', 1);
 	}
@@ -114,15 +122,16 @@ $(function() {
 	//show all options on the page.
 	$('#wrench').on('click', function() {		
 		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
-		if (wrench) $('.option').hide('fast');
-		else $('.option').show('fast');
+		if (wrench){
+			$('.option').hide('fast');
+		} else {
+			$('.option').show('fast');
+		}
 		wrench = !wrench;
-		
 		//handle guys that have states that can be activated AFTER wrench.
 		$('.picker').fadeOut('fast');
 		doneEditingColors();
 
-		$('#color-gallery').fadeOut('fast');
 		$('#where').prop('contentEditable', 'false');
 		if($('#url').length) $('#url').remove();
 	});
@@ -200,7 +209,6 @@ $(function() {
 		$('.picker:visible').fadeOut('fast');
 		doneEditingColors();
 
-		$('#color-gallery').toggle();
 		
 		var myList = $('#my-items');
 		myList.empty();
@@ -280,6 +288,7 @@ $(function() {
 	loadLinks();
 	loadApps(false);
 	loadBookmarks();
+	loadColors();
 	updateWeather(false);
 	updateStyle(false);
 	
@@ -372,14 +381,14 @@ var updateStyle = function(transition) {
 	var background_color = localStorage.getItem('background-color');
 	if (transition) {
 		$('.background-color').animate({'backgroundColor': background_color}, {duration: 200, queue: false});
-		$('::-webkit-scrollbar').animate({'background': background_color}, {duration: 200, queue: false}); 
+		$('::-webkit-scrollbar').css('background', 'rbga(255, 0, 0, 1)');//);//);//);//);//);//);//);//);// background_color); 
 		$('.title-color').animate({'color': localStorage.getItem('title-color')}, {duration: 200, queue: false});
 
 		$('body').animate({'color': localStorage.getItem('main-color')});
 
 		var options_color = localStorage.getItem('options-color');
 		$('.options-color').animate({'color': options_color}, {duration: 200, queue: false});
-		$('::-webkit-scrollbar-thumb').animate({'background': options_color}, {duration: 200, queue: false});
+		$('::-webkit-scrollbar-thumb').css('background', options_color);
 	} else {
 		$('.background-color').css('backgroundColor', background_color);
 		$('::-webkit-scrollbar').css('background', background_color); 
@@ -411,6 +420,35 @@ var loadLinks = function() {
 	for (id in links) {
 		addItem(links[id].name, links[id].url);
 	}
+}
+
+var loadColors = function() {
+    (function(data) {
+        var index = 0;
+        var internal_selector = $('#internal_selector_color');
+        var page = $('<div class="page" id="page_' + index + '"></div>');
+        internal_selector.append(page);
+        for(i in data) {
+            //var item = $('<div class="item"><span class="remove option options-color" id="' + res[i].id + '">uninstall</span> <a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
+			var elem = data[i];
+            var item = $('<div class="item"></div>');
+			var title = $('<span>' + elem.title + ' </span>');
+			title.on('click', function() {
+				changeColors(elem.colors);
+			});
+			item.append(title);
+			item.append('<a class="gallery-bio options-color" href="' + elem.link + '">' + elem.author + '</a></li>');
+            page.append(item);
+            if((parseInt(i) + 1) % 5 == 0) {
+                index++;
+                page = $('<div class="page" id="page_' + index + '"></div>');
+                internal_selector.append(page);
+            }
+        }
+
+    	//load the list of links and change the view otherwise this stuff happens before the callback executes
+    	changeView(localStorage.getItem('active'), true);	
+	})(sampleOnline);
 }
 
 /**
@@ -503,6 +541,13 @@ var buildListOfBookmarks = function(owner, node) {
 function changeView(tar, instant) {
 	var cur = localStorage.getItem('active');
     localStorage.setItem('active', tar);
+	if (tar == 3) {
+		if (cur == tar) {
+			localStorage.setItem('previous', 1);
+		} else {
+			localStorage.setItem('previous', cur);
+		}
+	}
 	//If the page should be switched instantly, do not set change time
 	if(instant) {
 		for(i in total) {
@@ -574,7 +619,6 @@ var saveNewLink = function() {
 	$('#add').text('add');
 	addItem(name, url);
 };
-
 
 /**
   Convert values from fahrenheit to celsius

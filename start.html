@@ -41,6 +41,7 @@
 				<option>saved links</option>
 				<option>installed apps</option>
 				<option>bookmarks</option>
+				<option class="option temp_color">color gallery</option>
 			</select>
 		</div>
 		<div class="links collection">
@@ -67,6 +68,13 @@
 				</div>
 			</div>
 		</div>
+		<div class="colors collection">
+			<div id="colors">
+				<div class="external_selector" id="external_selector_color">
+					<div class="internal_selector" id="internal_selector_color"></div>
+				</div>
+			</div>
+		</div>
 		<div class="weather">
 			<div id="hide_weather" class="options-color option">hide weather</div>
 			<div id="weather">
@@ -85,24 +93,11 @@
 			</div>
 		</div>
 		<p class="options-color wrench" id="wrench">wrench</p>
-		<div class="colors">
+		<div class="colors-buttons">
 			<p class="color-button options-color option" id="reset-colors">reset colors</p>
-			<p class="color-button options-color option" id="color-gallery-button">color gallery</p>
 			<p class="color-button options-color option" id="edit-colors">edit colors</p>
 		</div>
-		<div id="color-gallery">
-			<span class="overlay background-color"></span>
-			<div id="online-gallery" class="gallery">
-				<p class="options-color">online colors</p>
-				<ul class="gallery-items" id="online-items"></ul>
-			</div>
-			<div id="my-gallery" class="gallery">
-				<p class="options-color">my colors</p>
-				<ul class="gallery-items" id="my-items"></ul>
-			</div>
-		</div>
-		<div class="picker">
-			<span class="overlay background-color"></span>
+		<div class="picker background-color">
 			<div id="edit-title" class="options-color" contentEditable="true">untitled</div>
 			<div>
 				<span class="picker-text options-color option">background
