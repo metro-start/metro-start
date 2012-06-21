@@ -343,14 +343,14 @@ var updateStyle = function(transition) {
 	
 	var background_color = localStorage.getItem('background-color');
 	if (transition) {
-		$('.background-color').animate({'backgroundColor': background_color}, {duration: 200, queue: false});
+		$('.background-color').animate({'backgroundColor': background_color}, {duration: 400, queue: false});
 		$('::-webkit-scrollbar').css('background', 'rbga(255, 0, 0, 1)');
-		$('.title-color').animate({'color': localStorage.getItem('title-color')}, {duration: 200, queue: false});
+		$('.title-color').animate({'color': localStorage.getItem('title-color')}, {duration: 400, queue: false});
 
-		$('body').animate({'color': localStorage.getItem('main-color')});
+		$('body').animate({'color': localStorage.getItem('main-color')}, {duration: 400, queue: false});
 
 		var options_color = localStorage.getItem('options-color');
-		$('.options-color').animate({'color': options_color}, {duration: 200, queue: false});
+		$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
 		$('::-webkit-scrollbar-thumb').css('background', options_color);
 	} else {
 		$('.background-color').css('backgroundColor', background_color);
@@ -487,6 +487,7 @@ var loadApps = function(reflow) {
             }
         }
 
+		updateStyle(false);
     	//load the list of links and change the view otherwise this stuff happens before the callback executes
     	changeView(localStorage.getItem('active'), true);	
     });
@@ -501,6 +502,7 @@ var loadBookmarks = function() {
 		for (j in res[0].children) {
 			buildListOfBookmarks(0, res[0].children[j]);
 		}
+		updateStyle(false);
 	});
 }
 
