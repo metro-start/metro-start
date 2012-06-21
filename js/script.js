@@ -45,14 +45,16 @@ $(function() {
 
 	if(localStorage.getItem('active')) {
 		var active = localStorage.getItem('active');
+		//If the last page we were at  was the gallery, show the last page before that.
 		if (active == 3) {
 			if (localStorage.getItem('previous')) {
 				active = localStorage.getItem('previous');
+				localStorage.setItem('active', active);
 			} else {
 				active = 1;
 			}
 		}
-		$('#menu').prop('selectedIndex', active); //saved links
+		$('#menu').prop('selectedIndex', active);
 	} else {
 		localStorage.setItem('active', 1);
 	}
@@ -85,6 +87,7 @@ $(function() {
 			updateStyle(false);
 		});
 
+		//If you press enter in the text box, set it a the new color.
 		$('#' + key + '-display').on('keydown', function(e) {
 			if(e.keyCode == 13) {
 				$.farbtastic('#' + key).setColor($(this).text());
@@ -186,7 +189,7 @@ $(function() {
 		if($('#where').prop('contentEditable') != 'true') {
 			$('#where').prop('contentEditable', 'true');
 			$('#where').focus();
-			document.execCommand('selectAll',false,null);
+			document.execCommand('selectAll', false, null);
 			$('#where').on('keydown', function(e) {
 				if(event.keyCode == 13) {
 					e.preventDefault();
@@ -207,54 +210,6 @@ $(function() {
 		doneEditingColors();
 	});
 
-	//clicking on the galery link
-	$('#color-gallery-button').on('click', function() {
-		$('.picker:visible').fadeOut('fast');
-		doneEditingColors();
-
-		
-		var myList = $('#my-items');
-		myList.empty();
-		var colors = JSON.parse(localStorage.getItem('colors'));
-		$.each(colors, function(key, elem) {
-			var title = $('<span class="gallery-title">' + elem.title + ' </span>');
-			title.on('click', function() {
-				changeColors(elem.colors);
-			});
-			var remove = $('<span class="remove options-color">remove</span>');
-			remove.on('click', function() {
-				var colors = JSON.parse(localStorage.getItem('colors'));
-				for(i = 0; i < colors.length; i++) {
-					if(colors[i].title === elem.title) {
-						colors.splice(i, 1);
-						$(this).parent().remove();
-						localStorage.setItem('colors', JSON.stringify(colors));
-						break;
-					}
-				}
-			});
-
-			var li = $('<li class="gallery-item"></li>');
-			li.append(title);
-			li.append(remove);
-			myList.append(li);
-		});
-
-		var onlineList = $('#online-items');
-		onlineList.empty();
-		$.each(sampleOnline, function(key, elem) {
-			var title = $('<p class="gallery-title">' + elem.title + '</p>');
-			title.on('click', function() {
-				changeColors(elem.colors);
-			});
-			var li = $('<li class="gallery-item"></li>');
-			li.append(title);
-			li.append('<a class="gallery-bio options-color" href="' + elem.link + '">' + elem.author + '</a></li>');
-			onlineList.append(li);
-		});
-		updateStyle(false);
-	});
-
 	//reset all the colors to default.
 	$('#reset-colors').on('click', function() {
 		_gaq.push(['_trackEvent', 'Page Action',  'colors reset']);
@@ -272,7 +227,6 @@ $(function() {
 				$(event.target).parent().remove();
 				$('#internal_selector_links').empty();
 				loadLinks();
-				//reflow($('#internal_selector_links'));
 				break;
 			}
 		}
@@ -301,6 +255,10 @@ $(function() {
 });
 
 
+/**
+	Adds items to the list of links.
+	Used when adding new links, or when loading existing links.
+*/
 var addItem = function(name, url) {
 	var page = {};
 	var internal_selector = $('#internal_selector_links');
@@ -359,9 +317,8 @@ var updateWeather = function(force) {
 }
 
 /**
-  Check for saved colors and load it
+  Change to the newly provided colors.
   */
-
 var changeColors = function(newColors) {
 	$.each(newColors, function(key, value) {
 		localStorage.setItem(key, value);	
@@ -370,6 +327,9 @@ var changeColors = function(newColors) {
 	updateStyle(true);
 };
 
+/**
+  Check for saved colors and load it
+  */
 var updateStyle = function(transition) {
 	if(localStorage.getItem('hide_weather') == 'true') {
 		$('#hide_weather').text('show weather');
@@ -384,7 +344,7 @@ var updateStyle = function(transition) {
 	var background_color = localStorage.getItem('background-color');
 	if (transition) {
 		$('.background-color').animate({'backgroundColor': background_color}, {duration: 200, queue: false});
-		$('::-webkit-scrollbar').css('background', 'rbga(255, 0, 0, 1)');//);//);//);//);//);//);//);//);// background_color); 
+		$('::-webkit-scrollbar').css('background', 'rbga(255, 0, 0, 1)');
 		$('.title-color').animate({'color': localStorage.getItem('title-color')}, {duration: 200, queue: false});
 
 		$('body').animate({'color': localStorage.getItem('main-color')});
@@ -405,6 +365,9 @@ var updateStyle = function(transition) {
 	}
 }
 
+/**
+  Loads exiting links from localStorage.
+  */
 var loadLinks = function() {
 	link_page = 0;
     //get links from localStorage and ensure they're empty	
@@ -425,31 +388,79 @@ var loadLinks = function() {
 	}
 }
 
+/**
+  Loads all saved colors as well as downloading colors from the online gallery.
+  */
 var loadColors = function() {
+	var index = 0;
+	var internal_selector = $('#internal_selector_color');
+	var my_colors = JSON.parse(localStorage.getItem('colors'));
+	var page = $('<div class="page" id="page_' + index + '"></div>');
+	page.append('<span class="options-color">my colors</span>');
+	internal_selector.append(page);
+	//for each of the local colors
+	for(i in my_colors) {
+		var elem = my_colors[i];
+		var item = $('<div class="item"></div>');
+		//attach remove handler to remove color from localStroage and view
+		var remove = $('<span class="remove options-color">remove</span>');
+		remove.on('click', function() {
+			var colors = JSON.parse(localStorage.getItem('colors'));
+			for(i = 0; i < colors.length; i++) {
+				//if they are the same color, remove it from list and localStorage
+				if(colors[i].title === elem.title) {
+					colors.splice(i, 1);
+					$(this).parent().remove();
+					localStorage.setItem('colors', JSON.stringify(colors));
+					break;
+				}
+			}
+		});
+		//create the title and attach a handle to switch colors when clicked
+		var title = $('<span> ' + elem.title + ' </span>');
+		title.on('click', function() {
+			changeColors(elem.colors);
+		});
+
+		item.append(remove);
+		item.append(title);
+		//add the row item to the page
+		page.append(item);
+		if((parseInt(i) + 1) % 5 == 0) {
+			index++;
+			page = $('<div class="page" id="page_' + index + '"></div>');
+			//adding a blank row at the top of every page
+			page.append('<div class="item"></div>');
+			internal_selector.append(page);
+		}
+	}
+	changeView(localStorage.getItem('active'), true);	
+
     (function(data) {
-        var index = 0;
-        var internal_selector = $('#internal_selector_color');
         var page = $('<div class="page" id="page_' + index + '"></div>');
+		page.append('<span class="options-color">online colors</span>');
         internal_selector.append(page);
         for(i in data) {
-            //var item = $('<div class="item"><span class="remove option options-color" id="' + res[i].id + '">uninstall</span> <a href="' + res[i].appLaunchUrl + '">' + res[i].name + '</a></div>');
 			var elem = data[i];
             var item = $('<div class="item"></div>');
 			var title = $('<span>' + elem.title + ' </span>');
-			title.on('click', function() {
-				changeColors(elem.colors);
-			});
+			//Wrapping this in a closure to maintain the elem.colors binding
+			(function(colors) {
+				title.on('click', function() {
+					changeColors(colors);
+				});
+			})(elem.colors)
 			item.append(title);
 			item.append('<a class="gallery-bio options-color" href="' + elem.link + '">' + elem.author + '</a></li>');
             page.append(item);
             if((parseInt(i) + 1) % 5 == 0) {
                 index++;
                 page = $('<div class="page" id="page_' + index + '"></div>');
+            	page.append('<div class="item"></div>');
                 internal_selector.append(page);
             }
         }
 
-    	//load the list of links and change the view otherwise this stuff happens before the callback executes
     	changeView(localStorage.getItem('active'), true);	
 	})(sampleOnline);
 }
@@ -544,6 +555,7 @@ var buildListOfBookmarks = function(owner, node) {
 function changeView(tar, instant) {
 	var cur = localStorage.getItem('active');
     localStorage.setItem('active', tar);
+	//If we're changing to the gallery view, save the page we just came from.
 	if (tar == 3) {
 		if (cur == tar) {
 			localStorage.setItem('previous', 1);
@@ -551,7 +563,7 @@ function changeView(tar, instant) {
 			localStorage.setItem('previous', cur);
 		}
 	}
-	//If the page should be switched instantly, do not set change time
+	//If the page should be switched instantly, do not slide.
 	if(instant) {
 		for(i in total) {
 			if(i == tar) {
@@ -573,6 +585,7 @@ function changeView(tar, instant) {
   Done editing colors. Change name and save colors
   */
 var doneEditingColors = function() {
+	//If the picker is visible, set the right name for the edit control.
 	if ($('.picker:visible').length) {
 		if($('#edit-colors').text().trim() == 'edit colors') {
 			$('#edit-colors').text('done editing');
@@ -580,6 +593,7 @@ var doneEditingColors = function() {
 			$('#edit-colors').text('edit colors');
 		}
 
+		//If the text still says untitled, don't save it.
 		if($('#edit-title').text().trim() !== 'untitled') {
 			var colors = JSON.parse(localStorage.getItem('colors'));
 			colors.push({
