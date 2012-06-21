@@ -4,32 +4,6 @@ var units = ['fahrenheit', 'celsius'];
 var link_page = '';
 var wrench = false;
 
-var sampleOnline = 
-[
-	{
-		'title': 'summer bliss',
-		'author': 'chuma',
-		'link': 'http://www.twitter.com/chustar',
-		'colors': {
-			'options-color': '#ff0000',
-			'main-color': '#ffff00',
-			'title-color': '#4a114a',
-			'background-color': '#550000'
-		}
-	},
-	{
-		'title': 'midnight run',
-		'author': 'chuma',
-		'link': 'http://www.chumannaji.com',
-		'colors': {
-			'options-color': '#bf0000',
-			'main-color': '#ff8f00',
-			'title-color': '#4a114a',
-			'background-color': '#050000'
-		}
-	}
-];
-
 var defaultColors = {
 	'options-color': '#ff0000',
 	'main-color': '#ffffff',
@@ -452,7 +426,7 @@ var loadColors = function() {
 	$.ajax({
 		url: 'http://metro-start.appspot.com/colors',
 		success: function(data) {
-			console.log(data);
+			data = JSON.parse(data);
 			var page = $('<div class="page first-online" id="page_' + index + '"></div>');
 			page.append('<span class="options-color">online colors</span>');
 			internal_selector.append(page);
@@ -477,6 +451,7 @@ var loadColors = function() {
 				}
 			}
 
+			updateStyle(false);
 			changeView(localStorage.getItem('active'), true);	
 		}
 	});
