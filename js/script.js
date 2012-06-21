@@ -9,7 +9,7 @@ var sampleOnline =
 	{
 		'title': 'summer bliss',
 		'author': 'chuma',
-		'link': 'twitter.com/chustar',
+		'link': 'http://www.twitter.com/chustar',
 		'colors': {
 			'options-color': '#ff0000',
 			'main-color': '#ffff00',
@@ -19,8 +19,8 @@ var sampleOnline =
 	},
 	{
 		'title': 'midnight run',
-		'author': 'nnaji',
-		'link': 'chumannaji.com',
+		'author': 'chuma',
+		'link': 'http://www.chumannaji.com',
 		'colors': {
 			'options-color': '#bf0000',
 			'main-color': '#ff8f00',
@@ -394,6 +394,7 @@ var loadLinks = function() {
 var loadColors = function() {
 	var index = 0;
 	var internal_selector = $('#internal_selector_color');
+	internal_selector.empty();
 	var my_colors = JSON.parse(localStorage.getItem('colors'));
 	var page = $('<div class="page" id="page_' + index + '"></div>');
 	page.append('<span class="options-color">my colors</span>');
@@ -403,7 +404,8 @@ var loadColors = function() {
 		var elem = my_colors[i];
 		var item = $('<div class="item"></div>');
 		//attach remove handler to remove color from localStroage and view
-		var remove = $('<span class="remove options-color">remove</span>');
+		var remove = $('<span class="remove options-color small-text">remove</span>');
+		//var share = $('<span class="options-color small-text"> share</span>');
 		remove.on('click', function() {
 			var colors = JSON.parse(localStorage.getItem('colors'));
 			for(i = 0; i < colors.length; i++) {
@@ -416,53 +418,68 @@ var loadColors = function() {
 				}
 			}
 		});
+		/*share.on('click', function(e) {
+			var colors = JSON.parse(localStorage.getItem('colors'));
+			for(i = 0; i < colors.length; i++) {
+				//if they are the same color, remove it from list and localStorage
+				if(colors[i].title === elem.title) {
+					break;
+				}
+			}
+		});
+		*/
 		//create the title and attach a handle to switch colors when clicked
 		var title = $('<span> ' + elem.title + ' </span>');
 		title.on('click', function() {
 			changeColors(elem.colors);
 		});
 
-		item.append(remove);
 		item.append(title);
+		item.append(remove);
+		//item.append(share);
 		//add the row item to the page
 		page.append(item);
 		if((parseInt(i) + 1) % 5 == 0) {
 			index++;
 			page = $('<div class="page" id="page_' + index + '"></div>');
 			//adding a blank row at the top of every page
-			page.append('<div class="item"></div>');
+			page.append('<div class="options-color">&nbsp;</div>');
 			internal_selector.append(page);
 		}
 	}
 	changeView(localStorage.getItem('active'), true);	
 
-    (function(data) {
-        var page = $('<div class="page" id="page_' + index + '"></div>');
-		page.append('<span class="options-color">online colors</span>');
-        internal_selector.append(page);
-        for(i in data) {
-			var elem = data[i];
-            var item = $('<div class="item"></div>');
-			var title = $('<span>' + elem.title + ' </span>');
-			//Wrapping this in a closure to maintain the elem.colors binding
-			(function(colors) {
-				title.on('click', function() {
-					changeColors(colors);
-				});
-			})(elem.colors)
-			item.append(title);
-			item.append('<a class="gallery-bio options-color" href="' + elem.link + '">' + elem.author + '</a></li>');
-            page.append(item);
-            if((parseInt(i) + 1) % 5 == 0) {
-                index++;
-                page = $('<div class="page" id="page_' + index + '"></div>');
-            	page.append('<div class="item"></div>');
-                internal_selector.append(page);
-            }
-        }
+	$.ajax({
+		url: 'http://metro-start.appspot.com/colors',
+		success: function(data) {
+			console.log(data);
+			var page = $('<div class="page first-online" id="page_' + index + '"></div>');
+			page.append('<span class="options-color">online colors</span>');
+			internal_selector.append(page);
+			for(i in data) {
+				var elem = data[i];
+				var item = $('<div class="item"></div>');
+				var title = $('<span>' + elem.title + ' </span>');
+				//Wrapping this in a closure to maintain the elem.colors binding
+				(function(colors) {
+					title.on('click', function() {
+						changeColors(colors);
+					});
+				})(elem.colors)
+				item.append(title);
+				item.append('<a class="gallery-bio options-color" href="' + elem.link + '">' + elem.author + '</a></li>');
+				page.append(item);
+				if((parseInt(i) + 1) % 5 == 0) {
+					index++;
+					page = $('<div class="page" id="page_' + index + '"></div>');
+					page.append('<div class="item"></div>');
+					internal_selector.append(page);
+				}
+			}
 
-    	changeView(localStorage.getItem('active'), true);	
-	})(sampleOnline);
+			changeView(localStorage.getItem('active'), true);	
+		}
+	});
 }
 
 /**
@@ -609,6 +626,7 @@ var doneEditingColors = function() {
 			});
 			localStorage.setItem('colors', JSON.stringify(colors));
 			$('#edit-title').text('untitled');
+			loadColors();
 		}
 	}
 };
