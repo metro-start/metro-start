@@ -379,6 +379,7 @@ var loadThemes = function() {
 		var item = $('<div class="item"></div>');
 		//attach remove handler to remove color from localStroage and view
 		var remove = $('<span class="remove options-color small-text">remove</span>');
+		console.log(elem);
 		var url = encodeURI('http://localhost:8080/newtheme?' + 
 			'title=' + elem.title +
 			'&maincolor=' + elem.colors['main-color'].substring(1) +
@@ -596,7 +597,6 @@ var doneEditingTheme = function() {
 			var themes = JSON.parse(localStorage.getItem('themes'));
 			themes.push({
 				'title': $('#edit-title').text().trim(),
-				'theme': {
 				'colors': {
 					'options-color': localStorage.getItem('options-color'),
 					'main-color': localStorage.getItem('main-color'),
