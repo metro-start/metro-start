@@ -62,6 +62,7 @@ h1 {
     font-weight: normal;
     font-style: normal;
 	display: inline-block;
+	margin-right: 10px;
 }
 .wrench {
     cursor: pointer;

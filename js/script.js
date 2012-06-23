@@ -379,7 +379,14 @@ var loadColors = function() {
 		var item = $('<div class="item"></div>');
 		//attach remove handler to remove color from localStroage and view
 		var remove = $('<span class="remove options-color small-text">remove</span>');
-		//var share = $('<span class="options-color small-text"> share</span>');
+		console.log(elem);
+		var url = encodeURI('http://localhost:8080/newtheme?' + 
+			'title=' + elem.title +
+			'&maincolor=' + elem.colors['main-color'].substring(1) +
+			'&optionscolor=' + elem.colors['options-color'].substring(1) +
+			'&titlecolor=' + elem.colors['title-color'].substring(1) +
+			'&backgroundcolor=' + elem.colors['background-color'].substring(1));
+		var share = $('<a class="options-color small-text" href="' + url + '">share</a>');
 		remove.on('click', function() {
 			var colors = JSON.parse(localStorage.getItem('colors'));
 			for(i = 0; i < colors.length; i++) {
@@ -403,14 +410,14 @@ var loadColors = function() {
 		});
 		*/
 		//create the title and attach a handle to switch colors when clicked
-		var title = $('<span> ' + elem.title + ' </span>');
+		var title = $('<p> ' + elem.title + ' </p>');
 		title.on('click', function() {
 			changeColors(elem.colors);
 		});
 
 		item.append(title);
 		item.append(remove);
-		//item.append(share);
+		item.append(share);
 		//add the row item to the page
 		page.append(item);
 		if((parseInt(i) + 1) % 5 == 0) {
