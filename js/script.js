@@ -446,7 +446,7 @@ var loadThemes = function() {
 					});
 				})(elem)
 				item.append(title);
-				item.append('<a class="gallery-bio options-color" href="' + elem.link + '">' + elem.author + '</a></li>');
+				item.append('<a class="gallery-bio options-color" href="' + elem.website + '">' + elem.author + '</a></li>');
 				page.append(item);
 				if((parseInt(i) + 1) % 5 == 0) {
 					index++;
