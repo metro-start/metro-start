@@ -380,12 +380,13 @@ var loadThemes = function() {
 		//attach remove handler to remove color from localStroage and view
 		var remove = $('<span class="remove options-color small-text">remove</span>');
 		console.log(elem);
-		var url = encodeURI('http://localhost:8080/newtheme?' + 
-			'title=' + elem.title +
-			'&maincolor=' + elem.colors['main-color'].substring(1) +
-			'&optionscolor=' + elem.colors['options-color'].substring(1) +
-			'&titlecolor=' + elem.colors['title-color'].substring(1) +
-			'&backgroundcolor=' + elem.colors['background-color'].substring(1));
+		var url = 'http://localhost:8080/newtheme?' + 
+			'title=' + encodeURIComponent(elem.title) +
+			'&maincolor=' + encodeURIComponent(elem.colors['main-color']) +
+			'&optionscolor=' + encodeURIComponent(elem.colors['options-color']) +
+			'&titlecolor=' + encodeURIComponent(elem.colors['title-color']) +
+			'&backgroundcolor=' + encodeURIComponent(elem.colors['background-color']);
+
 		var share = $('<a class="options-color small-text" href="' + url + '">share</a>');
 		remove.on('click', function() {
 			var themes = JSON.parse(localStorage.getItem('themes'));
