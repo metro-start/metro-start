@@ -1,10 +1,10 @@
 //globals (kinda?)
-var total = ['links', 'apps', 'bookmarks', 'colors'];
+var total = ['links', 'apps', 'bookmarks', 'themes'];
 var units = ['fahrenheit', 'celsius'];
 var link_page = '';
 var wrench = false;
 
-var defaultColors = {
+var defaultThemes = {
 	'options-color': '#ff0000',
 	'main-color': '#ffffff',
 	'title-color': '#4a4a4a',
@@ -41,8 +41,8 @@ $(function() {
 		localStorage.setItem('unit', 'fahrenheit');
 	}
 
-	if(!localStorage.getItem('colors')) {
-		localStorage.setItem('colors', '[]');
+	if(!localStorage.getItem('themes')) {
+		localStorage.setItem('themes', '[]');
 	}
 
 	$('#select-box').val(localStorage.getItem('unit'));
@@ -54,10 +54,10 @@ $(function() {
 	$('#locat').val(localStorage.getItem('locat'));
 
 	//attach color pickers
-	$.each(defaultColors, function(key, value) {
-		$('#' + key).farbtastic(function(color) {
-			localStorage.setItem(key, color);
-			$('#' + key + '-display').text(color);
+	$.each(defaultThemes, function(key, value) {
+		$('#' + key).farbtastic(function(theme) {
+			localStorage.setItem(key, theme);
+			$('#' + key + '-display').text(theme);
 			updateStyle(false);
 		});
 
@@ -110,7 +110,7 @@ $(function() {
 		wrench = !wrench;
 		//handle guys that have states that can be activated AFTER wrench.
 		$('.picker').fadeOut('fast');
-		doneEditingColors();
+		doneEditingTheme();
 
 		$('#where').prop('contentEditable', 'false');
 		if($('#url').length) $('#url').remove();
@@ -176,18 +176,18 @@ $(function() {
 		}
 	});
 
-	//clicking on the edit colors/done editing colors link
-	$('#edit-colors').on('click', function() {
-		$('#color-gallery:visible').fadeOut('fast');
+	//clicking on the edit theme/done editing theme link
+	$('#edit-theme').on('click', function() {
+		$('#them-gallery:visible').fadeOut('fast');
 		$('.picker').fadeToggle('fast');
 
-		doneEditingColors();
+		doneEditingTheme();
 	});
 
-	//reset all the colors to default.
-	$('#reset-colors').on('click', function() {
-		_gaq.push(['_trackEvent', 'Page Action',  'colors reset']);
-		changeColors(defaultColors);
+	//reset theme to default.
+	$('#reset-theme').on('click', function() {
+		_gaq.push(['_trackEvent', 'Page Action',  'theme reset']);
+		changeTheme(defaultTheme);
 	});
 
 	//attaches a remove link to all remove elements for links
@@ -219,7 +219,7 @@ $(function() {
 	loadLinks();
 	loadApps(false);
 	loadBookmarks();
-	loadColors();
+	loadThemes();
 	updateWeather(false);
 	updateStyle(false);
 	
@@ -291,10 +291,10 @@ var updateWeather = function(force) {
 }
 
 /**
-  Change to the newly provided colors.
+  Change to the newly provided theme.
   */
-var changeColors = function(newColors) {
-	$.each(newColors, function(key, value) {
+var changeTheme = function(newTheme) {
+	$.each(newTheme, function(key, value) {
 		localStorage.setItem(key, value);	
 		$.farbtastic('#' + key).setColor(value);
 	});
@@ -302,7 +302,7 @@ var changeColors = function(newColors) {
 };
 
 /**
-  Check for saved colors and load it
+  Check for saved themes and load it
   */
 var updateStyle = function(transition) {
 	if(localStorage.getItem('hide_weather') == 'true') {
@@ -363,23 +363,22 @@ var loadLinks = function() {
 }
 
 /**
-  Loads all saved colors as well as downloading colors from the online gallery.
+  Loads all saved themes as well as downloading themes from the online gallery.
   */
-var loadColors = function() {
+var loadThemes = function() {
 	var index = 0;
-	var internal_selector = $('#internal_selector_color');
+	var internal_selector = $('#internal_selector_theme');
 	internal_selector.empty();
-	var my_colors = JSON.parse(localStorage.getItem('colors'));
+	var myThemes = JSON.parse(localStorage.getItem('themes'));
 	var page = $('<div class="page" id="page_' + index + '"></div>');
-	page.append('<span class="options-color">my colors</span>');
+	page.append('<span class="options-color">my themes</span>');
 	internal_selector.append(page);
-	//for each of the local colors
-	for(i in my_colors) {
-		var elem = my_colors[i];
+	//for each of the local themes
+	for(i in myThemes) {
+		var elem = myThemes[i];
 		var item = $('<div class="item"></div>');
 		//attach remove handler to remove color from localStroage and view
 		var remove = $('<span class="remove options-color small-text">remove</span>');
-		console.log(elem);
 		var url = encodeURI('http://localhost:8080/newtheme?' + 
 			'title=' + elem.title +
 			'&maincolor=' + elem.colors['main-color'].substring(1) +
@@ -388,32 +387,24 @@ var loadColors = function() {
 			'&backgroundcolor=' + elem.colors['background-color'].substring(1));
 		var share = $('<a class="options-color small-text" href="' + url + '">share</a>');
 		remove.on('click', function() {
-			var colors = JSON.parse(localStorage.getItem('colors'));
-			for(i = 0; i < colors.length; i++) {
-				//if they are the same color, remove it from list and localStorage
-				if(colors[i].title === elem.title) {
-					colors.splice(i, 1);
+			var themes = JSON.parse(localStorage.getItem('themes'));
+			for(i = 0; i < themes.length; i++) {
+				//if they are the same theme, remove it from list and localStorage
+				if(themes[i].title === elem.title) {
+					themes.splice(i, 1);
 					$(this).parent().remove();
-					localStorage.setItem('colors', JSON.stringify(colors));
+					localStorage.setItem('themes', JSON.stringify(themes));
 					break;
 				}
 			}
 		});
-		/*share.on('click', function(e) {
-			var colors = JSON.parse(localStorage.getItem('colors'));
-			for(i = 0; i < colors.length; i++) {
-				//if they are the same color, remove it from list and localStorage
-				if(colors[i].title === elem.title) {
-					break;
-				}
-			}
-		});
-		*/
-		//create the title and attach a handle to switch colors when clicked
+		//create the title and attach a handle to switch theme when clicked
 		var title = $('<p> ' + elem.title + ' </p>');
-		title.on('click', function() {
-			changeColors(elem.colors);
-		});
+		(function(colors) {
+			title.on('click', function() {
+				changeTheme(colors);
+			});
+		})(elem.colors);
 
 		item.append(title);
 		item.append(remove);
@@ -431,22 +422,28 @@ var loadColors = function() {
 	changeView(localStorage.getItem('active'), true);	
 
 	$.ajax({
-		url: 'http://metro-start.appspot.com/colors',
+		url: 'http://localhost:8080/themes.json',
 		success: function(data) {
 			data = JSON.parse(data);
 			var page = $('<div class="page first-online" id="page_' + index + '"></div>');
-			page.append('<span class="options-color">online colors</span>');
+			page.append('<span class="options-color">online themes</span>');
 			internal_selector.append(page);
 			for(i in data) {
 				var elem = data[i];
 				var item = $('<div class="item"></div>');
 				var title = $('<span>' + elem.title + ' </span>');
 				//Wrapping this in a closure to maintain the elem.colors binding
-				(function(colors) {
+				(function(elem) {
 					title.on('click', function() {
-						changeColors(colors);
+						colors = {
+							'main-color': elem.main_color,
+							'options-color': elem.options_color,
+							'title-color': elem.title_color,
+							'background-color': elem.background_color
+						};
+						changeTheme(colors);
 					});
-				})(elem.colors)
+				})(elem)
 				item.append(title);
 				item.append('<a class="gallery-bio options-color" href="' + elem.link + '">' + elem.author + '</a></li>');
 				page.append(item);
@@ -583,32 +580,32 @@ function changeView(tar, instant) {
 }
 
 /**
-  Done editing colors. Change name and save colors
+  Done editing theme. Change name and save theme
   */
-var doneEditingColors = function() {
+var doneEditingTheme = function() {
 	//If the picker is visible, set the right name for the edit control.
 	if ($('.picker:visible').length) {
-		if($('#edit-colors').text().trim() == 'edit colors') {
-			$('#edit-colors').text('done editing');
+		if($('#edit-theme').text().trim() == 'edit theme') {
+			$('#edit-theme').text('done editing');
 		} else {
-			$('#edit-colors').text('edit colors');
+			$('#edit-theme').text('edit theme');
 		}
 
 		//If the text still says untitled, don't save it.
 		if($('#edit-title').text().trim() !== 'untitled') {
-			var colors = JSON.parse(localStorage.getItem('colors'));
-			colors.push({
+			var themes = JSON.parse(localStorage.getItem('themes'));
+			themes.push({
 				'title': $('#edit-title').text().trim(),
-				'colors': {
+				'theme': {
 					'options-color': localStorage.getItem('options-color'),
 					'main-color': localStorage.getItem('main-color'),
 					'title-color': localStorage.getItem('title-color'),
 					'background-color': localStorage.getItem('background-color')
 				}
 			});
-			localStorage.setItem('colors', JSON.stringify(colors));
+			localStorage.setItem('themes', JSON.stringify(themes));
 			$('#edit-title').text('untitled');
-			loadColors();
+			loadThemes();
 		}
 	}
 };

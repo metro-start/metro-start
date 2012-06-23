@@ -46,7 +46,7 @@ a {
 .remove, #edit {
     cursor: pointer;
 }
-.colors-buttons {
+.theme-buttons {
 	position: absolute;
 	bottom: 15px;
 	right: 15px;
@@ -73,7 +73,7 @@ h1 {
 .option {
 	display: inline-block;
 }
-.color-button {
+.theme-button {
 	display: inline;
     cursor: pointer;
 	margin-left: 50px;
@@ -136,7 +136,7 @@ h1 {
 	margin-left: 50px;
 	margin-bottom: 10px;
 }
-#apps, #colors {
+#apps, #themes {
 	width: 100%;
 }
 .external_selector {
