@@ -597,6 +597,7 @@ var doneEditingTheme = function() {
 			themes.push({
 				'title': $('#edit-title').text().trim(),
 				'theme': {
+				'colors': {
 					'options-color': localStorage.getItem('options-color'),
 					'main-color': localStorage.getItem('main-color'),
 					'title-color': localStorage.getItem('title-color'),
