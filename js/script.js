@@ -433,7 +433,7 @@ var loadThemes = function() {
 			for(i in data) {
 				var elem = data[i];
 				var item = $('<div class="item"></div>');
-				var title = $('<span>' + elem.title + ' </span>');
+				var title = $('<p>' + elem.title + ' </p>');
 				//Wrapping this in a closure to maintain the elem.colors binding
 				(function(elem) {
 					title.on('click', function() {
