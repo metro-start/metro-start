@@ -4,7 +4,7 @@ var units = ['fahrenheit', 'celsius'];
 var link_page = '';
 var wrench = false;
 
-var defaultThemes = {
+var defaultTheme = {
 	'options-color': '#ff0000',
 	'main-color': '#ffffff',
 	'title-color': '#4a4a4a',
@@ -54,7 +54,7 @@ $(function() {
 	$('#locat').val(localStorage.getItem('locat'));
 
 	//attach color pickers
-	$.each(defaultThemes, function(key, value) {
+	$.each(defaultTheme, function(key, value) {
 		$('#' + key).farbtastic(function(theme) {
 			localStorage.setItem(key, theme);
 			$('#' + key + '-display').text(theme);
@@ -250,7 +250,8 @@ var addItem = function(name, url) {
 			create_page();
 		}
 	}
-	page.append('<div class="item"><span class="remove option options-color">remove</span> <a href="' + url + '">' + name + '</a></div>')
+	page.append('<div class="item"><span class="remove option options-color">remove</span> <a href="' + url + '">' + name + '</a></div>');
+	updateStyle(false);
 }
 
 /**
@@ -296,9 +297,13 @@ var updateWeather = function(force) {
 var changeTheme = function(newTheme) {
 	$.each(newTheme, function(key, value) {
 		localStorage.setItem(key, value);	
+	});
+
+	updateStyle(true);
+
+	$.each(newTheme, function(key, value) {
 		$.farbtastic('#' + key).setColor(value);
 	});
-	updateStyle(true);
 };
 
 /**
@@ -317,7 +322,7 @@ var updateStyle = function(transition) {
 	
 	var background_color = localStorage.getItem('background-color');
 	if (transition) {
-		$('.background-color').animate({'backgroundColor': background_color}, {duration: 400, queue: false});
+		$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
 		$('::-webkit-scrollbar').css('background', 'rbga(255, 0, 0, 1)');
 		$('.title-color').animate({'color': localStorage.getItem('title-color')}, {duration: 400, queue: false});
 
@@ -360,6 +365,7 @@ var loadLinks = function() {
 	for (id in links) {
 		addItem(links[id].name, links[id].url);
 	}
+	updateStyle(false);
 }
 
 /**
@@ -379,8 +385,7 @@ var loadThemes = function() {
 		var item = $('<div class="item"></div>');
 		//attach remove handler to remove color from localStroage and view
 		var remove = $('<span class="remove options-color small-text">remove</span>');
-		console.log(elem);
-		var url = 'http://localhost:8080/newtheme?' + 
+		var url = 'http://metro-start.appspot.com/newtheme?' + 
 			'title=' + encodeURIComponent(elem.title) +
 			'&maincolor=' + encodeURIComponent(elem.colors['main-color']) +
 			'&optionscolor=' + encodeURIComponent(elem.colors['options-color']) +
@@ -424,7 +429,7 @@ var loadThemes = function() {
 	changeView(localStorage.getItem('active'), true);	
 
 	$.ajax({
-		url: 'http://localhost:8080/themes.json',
+		url: 'http://metro-start.appspot.com/themes.json',
 		success: function(data) {
 			data = JSON.parse(data);
 			var page = $('<div class="page first-online" id="page_' + index + '"></div>');
