@@ -121,6 +121,7 @@ $(function() {
 			}
 		} else {
 			$('.option').show('fast');
+			loadThemes();
 		}
 		wrench = !wrench;
 		//handle guys that have states that can be activated AFTER wrench.
@@ -234,7 +235,6 @@ $(function() {
 	loadLinks();
 	loadApps(false);
 	loadBookmarks();
-	loadThemes();
 	updateWeather(false);
 	updateStyle(false);
 	
