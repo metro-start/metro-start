@@ -45,6 +45,12 @@ $(function() {
 		localStorage.setItem('themes', '[]');
 	}
 
+	if(localStorage.getItem('font')) {
+		$('#font-chooser').prop('selectedIndex', localStorage.getItem('font'));
+	} else {
+		localStorage.setItem('font', 0);
+	}
+
 	$('#select-box').val(localStorage.getItem('unit'));
 	
 	//laod cached results for weather or set default locat
@@ -92,6 +98,13 @@ $(function() {
 		'onchange': function() {
 			localStorage.setItem('unit', units[$('#select-box').attr('selectedIndex')]);
 			updateWeather(true);
+		}
+	});
+
+	$('#font-chooser').metroSelect({
+		'onchange': function() {
+			localStorage.setItem('font', $('#font-chooser').attr('selectedIndex'));	
+			updateStyle();
 		}
 	});
 
@@ -320,6 +333,17 @@ var updateStyle = function(transition) {
 		else $('#weather').show();
 	}
 	
+	if(localStorage.getItem('font')) {
+		font = localStorage.getItem('font');
+		if(font == 0) {
+			$('body').css('fontFamily', '"Segoe UI", Helvetica, Arial, sans-serif');
+			$('body').css('fontWeight', 'normal');
+		} else {
+			$('body').css('fontFamily', 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif');
+			$('body').css('fontWeight', 'bold');
+		}
+	}
+
 	var background_color = localStorage.getItem('background-color');
 	if (transition) {
 		$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});

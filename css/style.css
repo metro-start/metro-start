@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:100&v2);
 body {
     font-size: 32px;
     -webkit-font-smoothing: antialiased;
@@ -69,6 +70,13 @@ h1 {
     position: absolute;
     bottom: 15px;
     left: 15px;
+}
+.font-chooser {
+	cursor: pointer;
+	position: absolute;
+	bottom: 15px;
+	left: 150px;
+	width: 400px;
 }
 .option {
 	display: inline-block;
