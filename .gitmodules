@@ -1,6 +1,1 @@
-[submodule "metro-select"]
-	path = lib/metro-select
-	url = git@github.com:chustar/metro-select.git
-[submodule "metro-tabs"]
-	path = lib/metro-tabs
-	url = git://github.com/chustar/metro-tabs.git
+
