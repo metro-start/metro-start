@@ -1,1 +1,4 @@
 
+[submodule "lib/metro-select"]
+	path = lib/metro-select
+	url = git@github.com:metro-start/metro-select.git
