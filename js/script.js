@@ -113,7 +113,9 @@ $(function() {
 	$('#wrench').on('click', function() {		
 		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
 		if (wrench){
-			$('.option').hide('fast');
+			$('.option').hide('fast', function() {
+				$(this).hide();
+			});
 			if(localStorage.getItem('active') == 3) {
 				$('#menu-sel-' + localStorage.getItem('previous')).click();
 			}
