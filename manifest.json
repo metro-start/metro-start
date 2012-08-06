@@ -1,6 +1,7 @@
 {
 	"name": "Metro Start",
 	"version": "4.2.2",
+	"manifest_version": 2,
 	"description": "A start screen based on the Windows Metro UI",
 	"chrome_url_overrides": {
 		"newtab": "start.html"
@@ -13,6 +14,7 @@
 	"permissions": [
 		"http://metro-start.appspot.com/*",
 		"http://www.google.com/ig/api",
+		"http://google-analytics.com/ga.js",
 		"management",
 		"bookmarks"
 	]
