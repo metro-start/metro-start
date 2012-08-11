@@ -9,17 +9,28 @@ function MetroStart($scope, $http) {
 
 	$scope.page = '1';
 	$scope.previous = '0';
-	$scope.changePage = function() {
+	$scope.changePage = function(instant) {
 		// console.log('changePage');
 		// console.log($scope.page);
 		// console.log($scope.previous);
 		var cur = $scope.previous;
 		var tar = $scope.page;
-		var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
-		var oppose = direction == 'left' ? 'right' : 'left';
-		$('.' + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
-	 	$('.' + total[tar]).show('slide', {'direction': direction}, 'fast');					
-
+		//If the page should be switched instantly, do not slide.
+		if(instant) {
+			for(i in total) {
+				if(i == tar) {
+				    $('.' + total[i]).show();
+				   } else {
+				    $('.' + total[i]).hide();
+				}
+			}
+		//if the page is changing slowly, use a slide and 'fast' timer.
+		} else {
+			var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
+			var oppose = direction == 'left' ? 'right' : 'left';
+			$('.' + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
+		 	$('.' + total[tar]).show('slide', {'direction': direction}, 'fast');					
+		}
 		$scope.previous = $scope.page;
 	}
 
@@ -28,7 +39,7 @@ function MetroStart($scope, $http) {
 		'onchange': function() {
 			$scope.$apply(function() {
 				$scope.page = $('#menu').val();
-				$scope.changePage();
+				$scope.changePage(false);
 			});
 			//changeView($('#menu').attr('selectedIndex'));
 		}
@@ -126,6 +137,7 @@ function MetroStart($scope, $http) {
 		}
 	}
 
+	$scope.changePage(true);
 	$scope.updateWeather(true);
 
 	//changeView(localStorage.getItem('active'), true);
