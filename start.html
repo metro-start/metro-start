@@ -1,32 +1,40 @@
-<html>
+<html ng-app ng-csp>
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/reset.css">	
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link rel="stylesheet" type="text/css" href="lib/farbtastic/farbtastic.css">
 		<link rel="stylesheet" type="text/css" href="lib/metro-select/metro-select.css">
 		<script type="text/javascript" src="lib/jquery.js"></script> 
+		<script type="text/javascript" src="lib/angular.js"></script> 
 		<script type="text/javascript" src="lib/jquery-ui.js"></script> 
 		<script type="text/javascript" src="lib/jkl-parsexml.js"></script> 
 		<script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script> 
 		<script type="text/javascript" src="lib/metro-select/metro-select.js"></script> 
+		<script type="text/javascript" src="js/util.js"></script>
+		<script type="text/javascript" src="js/app.js"></script>
 		<script type="text/javascript" src="js/script.js"></script>
 		<script type="text/javascript" src="js/analytics.js"></script>
 		<title>start</title>
 	</head>
-	<body class="background-color">
+	<body class="background-color" ng-controller="MetroStart">
 		<h1 class="title-color">start here . . .</h1>
 		<div>
-			<select id="menu" class="options-color menu">
-				<option>saved links</option>
-				<option>installed apps</option>
-				<option>bookmarks</option>
-				<option class="option temp_color">themes</option>
+			<select id="menu" class="options-color menu" ng-model="page">
+				<option value="0">saved links</option>
+				<option value="1">installed apps</option>
+				<option value="2">bookmarks</option>
+				<option value="3">themes</option>
 			</select>
 		</div>
 		<div class="links collection">
 			<div id="links">
 				<div class="external_selector" id="external_selector_links">
-					<div class="internal_selector" id="internal_selector_links"></div>
+					<div class="internal_selector" id="internal_selector_links">
+						<div class="item" ng-repeat="link in links">
+							<span class="remove option options-color">remove</span>
+							<a ng-href="{{ link.url }}">{{ link.name }}</a>
+						</div>
+					</div>
 				</div>
 				<div class="add">
 					<span id="add" class="options-color option">add</span>
@@ -35,22 +43,50 @@
 		</div>
 		<div class="apps collection">
 			<div id="apps">
-				<div class="external_selector" id="external_selector">
-					<div class="internal_selector" id="internal_selector"></div>
+				<div class="external_selector" id="external_selector_apps">
+					<div class="internal_selector" id="internal_selector_apps">
+						<div class="item" ng-repeat="app in apps">
+							<span class="remove option options-color" id="{{ app.id }}" ng-click="uninstallApp(app)">uninstall</span>
+							<a ng-href="{{ app.appLaunchUrl }}">{{ app.name }}</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="bookmarks collection">
 			<div id="bookmarks">
 				<div class="external_selector" id="external_selector_book">
-					<div class="internal_selector" id="internal_selector_book"></div>
+					<div class="internal_selector" id="internal_selector_book">
+						<div class="bookmark_page" id="bookmark_page_{{ $index }}" ng-repeat="page in pages">
+							<div class="item" ng-repeat="bookmark in page">
+								<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="bookmarkClick(bookmark, $parent.$index)">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
+								</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="themes collection">
 			<div id="themes">
 				<div class="external_selector" id="external_selector_theme">
-					<div class="internal_selector" id="internal_selector_theme"></div>
+					<div class="internal_selector" id="internal_selector_theme">
+						<div class="page" id="local-themes">
+							<div class="options-color">my themes</div>
+							<div class="item" ng-repeat="theme in localThemes">
+								<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
+								<span class="remove options-color small-text" ng-click="removeTheme(theme)">remove</span>
+								<span class="options-color small-text" ng-click="shareTheme(theme)">share</span>
+							</div>
+						</div>
+						<div class="page" id="online-themes">
+							<div class="options-color">online themes</div>
+							<div class="item" ng-repeat="theme in onlineThemes">
+								<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
+								<a class="gallery-bio options-color" ng-href="{{ theme.website }}">{{ theme.author }}</a>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -58,17 +94,21 @@
 			<div id="hide_weather" class="options-color option">hide weather</div>
 			<div id="weather">
 				<div>
-					<span id="where"></span>
+					<span id="where">{{ weather.city }}</span>
 					<span id="edit" class="options-color option">edit</span>
 				</div>
 				<p id="units" class="options-color option">
-				<select id="select-box">
-					<option>fahrenheit</option>
-					<option>celsius</option>
-				</select>
+					<select id="select-box">
+						<option>fahrenheit</option>
+						<option>celsius</option>
+					</select>
 				<p>
-				<p id="temp"></p>
-				<p id="condition"></p>
+				<p id="temp">
+					{{ weather.currentTemp }}<span class="options-color">&deg;{{ weather.unit }}</span> / 
+					{{ weather.highTemp }}<span class="options-color">hi</span> / 
+					{{ weather.lowTemp }}<span class="options-color">lo</span>
+				</p>
+				<p id="condition">{{ weather.condition }}</p>
 			</div>
 		</div>
 		<p class="options-color wrench" id="wrench">wrench</p>
@@ -79,7 +119,7 @@
 			</select>
 		</div>
 		<div class="theme-buttons">
-			<p class="theme-button options-color option" id="reset-theme">reset theme</p>
+			<p class="theme-button options-color option" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
 			<p class="theme-button options-color option" id="edit-theme">edit theme</p>
 		</div>
 		<div class="picker background-color">

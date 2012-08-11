@@ -17,5 +17,6 @@
 		"http://google-analytics.com/ga.js",
 		"management",
 		"bookmarks"
-	]
+	],
+	 "content_security_policy": "script-src 'self' https://ssl.google-analytics.com/ga.js; object-src 'self'"
 }

@@ -162,6 +162,13 @@ h1 {
 	overflow-x: auto;
 	overflow-y: auto;
 }
+.bookmark_item {
+	width: 290px;
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 .item:last-child {
 	margin-bottom: 5px;
 }
