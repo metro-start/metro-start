@@ -23,53 +23,6 @@ $(function() {
 			document.execCommand('selectAll',false,null);
 		}
 	});
-
-	//handle clicking the edit link in weather section
-	$('#edit').on('click', function() {
-		_gaq.push(['_trackEvent', 'edit clicked']);
-
-		var done = function() {
-			var locat = $('#where').text();
-			if(locat.trim() == '') {
-				return;
-			}
-			$('#where').prop('contentEditable', 'false');
-			localStorage.setItem('locat', locat);
-			//updateWeather(true);
-			$('#edit').text('edit');
-		};
-
-		if($('#where').prop('contentEditable') != 'true') {
-			$('#where').prop('contentEditable', 'true');
-			$('#where').focus();
-			document.execCommand('selectAll', false, null);
-			$('#where').on('keydown', function(e) {
-				if(event.keyCode == 13) {
-					e.preventDefault();
-					done();
-				}
-			});
-			$('#edit').text('done');
-		} else {
-			done();
-		}
-	});
-
-	//clicking on the edit theme/done editing theme link
-	$('#edit-theme').on('click', function() {
-		$('#them-gallery:visible').fadeOut('fast');
-		$('.picker').fadeToggle('fast');
-
-		doneEditingTheme();
-	});
-
-	//show the right page and load list of apps on load
-	//updateWeather(false);
-	updateStyle(false);
-	
-	$('.option').hide();
-	$('.picker').hide();
-	$('#color-gallery').hide();
 });
 
 
@@ -103,7 +56,7 @@ var addItem = function(name, url) {
 /**
   Done editing theme. Change name and save theme
   */
-var doneEditingTheme = function() {
+var doneEditingThemes = function() {
 	//If the picker is visible, set the right name for the edit control.
 	if ($('.picker:visible').length) {
 		if($('#edit-theme').text().trim() == 'edit theme') {

@@ -35,10 +35,10 @@ var updateStyle = function(transition) {
 		$('body').animate({'color': main_color}, {duration: 400, queue: false});
 		$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
 	} else {
-		$('.background-color').css('backgroundColor', background_color);
-		$('.title-color').css('color', title_color);
-		$('body').css('color', main_color);
-		$('.options-color').css('color', options_color);
+		style += '.background-color { background-color: ' + background_color + '}';
+		style += '.title-color { color: ' + title_color + '}';
+		style += 'body { color: ' + main_color + '}';
+		style += '.options-color { color: ' + options_color + '}';
 	}
 
 	$('body').children('style').remove();

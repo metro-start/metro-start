@@ -8,6 +8,7 @@ function MetroStart($scope, $http) {
 
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
+	$scope.editThemeButton = 'edit theme';
 
 	//Load defaults
 	(function() {
@@ -47,6 +48,8 @@ function MetroStart($scope, $http) {
 			else if(localStorage.getItem('unit') == 'celcius') localStorage.setItem('unit', '1');
 		}
 
+		$('.option').hide();
+		$('.picker').hide();
 	}());
 
 	// Load list of links
@@ -197,7 +200,7 @@ function MetroStart($scope, $http) {
 		$scope.wrench = !$scope.wrench;
 		//handle guys that have states that can be activated AFTER wrench.
 		$('.picker').fadeOut('fast');
-		//doneEditingTheme();
+		$scope.doneEditingTheme();
 
 		$('#where').prop('contentEditable', 'false');
 		if($('#url').length) $('#url').remove();
@@ -208,7 +211,6 @@ function MetroStart($scope, $http) {
 		updateStyle(false);
 	}
 
-	//Get weather
 	$scope.updateWeather = function(force) {
 		$scope.weather = JSON.parse(localStorage.getItem('weather'));
 		var unit = $scope.units[localStorage.getItem('unit')][0];
@@ -253,6 +255,34 @@ function MetroStart($scope, $http) {
 		}
 	}
 
+	$scope.editWeather = function() {
+		var done = function() {
+			var locat = $('#where').text();
+			if(locat.trim() == '') {
+				return;
+			}
+			$('#where').prop('contentEditable', 'false');
+			localStorage.setItem('locat', locat);
+			$scope.updateWeather(true);
+			$('#edit').text('edit');
+		};
+
+		if($('#where').prop('contentEditable') != 'true') {
+			$('#where').prop('contentEditable', 'true');
+			$('#where').focus();
+			document.execCommand('selectAll', false, null);
+			$('#where').on('keydown', function(e) {
+				if(e.keyCode == 13) {
+					e.preventDefault();
+					done();
+				}
+			});
+			$('#edit').text('done');
+		} else {
+			done();
+		}
+	}
+
 	$scope.clickBookmark = function(bookmark, pageIndex) {
 		if (bookmark.children.length > 0) {
 			$scope.pages.length = pageIndex + 1;
@@ -262,7 +292,6 @@ function MetroStart($scope, $http) {
 		}
 	}
 
-	// Function to uninstall apps
 	$scope.uninstallApp = function(app) {
 		for (id in $scope.apps) {
 			if ($scope.apps[id].id == app.id) {
@@ -273,7 +302,21 @@ function MetroStart($scope, $http) {
 		}
 	}
 
-	// Change to the newly provided theme.
+	$scope.shareTheme = function(theme) {
+		var url = 'http://metro-start.appspot.com/newtheme?' + 
+			'title=' + encodeURIComponent(theme.title) +
+			'&maincolor=' + encodeURIComponent(theme.colors['main-color']) +
+			'&optionscolor=' + encodeURIComponent(theme.colors['options-color']) +
+			'&titlecolor=' + encodeURIComponent(theme.colors['title-color']) +
+			'&backgroundcolor=' + encodeURIComponent(theme.colors['background-color']);
+		window.open(url);
+	}
+
+	$scope.removeTheme = function(theme, index) {
+		$scope.localThemes.splice(index, 1);
+		localStorage.setItem('themes', JSON.stringify($scope.localThemes));
+	}
+
 	$scope.changeTheme = function(newTheme) {
 		$.each(newTheme, function(key, value) {
 			localStorage.setItem(key, value);	
@@ -312,7 +355,37 @@ function MetroStart($scope, $http) {
 		}
 	}
 
+	$scope.clickEditTheme = function() {
+		$('#theme-gallery:visible').fadeOut('fast');
+		$('.picker').fadeToggle('fast');
+
+		$scope.doneEditingTheme();
+	}
+	$scope.doneEditingTheme = function() {
+		if ($('.picker:visible').length) {
+			if($scope.editThemeButton == 'edit theme') {
+				$scope.editThemeButton = 'done editing';
+			} else {
+				$scope.editThemeButton = 'edit theme';
+			}
+
+			//If the text still says untitled, don't save it.
+			if($('#edit-title').text().trim() !== 'untitled') {
+				$scope.localThemes.push({
+					'title': $('#edit-title').text().trim(),
+					'colors': {
+						'options-color': localStorage.getItem('options-color'),
+						'main-color': localStorage.getItem('main-color'),
+						'title-color': localStorage.getItem('title-color'),
+						'background-color': localStorage.getItem('background-color')
+					}
+				});
+				localStorage.setItem('themes', JSON.stringify($scope.localThemes));
+				$('#edit-title').text('untitled');
+			}
+		}
+	}
+
 	$scope.changePage(true);
 	$scope.updateWeather(true);
-
 }

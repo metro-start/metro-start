@@ -75,7 +75,7 @@
 							<div class="options-color">my themes</div>
 							<div class="item" ng-repeat="theme in localThemes">
 								<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
-								<span class="remove options-color small-text" ng-click="removeTheme(theme)">remove</span>
+								<span class="remove options-color small-text" ng-click="removeTheme(theme, $index)">remove</span>
 								<span class="options-color small-text" ng-click="shareTheme(theme)">share</span>
 							</div>
 						</div>
@@ -95,7 +95,7 @@
 			<div id="weather">
 				<div>
 					<span id="where">{{ weather.city }}</span>
-					<span id="edit" class="options-color option">edit</span>
+					<span id="edit" class="options-color option" ng-click="editWeather()">edit</span>
 				</div>
 				<p id="units" class="options-color option">
 					<select id="select-box">
@@ -105,8 +105,8 @@
 				<p>
 				<p id="temp">
 					{{ weather.currentTemp }}<span class="options-color">&deg;{{ weather.unit }}</span> / 
-					{{ weather.highTemp }}<span class="options-color">hi</span> / 
-					{{ weather.lowTemp }}<span class="options-color">lo</span>
+					{{ weather.highTemp }} <span class="options-color">hi</span> / 
+					{{ weather.lowTemp }} <span class="options-color">lo</span>
 				</p>
 				<p id="condition">{{ weather.condition }}</p>
 			</div>
@@ -120,7 +120,7 @@
 		</div>
 		<div class="theme-buttons">
 			<p class="theme-button options-color option" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
-			<p class="theme-button options-color option" id="edit-theme">edit theme</p>
+			<p class="theme-button options-color option" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeButton }}</p>
 		</div>
 		<div class="picker background-color">
 			<div id="edit-title" class="options-color" contentEditable="true">untitled</div>
