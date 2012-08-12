@@ -1,36 +1,3 @@
-/**
-  Change the view to the active tab
-  */
-//function changeView(tar, instant) {
-function changeViews() {
-	var cur = localStorage.getItem('active');
-    localStorage.setItem('active', tar);
-	//If we're changing to the gallery view, save the page we just came from.
-	if (tar == 3) {
-		if (cur == tar) {
-			localStorage.setItem('previous', 1);
-		} else {
-			localStorage.setItem('previous', cur);
-		}
-	}
-	//If the page should be switched instantly, do not slide.
-	if(instant) {
-		for(i in total) {
-			if(i == tar) {
-			    $('.' + total[i]).show();
-			   } else {
-			    $('.' + total[i]).hide();
-			}
-		}
-	//if the page is changing slowly, use a slide and 'fast' timer.
-	} else {
-		var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
-		var oppose = direction == 'left' ? 'right' : 'left';
-		$('.' + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
-	 	$('.' + total[tar]).show('slide', {'direction': direction}, 'fast');					
-	}
-}
-
 var updateStyle = function(transition) {
 	if(localStorage.getItem('hide_weather') == 'true') {
 		$('#hide_weather').text('show weather');

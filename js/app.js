@@ -5,99 +5,213 @@ function MetroStart($scope, $http) {
 		'title-color': '#4a4a4a',
 		'background-color': '#000000'
 	};
-	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 
-	$scope.page = '1';
-	$scope.previous = '0';
-	$scope.changePage = function(instant) {
-		// console.log('changePage');
-		// console.log($scope.page);
-		// console.log($scope.previous);
-		var cur = $scope.previous;
-		var tar = $scope.page;
-		//If the page should be switched instantly, do not slide.
-		if(instant) {
-			for(i in total) {
-				if(i == tar) {
-				    $('.' + total[i]).show();
-				   } else {
-				    $('.' + total[i]).hide();
+	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
+	$scope.units = ['fahrenheit', 'celsius'];
+
+	//Load defaults
+	(function() {
+		if(!localStorage.getItem('hide_weather')) {
+			localStorage.setItem('hide_weather', false);
+		}
+		
+		if(!localStorage.getItem('locat')) {
+			localStorage.setItem('locat', '95123'); 
+		}
+
+		if(!localStorage.getItem('unit')) {
+			localStorage.setItem('unit', '0');
+		}
+
+		if(!localStorage.getItem('themes')) {
+			localStorage.setItem('themes', '[]');
+		}
+
+		if(!localStorage.getItem('links')) {
+			localStorage.setItem('links', '[]');
+		}
+
+		if(!localStorage.getItem('active')) {
+			localStorage.setItem('active', '0');
+			localStorage.setItem('previous', '0');
+		}
+
+		if(!localStorage.getItem('font')) {
+			localStorage.setItem('font', '0');
+		}
+
+		if(!localStorage.getItem('unit')) {
+			localStorage.setItem('unit', '0');
+		} else {
+			if(localStorage.getItem('unit') == 'fahrenheit') localStorage.setItem('unit', '0');
+			else if(localStorage.getItem('unit') == 'celcius') localStorage.setItem('unit', '1');
+		}
+
+	}());
+
+	// Load list of links
+	(function() {
+	    var links = localStorage.getItem('links');
+	    links = JSON.parse(links);
+	    
+		if (links == []) {
+			links.push({'name': 'use the wrench to get started. . . ', 'url': ''});
+			localStorage.setItem('links', JSON.stringify(links));
+		}
+		$scope.links = links;
+	}());
+
+	// Load list of apps
+	(function() {
+		$scope.apps = [{
+			'name': 'Chrome Webstore', 
+			'appLaunchUrl': 'https://chrome.google.com/webstore'
+		}];
+	    chrome.management.getAll(function(res) {
+	        res = res.filter(function(item) { return item.isApp; });
+			$scope.$apply(function() {
+				$scope.apps = $scope.apps.concat(res);
+			});
+			updateStyle(false);
+		//	changeView(localStorage.getItem('active'), true);	
+	    });
+	}());
+
+	// Load list of bookmarks
+	(function() {
+		chrome.bookmarks.getTree(function(data) {
+			$scope.$apply(function() {
+				$scope.pages = [data[0].children];
+			});
+			updateStyle(false);
+		});
+	}());
+
+	// Load themes
+	(function() {
+		// Load local themes from localstorage
+		$scope.localThemes = JSON.parse(localStorage.getItem('themes'));
+
+		// Load online themes from website
+		$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
+			for (i in data) {
+				colors = {};
+				data[i].colors = {
+					'options-color': data[i]['options_color'],
+					'main-color': data[i]['main_color'],
+					'title-color': data[i]['title_color'],
+					'background-color': data[i]['background_color'],
 				}
 			}
-		//if the page is changing slowly, use a slide and 'fast' timer.
-		} else {
-			var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
-			var oppose = direction == 'left' ? 'right' : 'left';
-			$('.' + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
-		 	$('.' + total[tar]).show('slide', {'direction': direction}, 'fast');					
+			$scope.onlineThemes = data;
+		});
+	}());
+
+	// Load first page
+	(function() {
+		var active = localStorage.getItem('active');
+		//If the last page we were at  was the gallery, show the last page before that.
+		if (active == 3) {
+			if (localStorage.getItem('previous')) {
+				localStorage.setItem('active', localStorage.getItem('previous'));
+				localStorage.setItem('previous', 0)
+			} else {
+				localStorage.setItem('active', 0);
+			}
 		}
-		$scope.previous = $scope.page;
-	}
+
+		$scope.page = localStorage.getItem('active');
+		$scope.previous = localStorage.getItem('previous') || '0';
+		$('#menu').attr('selectedIndex', $scope.page);
+	}());
+
+	// Load font and temperature unit
+	(function() {
+		$('#font-chooser').attr('selectedIndex', localStorage.getItem('font'));
+		$('#select-box').attr('selectedIndex', localStorage.getItem('unit'));
+	}());
 
 	//attach the menu selectbox
 	$('#menu').metroSelect({
 		'onchange': function() {
-			$scope.$apply(function() {
-				$scope.page = $('#menu').val();
-				$scope.changePage(false);
-			});
-			//changeView($('#menu').attr('selectedIndex'));
+			$scope.page = $('#menu').attr('selectedIndex');
+			$scope.changePage(false);
 		}
 	});
 
 	//attach the weather selectbox
 	$('#select-box').metroSelect({
 		'onchange': function() {
-			localStorage.setItem('unit', units[$('#select-box').attr('selectedIndex')]);
-			//updateWeather(true);
+			localStorage.setItem('unit', $('#select-box').attr('selectedIndex'));
+			updateStyle(true);
 		}
 	});
 
+	//attach the font selectbox
 	$('#font-chooser').metroSelect({
 		'onchange': function() {
 			localStorage.setItem('font', $('#font-chooser').attr('selectedIndex'));	
-			updateStyle();
+			updateStyle(true);
 		}
 	});
 
-	// Load list of links
-    var links = localStorage.getItem('links');
-    if(links) $scope.links = JSON.parse(links);
-    else $scope.links = [];
-
-	if (links == []) {
-		$scope.links.push({'name': 'use the wrench to get started. . . ', 'url': ''});
-		localStorage.setItem('links', JSON.stringify($scope.list));
-	}
-
-	// Load list of apps
-	$scope.apps = [{
-		'name': 'Chrome Webstore', 
-		'appLaunchUrl': 'https://chrome.google.com/webstore'
-	}];
-    chrome.management.getAll(function(res) {
-        res = res.filter(function(item) { return item.isApp; });
-		$scope.$apply(function() {
-			$scope.apps = $scope.apps.concat(res);
+	//attach color pickers
+	$.each($scope.defaultTheme, function(key, value) {
+		$('#' + key).farbtastic(function(color) {
+			localStorage.setItem(key, color);
+			$('#' + key + '-display').text(color);
+			updateStyle(false);
 		});
-		updateStyle(false);
-	//	changeView(localStorage.getItem('active'), true);	
-    });
 
-	// Load list of bookmarks
-	chrome.bookmarks.getTree(function(data) {
-		$scope.$apply(function() {
-//			$scope._bookmarks = data[0].children;
-			$scope.pages = [data[0].children];
+		//If you press enter in the text box, set it a the new color.
+		$('#' + key + '-display').on('keydown', function(e) {
+			if(e.keyCode == 13) {
+				$.farbtastic('#' + key).setColor($(this).text());
+				return false;
+			}
 		});
-		updateStyle(false);
-	//	changeView(localStorage.getItem('active'), true);	
+
+		$('#' + key + '-display').on('blur', function(e) {
+			$.farbtastic('#' + key).setColor($(this).text());
+		});
+
+		if(localStorage.getItem(key)) {
+			$.farbtastic('#' + key).setColor(localStorage.getItem(key));
+		} else {
+			$.farbtastic('#' + key).setColor(value);
+		}
 	});
 
+	$scope.wrench = false;
+	$scope.clickWrench = function() {
+		if ($scope.wrench){
+			$('.option').hide('fast', function() {
+				$(this).hide();
+			});
+			if(localStorage.getItem('active') == 3) {
+				$('#menu-sel-' + localStorage.getItem('previous')).click();
+			}
+		} else {
+			$('.option').show('fast');
+		}
+		$scope.wrench = !$scope.wrench;
+		//handle guys that have states that can be activated AFTER wrench.
+		$('.picker').fadeOut('fast');
+		//doneEditingTheme();
+
+		$('#where').prop('contentEditable', 'false');
+		if($('#url').length) $('#url').remove();
+	}
+
+	$scope.hideWeather = function() {
+		localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
+		updateStyle(false);
+	}
+
 	//Get weather
-	$scope.weather = JSON.parse(localStorage.getItem('weather'));
 	$scope.updateWeather = function(force) {
-		var unit = localStorage.getItem('unit')[0];
+		$scope.weather = JSON.parse(localStorage.getItem('weather'));
+		var unit = $scope.units[localStorage.getItem('unit')][0];
 	    var locat = localStorage.getItem('locat');
 	    var time = localStorage.getItem('time');
 	    var cTime = new Date();
@@ -117,6 +231,7 @@ function MetroStart($scope, $http) {
 								'currentTemp': weather.current_conditions.temp_f.data,
 								'highTemp': weather.forecast_conditions[0].high.data,
 								'lowTemp': weather.forecast_conditions[0].low.data,
+								'condition': weather.current_conditions.condition.data.toLowerCase(),
 								'unit': unit,
 							}
 						} else {
@@ -125,6 +240,7 @@ function MetroStart($scope, $http) {
 								'currentTemp': toCelcius(weather.current_conditions.temp_f.data),
 								'highTemp': toCelcius(weather.forecast_conditions[0].high.data),
 								'lowTemp': toCelcius(weather.forecast_conditions[0].low.data),
+								'condition': weather.current_conditions.condition.data.toLowerCase(),
 								'unit': unit,
 							}
 						}
@@ -137,33 +253,7 @@ function MetroStart($scope, $http) {
 		}
 	}
 
-	$scope.changePage(true);
-	$scope.updateWeather(true);
-
-	//changeView(localStorage.getItem('active'), true);
-
-	// Load local themes from localstorage
-	$scope.localThemes = JSON.parse(localStorage.getItem('themes'));
-
-	// Load online themes from website
-	$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
-		for (i in data) {
-			colors = {};
-			data[i].colors = {
-				'options-color': data[i]['options_color'],
-				'main-color': data[i]['main_color'],
-				'title-color': data[i]['title_color'],
-				'background-color': data[i]['background_color'],
-			}
-		}
-		$scope.onlineThemes = data;
-	});
-
-	$scope.ellipsis = function(title) {
-		return (title.length > 22 ? (title.substr(0, 17) + '...') : title);
-	}
-
-	$scope.bookmarkClick = function(bookmark, pageIndex) {
+	$scope.clickBookmark = function(bookmark, pageIndex) {
 		if (bookmark.children.length > 0) {
 			$scope.pages.length = pageIndex + 1;
 			$scope.pages.push(bookmark.children);
@@ -183,9 +273,7 @@ function MetroStart($scope, $http) {
 		}
 	}
 
-	/**
-	  Change to the newly provided theme.
-	  */
+	// Change to the newly provided theme.
 	$scope.changeTheme = function(newTheme) {
 		$.each(newTheme, function(key, value) {
 			localStorage.setItem(key, value);	
@@ -196,6 +284,35 @@ function MetroStart($scope, $http) {
 		$.each(newTheme, function(key, value) {
 			$.farbtastic('#' + key).setColor(value);
 		});
-
 	}
+
+	$scope.changePage = function(instant) {
+		$scope.previous = localStorage.getItem('active');
+		localStorage.setItem('previous', $scope.previous);
+		localStorage.setItem('active', $scope.page);
+
+		var cur = $scope.previous;
+		var tar = $scope.page;
+		var total = $scope.total;
+		//If the page should be switched instantly, do not slide.
+		if(instant) {
+			for(i in total) {
+				if(i == tar) {
+				    $('.' + total[i]).show();
+				   } else {
+				    $('.' + total[i]).hide();
+				}
+			}
+		//if the page is changing slowly, use a slide and 'fast' timer.
+		} else {
+			var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
+			var oppose = direction == 'left' ? 'right' : 'left';
+			$('.' + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
+		 	$('.' + total[tar]).show('slide', {'direction': direction}, 'fast');					
+		}
+	}
+
+	$scope.changePage(true);
+	$scope.updateWeather(true);
+
 }

@@ -1,108 +1,7 @@
-//globals (kinda?)
-var total = ['links', 'apps', 'bookmarks', 'themes'];
-var units = ['fahrenheit', 'celsius'];
 var link_page = '';
-var wrench = false;
 
-var defaultTheme = {
-	'options-color': '#ff0000',
-	'main-color': '#ffffff',
-	'title-color': '#4a4a4a',
-	'background-color': '#000000'
-};
 	
 $(function() {	
-	//set defaults
-	if(!localStorage.getItem('hide_weather')) {
-		localStorage.setItem('hide_weather', false);
-	}
-
-	if(localStorage.getItem('active')) {
-		var active = localStorage.getItem('active');
-		//If the last page we were at  was the gallery, show the last page before that.
-		if (active == 3) {
-			if (localStorage.getItem('previous')) {
-				active = localStorage.getItem('previous');
-				localStorage.setItem('active', active);
-			} else {
-				active = 1;
-			}
-		}
-		$('#menu').prop('selectedIndex', active);
-	} else {
-		localStorage.setItem('active', 1);
-	}
-	
-	if(!localStorage.getItem('locat')) {
-		localStorage.setItem('locat', '95123'); 
-	}
-
-	if(!localStorage.getItem('unit')) {
-		localStorage.setItem('unit', 'fahrenheit');
-	}
-
-	if(!localStorage.getItem('themes')) {
-		localStorage.setItem('themes', '[]');
-	}
-
-	if(localStorage.getItem('font')) {
-		$('#font-chooser').prop('selectedIndex', localStorage.getItem('font'));
-	} else {
-		localStorage.setItem('font', 0);
-	}
-
-	$('#select-box').val(localStorage.getItem('unit'));
-
-	//attach color pickers
-	$.each(defaultTheme, function(key, value) {
-		$('#' + key).farbtastic(function(color) {
-			localStorage.setItem(key, color);
-			$('#' + key + '-display').text(color);
-			updateStyle(false);
-		});
-
-		//If you press enter in the text box, set it a the new color.
-		$('#' + key + '-display').on('keydown', function(e) {
-			if(e.keyCode == 13) {
-				$.farbtastic('#' + key).setColor($(this).text());
-				return false;
-			}
-		});
-
-		$('#' + key + '-display').on('blur', function(e) {
-			$.farbtastic('#' + key).setColor($(this).text());
-		});
-
-		if(localStorage.getItem(key)) {
-			$.farbtastic('#' + key).setColor(localStorage.getItem(key));
-		} else {
-			$.farbtastic('#' + key).setColor(value);
-		}
-	});
-
-	//Attaching event handlers
-	//show all options on the page.
-	$('#wrench').on('click', function() {		
-		_gaq.push(['_trackEvent', 'Page Action', 'wrench clicked']);
-		if (wrench){
-			$('.option').hide('fast', function() {
-				$(this).hide();
-			});
-			if(localStorage.getItem('active') == 3) {
-				$('#menu-sel-' + localStorage.getItem('previous')).click();
-			}
-		} else {
-			$('.option').show('fast');
-		}
-		wrench = !wrench;
-		//handle guys that have states that can be activated AFTER wrench.
-		$('.picker').fadeOut('fast');
-		doneEditingTheme();
-
-		$('#where').prop('contentEditable', 'false');
-		if($('#url').length) $('#url').remove();
-	});
-
 	//Called when addding a new link to the links pages
 	$('#add').on('click', function() {
 		_gaq.push(['_trackEvent', 'Page Action', 'add clicked']);
@@ -123,13 +22,6 @@ $(function() {
 			element.focus();
 			document.execCommand('selectAll',false,null);
 		}
-	});
-
-	//toggles the weather on and off
-	$('#hide_weather').on('click', function() {
-		localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
-		updateStyle(false);
-		_gaq.push(['_trackEvent', 'Page Action', 'hide weather clicked']);
 	});
 
 	//handle clicking the edit link in weather section

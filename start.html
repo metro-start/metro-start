@@ -23,7 +23,7 @@
 				<option value="0">saved links</option>
 				<option value="1">installed apps</option>
 				<option value="2">bookmarks</option>
-				<option value="3">themes</option>
+				<option value="3" class="option">themes</option>
 			</select>
 		</div>
 		<div class="links collection">
@@ -59,7 +59,7 @@
 					<div class="internal_selector" id="internal_selector_book">
 						<div class="bookmark_page" id="bookmark_page_{{ $index }}" ng-repeat="page in pages">
 							<div class="item" ng-repeat="bookmark in page">
-								<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="bookmarkClick(bookmark, $parent.$index)">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
+								<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
 								</a>
 							</div>
 						</div>
@@ -91,7 +91,7 @@
 			</div>
 		</div>
 		<div class="weather">
-			<div id="hide_weather" class="options-color option">hide weather</div>
+			<div id="hide_weather" class="options-color option" ng-click="hideWeather()">hide weather</div>
 			<div id="weather">
 				<div>
 					<span id="where">{{ weather.city }}</span>
@@ -99,8 +99,8 @@
 				</div>
 				<p id="units" class="options-color option">
 					<select id="select-box">
-						<option>fahrenheit</option>
-						<option>celsius</option>
+						<option value="0">fahrenheit</option>
+						<option value="1">celsius</option>
 					</select>
 				<p>
 				<p id="temp">
@@ -111,11 +111,11 @@
 				<p id="condition">{{ weather.condition }}</p>
 			</div>
 		</div>
-		<p class="options-color wrench" id="wrench">wrench</p>
+		<p class="options-color wrench" id="wrench" ng-click="clickWrench()">wrench</p>
 		<div class="options-color font-chooser option">
 			<select id="font-chooser">
-				<option>regular fonts</option>
-				<option>thin fonts</option>
+				<option value="0">regular fonts</option>
+				<option value="1">thin fonts</option>
 			</select>
 		</div>
 		<div class="theme-buttons">
