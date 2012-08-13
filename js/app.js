@@ -47,9 +47,6 @@ function MetroStart($scope, $http) {
 			if(localStorage.getItem('unit') == 'fahrenheit') localStorage.setItem('unit', '0');
 			else if(localStorage.getItem('unit') == 'celcius') localStorage.setItem('unit', '1');
 		}
-
-		$('.option').hide();
-		$('.picker').hide();
 	}());
 
 	// Load list of links
@@ -196,6 +193,7 @@ function MetroStart($scope, $http) {
 			}
 		} else {
 			$('.option').show('fast');
+			if ($('#hide-rule').length) $('#hide-rule').remove();
 		}
 		$scope.wrench = !$scope.wrench;
 		//handle guys that have states that can be activated AFTER wrench.
@@ -283,6 +281,18 @@ function MetroStart($scope, $http) {
 		}
 	}
 
+	$scope.saveLink = function() {
+		if(!$scope.newUrl.match(/https?\:\/\//)) {
+			$scope.newUrl = 'http://' + $scope.newUrl;
+		}
+		$scope.links.push({
+			'name': $scope.newUrl.toLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
+			'url': $scope.newUrl,
+		});
+		$scope.newUrl = '';
+		localStorage.setItem('links', JSON.stringify($scope.links));
+	}
+
 	$scope.clickBookmark = function(bookmark, pageIndex) {
 		if (bookmark.children.length > 0) {
 			$scope.pages.length = pageIndex + 1;
@@ -361,6 +371,7 @@ function MetroStart($scope, $http) {
 
 		$scope.doneEditingTheme();
 	}
+
 	$scope.doneEditingTheme = function() {
 		if ($('.picker:visible').length) {
 			if($scope.editThemeButton == 'edit theme') {
@@ -388,4 +399,7 @@ function MetroStart($scope, $http) {
 
 	$scope.changePage(true);
 	$scope.updateWeather(true);
+
+	$('.option').hide();
+	$('.picker').hide();
 }

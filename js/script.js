@@ -52,37 +52,6 @@ var addItem = function(name, url) {
 	updateStyle(false);
 }
 
-
-/**
-  Done editing theme. Change name and save theme
-  */
-var doneEditingThemes = function() {
-	//If the picker is visible, set the right name for the edit control.
-	if ($('.picker:visible').length) {
-		if($('#edit-theme').text().trim() == 'edit theme') {
-			$('#edit-theme').text('done editing');
-		} else {
-			$('#edit-theme').text('edit theme');
-		}
-
-		//If the text still says untitled, don't save it.
-		if($('#edit-title').text().trim() !== 'untitled') {
-			var themes = JSON.parse(localStorage.getItem('themes'));
-			themes.push({
-				'title': $('#edit-title').text().trim(),
-				'colors': {
-					'options-color': localStorage.getItem('options-color'),
-					'main-color': localStorage.getItem('main-color'),
-					'title-color': localStorage.getItem('title-color'),
-					'background-color': localStorage.getItem('background-color')
-				}
-			});
-			localStorage.setItem('themes', JSON.stringify(themes));
-			$('#edit-title').text('untitled');
-		}
-	}
-};
-
 /**
   Save the newly created link
   */

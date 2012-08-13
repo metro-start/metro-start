@@ -26,6 +26,7 @@ var updateStyle = function(transition) {
 	var main_color = localStorage.getItem('main-color');
 	var title_color = localStorage.getItem('title-color');
 
+	style += '* { border-color: ' + options_color + '}';
 	style += '::-webkit-scrollbar { background: ' + background_color + '}';
 	style += '::-webkit-scrollbar-thumb { background: ' + options_color + '}';
 
@@ -41,8 +42,8 @@ var updateStyle = function(transition) {
 		style += '.options-color { color: ' + options_color + '}';
 	}
 
-	$('body').children('style').remove();
-	$('body').append('<style>' + style + '</style>');
+	$('#new-style').remove();
+	$('body').append('<style id="new-style">' + style + '</style>');
 }
 
 /**

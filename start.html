@@ -12,7 +12,6 @@
 		<script type="text/javascript" src="lib/metro-select/metro-select.js"></script> 
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/app.js"></script>
-		<script type="text/javascript" src="js/script.js"></script>
 		<script type="text/javascript" src="js/analytics.js"></script>
 		<title>start</title>
 	</head>
@@ -31,14 +30,15 @@
 				<div class="external_selector" id="external_selector_links">
 					<div class="internal_selector" id="internal_selector_links">
 						<div class="item" ng-repeat="link in links">
-							<span class="remove option options-color">remove</span>
+							<span class="remove option options-color hide">remove</span>
 							<a ng-href="{{ link.url }}">{{ link.name }}</a>
 						</div>
 					</div>
 				</div>
-				<div class="add">
-					<span id="add" class="options-color option">add</span>
-				</div>
+					<form ng-submit="saveLink()" class="add">
+						<input type="text" ng-model="newUrl" placeholder="http://" class="url option" size="24">
+						<input type="submit" class="options-color option" value="add">
+					</form>
 			</div>
 		</div>
 		<div class="apps collection">
@@ -46,7 +46,7 @@
 				<div class="external_selector" id="external_selector_apps">
 					<div class="internal_selector" id="internal_selector_apps">
 						<div class="item" ng-repeat="app in apps">
-							<span class="remove option options-color" id="{{ app.id }}" ng-click="uninstallApp(app)">uninstall</span>
+							<span class="remove option options-color hide" id="{{ app.id }}" ng-click="uninstallApp(app)">uninstall</span>
 							<a ng-href="{{ app.appLaunchUrl }}">{{ app.name }}</a>
 						</div>
 					</div>
@@ -114,7 +114,7 @@
 		<p class="options-color wrench" id="wrench" ng-click="clickWrench()">wrench</p>
 		<div class="options-color font-chooser option">
 			<select id="font-chooser">
-				<option value="0">regular fonts</option>
+				<option value="0">normal fonts</option>
 				<option value="1">thin fonts</option>
 			</select>
 		</div>
@@ -149,5 +149,10 @@
 				<div id="options-color"></div>
 			</div>
 		</div>
+		<style type="text/css" id="hide-rule">
+			.hide {
+				display: none;
+			}
+		</style>
 	</body>
 </html>

@@ -184,3 +184,28 @@ h1 {
 		zoom: 0.8;
 	}
 }
+
+.hide {
+}
+.url {
+}
+.add {
+	margin-left: 50px;
+}
+input {
+	background: none;
+	font-size: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	background-color: inherit;
+	-webkit-font-smoothing: inherit;
+
+}
+input[type="text"] {
+	border-style: solid;
+	border-width: 1px;
+	padding: 2px;
+}
+input[type="submit"] {
+	border: none;
+}
