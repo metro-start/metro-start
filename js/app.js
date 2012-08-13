@@ -109,19 +109,20 @@ function MetroStart($scope, $http) {
 
 	// Load first page
 	(function() {
-		var active = localStorage.getItem('active');
+		var previous = localStorage.getItem('previous');
 		//If the last page we were at  was the gallery, show the last page before that.
-		if (active == 3) {
-			if (localStorage.getItem('previous')) {
-				localStorage.setItem('active', localStorage.getItem('previous'));
-				localStorage.setItem('previous', 0)
+		if (localStorage.getItem('active') == 3) {
+			if (previous && previous != 3) {
+				localStorage.setItem('active', previous);
+				localStorage.setItem('previous', (previous + 1) % 3)
 			} else {
 				localStorage.setItem('active', 0);
+				localStorage.setItem('previous', 1)
 			}
 		}
 
 		$scope.page = localStorage.getItem('active');
-		$scope.previous = localStorage.getItem('previous') || '0';
+		$scope.previous = previous || '0';
 		$('#menu').attr('selectedIndex', $scope.page);
 	}());
 
@@ -134,8 +135,10 @@ function MetroStart($scope, $http) {
 	//attach the menu selectbox
 	$('#menu').metroSelect({
 		'onchange': function() {
-			$scope.page = $('#menu').attr('selectedIndex');
-			$scope.changePage(false);
+			if ($scope.page != $('#menu').attr('selectedIndex')) {
+				$scope.page = $('#menu').attr('selectedIndex');
+				$scope.changePage(false);
+			}
 		}
 	});
 
