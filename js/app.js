@@ -192,8 +192,11 @@ function MetroStart($scope, $http) {
 				$('#menu-sel-' + localStorage.getItem('previous')).click();
 			}
 		} else {
-			$('.option').show('fast');
-			if ($('#hide-rule').length) $('#hide-rule').remove();
+			$('.option').show('fast').css('display', 'inline');
+			if ($('#hide-rule').length) {
+				$('#hide-rule').remove();
+				$('.picker').hide();
+			}
 		}
 		$scope.wrench = !$scope.wrench;
 		//handle guys that have states that can be activated AFTER wrench.
@@ -399,7 +402,4 @@ function MetroStart($scope, $http) {
 
 	$scope.changePage(true);
 	$scope.updateWeather(true);
-
-	$('.option').hide();
-	$('.picker').hide();
 }
