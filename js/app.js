@@ -194,8 +194,8 @@ function MetroStart($scope, $http) {
 		} else {
 			$('.option').show('fast').css('display', 'inline');
 			if ($('#hide-rule').length) {
-				$('#hide-rule').remove();
-				$('.picker').hide();
+				$('#hide-rule').remove(); //Remove the hide-rule css rule
+				$('.picker').hide(); //Prevents flashing it on screen when rule removed
 			}
 		}
 		$scope.wrench = !$scope.wrench;
@@ -296,6 +296,11 @@ function MetroStart($scope, $http) {
 		localStorage.setItem('links', JSON.stringify($scope.links));
 	}
 
+	$scope.removeLink = function(index){
+		$scope.links.splice(index, 1);
+		localStorage.setItem('links', JSON.stringify($scope.links));
+	}
+
 	$scope.clickBookmark = function(bookmark, pageIndex) {
 		if (bookmark.children.length > 0) {
 			$scope.pages.length = pageIndex + 1;
@@ -304,6 +309,15 @@ function MetroStart($scope, $http) {
 			return false;
 		}
 	}
+
+	$scope.removeBookmark = function(bookmark, pageIndex, bookmarkIndex) {
+		chrome.bookmarks.removeTree(bookmark.id, function() {
+			$scope.$apply(function() {
+				$scope.pages[pageIndex].splice(bookmarkIndex, 1);
+			});
+		});
+	}
+
 
 	$scope.uninstallApp = function(app) {
 		for (id in $scope.apps) {

@@ -6,6 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/metro-select/metro-select.css">
 		<script type="text/javascript" src="lib/jquery.js"></script> 
 		<script type="text/javascript" src="lib/angular.js"></script> 
+		<script type="text/javascript" src="lib/ngif/ngif.js"></script> 
 		<script type="text/javascript" src="lib/jquery-ui.js"></script> 
 		<script type="text/javascript" src="lib/jkl-parsexml.js"></script> 
 		<script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script> 
@@ -30,8 +31,8 @@
 				<div class="external_selector" id="external_selector_links">
 					<div class="internal_selector" id="internal_selector_links">
 						<div class="item" ng-repeat="link in links">
-							<span class="remove option options-color hide">remove</span>
-							<a ng-href="{{ link.url }}">{{ link.name }}</a>
+							<a class="title" ng-href="{{ link.url }}">{{ link.name }}</a>
+							<span class="remove option options-color small-text" ng-click="removeLink($index)">remove</span>
 						</div>
 					</div>
 				</div>
@@ -46,8 +47,9 @@
 				<div class="external_selector" id="external_selector_apps">
 					<div class="internal_selector" id="internal_selector_apps">
 						<div class="item" ng-repeat="app in apps">
-							<span class="remove option options-color hide" id="{{ app.id }}" ng-click="uninstallApp(app)">uninstall</span>
-							<a ng-href="{{ app.appLaunchUrl }}">{{ app.name }}</a>
+							<a class="title" ng-href="{{ app.appLaunchUrl }}">{{ app.name }}</a>
+								<span class="remove option options-color small-text" ng-click="uninstallApp(app)" ngm-if="app.id">uninstall</span>
+								<a class="option options-color small-text" ngm-if="app.optionsUrl" ng-href="{{ app.optionsUrl }}">options</a>
 						</div>
 					</div>
 				</div>
@@ -61,6 +63,7 @@
 							<div class="item" ng-repeat="bookmark in page">
 								<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
 								</a>
+								<span class="remove option options-color small-text" ng-click="removeBookmark(bookmark, $parent.$index, $index)">remove</span>								
 							</div>
 						</div>
 					</div>

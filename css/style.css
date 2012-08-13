@@ -18,7 +18,7 @@ a {
 	margin-left: 35px;
 	min-width: 450px;
 }
-.item, #links li {
+#links li {
 	cursor: pointer;
     margin-bottom: 25px;
 }
@@ -60,9 +60,10 @@ h1 {
 }
 .small-text {
     font-size: 24px;
-    font-style: normal;
+/*    font-style: normal; */
 	display: inline-block;
-	margin-right: 10px;
+	margin-right: 20px;
+	float: left;
 }
 .wrench {
     cursor: pointer;
@@ -169,6 +170,10 @@ h1 {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+.item {
+	height: 55px;
+	margin-bottom: 10px;
+}
 .item:last-child {
 	margin-bottom: 5px;
 }
@@ -208,4 +213,7 @@ input[type="text"] {
 }
 input[type="submit"] {
 	border: none;
+}
+.title {
+	display: block;
 }
