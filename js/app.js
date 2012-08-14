@@ -59,6 +59,8 @@ function MetroStart($scope, $http) {
 			localStorage.setItem('links', JSON.stringify(links));
 		}
 		$scope.links = links;
+//		$scope.linksPages = new Page();
+//		$scope.linksPages.addAll(links);
 	}());
 
 	// Load list of apps
@@ -320,7 +322,6 @@ function MetroStart($scope, $http) {
 			});
 		});
 	}
-
 
 	$scope.uninstallApp = function(app) {
 		for (id in $scope.apps) {

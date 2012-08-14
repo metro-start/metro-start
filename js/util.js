@@ -1,3 +1,48 @@
+var Pages = function() {
+	this.rows = 4;
+	this.pages = [[]];
+
+	this._compact = function() {
+		var pages = this.pages;
+		var rows = this.rows;
+		for (index = 0; index < pages.length; index++) {
+			while (pages[index].length < rows && index < pages.length - 1) {
+				pages[index].push(pages[index + 1].shift());
+			}
+		}
+		for (index = pages.length - 1; index >= 0; index--) {
+			if (pages[index].length == 0) {
+				pages.pop();
+			} else {
+				break;
+			}
+		}
+		if (pages.length == 0) pages.push([]);
+		if (pages[pages.length - 1].length == rows) pages.push([]);
+	}
+
+	this.add = function(row) {
+		this._compact();
+		this.pages[this.pages.length - 1].push(row);
+	}
+
+	this.remove = function(page, index) {
+		this.pages[page].splice(index, 1);
+		this._compact();
+	}
+
+	this.addAll = function(rows) {
+		for(index = 0; index < rows; index++) {
+			this.pages[this.pages.length - 1].push(row);
+		}
+		this._compact();
+	}
+
+	this.flatten = function() {
+		return this.pages.reduce(function(a, b) { return a.concat(b) });
+	}
+}
+
 var updateStyle = function(transition) {
 	if(localStorage.getItem('hide_weather') == 'true') {
 		$('#hide_weather').text('show weather');
