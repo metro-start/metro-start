@@ -31,9 +31,9 @@ var Pages = function() {
 		this._compact();
 	}
 
-	this.addAll = function(rows) {
-		for(index = 0; index < rows; index++) {
-			this.pages[this.pages.length - 1].push(row);
+	this.addAll = function(newRows) {
+		for(index = 0; index < newRows.length; index++) {
+			this.pages[this.pages.length - 1].push(newRows[index]);
 		}
 		this._compact();
 	}

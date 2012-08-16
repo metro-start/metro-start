@@ -30,9 +30,11 @@
 			<div id="links">
 				<div class="external_selector" id="external_selector_links">
 					<div class="internal_selector" id="internal_selector_links">
-						<div class="item" ng-repeat="link in links">
-							<a class="title" ng-href="{{ link.url }}">{{ link.name }}</a>
-							<span class="remove option options-color small-text" ng-click="removeLink($index)">remove</span>
+						<div class="page" ng-repeat="page in links.pages">
+							<div class="item" ng-repeat="link in page">
+								<a class="title" ng-href="{{ link.url }}">{{ link.name }}</a>
+								<span class="remove option options-color small-text" ng-click="removeLink($index)">remove</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -46,10 +48,12 @@
 			<div id="apps">
 				<div class="external_selector" id="external_selector_apps">
 					<div class="internal_selector" id="internal_selector_apps">
-						<div class="item" ng-repeat="app in apps">
-							<a class="title" ng-href="{{ app.appLaunchUrl }}">{{ app.name }}</a>
-								<span class="remove option options-color small-text" ng-click="uninstallApp(app)" ngm-if="app.id">uninstall</span>
-								<a class="option options-color small-text" ngm-if="app.optionsUrl" ng-href="{{ app.optionsUrl }}">options</a>
+						<div class="page" ng-repeat="page in apps.pages">
+							<div class="item" ng-repeat="app in page">
+								<a class="title" ng-href="{{ app.appLaunchUrl }}">{{ app.name }}</a>
+									<span class="remove option options-color small-text" ng-click="uninstallApp(app)" ngm-if="app.id">uninstall</span>
+									<a class="option options-color small-text" ngm-if="app.optionsUrl" ng-href="{{ app.optionsUrl }}">options</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -59,7 +63,7 @@
 			<div id="bookmarks">
 				<div class="external_selector" id="external_selector_book">
 					<div class="internal_selector" id="internal_selector_book">
-						<div class="bookmark_page" id="bookmark_page_{{ $index }}" ng-repeat="page in pages">
+						<div class="bookmark_page" id="bookmark_page_{{ $index }}" ng-repeat="page in bookmarks">
 							<div class="item" ng-repeat="bookmark in page">
 								<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
 								</a>
@@ -74,17 +78,17 @@
 			<div id="themes">
 				<div class="external_selector" id="external_selector_theme">
 					<div class="internal_selector" id="internal_selector_theme">
-						<div class="page" id="local-themes">
-							<div class="options-color">my themes</div>
-							<div class="item" ng-repeat="theme in localThemes">
+						<div class="options-color">my themes</div>
+						<div class="page" id="local-themes" ng-repeat="page in localThemes.pages">
+							<div class="item" ng-repeat="theme in page">
 								<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
 								<span class="remove options-color small-text" ng-click="removeTheme(theme, $index)">remove</span>
 								<span class="options-color small-text" ng-click="shareTheme(theme)">share</span>
 							</div>
 						</div>
-						<div class="page" id="online-themes">
-							<div class="options-color">online themes</div>
-							<div class="item" ng-repeat="theme in onlineThemes">
+						<div class="options-color">online themes</div>
+						<div class="page" id="online-themes" ng-repeat="page in onlineThemes">
+							<div class="item" ng-repeat="theme in page">
 								<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
 								<a class="gallery-bio options-color" ng-href="{{ theme.website }}">{{ theme.author }}</a>
 							</div>

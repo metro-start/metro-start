@@ -58,22 +58,22 @@ function MetroStart($scope, $http) {
 			links.push({'name': 'use the wrench to get started. . . ', 'url': ''});
 			localStorage.setItem('links', JSON.stringify(links));
 		}
-		$scope.links = links;
-//		$scope.linksPages = new Page();
-//		$scope.linksPages.addAll(links);
+		$scope.links = new Pages();
+		$scope.links.addAll(links);
+		console.log($scope.links)
 	}());
 
 	// Load list of apps
 	(function() {
-		$scope.apps = [{
+		$scope.apps = new Pages();
+		$scope.apps.add({
 			'name': 'Chrome Webstore', 
 			'appLaunchUrl': 'https://chrome.google.com/webstore'
-		}];
+		});
 	    chrome.management.getAll(function(res) {
 	        res = res.filter(function(item) { return item.isApp; });
-			$scope.$apply(function() {
-				$scope.apps = $scope.apps.concat(res);
-			});
+			$scope.apps.addAll(res);
+//			console.log($scope)
 			updateStyle(false);
 		//	changeView(localStorage.getItem('active'), true);	
 	    });
@@ -83,7 +83,7 @@ function MetroStart($scope, $http) {
 	(function() {
 		chrome.bookmarks.getTree(function(data) {
 			$scope.$apply(function() {
-				$scope.pages = [data[0].children];
+				$scope.bookmarks = [data[0].children];
 			});
 			updateStyle(false);
 		});
@@ -92,7 +92,8 @@ function MetroStart($scope, $http) {
 	// Load themes
 	(function() {
 		// Load local themes from localstorage
-		$scope.localThemes = JSON.parse(localStorage.getItem('themes'));
+		$scope.localThemes = new Pages();
+		$scope.localThemes.addAll(JSON.parse(localStorage.getItem('themes')));
 
 		// Load online themes from website
 		$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
@@ -105,7 +106,8 @@ function MetroStart($scope, $http) {
 					'background-color': data[i]['background_color'],
 				}
 			}
-			$scope.onlineThemes = data;
+			$scope.onlineThemes = new Pages();
+			$scope.onlineThemes.addAll(data);
 		});
 	}());
 
