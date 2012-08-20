@@ -33,7 +33,7 @@
 						<div class="page" ng-repeat="page in links.pages">
 							<div class="item" ng-repeat="link in page">
 								<a class="title" ng-href="{{ link.url }}">{{ link.name }}</a>
-								<span class="remove option options-color small-text" ng-click="removeLink($index)">remove</span>
+								<span class="remove option options-color small-text" ng-click="removeLink($parent.$index, $index)">remove</span>
 							</div>
 						</div>
 					</div>
@@ -51,7 +51,7 @@
 						<div class="page" ng-repeat="page in apps.pages">
 							<div class="item" ng-repeat="app in page">
 								<a class="title" ng-href="{{ app.appLaunchUrl }}">{{ app.name }}</a>
-									<span class="remove option options-color small-text" ng-click="uninstallApp(app)" ngm-if="app.id">uninstall</span>
+									<span class="remove option options-color small-text" ng-click="uninstallApp(app, $parent.$index, $index)" ngm-if="app.id">uninstall</span>
 									<a class="option options-color small-text" ngm-if="app.optionsUrl" ng-href="{{ app.optionsUrl }}">options</a>
 							</div>
 						</div>
@@ -78,19 +78,23 @@
 			<div id="themes">
 				<div class="external_selector" id="external_selector_theme">
 					<div class="internal_selector" id="internal_selector_theme">
-						<div class="options-color">my themes</div>
-						<div class="page" id="local-themes" ng-repeat="page in localThemes.pages">
-							<div class="item" ng-repeat="theme in page">
-								<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
-								<span class="remove options-color small-text" ng-click="removeTheme(theme, $index)">remove</span>
-								<span class="options-color small-text" ng-click="shareTheme(theme)">share</span>
+						<div class="column">
+							<div class="options-color">my themes</div>
+							<div class="page" id="local-themes" ng-repeat="page in localThemes.pages">
+								<div class="item" ng-repeat="theme in page">
+									<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
+									<span class="remove options-color small-text" ng-click="removeTheme($parent.$index, $index)">remove</span>
+									<span class="options-color small-text" ng-click="shareTheme(theme)">share</span>
+								</div>
 							</div>
 						</div>
-						<div class="options-color">online themes</div>
-						<div class="page" id="online-themes" ng-repeat="page in onlineThemes">
-							<div class="item" ng-repeat="theme in page">
-								<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
-								<a class="gallery-bio options-color" ng-href="{{ theme.website }}">{{ theme.author }}</a>
+						<div>
+							<div class="options-color">online themes</div>
+							<div class="page" id="online-themes" ng-repeat="page in onlineThemes.pages">
+								<div class="item" ng-repeat="theme in page">
+									<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
+									<a class="gallery-bio options-color" ng-href="{{ theme.website }}">{{ theme.author }}</a>
+								</div>
 							</div>
 						</div>
 					</div>
