@@ -2,40 +2,27 @@ var Pages = function() {
 	this.rows = 4;
 	this.pages = [[]];
 
-	this._compact = function() {
-		var pages = this.pages;
-		var rows = this.rows;
-		for (index = 0; index < pages.length; index++) {
-			while (pages[index].length < rows && index < pages.length - 1) {
-				pages[index].push(pages[index + 1].shift());
-			}
-		}
-		for (index = pages.length - 1; index >= 0; index--) {
-			if (pages[index].length == 0) {
-				pages.pop();
-			} else {
-				break;
-			}
-		}
-		if (pages.length == 0) pages.push([]);
-		if (pages[pages.length - 1].length == rows) pages.push([]);
-	}
 
 	this.add = function(row) {
-		this._compact();
+		if (this.pages[this.pages.length - 1].length >= this.rows) {
+			this.pages.push([]);
+		}
 		this.pages[this.pages.length - 1].push(row);
 	}
 
 	this.remove = function(page, index) {
 		this.pages[page].splice(index, 1);
-		this._compact();
+		for (i = page; i < this.pages.length - 1; i++) {
+			this.pages[i].push(this.pages[i + 1].shift());
+		}
+		if (this.pages.length > 1 && this.pages[this.pages.length - 1].length == 0)
+			this.pages.pop();
 	}
 
 	this.addAll = function(newRows) {
-		for(index = 0; index < newRows.length; index++) {
-			this.pages[this.pages.length - 1].push(newRows[index]);
+		for (index = 0; index < newRows.length; index++) {
+			this.add(newRows[index]);
 		}
-		this._compact();
 	}
 
 	this.flatten = function() {
