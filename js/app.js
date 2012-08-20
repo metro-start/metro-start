@@ -60,7 +60,6 @@ function MetroStart($scope, $http) {
 		}
 		$scope.links = new Pages();
 		$scope.links.addAll(links);
-		console.log($scope.links)
 	}());
 
 	// Load list of apps
@@ -295,17 +294,17 @@ function MetroStart($scope, $http) {
 		if(!$scope.newUrl.match(/https?\:\/\//)) {
 			$scope.newUrl = 'http://' + $scope.newUrl;
 		}
-		$scope.links.push({
+		$scope.links.add({
 			'name': $scope.newUrl.toLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
 			'url': $scope.newUrl,
 		});
 		$scope.newUrl = '';
-		localStorage.setItem('links', JSON.stringify($scope.links));
+		localStorage.setItem('links', JSON.stringify($scope.links.flatten()));
 	}
 
-	$scope.removeLink = function(index){
-		$scope.links.splice(index, 1);
-		localStorage.setItem('links', JSON.stringify($scope.links));
+	$scope.removeLink = function(page, index){
+		$scope.links.remove(page, index);
+		localStorage.setItem('links', JSON.stringify($scope.links.flatten()));
 	}
 
 	$scope.clickBookmark = function(bookmark, pageIndex) {
@@ -325,11 +324,11 @@ function MetroStart($scope, $http) {
 		});
 	}
 
-	$scope.uninstallApp = function(app) {
+	$scope.uninstallApp = function(app, page, index) {
 		for (id in $scope.apps) {
 			if ($scope.apps[id].id == app.id) {
 				chrome.management.uninstall(app.id);
-				$scope.apps.splice(id, 1);
+				$scope.apps.remove(page, index);
 				break;
 			}
 		}
@@ -345,9 +344,9 @@ function MetroStart($scope, $http) {
 		window.open(url);
 	}
 
-	$scope.removeTheme = function(theme, index) {
-		$scope.localThemes.splice(index, 1);
-		localStorage.setItem('themes', JSON.stringify($scope.localThemes));
+	$scope.removeTheme = function(page, index) {
+		$scope.localThemes.remove(page, index);
+		localStorage.setItem('themes', JSON.stringify($scope.localThemes.flatten));
 	}
 
 	$scope.changeTheme = function(newTheme) {
