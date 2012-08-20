@@ -60,7 +60,6 @@ h1 {
 }
 .small-text {
     font-size: 24px;
-/*    font-style: normal; */
 	display: inline-block;
 	margin-right: 20px;
 	float: left;
@@ -132,11 +131,10 @@ h1 {
 }
 .page {
     display: inline-block;
-    margin-right: 5%;
+    margin-right: 30px;
     vertical-align: top;
 }
 .page:last-child {
-    margin-right: 0px !important;
 }
 .internal_selector {
     display: inline-block;
@@ -190,10 +188,6 @@ h1 {
 	}
 }
 
-.hide {
-}
-.url {
-}
 .add {
 	margin-left: 50px;
 }
@@ -216,4 +210,7 @@ input[type="submit"] {
 }
 .title {
 	display: block;
+}
+.column {
+	float: left;
 }
