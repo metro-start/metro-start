@@ -16,7 +16,8 @@
 		"http://www.google.com/ig/api",
 		"http://google-analytics.com/ga.js",
 		"management",
-		"bookmarks"
+		"bookmarks",
+		"storage"
 	],
 	 "content_security_policy": "script-src 'self' https://ssl.google-analytics.com/ga.js; object-src 'self'"
 }

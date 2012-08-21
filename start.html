@@ -19,7 +19,7 @@
 	<body class="background-color" ng-controller="MetroStart">
 		<h1 class="title-color">start here . . .</h1>
 		<div>
-			<select id="menu" class="options-color menu" ng-model="page">
+			<select id="page-chooser" class="options-color page-chooser" ng-model="page">
 				<option value="0">saved links</option>
 				<option value="1">installed apps</option>
 				<option value="2">bookmarks</option>
@@ -109,7 +109,7 @@
 					<span id="edit" class="options-color option" ng-click="editWeather()">edit</span>
 				</div>
 				<p id="units" class="options-color option">
-					<select id="select-box">
+					<select id="weather-unit-chooser">
 						<option value="0">fahrenheit</option>
 						<option value="1">celsius</option>
 					</select>

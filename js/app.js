@@ -9,9 +9,30 @@ function MetroStart($scope, $http) {
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
+	$scope.weatherEnabled = true;
+	$scope.location = '98122';
+	$scope.weatherUnit = '1';
+	$scope.font = 0;
 
 	//Load defaults
 	(function() {
+		//Move over links and themes from localstorage to chromesync
+		/*
+		What needs to be saved:
+		Data:
+		links
+		localThemes
+
+		*/
+		/*
+
+		Options:
+		weatherEnabled
+		location
+		weatherUnit
+		font
+		colorScheme
+
 		if(!localStorage.getItem('hide_weather')) {
 			localStorage.setItem('hide_weather', false);
 		}
@@ -47,34 +68,33 @@ function MetroStart($scope, $http) {
 			if(localStorage.getItem('unit') == 'fahrenheit') localStorage.setItem('unit', '0');
 			else if(localStorage.getItem('unit') == 'celcius') localStorage.setItem('unit', '1');
 		}
+		*/
 	}());
 
 	// Load list of links
 	(function() {
-	    var links = localStorage.getItem('links');
-	    links = JSON.parse(links);
-	    
-		if (links == []) {
-			links.push({'name': 'use the wrench to get started. . . ', 'url': ''});
-			localStorage.setItem('links', JSON.stringify(links));
-		}
-		$scope.links = new Pages();
-		$scope.links.addAll(links);
+		chrome.storage.sync.get('links', function(container) {
+			$scope.$apply(function() {
+				if (container.links) {
+						$scope.links = new Pages(container.links);
+				} else {
+					$scope.links = new Pages([{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+					chrome.storage.sync.set({'links': $scope.links});
+				}
+			});
+		});
 	}());
 
 	// Load list of apps
 	(function() {
-		$scope.apps = new Pages();
-		$scope.apps.add({
+		$scope.apps = new Pages([{
 			'name': 'Chrome Webstore', 
 			'appLaunchUrl': 'https://chrome.google.com/webstore'
-		});
+		}]);
 	    chrome.management.getAll(function(res) {
 	        res = res.filter(function(item) { return item.isApp; });
 			$scope.apps.addAll(res);
-//			console.log($scope)
 			updateStyle(false);
-		//	changeView(localStorage.getItem('active'), true);	
 	    });
 	}());
 
@@ -91,8 +111,11 @@ function MetroStart($scope, $http) {
 	// Load themes
 	(function() {
 		// Load local themes from localstorage
-		$scope.localThemes = new Pages();
-		$scope.localThemes.addAll(JSON.parse(localStorage.getItem('themes')));
+		chrome.storage.sync.get('localThemes', function (container) {
+			$scope.$apply(function() {
+				$scope.localThemes = new Pages(container.localThemes);
+			});
+		});
 
 		// Load online themes from website
 		$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
@@ -105,8 +128,7 @@ function MetroStart($scope, $http) {
 					'background-color': data[i]['background_color'],
 				}
 			}
-			$scope.onlineThemes = new Pages();
-			$scope.onlineThemes.addAll(data);
+			$scope.onlineThemes = new Pages(data);
 		});
 	}());
 
@@ -131,24 +153,38 @@ function MetroStart($scope, $http) {
 
 	// Load font and temperature unit
 	(function() {
-		$('#font-chooser').attr('selectedIndex', localStorage.getItem('font'));
-		$('#select-box').attr('selectedIndex', localStorage.getItem('unit'));
+		chrome.storage.sync.get('font', function (container) {
+			if (container.font) {
+				$('#font-chooser').attr('selectedIndex', container.font);
+			} else {
+				chrome.storage.local.set({'font': 0});
+				$('#font-chooser').attr('selectedIndex', 0);
+			}
+		});
+		chrome.storage.sync.get('weatherUnit', function (container) {
+			if (container.weatherUnit) {
+				$('#weather-unit-chooser').attr('selectedIndex', container.weatherUnit);
+			} else {
+				chrome.storage.local.set({'weatherUnit': 0});
+				$('#weather-unit-chooser').attr('selectedIndex', 0);
+			}
+		});
 	}());
 
 	//attach the menu selectbox
-	$('#menu').metroSelect({
+	$('#page-chooser').metroSelect({
 		'onchange': function() {
-			if ($scope.page != $('#menu').attr('selectedIndex')) {
-				$scope.page = $('#menu').attr('selectedIndex');
+			if ($scope.page != $('#page-chooser').attr('selectedIndex')) {
+				$scope.page = $('#page-chooser').attr('selectedIndex');
 				$scope.changePage(false);
 			}
 		}
 	});
 
 	//attach the weather selectbox
-	$('#select-box').metroSelect({
+	$('#weather-unit-chooser').metroSelect({
 		'onchange': function() {
-			localStorage.setItem('unit', $('#select-box').attr('selectedIndex'));
+			localStorage.setItem('unit', $('#weather-unit-chooser').attr('selectedIndex'));
 			updateStyle(true);
 		}
 	});
@@ -195,7 +231,7 @@ function MetroStart($scope, $http) {
 				$(this).hide();
 			});
 			if(localStorage.getItem('active') == 3) {
-				$('#menu-sel-' + localStorage.getItem('previous')).click();
+				$('#page-chooser-sel-' + localStorage.getItem('previous')).click();
 			}
 		} else {
 			$('.option').show('fast').css('display', 'inline');

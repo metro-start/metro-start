@@ -1,7 +1,6 @@
-var Pages = function() {
+var Pages = function(newRows) {
 	this.rows = 4;
 	this.pages = [[]];
-
 
 	this.add = function(row) {
 		if (this.pages[this.pages.length - 1].length >= this.rows) {
@@ -28,6 +27,7 @@ var Pages = function() {
 	this.flatten = function() {
 		return this.pages.reduce(function(a, b) { return a.concat(b) });
 	}
+	if (newRows) this.addAll(newRows);
 }
 
 var updateStyle = function(transition) {
