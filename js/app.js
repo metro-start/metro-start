@@ -148,7 +148,7 @@ function MetroStart($scope, $http) {
 
 		$scope.page = localStorage.getItem('active');
 		$scope.previous = previous || '0';
-		$('#menu').attr('selectedIndex', $scope.page);
+		$('#page-chooser').attr('selectedIndex', $scope.page);
 	}());
 
 	// Load font and temperature unit
