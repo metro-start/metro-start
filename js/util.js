@@ -31,32 +31,21 @@ var Pages = function(newRows) {
 }
 
 var updateStyle = function(transition) {
-	if(localStorage.getItem('hide_weather') == 'true') {
-		$('#hide_weather').text('show weather');
-		if (transition) $('#weather').hide('fast');
-		else $('#weather').hide();
-	} else {
-		$('#hide_weather').text('hide weather');
-		if (transition) $('#weather').show('fast');
-		else $('#weather').show();
-	}
+	var scope = angular.element(document.body).scope();
 	
 	var style = '';
-	if(localStorage.getItem('font')) {
-		font = localStorage.getItem('font');
-		if(font == 0) {
-			style += 'body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; }';
-			style += 'body { font-weight: normal; }';
-		} else { 
-			style += 'body { font-family: Raleway, "Segoe UI", Helvetica, Arial, sans-serif; }';
-			style += 'body { font-weight: bold; }';
-		}
+	if(scope.font == 0) {
+		style += 'body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; }';
+		style += 'body { font-weight: normal; }';
+	} else { 
+		style += 'body { font-family: Raleway, "Segoe UI", Helvetica, Arial, sans-serif; }';
+		style += 'body { font-weight: bold; }';
 	}
 
-	var background_color = localStorage.getItem('background-color');
-	var options_color = localStorage.getItem('options-color');
-	var main_color = localStorage.getItem('main-color');
-	var title_color = localStorage.getItem('title-color');
+	var background_color = scope.theme['background-color'];
+	var options_color = scope.theme['options-color'];
+	var main_color = scope.theme['main-color'];
+	var title_color = scope.theme['title-color'];
 
 	style += '* { border-color: ' + options_color + '}';
 	style += '::-webkit-scrollbar { background: ' + background_color + '}';

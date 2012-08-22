@@ -77,9 +77,11 @@ h1 {
 	left: 150px;
 	width: 400px;
 }
+
 .option {
 	display: inline-block;
 }
+
 .theme-button {
 	display: inline;
     cursor: pointer;
@@ -213,4 +215,17 @@ input[type="submit"] {
 }
 .column {
 	float: left;
+}
+
+.selection {
+    cursor: pointer;
+    margin-right: 3%;
+    display: inline;
+
+    -webkit-transition: opacity .25s linear;
+    opacity: 0.5;
+}
+.sel-active {
+    -webkit-transition: opacity .25s linear;
+    opacity: 1;
 }

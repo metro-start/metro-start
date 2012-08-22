@@ -1,16 +1,15 @@
-<html ng-app ng-csp>
+<html ng-app="MetroStart" ng-csp>
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/reset.css">	
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<link rel="stylesheet" type="text/css" href="lib/farbtastic/farbtastic.css">
-		<link rel="stylesheet" type="text/css" href="lib/metro-select/metro-select.css">
 		<script type="text/javascript" src="lib/jquery.js"></script> 
 		<script type="text/javascript" src="lib/angular.js"></script> 
 		<script type="text/javascript" src="lib/ngif/ngif.js"></script> 
+		<script type="text/javascript" src="lib/if/if.js"></script> 
 		<script type="text/javascript" src="lib/jquery-ui.js"></script> 
 		<script type="text/javascript" src="lib/jkl-parsexml.js"></script> 
 		<script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script> 
-		<script type="text/javascript" src="lib/metro-select/metro-select.js"></script> 
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/app.js"></script>
 		<script type="text/javascript" src="js/analytics.js"></script>
@@ -18,13 +17,13 @@
 	</head>
 	<body class="background-color" ng-controller="MetroStart">
 		<h1 class="title-color">start here . . .</h1>
-		<div>
-			<select id="page-chooser" class="options-color page-chooser" ng-model="page">
-				<option value="0">saved links</option>
-				<option value="1">installed apps</option>
-				<option value="2">bookmarks</option>
-				<option value="3" class="option">themes</option>
-			</select>
+		<div class="page-chooser">
+			<div class="options-color chooser">
+				<span class="selection" ng-class="'sel-active'|if:(page==0)" ng-click="beginChangePage(0)">saved links</span>
+				<span class="selection" ng-class="'sel-active'|if:(page==1)" ng-click="beginChangePage(1)">installed apps</span>
+				<span class="selection" ng-class="'sel-active'|if:(page==2)" ng-click="beginChangePage(2)">bookmarks</span>
+				<span class="selection option" ng-class="'sel-active'|if:(page==3)" ng-click="beginChangePage(3)">themes</span>
+			</div>
 		</div>
 		<div class="links collection">
 			<div id="links">
@@ -102,18 +101,16 @@
 			</div>
 		</div>
 		<div class="weather">
-			<div id="hide_weather" class="options-color option" ng-click="hideWeather()">hide weather</div>
-			<div id="weather">
+			<div id="toggle_weather" class="options-color option" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
+			<div id="weather" ngm-if="weatherEnabled">
 				<div>
 					<span id="where">{{ weather.city }}</span>
 					<span id="edit" class="options-color option" ng-click="editWeather()">edit</span>
 				</div>
-				<p id="units" class="options-color option">
-					<select id="weather-unit-chooser">
-						<option value="0">fahrenheit</option>
-						<option value="1">celsius</option>
-					</select>
-				<p>
+				<div class="options-color option chooser">
+					<span class="selection" ng-class="'sel-active'|if:(weatherUnit==0)" ng-click="changeWeatherUnit(0)">fahrenheit</span>
+					<span class="selection" ng-class="'sel-active'|if:(weatherUnit==1)" ng-click="changeWeatherUnit(1)">celsius</span>
+				</div>
 				<p id="temp">
 					{{ weather.currentTemp }}<span class="options-color">&deg;{{ weather.unit }}</span> / 
 					{{ weather.highTemp }} <span class="options-color">hi</span> / 
@@ -124,10 +121,8 @@
 		</div>
 		<p class="options-color wrench" id="wrench" ng-click="clickWrench()">wrench</p>
 		<div class="options-color font-chooser option">
-			<select id="font-chooser">
-				<option value="0">normal fonts</option>
-				<option value="1">thin fonts</option>
-			</select>
+			<span class="selection" ng-class="'sel-active'|if:(font==0)" ng-click="changeFont(0)">normal fonts</span>
+			<span class="selection" ng-class="'sel-active'|if:(font==1)" ng-click="changeFont(1)">thin fonts</span>
 		</div>
 		<div class="theme-buttons">
 			<p class="theme-button options-color option" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>

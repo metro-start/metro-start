@@ -10,10 +10,19 @@ function MetroStart($scope, $http) {
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
 	$scope.weatherEnabled = true;
+	$scope.weatherToggleText = 'hide weather';
 	$scope.location = '98122';
-	$scope.weatherUnit = '1';
+	$scope.weatherUnit = 0;
 	$scope.font = 0;
 
+	$scope.theme = $scope.defaultTheme;
+	chrome.storage.sync.get('theme', function(container) {
+		if (container.theme) {
+			$scope.theme = container.theme;
+		} else {
+			chrome.storage.sync.set({'theme': $scope.defaultTheme});
+		}	
+	});
 	//Load defaults
 	(function() {
 		//Move over links and themes from localstorage to chromesync
@@ -76,7 +85,7 @@ function MetroStart($scope, $http) {
 		chrome.storage.sync.get('links', function(container) {
 			$scope.$apply(function() {
 				if (container.links) {
-						$scope.links = new Pages(container.links);
+					$scope.links = new Pages(container.links);
 				} else {
 					$scope.links = new Pages([{'name': 'use the wrench to get started. . . ', 'url': ''}]);
 					chrome.storage.sync.set({'links': $scope.links});
@@ -155,47 +164,25 @@ function MetroStart($scope, $http) {
 	(function() {
 		chrome.storage.sync.get('font', function (container) {
 			if (container.font) {
-				$('#font-chooser').attr('selectedIndex', container.font);
+				$scope.font = container.font;
 			} else {
-				chrome.storage.local.set({'font': 0});
-				$('#font-chooser').attr('selectedIndex', 0);
+				chrome.storage.local.set({'font': $scope.font});
 			}
 		});
 		chrome.storage.sync.get('weatherUnit', function (container) {
-			if (container.weatherUnit) {
-				$('#weather-unit-chooser').attr('selectedIndex', container.weatherUnit);
-			} else {
-				chrome.storage.local.set({'weatherUnit': 0});
-				$('#weather-unit-chooser').attr('selectedIndex', 0);
-			}
+			$scope.$apply(function() {
+				if (container.weatherUnit) {
+						$scope.weatherUnit = container.weatherUnit;
+				} else {
+					chrome.storage.sync.set({'weatherUnit': $scope.weatherUnit });
+				}
+			});
 		});
+
+		if(localStorage.getItem('weatherEnabled') == 'true') {
+			$scope.weatherEnabled = localStorage.getItem('weatherEnabled');
+		}
 	}());
-
-	//attach the menu selectbox
-	$('#page-chooser').metroSelect({
-		'onchange': function() {
-			if ($scope.page != $('#page-chooser').attr('selectedIndex')) {
-				$scope.page = $('#page-chooser').attr('selectedIndex');
-				$scope.changePage(false);
-			}
-		}
-	});
-
-	//attach the weather selectbox
-	$('#weather-unit-chooser').metroSelect({
-		'onchange': function() {
-			localStorage.setItem('unit', $('#weather-unit-chooser').attr('selectedIndex'));
-			updateStyle(true);
-		}
-	});
-
-	//attach the font selectbox
-	$('#font-chooser').metroSelect({
-		'onchange': function() {
-			localStorage.setItem('font', $('#font-chooser').attr('selectedIndex'));	
-			updateStyle(true);
-		}
-	});
 
 	//attach color pickers
 	$.each($scope.defaultTheme, function(key, value) {
@@ -249,8 +236,16 @@ function MetroStart($scope, $http) {
 		if($('#url').length) $('#url').remove();
 	}
 
-	$scope.hideWeather = function() {
-		localStorage.setItem('hide_weather', localStorage.getItem('hide_weather') == 'false' ? 'true' : 'false');
+	$scope.toggleWeather = function() {
+		if ($scope.weatherEnabled) {
+			$scope.weatherEnabled = false;
+			$scope.weatherToggleText = "show weather";
+			localStorage.setItem('weatherEnabled', 'false');
+		} else {
+			$scope.weatherEnabled = true;
+			$scope.weatherToggleText = "hide weather";
+			localStorage.setItem('weatherEnabled', 'true');
+		}
 		updateStyle(false);
 	}
 
@@ -397,11 +392,30 @@ function MetroStart($scope, $http) {
 		});
 	}
 
-	$scope.changePage = function(instant) {
+	$scope.changeWeatherUnit = function(newWeatherUnit) {
+		$scope.weatherUnit = newWeatherUnit;
+		chrome.storage.sync.set({'weatherUnit': newWeatherUnit});
+
+		updateStyle(true);
+	}
+
+	$scope.changeFont = function(newFont) {
+		$scope.font = newFont;
+		chrome.storage.sync.set({'font': newFont});
+
+		updateStyle(true);
+	}
+
+	$scope.beginChangePage = function(newPage) {
+		$scope.page = newPage;
 		$scope.previous = localStorage.getItem('active');
 		localStorage.setItem('previous', $scope.previous);
 		localStorage.setItem('active', $scope.page);
 
+		$scope.finishChangePage(false);
+	}
+
+	$scope.finishChangePage = function(instant) {
 		var cur = $scope.previous;
 		var tar = $scope.page;
 		var total = $scope.total;
@@ -455,6 +469,6 @@ function MetroStart($scope, $http) {
 		}
 	}
 
-	$scope.changePage(true);
+	$scope.finishChangePage(true);
 	$scope.updateWeather(true);
 }
