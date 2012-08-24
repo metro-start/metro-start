@@ -101,8 +101,8 @@
 			</div>
 		</div>
 		<div class="weather">
-			<div id="toggle_weather" class="options-color option" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
-			<div id="weather" ngm-if="weatherEnabled">
+			<div id="toggle-weather" class="options-color option" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
+			<div id="weather" ngm-if="weatherToggleText == 'hide weather'">
 				<div>
 					<span id="where">{{ weather.city }}</span>
 					<span id="edit" class="options-color option" ng-click="editWeather()">edit</span>
