@@ -1,3 +1,10 @@
+var defaultTheme = {
+	'options-color': '#ff0000',
+	'main-color': '#ffffff',
+	'title-color': '#4a4a4a',
+	'background-color': '#000000'
+};
+
 var Pages = function(newRows) {
 	this.rows = 4;
 	this.pages = [[]];
@@ -30,41 +37,32 @@ var Pages = function(newRows) {
 	if (newRows) this.addAll(newRows);
 }
 
-var updateStyle = function(transition) {
-	var scope = angular.element(document.body).scope();
-	
-	var style = '';
-	if(scope.font == 0) {
-		style += 'body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; }';
-		style += 'body { font-weight: normal; }';
-	} else { 
-		style += 'body { font-family: Raleway, "Segoe UI", Helvetica, Arial, sans-serif; }';
-		style += 'body { font-weight: bold; }';
-	}
-
-	var background_color = scope.theme['background-color'];
-	var options_color = scope.theme['options-color'];
-	var main_color = scope.theme['main-color'];
-	var title_color = scope.theme['title-color'];
-
-	style += '* { border-color: ' + options_color + '}';
-	style += '::-webkit-scrollbar { background: ' + background_color + '}';
-	style += '::-webkit-scrollbar-thumb { background: ' + options_color + '}';
-
-	if (transition) {
-		$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
-		$('.title-color').animate({'color': title_color}, {duration: 400, queue: false});
-		$('body').animate({'color': main_color}, {duration: 400, queue: false});
-		$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
+var getLocalOrSync = function (key, defaultValue, scope, jsonify) {
+	if (localStorage.getItem(key)) {
+		if (jsonify) {
+			scope[key] = JSON.parse(localStorage.getItem(key));
+		}
 	} else {
-		style += '.background-color { background-color: ' + background_color + '}';
-		style += '.title-color { color: ' + title_color + '}';
-		style += 'body { color: ' + main_color + '}';
-		style += '.options-color { color: ' + options_color + '}';
+		chrome.storage.sync.get(key, function(container) {
+			if (container[key]) {
+				if (jsonify) {
+					localStorage.setItem(key, JSON.stringify(container[key]));
+				} else {
+					localStorage.setItem(key, container['key']);
+				}
+				scope[key] = container['key'];
+			} else {
+				chrome.storage.sync.set({ key: defaultValue });
+				if (jsonify) {
+					localStorage.setItem(key, JSON.stringify(defaultValue));
+				} else {
+					localStorage.setItem(key, defaultValue);
+				}
+				scope[key] = defaultValue;
+			}
+			updateStyle(false);
+		});
 	}
-
-	$('#new-style').remove();
-	$('body').append('<style id="new-style">' + style + '</style>');
 }
 
 /**

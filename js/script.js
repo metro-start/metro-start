@@ -1,79 +1,72 @@
-var link_page = '';
+var defaultTheme = {
+	'options-color': '#ff0000',
+	'main-color': '#ffffff',
+	'title-color': '#4a4a4a',
+	'background-color': '#000000'
+};
+$(function() {
+	//attach color pickers
+	$.each(defaultTheme, function(key, value) {
+		$('#' + key).farbtastic(function(color) {
+			localStorage.setItem(key, color);
+			$('#' + key + '-display').text(color);
+			updateStyle(false);
+		});
 
-	
-$(function() {	
-	//Called when addding a new link to the links pages
-	$('#add').on('click', function() {
-		_gaq.push(['_trackEvent', 'Page Action', 'add clicked']);
-		if ($('#url').length) {
-			saveNewLink();
+		//If you press enter in the text box, set it a the new color.
+		$('#' + key + '-display').on('keydown', function(e) {
+			if(e.keyCode == 13) {
+				$.farbtastic('#' + key).setColor($(this).text());
+				return false;
+			}
+		});
+
+		$('#' + key + '-display').on('blur', function(e) {
+			$.farbtastic('#' + key).setColor($(this).text());
+		});
+
+		if(localStorage.getItem(key)) {
+			$.farbtastic('#' + key).setColor(localStorage.getItem(key));
 		} else {
-			$('#add').text('done');
-			var element = $('<span class="url" id="url" contentEditable="true">http://</span>');
-			element.hide();
-			$(this).parent().append(element);
-			element.on('keydown', function(e) {
-				if(e.keyCode == 13) {
-					saveNewLink();
-					return false;
-				}
-			});
-			element.show('fast');
-			element.focus();
-			document.execCommand('selectAll',false,null);
+			$.farbtastic('#' + key).setColor(value);
 		}
 	});
 });
 
-
-/**
-	Adds items to the list of links.
-	Used when adding new links, or when loading existing links.
-*/
-var addItem = function(name, url) {
-	return;
-	var page = {};
-	var internal_selector = $('#internal_selector_links');
-	var create_page = function() {
-		link_page++;
-		page = $('<div class="page" id="link_page_' + link_page + '"></div>');
-		internal_selector.append(page);
+var updateStyle = function(transition) {
+	var scope = angular.element(document.body).scope();
+	
+	var style = '';
+	if(scope.font == 0) {
+		style += 'body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; }';
+		style += 'body { font-weight: normal; }';
+	} else { 
+		style += 'body { font-family: Raleway, "Segoe UI", Helvetica, Arial, sans-serif; }';
+		style += 'body { font-weight: bold; }';
 	}
 
-	if (link_page == 0) {
-		create_page();
+	var background_color = scope.theme['background-color'];
+	var options_color = scope.theme['options-color'];
+	var main_color = scope.theme['main-color'];
+	var title_color = scope.theme['title-color'];
+
+	style += '* { border-color: ' + options_color + '}';
+	style += '::-webkit-scrollbar { background: ' + background_color + '}';
+	style += '::-webkit-scrollbar-thumb { background: ' + options_color + '}';
+
+	if (transition) {
+		$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
+		$('.title-color').animate({'color': title_color}, {duration: 400, queue: false});
+		$('body').animate({'color': main_color}, {duration: 400, queue: false});
+		$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
 	} else {
-		page = $('#link_page_' + link_page);
-		if (page.children().length >= 5) {
-			create_page();
-		}
+		style += '.background-color { background-color: ' + background_color + '}';
+		style += '.title-color { color: ' + title_color + '}';
+		style += 'body { color: ' + main_color + '}';
+		style += '.options-color { color: ' + options_color + '}';
 	}
-	page.append('<div class="item"><span class="remove option options-color">remove</span> <a href="' + url + '">' + name + '</a></div>');
-	updateStyle(false);
+
+	$('#new-style').remove();
+	$('body').append('<style id="new-style">' + style + '</style>');
 }
 
-/**
-  Save the newly created link
-  */
-var saveNewLink = function() {
-	var list = JSON.parse(localStorage.getItem('links'));
-	var name = $('#url').text().toLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
-	var url = $('#url').text();
-	if(name.trim() == '') {
-		$('#url').remove();
-		$('#add').text('add');
-		return;
-	}
-	if(!url.match(/https?\:\/\//)) {
-		url = 'http://' + url;
-	}
-	if (list == null) {
-		list = new Array();
-	}
-	list.push({'name': name, 'url': url});
-	localStorage.setItem('links', JSON.stringify(list));
-
-	$('#url').remove();
-	$('#add').text('add');
-	addItem(name, url);
-};

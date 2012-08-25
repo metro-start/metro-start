@@ -1,61 +1,28 @@
 function MetroStart($scope, $http) {
-	$scope.defaultTheme = {
-		'options-color': '#ff0000',
-		'main-color': '#ffffff',
-		'title-color': '#4a4a4a',
-		'background-color': '#000000'
-	};
-
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
-	$scope.font = 0;
 	$scope.location = '98122';
 	$scope.weatherUnit = 0;
 	$scope.weatherToggleText = 'show weather';
 
-	$scope.theme = $scope.defaultTheme;
-	chrome.storage.sync.get('theme', function(container) {
-		if (container.theme) {
-			$scope.theme = container.theme;
-		} else {
-			chrome.storage.sync.set({'theme': $scope.defaultTheme});
-		}	
-	});
+	getLocalOrSync('theme', $scope.defaultTheme, $scope, true);
+
+	getLocalOrSync('theme', 0, $scope, false);
+
+	getLocalOrSync('weatherUnit', 0, $scope, false);
+
+	getLocalOrSync('weatherToggleText', 'show weather', $scope, false);
+
 	//Load defaults
 	(function() {
-		//Move over links and themes from localstorage to chromesync
-		/*
-		What needs to be saved:
-		Data:
-		links
-		localThemes
-
-		*/
-		/*
-
-		Options:
-		weatherEnabled
-		location
-		weatherUnit
-		font
-		colorScheme
-	*/
 		// Load font and temperature unit
-		chrome.storage.sync.get('font', function (container) {
-			if (container.font) {
-				$scope.font = container.font;
-			} else {
-				chrome.storage.local.set({'font': $scope.font});
-			}
-		});
 		chrome.storage.sync.get('weatherUnit', function (container) {
-			console.log('here?')
 			$scope.$apply(function() {
 				if (container.weatherUnit) {
 						$scope.weatherUnit = container.weatherUnit;
 				} else {
-					chrome.storage.sync.set({'weatherUnit': $scope.weatherUnit });
+					chrome.storage.sync.set({ 'weatherUnit': $scope.weatherUnit });
 				}
 			});
 			$scope.updateWeather(false);
@@ -152,33 +119,6 @@ function MetroStart($scope, $http) {
 		$scope.previous = previous || '0';
 	}());
 
-	//attach color pickers
-	$.each($scope.defaultTheme, function(key, value) {
-		$('#' + key).farbtastic(function(color) {
-			localStorage.setItem(key, color);
-			$('#' + key + '-display').text(color);
-			updateStyle(false);
-		});
-
-		//If you press enter in the text box, set it a the new color.
-		$('#' + key + '-display').on('keydown', function(e) {
-			if(e.keyCode == 13) {
-				$.farbtastic('#' + key).setColor($(this).text());
-				return false;
-			}
-		});
-
-		$('#' + key + '-display').on('blur', function(e) {
-			$.farbtastic('#' + key).setColor($(this).text());
-		});
-
-		if(localStorage.getItem(key)) {
-			$.farbtastic('#' + key).setColor(localStorage.getItem(key));
-		} else {
-			$.farbtastic('#' + key).setColor(value);
-		}
-	});
-
 	$scope.wrench = false;
 	$scope.clickWrench = function() {
 		if ($scope.wrench){
@@ -207,52 +147,35 @@ function MetroStart($scope, $http) {
 	$scope.toggleWeather = function() {
 		$scope.weatherToggleText = 'show weatherhide weather'.replace($scope.weatherToggleText, '');
 		chrome.storage.sync.set({ 'weatherToggleText': $scope.weatherToggleText }, function(res) {
-			console.log(res)
 		});
 	}
 
 	$scope.updateWeather = function(force) {
-		$scope.weather = JSON.parse(localStorage.getItem('weather'));
 		var unit = $scope.units[$scope.weatherUnit][0];
-		console.log($scope.weatherUnit)
 	    var locat = localStorage.getItem('locat');
 	    var time = localStorage.getItem('time');
 	    var cTime = new Date();
 	    if(force || cTime.getTime() > time) {
-			var url = 'http://www.google.com/ig/api?weather=' + locat;
-			var xml = new JKL.ParseXML(url);
-			xml.async(function (data) {
-				if (data.xml_api_reply && typeof(data.xml_api_reply) === 'object') {
-					var weather = data.xml_api_reply.weather;
-					var city = weather.forecast_information.city.data.toLowerCase();
-					localStorage.setItem('where', city);
-
+	    	var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + locat + '" limit 1) and u="' + unit + '"');
+	    	var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
+			$http.get(url).success(function(data) {
+				if (data.query.count) {
+					var elem = data.query.results.channel;
+					var city = elem.location.city + ', ' + elem.location.region;
 					$scope.$apply(function() {
-						if (unit == 'f') {
-							$scope.weather = {
-								'city': city,
-								'currentTemp': weather.current_conditions.temp_f.data,
-								'highTemp': weather.forecast_conditions[0].high.data,
-								'lowTemp': weather.forecast_conditions[0].low.data,
-								'condition': weather.current_conditions.condition.data.toLowerCase(),
-								'unit': unit,
-							}
-						} else {
-							$scope.weather = {
-								'city': city,
-								'currentTemp': toCelsius(weather.current_conditions.temp_f.data),
-								'highTemp': toCelsius(weather.forecast_conditions[0].high.data),
-								'lowTemp': toCelsius(weather.forecast_conditions[0].low.data),
-								'condition': weather.current_conditions.condition.data.toLowerCase(),
-								'unit': unit,
-							}
+						$scope.weather = {
+							'city': city.toLowerCase(),
+							'currentTemp': elem.item.condition.temp,
+							'highTemp': elem.item.forecase[0].high,
+							'lowTemp': elem.item.forecase[0].low,
+							'condition': elem.item.condition.text.toLowerCase(),
+							'unit': elem.units.temperature.toLowerCase(),
 						}
-						localStorage.setItem('weather', JSON.stringify($scope.weather));
 					});
 				}
-				updateStyle(false);
+				chrome.storage.sync.set({ 'weather', $scope.weather });
+				localStorage.setItem('weather', JSON.stringify($scope.weather));
 			});
-			xml.parse();
 		}
 	}
 
@@ -305,7 +228,6 @@ function MetroStart($scope, $http) {
 		if (bookmark.children.length > 0) {
 			$scope.pages.length = pageIndex + 1;
 			$scope.pages.push(bookmark.children);
-			updateStyle(false);
 			return false;
 		}
 	}
