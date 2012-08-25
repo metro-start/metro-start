@@ -38,7 +38,7 @@
 					</div>
 				</div>
 					<form ng-submit="saveLink()" class="add">
-						<input type="text" ng-model="newUrl" placeholder="http://" class="url option" size="24">
+						<input type="text" name="newUrl" ng-model="newUrl" placeholder="http://" class="url option" size="24">
 						<input type="submit" class="options-color option" value="add">
 					</form>
 			</div>
@@ -102,11 +102,11 @@
 		</div>
 		<div class="weather">
 			<div id="toggle-weather" class="options-color option" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
-			<div id="weather" ngm-if="weatherToggleText == 'hide weather'">
-					<div id="where">{{ weather.city }}</div>
+			<div id="weather" ng-show="weatherToggleText == 'hide weather'">
+				<div id="where">{{ weather.city }}</div>
 				<div>
-					<form ng-submit="saveLocation()">
-						<input type="text" ng-model="newLocation" class="option" size="10">
+					<form ng-submit="saveLocat()">
+						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="{{ weather.city }}">
 						<input type="submit" class="options-color option" value="save">
 					</form>
 				</div>

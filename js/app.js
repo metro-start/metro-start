@@ -1,14 +1,13 @@
 function MetroStart($scope, $http) {
-	$scope.newLocation = '';
-	$scope.newUrl = '';
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
-	$scope.location = '98122';
 
 	getLocalOrSync('theme', $scope.defaultTheme, $scope, true);
 
 	getLocalOrSync('font', 0, $scope, false);
+
+	getLocalOrSync('locat', 'seattle, wa', $scope, false);
 
 	getLocalOrSync('weather', null, $scope, true);
 
@@ -128,7 +127,7 @@ function MetroStart($scope, $http) {
 
 	$scope.updateWeather = function(force) {
 		var unit = $scope.units[$scope.weatherUnit][0];
-	    var locat = localStorage.getItem('locat');
+	    var locat = $scope.locat;
 	    var time = localStorage.getItem('time');
 	    var cTime = new Date();
 	    if(force || cTime.getTime() > time) {
@@ -137,7 +136,8 @@ function MetroStart($scope, $http) {
 			$http.get(url).success(function(data) {
 				if (data.query.count) {
 					var elem = data.query.results.channel;
-					var city = elem.location.city + ', ' + elem.location.region;
+					var city = elem.location.city + ', ';
+					city += (elem.location.region ? elem.location.region : elem.location.country);
 					$scope.weather = {
 						'city': city.toLowerCase(),
 						'currentTemp': elem.item.condition.temp,
@@ -153,11 +153,12 @@ function MetroStart($scope, $http) {
 		}
 	}
 
-	$scope.saveLocation = function() {
-		if ($scope.newLocation.strip() != '') {
-			$scope.location = $scope.newLocation;
-			localStorage.setItem('locat', locat);
-			chrome.storage.sync.set({ 'locat': locat });
+	$scope.saveLocat = function() {
+		console.log($scope.newLocat);
+		if ($scope.newLocat.trim() != '') {
+			$scope.locat = $scope.newLocat;
+			localStorage.setItem('locat', $scope.newLocat);
+			chrome.storage.sync.set({ 'locat': $scope.newLocat });
 
 			$scope.updateWeather(true);
 		}

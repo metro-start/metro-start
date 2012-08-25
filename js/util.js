@@ -39,7 +39,6 @@ var Pages = function(newRows) {
 
 var getLocalOrSync = function (key, defaultValue, scope, jsonify) {
 	if (localStorage.getItem(key)) {
-				console.log(localStorage.getItem(key))
 		if (jsonify) {
 			scope[key] = JSON.parse(localStorage.getItem(key));
 		} else {
