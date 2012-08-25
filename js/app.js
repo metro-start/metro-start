@@ -3,7 +3,7 @@ function MetroStart($scope, $http) {
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
 
-	getLocalOrSync('theme', $scope.defaultTheme, $scope, true);
+	getLocalOrSync('theme', defaultTheme, $scope, true);
 
 	getLocalOrSync('font', 0, $scope, false);
 
@@ -16,18 +16,9 @@ function MetroStart($scope, $http) {
 	getLocalOrSync('weatherToggleText', 'hide weather', $scope, false);
 
 	// Load list of links
-	(function() {
-		chrome.storage.sync.get('links', function(container) {
-			$scope.$apply(function() {
-				if (container.links) {
-					$scope.links = new Pages(container.links);
-				} else {
-					$scope.links = new Pages([{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-					chrome.storage.sync.set({'links': $scope.links});
-				}
-			});
-		});
-	}());
+	getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(init) {
+		$scope.links = new Pages($scope.links);
+	});
 
 	// Load list of apps
 	(function() {
@@ -55,10 +46,9 @@ function MetroStart($scope, $http) {
 	// Load themes
 	(function() {
 		// Load local themes from localstorage
-		chrome.storage.sync.get('localThemes', function (container) {
-			$scope.$apply(function() {
-				$scope.localThemes = new Pages(container.localThemes);
-			});
+		getLocalOrSync('localThemes', [], $scope, true, function() {
+			$scope.localThemes.unshift(defaultTheme);
+			$scope.localThemes = new Pages($scope.localThemes);
 		});
 
 		// Load online themes from website
@@ -120,9 +110,7 @@ function MetroStart($scope, $http) {
 	}
 
 	$scope.toggleWeather = function() {
-		$scope.weatherToggleText = 'show weatherhide weather'.replace($scope.weatherToggleText, '');
-		localStorage.setItem('weatherToggleText', $scope.weatherToggleText);
-		chrome.storage.sync.set({ 'weatherToggleText': $scope.weatherToggleText });
+		saveThrice('weatherToggleText', 'show weatherhide weather'.replace($scope.weatherToggleText, ''), $scope);
 	}
 
 	$scope.updateWeather = function(force) {
@@ -147,18 +135,14 @@ function MetroStart($scope, $http) {
 						'unit': elem.units.temperature.toLowerCase(),
 					}
 				}
-				chrome.storage.sync.set({ 'weather': $scope.weather });
-				localStorage.setItem('weather', JSON.stringify($scope.weather));
+				saveTwice('weather', $scope.weather);
 			});
 		}
 	}
 
 	$scope.saveLocat = function() {
-		console.log($scope.newLocat);
 		if ($scope.newLocat.trim() != '') {
-			$scope.locat = $scope.newLocat;
-			localStorage.setItem('locat', $scope.newLocat);
-			chrome.storage.sync.set({ 'locat': $scope.newLocat });
+			saveThrice('locat', $scope.newLocat, $scope);
 
 			$scope.updateWeather(true);
 		}
@@ -169,16 +153,16 @@ function MetroStart($scope, $http) {
 			$scope.newUrl = 'http://' + $scope.newUrl;
 		}
 		$scope.links.add({
-			'name': $scope.newUrl.toLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
+			'name': angular.lowercase($scope.newUrl).replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
 			'url': $scope.newUrl,
 		});
 		$scope.newUrl = '';
-		localStorage.setItem('links', JSON.stringify($scope.links.flatten()));
+		saveTwice('links', $scope.links.flatten());
 	}
 
 	$scope.removeLink = function(page, index){
 		$scope.links.remove(page, index);
-		localStorage.setItem('links', JSON.stringify($scope.links.flatten()));
+		saveTwice('links', $scope.links.flatten());
 	}
 
 	$scope.clickBookmark = function(bookmark, pageIndex) {
@@ -219,14 +203,11 @@ function MetroStart($scope, $http) {
 
 	$scope.removeTheme = function(page, index) {
 		$scope.localThemes.remove(page, index);
-		localStorage.setItem('themes', JSON.stringify($scope.localThemes.flatten));
-		chrome.storage.sync.set({ 'themes': $scope.localThemes });
+		saveTwice('themes', $scope.localThemes.flatten());
 	}
 
 	$scope.changeTheme = function(newTheme) {
-		$.each(newTheme, function(key, value) {
-			localStorage.setItem(key, value);	
-		});
+		saveThrice('theme', newTheme, $scope);
 
 		updateStyle(true);
 
@@ -292,7 +273,7 @@ function MetroStart($scope, $http) {
 	$scope.doneEditingTheme = function() {
 		if ($('.picker:visible').length) {
 			if($scope.editThemeButton == 'edit theme') {
-				$scope.editThemeButton = 'done editing';
+				$scope.editThemeButton = 'save theme';
 			} else {
 				$scope.editThemeButton = 'edit theme';
 			}
@@ -314,5 +295,6 @@ function MetroStart($scope, $http) {
 		}
 	}
 
+	updateStyle(false);
 	$scope.finishChangePage(true);
 }

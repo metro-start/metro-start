@@ -1,12 +1,7 @@
-var defaultTheme = {
-	'options-color': '#ff0000',
-	'main-color': '#ffffff',
-	'title-color': '#4a4a4a',
-	'background-color': '#000000'
-};
 $(function() {
 	//attach color pickers
 	$.each(defaultTheme, function(key, value) {
+		return false;
 		$('#' + key).farbtastic(function(color) {
 			localStorage.setItem(key, color);
 			$('#' + key + '-display').text(color);

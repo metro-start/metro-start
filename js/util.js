@@ -1,9 +1,26 @@
 var defaultTheme = {
-	'options-color': '#ff0000',
-	'main-color': '#ffffff',
-	'title-color': '#4a4a4a',
-	'background-color': '#000000'
+	'title': 'metro start',
+	'colors': {
+		'options-color': '#ff0000',
+		'main-color': '#ffffff',
+		'title-color': '#4a4a4a',
+		'background-color': '#000000'
+	}
 };
+
+var saveTwice = function(key, value) {
+	chrome.storage.sync.set({ key: value });
+	if (angular.isObject(value)) {
+		localStorage.setItem(key, JSON.stringify(value));
+	} else {
+		localStorage.setItem(key, value);
+	}
+}
+
+var saveThrice = function(key, value, scope) {
+	scope[key] = value;
+	saveTwice(key, value);
+}
 
 var Pages = function(newRows) {
 	this.rows = 4;
@@ -37,13 +54,14 @@ var Pages = function(newRows) {
 	if (newRows) this.addAll(newRows);
 }
 
-var getLocalOrSync = function (key, defaultValue, scope, jsonify) {
+var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 	if (localStorage.getItem(key)) {
 		if (jsonify) {
 			scope[key] = JSON.parse(localStorage.getItem(key));
 		} else {
 			scope[key] = localStorage.getItem(key);
 		}
+		if (callback) callback();
 	} else {
 		chrome.storage.sync.get(key, function(container) {
 			if (container[key]) {
@@ -63,14 +81,8 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify) {
 				scope[key] = defaultValue;
 				chrome.storage.sync.set({ key: defaultValue });
 			}
+			if (callback) callback();
 			updateStyle(false);
 		});
 	}
-}
-
-/**
-  Convert values from fahrenheit to celsius
-  */
-var toCelsius = function(fah) {
-	return Math.floor(((parseFloat(fah) - 32) * 5) / 9);
 }
