@@ -22,8 +22,15 @@ a {
     margin-bottom: 10px;
 }
 .collection {
-	position: absolute;	
+	width: 25%;
+	float: left;
+}
+.external {
 	width: 100%;
+	overflow: hidden;
+}
+.internal {
+	width: 400%;
 }
 .paging {
     margin-right: 20px;
@@ -228,3 +235,10 @@ input[type="submit"] {
     -webkit-transition: opacity .25s linear;
     opacity: 1;
 }
+.internal {
+	-webkit-transition: all .2s linear;
+}
+#links:checked ~ .external .internal { margin-left:0; }
+#apps:checked ~ .external .internal { margin-left:-100%; }
+#bookmarks:checked ~ .external .internal { margin-left:-200%; }
+#themes:checked ~ .external .internal { margin-left:-300%; }

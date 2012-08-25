@@ -3,9 +3,13 @@ function MetroStart($scope, $http) {
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
 
-	getLocalOrSync('theme', defaultTheme, $scope, true);
+	getLocalOrSync('page', 0, $scope, false);
+
+	getLocalOrSync('theme', defaultTheme, $scope, true, function () { updateStyle(false) });
 
 	getLocalOrSync('font', 0, $scope, false);
+
+	getLocalOrSync('weatherUpdateTime', 0, $scope, false);
 
 	getLocalOrSync('locat', 'seattle, wa', $scope, false);
 
@@ -16,7 +20,7 @@ function MetroStart($scope, $http) {
 	getLocalOrSync('weatherToggleText', 'hide weather', $scope, false);
 
 	// Load list of links
-	getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(init) {
+	getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function() {
 		$scope.links = new Pages($scope.links);
 	});
 
@@ -66,32 +70,24 @@ function MetroStart($scope, $http) {
 		});
 	}());
 
-	// Load first page
-	(function() {
-		var previous = localStorage.getItem('previous');
-		//If the last page we were at  was the gallery, show the last page before that.
-		if (localStorage.getItem('active') == 3) {
-			if (previous && previous != 3) {
-				localStorage.setItem('active', previous);
-				localStorage.setItem('previous', (previous + 1) % 3)
-			} else {
-				localStorage.setItem('active', 0);
-				localStorage.setItem('previous', 1)
-			}
+	// Attach a watcher to the page to see page changes and save the value.
+	$scope.$watch('page', function(newValue, oldValue) {
+		if (newValue == 3) { // Do not save navigation to themes.
+			saveTwice('page', oldValue);
+		}else {
+			saveTwice('page', newValue);
 		}
-
-		$scope.page = localStorage.getItem('active');
-		$scope.previous = previous || '0';
-	}());
+	}, true);
 
 	$scope.wrench = false;
 	$scope.clickWrench = function() {
 		if ($scope.wrench){
 			$('.option').hide('fast', function() {
-				$(this).hide();
+				$(this).hide(); // Hides the ones that are hidden right now.
 			});
-			if(localStorage.getItem('active') == 3) {
-				$('#page-chooser-sel-' + localStorage.getItem('previous')).click();
+			// If we're on the themes page, load the last real page
+			if ($scope.page == 3) {
+				getLocalOrSync('page', 0, $scope, false);
 			}
 		} else {
 			$('.option').show('fast').css('display', 'inline');
@@ -116,12 +112,13 @@ function MetroStart($scope, $http) {
 	$scope.updateWeather = function(force) {
 		var unit = $scope.units[$scope.weatherUnit][0];
 	    var locat = $scope.locat;
-	    var time = localStorage.getItem('time');
-	    var cTime = new Date();
-	    if(force || cTime.getTime() > time) {
+	    // If it has been more than an hour since last check.
+	    if(force || new Date().getTime() > parseInt($scope.time)) {
+			saveThrice('weatherUpdateTime', parseInt(new Date().getTime()) + 3600000, $scope);
 	    	var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + locat + '" limit 1) and u="' + unit + '"');
 	    	var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
 			$http.get(url).success(function(data) {
+				// If data was actually returned, save it.
 				if (data.query.count) {
 					var elem = data.query.results.channel;
 					var city = elem.location.city + ', ';
@@ -217,9 +214,7 @@ function MetroStart($scope, $http) {
 	}
 
 	$scope.changeWeatherUnit = function(newWeatherUnit) {
-		$scope.weatherUnit = newWeatherUnit;
-		localStorage.setItem('font', newWeatherUnit);
-		chrome.storage.sync.set({'weatherUnit': newWeatherUnit});
+		saveThrice('weatherUnit', newWeatherUnit, $scope);
 
 		$scope.updateWeather(true);
 	}
@@ -232,37 +227,6 @@ function MetroStart($scope, $http) {
 		updateStyle(true);
 	}
 
-	$scope.beginChangePage = function(newPage) {
-		$scope.page = newPage;
-		$scope.previous = localStorage.getItem('active');
-		localStorage.setItem('previous', $scope.previous);
-		localStorage.setItem('active', $scope.page);
-
-		$scope.finishChangePage(false);
-	}
-
-	$scope.finishChangePage = function(instant) {
-		var cur = $scope.previous;
-		var tar = $scope.page;
-		var total = $scope.total;
-		//If the page should be switched instantly, do not slide.
-		if(instant) {
-			for(i in total) {
-				if(i == tar) {
-				    $('.' + total[i]).show();
-				   } else {
-				    $('.' + total[i]).hide();
-				}
-			}
-		//if the page is changing slowly, use a slide and 'fast' timer.
-		} else {
-			var direction = parseInt(cur) - parseInt(tar) > 0 ? 'left' : 'right';
-			var oppose = direction == 'left' ? 'right' : 'left';
-			$('.' + total[cur]).hide('slide', {'direction': oppose}, 'fast');			
-		 	$('.' + total[tar]).show('slide', {'direction': direction}, 'fast');					
-		}
-	}
-
 	$scope.clickEditTheme = function() {
 		$('#theme-gallery:visible').fadeOut('fast');
 		$('.picker').fadeToggle('fast');
@@ -270,6 +234,7 @@ function MetroStart($scope, $http) {
 		$scope.doneEditingTheme();
 	}
 
+	//TODO: Review this section.
 	$scope.doneEditingTheme = function() {
 		if ($('.picker:visible').length) {
 			if($scope.editThemeButton == 'edit theme') {
@@ -296,5 +261,5 @@ function MetroStart($scope, $http) {
 	}
 
 	updateStyle(false);
-	$scope.finishChangePage(true);
+	$scope.updateWeather(false);
 }
