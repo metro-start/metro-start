@@ -103,9 +103,12 @@
 		<div class="weather">
 			<div id="toggle-weather" class="options-color option" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
 			<div id="weather" ngm-if="weatherToggleText == 'hide weather'">
+					<div id="where">{{ weather.city }}</div>
 				<div>
-					<span id="where">{{ weather.city }}</span>
-					<span id="edit" class="options-color option" ng-click="editWeather()">edit</span>
+					<form ng-submit="saveLocation()">
+						<input type="text" ng-model="newLocation" class="option" size="10">
+						<input type="submit" class="options-color option" value="save">
+					</form>
 				</div>
 				<div class="options-color option chooser">
 					<span class="selection" ng-class="'sel-active'|if:(weatherUnit==0)" ng-click="changeWeatherUnit(0)">fahrenheit</span>

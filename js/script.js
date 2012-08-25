@@ -58,13 +58,14 @@ var updateStyle = function(transition) {
 		$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
 		$('.title-color').animate({'color': title_color}, {duration: 400, queue: false});
 		$('body').animate({'color': main_color}, {duration: 400, queue: false});
+		$('input').animate({'color': main_color}, {duration: 400, queue: false});
 		$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
-	} else {
-		style += '.background-color { background-color: ' + background_color + '}';
-		style += '.title-color { color: ' + title_color + '}';
-		style += 'body { color: ' + main_color + '}';
-		style += '.options-color { color: ' + options_color + '}';
 	}
+	style += '.background-color { background-color: ' + background_color + '}';
+	style += '.title-color { color: ' + title_color + '}';
+	style += 'body { color: ' + main_color + '}';
+	style += 'input { color: ' + main_color + '}';
+	style += '.options-color { color: ' + options_color + '}';
 
 	$('#new-style').remove();
 	$('body').append('<style id="new-style">' + style + '</style>');

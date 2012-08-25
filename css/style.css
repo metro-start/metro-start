@@ -13,11 +13,6 @@ a {
 	outline: none;
 	text-decoration: underline;
 }
-
-#url {
-	margin-left: 35px;
-	min-width: 450px;
-}
 #links li {
 	cursor: pointer;
     margin-bottom: 25px;
@@ -211,6 +206,7 @@ input[type="text"] {
 	padding: 2px;
 }
 input[type="submit"] {
+	cursor: pointer;
 	border: none;
 }
 .title {

@@ -39,12 +39,16 @@ var Pages = function(newRows) {
 
 var getLocalOrSync = function (key, defaultValue, scope, jsonify) {
 	if (localStorage.getItem(key)) {
+				console.log(localStorage.getItem(key))
 		if (jsonify) {
 			scope[key] = JSON.parse(localStorage.getItem(key));
+		} else {
+			scope[key] = localStorage.getItem(key);
 		}
 	} else {
 		chrome.storage.sync.get(key, function(container) {
 			if (container[key]) {
+				console.log(container[key])
 				if (jsonify) {
 					localStorage.setItem(key, JSON.stringify(container[key]));
 				} else {
@@ -52,13 +56,13 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify) {
 				}
 				scope[key] = container['key'];
 			} else {
-				chrome.storage.sync.set({ key: defaultValue });
 				if (jsonify) {
 					localStorage.setItem(key, JSON.stringify(defaultValue));
 				} else {
 					localStorage.setItem(key, defaultValue);
 				}
 				scope[key] = defaultValue;
+				chrome.storage.sync.set({ key: defaultValue });
 			}
 			updateStyle(false);
 		});

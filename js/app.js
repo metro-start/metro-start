@@ -1,44 +1,20 @@
 function MetroStart($scope, $http) {
+	$scope.newLocation = '';
+	$scope.newUrl = '';
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
 	$scope.location = '98122';
-	$scope.weatherUnit = 0;
-	$scope.weatherToggleText = 'show weather';
 
 	getLocalOrSync('theme', $scope.defaultTheme, $scope, true);
 
-	getLocalOrSync('theme', 0, $scope, false);
+	getLocalOrSync('font', 0, $scope, false);
+
+	getLocalOrSync('weather', null, $scope, true);
 
 	getLocalOrSync('weatherUnit', 0, $scope, false);
 
-	getLocalOrSync('weatherToggleText', 'show weather', $scope, false);
-
-	//Load defaults
-	(function() {
-		// Load font and temperature unit
-		chrome.storage.sync.get('weatherUnit', function (container) {
-			$scope.$apply(function() {
-				if (container.weatherUnit) {
-						$scope.weatherUnit = container.weatherUnit;
-				} else {
-					chrome.storage.sync.set({ 'weatherUnit': $scope.weatherUnit });
-				}
-			});
-			$scope.updateWeather(false);
-		});
-
-		chrome.storage.sync.get('weatherToggleText', function (container) {
-			$scope.$apply(function() {
-				if (container.weatherToggleText) {
-						$scope.weatherToggleText = container.weatherToggleText;
-				} else {
-					$scope.weatherToggleText = 'hide weather';
-					chrome.storage.sync.set({'weatherToggleText': $scope.weatherToggleText });
-				}
-			});
-		});
-	}());
+	getLocalOrSync('weatherToggleText', 'hide weather', $scope, false);
 
 	// Load list of links
 	(function() {
@@ -146,8 +122,8 @@ function MetroStart($scope, $http) {
 
 	$scope.toggleWeather = function() {
 		$scope.weatherToggleText = 'show weatherhide weather'.replace($scope.weatherToggleText, '');
-		chrome.storage.sync.set({ 'weatherToggleText': $scope.weatherToggleText }, function(res) {
-		});
+		localStorage.setItem('weatherToggleText', $scope.weatherToggleText);
+		chrome.storage.sync.set({ 'weatherToggleText': $scope.weatherToggleText });
 	}
 
 	$scope.updateWeather = function(force) {
@@ -177,31 +153,13 @@ function MetroStart($scope, $http) {
 		}
 	}
 
-	$scope.editWeather = function() {
-		var done = function() {
-			var locat = $('#where').text();
-			if(locat.trim() == '') {
-				return;
-			}
-			$('#where').prop('contentEditable', 'false');
+	$scope.saveLocation = function() {
+		if ($scope.newLocation.strip() != '') {
+			$scope.location = $scope.newLocation;
 			localStorage.setItem('locat', locat);
-			$scope.updateWeather(true);
-			$('#edit').text('edit');
-		};
+			chrome.storage.sync.set({ 'locat': locat });
 
-		if($('#where').prop('contentEditable') != 'true') {
-			$('#where').prop('contentEditable', 'true');
-			$('#where').focus();
-			document.execCommand('selectAll', false, null);
-			$('#where').on('keydown', function(e) {
-				if(e.keyCode == 13) {
-					e.preventDefault();
-					done();
-				}
-			});
-			$('#edit').text('done');
-		} else {
-			done();
+			$scope.updateWeather(true);
 		}
 	}
 
@@ -261,6 +219,7 @@ function MetroStart($scope, $http) {
 	$scope.removeTheme = function(page, index) {
 		$scope.localThemes.remove(page, index);
 		localStorage.setItem('themes', JSON.stringify($scope.localThemes.flatten));
+		chrome.storage.sync.set({ 'themes': $scope.localThemes });
 	}
 
 	$scope.changeTheme = function(newTheme) {
@@ -277,6 +236,7 @@ function MetroStart($scope, $http) {
 
 	$scope.changeWeatherUnit = function(newWeatherUnit) {
 		$scope.weatherUnit = newWeatherUnit;
+		localStorage.setItem('font', newWeatherUnit);
 		chrome.storage.sync.set({'weatherUnit': newWeatherUnit});
 
 		$scope.updateWeather(true);
@@ -284,6 +244,7 @@ function MetroStart($scope, $http) {
 
 	$scope.changeFont = function(newFont) {
 		$scope.font = newFont;
+		localStorage.setItem('font', newFont);
 		chrome.storage.sync.set({'font': newFont});
 
 		updateStyle(true);
