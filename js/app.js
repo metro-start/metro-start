@@ -162,18 +162,16 @@ function MetroStart($scope, $http) {
 				if (data.query.count) {
 					var elem = data.query.results.channel;
 					var city = elem.location.city + ', ' + elem.location.region;
-					$scope.$apply(function() {
-						$scope.weather = {
-							'city': city.toLowerCase(),
-							'currentTemp': elem.item.condition.temp,
-							'highTemp': elem.item.forecase[0].high,
-							'lowTemp': elem.item.forecase[0].low,
-							'condition': elem.item.condition.text.toLowerCase(),
-							'unit': elem.units.temperature.toLowerCase(),
-						}
-					});
+					$scope.weather = {
+						'city': city.toLowerCase(),
+						'currentTemp': elem.item.condition.temp,
+						'highTemp': elem.item.forecast[0].high,
+						'lowTemp': elem.item.forecast[0].low,
+						'condition': elem.item.condition.text.toLowerCase(),
+						'unit': elem.units.temperature.toLowerCase(),
+					}
 				}
-				chrome.storage.sync.set({ 'weather', $scope.weather });
+				chrome.storage.sync.set({ 'weather': $scope.weather });
 				localStorage.setItem('weather', JSON.stringify($scope.weather));
 			});
 		}

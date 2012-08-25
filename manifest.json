@@ -13,7 +13,7 @@
 	},
 	"permissions": [
 		"http://metro-start.appspot.com/*",
-		"http://www.google.com/ig/api",
+		"http://query.yahooapis.com/*",
 		"http://google-analytics.com/ga.js",
 		"management",
 		"bookmarks",
