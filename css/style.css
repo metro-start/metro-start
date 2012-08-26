@@ -147,6 +147,9 @@ h1 {
 .column {
 	float: left;
 }
+.column:first-child {
+	margin-right: 30px;
+}
 .gallery-bio {
 	font-style: italic;
 }

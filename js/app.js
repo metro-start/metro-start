@@ -49,28 +49,6 @@ function MetroStart($scope, $http) {
 		});
 	}());
 
-	// Load themes
-	(function() {
-		// Load local themes.
-		getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
-			$scope.localThemes = new Pages($scope.localThemes);
-		});
-
-		// Load online themes.
-		$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
-			for (i in data) {
-				// colors = {};
-				data[i].colors = {
-					'options-color': data[i]['options_color'],
-					'main-color': data[i]['main_color'],
-					'title-color': data[i]['title_color'],
-					'background-color': data[i]['background_color'],
-				}
-			}
-			$scope.onlineThemes = new Pages(data);
-		});
-	}());
-
 	// Attach a watcher to the page to see page changes and save the value.
 	$scope.$watch('page', function(newValue, oldValue) {
 		if (newValue != 3) { // Do not save navigation to themes page.
@@ -80,6 +58,7 @@ function MetroStart($scope, $http) {
 
 	$scope.clickWrench = function() {
 		$scope.hideOptions = !$scope.hideOptions;
+		$scope.loadThemes();
 		// If we're on the theme when wrench was clicked, navigate to the last page.
 		if ($scope.page == 3) {
 			getLocalOrSync('page', 0, $scope, false);
@@ -217,6 +196,28 @@ function MetroStart($scope, $http) {
 		$scope.editThemeText = 'edit themesave theme'.replace($scope.editThemeText, '');
 	}
 
+	$scope.loadThemes = function() {
+		// Load local themes.
+		if (typeof $scope.onlineThemes === 'undefined') {
+			getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
+				$scope.localThemes = new Pages($scope.localThemes);
+			});
+
+			// Load online themes.
+			$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
+				for (i in data) {
+					// colors = {};
+					data[i].colors = {
+						'options-color': data[i]['options_color'],
+						'main-color': data[i]['main_color'],
+						'title-color': data[i]['title_color'],
+						'background-color': data[i]['background_color'],
+					}
+				}
+				$scope.onlineThemes = new Pages(data);
+			});
+		}
+	}
 	updateStyle(false);
 	$scope.updateWeather(false);
 }

@@ -132,38 +132,38 @@
 			</div>
 		</div>
 		<p class="options-color wrench clickable" id="wrench" ng-click="clickWrench()">wrench</p>
-		<div class="options-color font-chooser option">
+		<div class="options-color option font-chooser chooser">
 			<span class="selection clickable" ng-class="'sel-active'|if:(font==0)" ng-click="changeFont(0)">normal fonts</span>
 			<span class="selection clickable" ng-class="'sel-active'|if:(font==1)" ng-click="changeFont(1)">thin fonts</span>
 		</div>
-		<div class="theme-buttons">
-			<p class="options-color option clickable" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
-			<p class="options-color option clickable" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeText }}</p>
+		<div class="theme-buttons option">
+			<p class="options-color clickable" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
+			<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeText }}</p>
 		</div>
 		<div class="picker background-color" ng-show="editThemeText == 'save theme'">
 			<p>
 				<input type="text" ng-model="newThemeTitle" class="options-color" size="12" placeholder="untitled">
 			</p>
 			<div>
-				<span class="picker-text options-color option">background
+				<span class="picker-text options-color">background
 					<input type="text" ng-model="theme.colors['background-color']" class="show-color" size="9">
 				</span>
 				<div id="background-color"></div>
 			</div>
 			<div>
-				<span class="picker-text options-color option">title
+				<span class="picker-text options-color">title
 					<input type="text" ng-model="theme.colors['title-color']" class="show-color" size="9">
 				</span>
 				<div id="title-color"></div>
 			</div>
 			<div>
-				<span class="picker-text options-color option">main
+				<span class="picker-text options-color">main
 					<input type="text" ng-model="theme.colors['main-color']" class="show-color" size="9">
 				</span>
 				<div id="main-color"></div>
 			</div>
 			<div>
-				<span class="picker-text options-color option">options
+				<span class="picker-text options-color">options
 					<input type="text" ng-model="theme.colors['options-color']" class="show-color" size="9">
 				</span>
 				<div id="options-color"></div>
