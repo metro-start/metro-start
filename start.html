@@ -137,38 +137,33 @@
 		</div>
 		<div class="theme-buttons">
 			<p class="theme-button options-color option" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
-			<p class="theme-button options-color option" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeButton }}</p>
+			<p class="theme-button options-color option" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeText }}</p>
 		</div>
-		<div class="picker background-color" ng-show="editTheme">
+		<div class="picker background-color" ng-show="editThemeText == 'save theme'">
 			<p>
-				<input type="text" ng-model="theme['title']" class="options-color" size="12" placeholder="untitled">
+				<input type="text" ng-model="newThemeTitle" class="options-color" size="12" placeholder="untitled">
 			</p>
-			<!-- <div id="edit-title" class="options-color" contentEditable="true">untitled</div> -->
 			<div>
 				<span class="picker-text options-color option">background
-					<input type="text" ng-model="theme['background-color']" class="show-color" size="9">
-					<!-- <span class="show-color" id="background-color-display" contenteditable="true"></span> -->
+					<input type="text" ng-model="theme.colors['background-color']" class="show-color" size="9">
 				</span>
 				<div id="background-color"></div>
 			</div>
 			<div>
 				<span class="picker-text options-color option">title
-					<input type="text" ng-model="theme['title-color']" class="show-color" size="9">
-						<!-- <span class="show-color" id="title-color-display" contenteditable="true"></span> -->
+					<input type="text" ng-model="theme.colors['title-color']" class="show-color" size="9">
 				</span>
 				<div id="title-color"></div>
 			</div>
 			<div>
 				<span class="picker-text options-color option">main
-					<input type="text" ng-model="theme['main-color']" class="show-color" size="9">
-					<!-- <span class="show-color" id="main-color-display" contenteditable="true"></span> -->
+					<input type="text" ng-model="theme.colors['main-color']" class="show-color" size="9">
 				</span>
 				<div id="main-color"></div>
 			</div>
 			<div>
 				<span class="picker-text options-color option">options
-					<input type="text" ng-model="theme['options-color']" class="show-color" size="9">
-					<!-- <span class="show-color" id="options-color-display" contenteditable="true"></span> -->
+					<input type="text" ng-model="theme.colors['options-color']" class="show-color" size="9">
 				</span>
 				<div id="options-color"></div>
 			</div>

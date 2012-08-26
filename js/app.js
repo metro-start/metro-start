@@ -2,7 +2,7 @@ function MetroStart($scope, $http) {
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
-	$scope.editTheme = false;
+	$scope.editThemeText = 'edit theme';
 
 	getLocalOrSync('page', 0, $scope, false);
 
@@ -51,8 +51,7 @@ function MetroStart($scope, $http) {
 	// Load themes
 	(function() {
 		// Load local themes from localstorage
-		getLocalOrSync('localThemes', [], $scope, true, function() {
-			$scope.localThemes.unshift(defaultTheme);
+		getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
 			$scope.localThemes = new Pages($scope.localThemes);
 		});
 
@@ -73,9 +72,7 @@ function MetroStart($scope, $http) {
 
 	// Attach a watcher to the page to see page changes and save the value.
 	$scope.$watch('page', function(newValue, oldValue) {
-		if (newValue == 3) { // Do not save navigation to themes.
-			saveTwice('page', oldValue);
-		}else {
+		if (newValue != 3) { // Do not save navigation to themes.
 			saveTwice('page', newValue);
 		}
 	}, true);
@@ -90,6 +87,7 @@ function MetroStart($scope, $http) {
 			if ($scope.page == 3) {
 				getLocalOrSync('page', 0, $scope, false);
 			}
+			$scope.editThemeText = 'edit theme';
 		} else {
 			$('.option').show('fast').css('display', 'inline');
 			if ($('#hide-rule').length) {
@@ -98,12 +96,6 @@ function MetroStart($scope, $http) {
 			}
 		}
 		$scope.wrench = !$scope.wrench;
-		//handle guys that have states that can be activated AFTER wrench.
-		$('.picker').fadeOut('fast');
-		$scope.doneEditingTheme();
-
-		$('#where').prop('contentEditable', 'false');
-		if($('#url').length) $('#url').remove();
 	}
 
 	$scope.toggleWeather = function() {
@@ -229,37 +221,16 @@ function MetroStart($scope, $http) {
 	}
 
 	$scope.clickEditTheme = function() {
-		$scope.editTheme = !$scope.editTheme;
-		// $('#theme-gallery:visible').fadeOut('fast');
-		// $('.picker').fadeToggle('fast');
-
-		// $scope.doneEditingTheme();
-	}
-
-	//TODO: Review this section.
-	$scope.doneEditingTheme = function() {
-		if ($('.picker:visible').length) {
-			if($scope.editThemeButton == 'edit theme') {
-				$scope.editThemeButton = 'save theme';
-			} else {
-				$scope.editThemeButton = 'edit theme';
-			}
-
-			//If the text still says untitled, don't save it.
-			if($('#edit-title').text().trim() !== 'untitled') {
-				$scope.localThemes.push({
-					'title': $('#edit-title').text().trim(),
-					'colors': {
-						'options-color': localStorage.getItem('options-color'),
-						'main-color': localStorage.getItem('main-color'),
-						'title-color': localStorage.getItem('title-color'),
-						'background-color': localStorage.getItem('background-color')
-					}
-				});
-				localStorage.setItem('themes', JSON.stringify($scope.localThemes));
-				$('#edit-title').text('untitled');
+		if ($scope.editThemeText == 'save theme') {
+			if ($scope.newThemeTitle.trim() != '') {
+				$scope.theme.title = $scope.newThemeTitle;
+				$scope.localThemes.add($scope.theme);
+				saveTwice('theme', $scope.theme);
+				saveTwice('localThemes', $scope.localThemes.flatten());
 			}
 		}
+
+		$scope.editThemeText = 'edit themesave theme'.replace($scope.editThemeText, '');
 	}
 
 	updateStyle(false);

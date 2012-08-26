@@ -42,10 +42,10 @@ var updateStyle = function(transition) {
 			style += 'body { font-weight: bold; }';
 		}
 
-		var background_color = scope.theme['background-color'];
-		var options_color = scope.theme['options-color'];
-		var main_color = scope.theme['main-color'];
-		var title_color = scope.theme['title-color'];
+		var background_color = scope.theme.colors['background-color'];
+		var options_color = scope.theme.colors['options-color'];
+		var main_color = scope.theme.colors['main-color'];
+		var title_color = scope.theme.colors['title-color'];
 
 		style += '* { border-color: ' + options_color + '}';
 		style += '::-webkit-scrollbar { background: ' + background_color + '}';
