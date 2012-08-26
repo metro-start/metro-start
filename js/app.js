@@ -2,6 +2,7 @@ function MetroStart($scope, $http) {
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';
+	$scope.editTheme = false;
 
 	getLocalOrSync('page', 0, $scope, false);
 
@@ -200,7 +201,7 @@ function MetroStart($scope, $http) {
 
 	$scope.removeTheme = function(page, index) {
 		$scope.localThemes.remove(page, index);
-		saveTwice('themes', $scope.localThemes.flatten());
+		saveTwice('localThemes', $scope.localThemes.flatten());
 	}
 
 	$scope.changeTheme = function(newTheme) {
@@ -228,10 +229,11 @@ function MetroStart($scope, $http) {
 	}
 
 	$scope.clickEditTheme = function() {
-		$('#theme-gallery:visible').fadeOut('fast');
-		$('.picker').fadeToggle('fast');
+		$scope.editTheme = !$scope.editTheme;
+		// $('#theme-gallery:visible').fadeOut('fast');
+		// $('.picker').fadeToggle('fast');
 
-		$scope.doneEditingTheme();
+		// $scope.doneEditingTheme();
 	}
 
 	//TODO: Review this section.
