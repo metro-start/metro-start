@@ -19,10 +19,10 @@
 		<h1 class="title-color">start here . . .</h1>
 		<div class="page-chooser">
 			<div class="options-color chooser">
-				<label class="selection" ng-class="'sel-active'|if:(page==0)" for="links">links</label>
-				<label class="selection" ng-class="'sel-active'|if:(page==1)" for="apps">apps</label>
-				<label class="selection" ng-class="'sel-active'|if:(page==2)" for="bookmarks">bookmarks</label>
-				<label class="selection option" ng-class="'sel-active'|if:(page==3)" for="themes">themes</label>
+				<label class="selection clickable" ng-class="'sel-active'|if:(page==0)" for="links">links</label>
+				<label class="selection clickable" ng-class="'sel-active'|if:(page==1)" for="apps">apps</label>
+				<label class="selection clickable" ng-class="'sel-active'|if:(page==2)" for="bookmarks">bookmarks</label>
+				<label class="selection option clickable" ng-class="'sel-active'|if:(page==3)" for="themes">themes</label>
 			</div>
 		</div>
 		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
@@ -99,7 +99,7 @@
 									<div class="page" id="online-themes" ng-repeat="page in onlineThemes.pages">
 										<div class="item" ng-repeat="theme in page">
 											<p class="clickable" ng-click="changeTheme(theme)">{{ theme.title }}</p>
-											<a class="gallery-bio options-color" ng-href="{{ theme.website }}">{{ theme.author }}</a>
+											<a class="options-color gallery-bio small-text" ng-href="{{ theme.website }}">{{ theme.author }}</a>
 										</div>
 									</div>
 								</div>
@@ -111,7 +111,7 @@
 			</div>
 		</div>
 		<div class="weather">
-			<div id="toggle-weather" class="options-color option" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
+			<div id="toggle-weather" class="options-color option clickable" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
 			<div id="weather" ng-show="weatherToggleText == 'hide weather'">
 				<div id="where">{{ weather.city }}</div>
 				<div>
@@ -121,7 +121,7 @@
 					</form>
 				</div>
 				<div class="options-color option chooser">
-					<span class="selection" ng-class="'sel-active'|if:(weatherUnit==$index)" ng-click="changeWeatherUnit($index)" ng-repeat="unit in units">{{ unit }}</span>
+					<span class="selection clickable" ng-class="'sel-active'|if:(weatherUnit==$index)" ng-click="changeWeatherUnit($index)" ng-repeat="unit in units">{{ unit }}</span>
 				</div>
 				<p id="temp">
 					{{ weather.currentTemp }}<span class="options-color">&deg;{{ weather.unit }}</span> / 
@@ -131,14 +131,14 @@
 				<p id="condition">{{ weather.condition }}</p>
 			</div>
 		</div>
-		<p class="options-color wrench" id="wrench" ng-click="clickWrench()">wrench</p>
+		<p class="options-color wrench clickable" id="wrench" ng-click="clickWrench()">wrench</p>
 		<div class="options-color font-chooser option">
-			<span class="selection" ng-class="'sel-active'|if:(font==0)" ng-click="changeFont(0)">normal fonts</span>
-			<span class="selection" ng-class="'sel-active'|if:(font==1)" ng-click="changeFont(1)">thin fonts</span>
+			<span class="selection clickable" ng-class="'sel-active'|if:(font==0)" ng-click="changeFont(0)">normal fonts</span>
+			<span class="selection clickable" ng-class="'sel-active'|if:(font==1)" ng-click="changeFont(1)">thin fonts</span>
 		</div>
 		<div class="theme-buttons">
-			<p class="theme-button options-color option" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
-			<p class="theme-button options-color option" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeText }}</p>
+			<p class="options-color option clickable" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
+			<p class="options-color option clickable" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeText }}</p>
 		</div>
 		<div class="picker background-color" ng-show="editThemeText == 'save theme'">
 			<p>
