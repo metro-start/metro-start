@@ -50,12 +50,12 @@ function MetroStart($scope, $http) {
 
 	// Load themes
 	(function() {
-		// Load local themes from localstorage
+		// Load local themes.
 		getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
 			$scope.localThemes = new Pages($scope.localThemes);
 		});
 
-		// Load online themes from website
+		// Load online themes.
 		$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
 			for (i in data) {
 				colors = {};
@@ -213,9 +213,7 @@ function MetroStart($scope, $http) {
 	}
 
 	$scope.changeFont = function(newFont) {
-		$scope.font = newFont;
-		localStorage.setItem('font', newFont);
-		chrome.storage.sync.set({'font': newFont});
+		saveThrice('font', newFont, $scope);
 
 		updateStyle(true);
 	}
