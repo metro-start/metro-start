@@ -19,12 +19,13 @@
 		<h1 class="title-color">start here . . .</h1>
 		<div class="page-chooser">
 			<div class="options-color chooser">
-				<label class="selection" ng-class="'sel-active'|if:(page==0)" for="links">saved links</label>
-				<label class="selection" ng-class="'sel-active'|if:(page==1)" for="apps">installed apps</label>
+				<label class="selection" ng-class="'sel-active'|if:(page==0)" for="links">links</label>
+				<label class="selection" ng-class="'sel-active'|if:(page==1)" for="apps">apps</label>
 				<label class="selection" ng-class="'sel-active'|if:(page==2)" for="bookmarks">bookmarks</label>
 				<label class="selection option" ng-class="'sel-active'|if:(page==3)" for="themes">themes</label>
 			</div>
 		</div>
+		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
 		<input type="radio" ng-model="page" value="0" ng-show="false" id="links">
 		<input type="radio" ng-model="page" value="1" ng-show="false" id="apps">
 		<input type="radio" ng-model="page" value="2" ng-show="false" id="bookmarks">
@@ -87,7 +88,7 @@
 									<div class="options-color">my themes</div>
 									<div class="page" id="local-themes" ng-repeat="page in localThemes.pages">
 										<div class="item" ng-repeat="theme in page">
-											<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
+											<p class="clickable" ng-click="changeTheme(theme)">{{ theme.title }}</p>
 											<span class="remove options-color small-text" ng-click="removeTheme($parent.$index, $index)">remove</span>
 											<span class="options-color small-text" ng-click="shareTheme(theme)">share</span>
 										</div>
@@ -97,7 +98,7 @@
 									<div class="options-color">online themes</div>
 									<div class="page" id="online-themes" ng-repeat="page in onlineThemes.pages">
 										<div class="item" ng-repeat="theme in page">
-											<p ng-click="changeTheme(theme.colors)">{{ theme.title }}</p>
+											<p class="clickable" ng-click="changeTheme(theme)">{{ theme.title }}</p>
 											<a class="gallery-bio options-color" ng-href="{{ theme.website }}">{{ theme.author }}</a>
 										</div>
 									</div>
@@ -168,7 +169,9 @@
 				<div id="options-color"></div>
 			</div>
 		</div>
-		<style type="text/css" id="hide-rule">
+		<!-- Added a rule to hide all options when page first loads. 
+			 Removes option elements added after the calls to hide .option were made. -->
+		<style type="text/css" id="hide-rule" ngm-if="hideOptions">
 			.option, .picker {
 				display: none;
 			}

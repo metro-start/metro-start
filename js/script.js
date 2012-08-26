@@ -1,35 +1,33 @@
-//TODO: Review this section. Anyway to modify farbtastic to talk to angular?
 $(function() {
-	//attach color pickers
-	$.each(defaultTheme, function(key, value) {
-		return false;
-		$('#' + key).farbtastic(function(color) {
-			localStorage.setItem(key, color);
-			$('#' + key + '-display').text(color);
+	/*
+		Attaches the color pickers and binds them to $scope.
+	*/
+	var scope = angular.element(document.body).scope();
+	$.each(defaultTheme.colors, function(key, value) {
+		$('#' + key).farbtastic(function(color, scoped) {
+			// If we are already in angularjs scope.
+			if (scoped) {
+				// Change the specific color and save it.
+				scope.theme.colors[key] = color;
+				saveTwice('theme', scope.theme);
+			} else {
+				scope.$apply(function() {
+					scope.theme.colors[key] = color;
+					saveTwice('theme', scope.theme);
+				});
+			}
 			updateStyle(false);
 		});
 
-		//If you press enter in the text box, set it a the new color.
-		$('#' + key + '-display').on('keydown', function(e) {
-			if(e.keyCode == 13) {
-				$.farbtastic('#' + key).setColor($(this).text());
-				return false;
-			}
+		// Add a listener to update farbtastic when a color is changed.
+		scope.$watch('theme.colors["' + key + '"]', function(newVal, oldVal) {
+			$.farbtastic('#' + key).setColor(newVal, true);
 		});
 
-		$('#' + key + '-display').on('blur', function(e) {
-			$.farbtastic('#' + key).setColor($(this).text());
-		});
-
-		if(localStorage.getItem(key)) {
-			$.farbtastic('#' + key).setColor(localStorage.getItem(key));
-		} else {
-			$.farbtastic('#' + key).setColor(value);
-		}
 	});
 });
 
-//TODO: Review this section. Is there a way to avoid the FOUSC when launching first time?
+//TODO: Review this section. Is there a way to avoid the FOUC when launching first time?
 var updateStyle = function(transition) {
 	var scope = angular.element(document.body).scope();
 	if (scope.theme) {

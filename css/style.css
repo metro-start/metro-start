@@ -190,6 +190,9 @@ input[type="submit"] {
 	cursor: pointer;
 	border: none;
 }
+.clickable {
+	cursor: pointer;
+}
 .title {
 	display: block;
 }

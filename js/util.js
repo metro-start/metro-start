@@ -13,6 +13,7 @@ var defaultTheme = {
 
 /**
 	Saves the key, value pair to localStorage.
+	
 	key: The name of the value to be saved.
 	value: The value to be saved.
 */
@@ -26,6 +27,7 @@ var saveOnce = function(key, value) {
 
 /**
 	Saves the key, value pair to localStorage and chrome.storage.
+	
 	key: The name of the value to be saved.
 	value: The value to be saved.
 */
@@ -98,6 +100,8 @@ var Pages = function(newRows) {
 
 	/**
 		Flatten the collection and turn it into a 1D array.
+
+		returns: The array in 2D format.
 	*/
 	this.flatten = function() {
 		return this.pages.reduce(function(a, b) { return a.concat(b) });
