@@ -117,7 +117,7 @@ h1 {
 .item:last-child {
 	margin-bottom: 5px;
 }
-.item > a {
+.title {
 	display: block;
 }
 
