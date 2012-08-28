@@ -49,6 +49,7 @@ var updateStyle = function(transition) {
 		style += '::-webkit-scrollbar { background: ' + background_color + '}';
 		style += '::-webkit-scrollbar-thumb { background: ' + options_color + '}';
 
+		// Transition the colors, but then we still add it to the DOM.
 		if (transition) {
 			$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
 			$('.title-color').animate({'color': title_color}, {duration: 400, queue: false});

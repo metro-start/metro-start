@@ -1,4 +1,6 @@
 function MetroStart($scope, $http) {
+	checkAndUpgradeVersion();
+
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
 	$scope.editThemeButton = 'edit theme';

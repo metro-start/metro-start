@@ -114,6 +114,54 @@ var Pages = function(newRows) {
 }
 
 /**
+	Upgrades the version of chrome installed by moving all saved data to new format.
+*/
+var checkAndUpgradeVersion = function() {
+	var newVersion = chrome.app.getDetails().version;
+	var lastVersion = localStorage.getItem('version');
+	// This means <= 4.2.2 or first run
+	if (lastVersion == null) {
+		// Check if links exists. If it does, then its an upgrade.
+		if (localStorage.getItem('links') != null) {
+			saveTwice('links', localStorage.getItem('links'));
+
+			 console.log('here')
+			saveTwice('localThemes', localStorage.getItem('themes'));
+
+			saveTwice('page', localStorage.getItem('active'));
+
+			var theme = { 
+				'title': '', 
+				'colors': {
+					'options-color': localStorage.getItem('options-color'),
+					'main-color': localStorage.getItem('main-color'),
+					'title-color': localStorage.getItem('title-color'),
+					'background-color': localStorage.getItem('background-color')
+				}
+			};
+			saveTwice('theme', theme);
+
+			saveTwice('font', localStorage.getItem('font'));
+
+			saveTwice('locat', localStorage.getItem('locat'));
+
+			if (localStorage.getItem('unit') == 'fahrenheit') {
+				saveTwice('weatherUnit', 0);
+			} else {
+				saveTwice('weatherUnit', 1);
+			}
+
+			if (localStorage.getItem('hide_weather') == false) {
+				saveTwice('weatherToggleText', 'hide weather');
+			} else {
+				saveTwice('weatherToggleText', 'show weather');
+			}
+		}
+	}
+	localStorage.setItem('version', newVersion);
+}
+
+/**
 	Tries to get the value from localStorage. 
 	If it fails, checks chrome.storage.
 	Retrieves the value and saves it to the angularjs scope.
@@ -136,6 +184,7 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 			scope[key] = localStorage.getItem(key);
 		}
 		if (callback) callback();
+		// If we found it, still make the async call for synced data to update the storages.
 	} else {
 		chrome.storage.sync.get(key, function(container) {
 			scope.$apply(function () {
