@@ -39,7 +39,7 @@
 								<div class="page" ng-repeat="page in links.pages">
 									<div class="item" ng-repeat="link in page">
 										<a class="title" ng-href="{{ link.url }}">{{ link.name }}</a>
-										<span class="remove option options-color small-text" ng-click="removeLink($parent.$index, $index)">remove</span>
+										<span class="remove option options-color small-text clickable" ng-click="removeLink($parent.$index, $index)">remove</span>
 									</div>
 								</div>
 							</div>
@@ -73,7 +73,7 @@
 									<div class="item" ng-repeat="bookmark in page">
 										<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
 										</a>
-										<span class="remove option options-color small-text" ng-click="removeBookmark(bookmark, $parent.$index, $index)">remove</span>								
+										<span class="remove option options-color small-text clickable" ng-click="removeBookmark(bookmark, $parent.$index, $index)">remove</span>								
 									</div>
 								</div>
 							</div>
@@ -89,8 +89,8 @@
 									<div class="page" id="local-themes" ng-repeat="page in localThemes.pages">
 										<div class="item" ng-repeat="theme in page">
 											<p class="clickable" ng-click="changeTheme(theme)">{{ theme.title }}</p>
-											<span class="remove options-color small-text" ng-click="removeTheme($parent.$index, $index)">remove</span>
-											<span class="options-color small-text" ng-click="shareTheme(theme)">share</span>
+											<span class="remove options-color small-text clickable" ng-click="removeTheme($parent.$index, $index)">remove</span>
+											<span class="options-color small-text clickable" ng-click="shareTheme(theme)">share</span>
 										</div>
 									</div>
 								</div>

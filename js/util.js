@@ -125,7 +125,6 @@ var checkAndUpgradeVersion = function() {
 		if (localStorage.getItem('links') != null) {
 			saveTwice('links', localStorage.getItem('links'));
 
-			 console.log('here')
 			saveTwice('localThemes', localStorage.getItem('themes'));
 
 			saveTwice('page', localStorage.getItem('active'));
@@ -156,9 +155,12 @@ var checkAndUpgradeVersion = function() {
 			} else {
 				saveTwice('weatherToggleText', 'show weather');
 			}
+
+			localStorage.clear();
+		} else if(lastVersion != newVersion) {
+			localStorage.setItem('version', newVersion);
 		}
 	}
-	localStorage.setItem('version', newVersion);
 }
 
 /**
@@ -185,17 +187,25 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 		}
 		if (callback) callback();
 		// If we found it, still make the async call for synced data to update the storages.
-	} else {
-		chrome.storage.sync.get(key, function(container) {
-			scope.$apply(function () {
-				if (container[key]) {
-					// Save retrieved data to localStorage and scope.
+	} 
+	chrome.storage.sync.get(key, function(container) {
+		scope.$apply(function () {
+			if (container[key]) {
+				// Save retrieved data to localStorage and scope.
+				if (jsonify) {
+					localStorage.setItem(key, JSON.stringify(container[key]));
+				} else {
+					localStorage.setItem(key, container[key]);
+				}
+				scope[key] = container[key];
+			} else {
+				if (localStorage.getItem(key)) {
 					if (jsonify) {
-						localStorage.setItem(key, JSON.stringify(container[key]));
+						scope[key] = JSON.parse(localStorage.getItem(key));
 					} else {
-						localStorage.setItem(key, container[key]);
+						scope[key] = localStorage.getItem(key);
 					}
-					scope[key] = container[key];
+					chrome.storage.sync.set({ key: scope[key] });
 				} else {
 					// Save defaultValue to all three storages.
 					if (jsonify) {
@@ -206,8 +216,8 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 					scope[key] = defaultValue;
 					chrome.storage.sync.set({ key: defaultValue });
 				}
-				if (callback) callback();
-			});
+			}
+			if (callback) callback();
 		});
-	}
+	});
 }

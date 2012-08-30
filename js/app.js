@@ -25,7 +25,7 @@ function MetroStart($scope, $http) {
 
 	// Load list of links
 	// If there's no existing links (local or online) initiliazes with message.
-	getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function() {
+	getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
 		$scope.links = new Pages($scope.links);
 	});
 
@@ -77,6 +77,7 @@ function MetroStart($scope, $http) {
 			'url': $scope.newUrl,
 		});
 		$scope.newUrl = '';
+		console.log($scope.links.flatten())
 		saveTwice('links', $scope.links.flatten());
 	}
 
@@ -90,7 +91,7 @@ function MetroStart($scope, $http) {
 	}
 
 	$scope.saveLocat = function() {
-		if ($scope.newLocat.trim() != '') {
+		if ($scope.newLocat && $scope.newLocat.trim() != '') {
 			saveThrice('locat', $scope.newLocat, $scope);
 
 			$scope.updateWeather(true);
@@ -143,8 +144,8 @@ function MetroStart($scope, $http) {
 
 	$scope.clickBookmark = function(bookmark, pageIndex) {
 		if (bookmark.children.length > 0) {
-			$scope.pages.length = pageIndex + 1;
-			$scope.pages.push(bookmark.children);
+			$scope.bookmarks.length = pageIndex + 1;
+			$scope.bookmarks.push(bookmark.children);
 			return false;
 		}
 	}
@@ -152,7 +153,7 @@ function MetroStart($scope, $http) {
 	$scope.removeBookmark = function(bookmark, pageIndex, bookmarkIndex) {
 		chrome.bookmarks.removeTree(bookmark.id, function() {
 			$scope.$apply(function() {
-				$scope.pages[pageIndex].splice(bookmarkIndex, 1);
+				$scope.bookmarks[pageIndex].splice(bookmarkIndex, 1);
 			});
 		});
 	}
@@ -186,7 +187,7 @@ function MetroStart($scope, $http) {
 
 	$scope.clickEditTheme = function() {
 		if ($scope.editThemeText == 'save theme') {
-			if ($scope.newThemeTitle.trim() != '') {
+			if ($scope.newThemeTitle && $scope.newThemeTitle.trim() != '') {
 				$scope.theme.title = $scope.newThemeTitle;
 				$scope.newThemeTitle = '';
 				$scope.localThemes.add($scope.theme);
