@@ -47,7 +47,7 @@ var updateStyle = function(transition) {
 		style += '* { border-color: ' + options_color + '}';
 		style += '::-webkit-scrollbar { background: ' + background_color + '}';
 		style += '::-webkit-scrollbar-thumb { background: ' + options_color + '}';
-		style += '::-webkit-input-placeholder { color: ' + options_color + '}';
+		style += '::-webkit-input-placeholder { color: ' + main_color + '; opacity: 0.3}';
 
 		// Transition the colors, but then we still add it to the DOM.
 		if (transition) {
