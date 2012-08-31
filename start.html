@@ -40,12 +40,14 @@
 									<div class="item" ng-repeat="link in page">
 										<a class="title" ng-href="{{ link.url }}">{{ link.name }}</a>
 										<span class="remove option options-color small-text clickable" ng-click="removeLink($parent.$index, $index)">remove</span>
+										<span class="remove option options-color small-text clickable" ng-click="renameLink($parent.$index, $index)">rename</span>
 									</div>
 								</div>
 							</div>
 						</div>
 							<form ng-submit="saveLink()" class="add">
-								<input type="text" name="newUrl" ng-model="newUrl" placeholder="http://" class="url option" size="24">
+								<input type="text" name="newUrlTitle" ng-model="newUrlTitle" placeholder="title" class="url option" size="10">
+								<input type="text" name="newUrl" ng-model="newUrl" placeholder="http://" class="url option" size="16">
 								<input type="submit" class="options-color option" value="add">
 							</form>
 					</div>

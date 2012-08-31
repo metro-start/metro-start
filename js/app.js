@@ -73,10 +73,11 @@ function MetroStart($scope, $http) {
 			$scope.newUrl = 'http://' + $scope.newUrl;
 		}
 		$scope.links.add({
-			'name': angular.lowercase($scope.newUrl).replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
+			'name': $scope.newUrlTitle ? $scope.newUrlTitle : angular.lowercase($scope.newUrl).replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
 			'url': $scope.newUrl,
 		});
 		$scope.newUrl = '';
+		$scope.newUrlTitle = '';
 		console.log($scope.links.flatten())
 		saveTwice('links', $scope.links.flatten());
 	}

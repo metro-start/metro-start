@@ -23,7 +23,6 @@ $(function() {
 		scope.$watch('theme.colors["' + key + '"]', function(newVal, oldVal) {
 			$.farbtastic('#' + key).setColor(newVal, true);
 		});
-
 	});
 });
 
@@ -48,6 +47,7 @@ var updateStyle = function(transition) {
 		style += '* { border-color: ' + options_color + '}';
 		style += '::-webkit-scrollbar { background: ' + background_color + '}';
 		style += '::-webkit-scrollbar-thumb { background: ' + options_color + '}';
+		style += '::-webkit-input-placeholder { color: ' + options_color + '}';
 
 		// Transition the colors, but then we still add it to the DOM.
 		if (transition) {
