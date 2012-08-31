@@ -147,7 +147,6 @@ h1 {
 /* Themes section */
 .column {
 	float: left;
-	height: 100%;
 }
 .column:first-child {
 	margin-right: 30px;
