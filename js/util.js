@@ -76,6 +76,15 @@ var Pages = function(newRows) {
 	}
 
 	/**
+		Get an item from the collection.
+
+		page: The page/column where the item is located.
+		index: The item's index in that page.
+	*/
+	this.get = function(col, row) {
+		return this.pages[col][row];
+	}
+	/**
 		Remove an item from the collection.
 
 		page: The page/column where the item is located.

@@ -6,6 +6,7 @@ function MetroStart($scope, $http) {
 	$scope.editThemeButton = 'edit theme';
 	$scope.editThemeText = 'edit theme';
 	$scope.hideOptions = true;
+	$scope.linkToEdit = {};
 
 	getLocalOrSync('page', 0, $scope, false);
 
@@ -68,18 +69,29 @@ function MetroStart($scope, $http) {
 		$scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
 	}
 
-	$scope.saveLink = function() {
+	$scope.addLink = function() {
 		if(!$scope.newUrl.match(/https?\:\/\//)) {
 			$scope.newUrl = 'http://' + $scope.newUrl;
 		}
-		$scope.links.add({
-			'name': $scope.newUrlTitle ? $scope.newUrlTitle : angular.lowercase($scope.newUrl).replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
-			'url': $scope.newUrl,
-		});
+		if (!$.isEmptyObject($scope.linkToEdit)) {
+			$scope.linkToEdit.name =  $scope.newUrlTitle ? $scope.newUrlTitle : angular.lowercase($scope.newUrl).replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
+			$scope.linkToEdit.url = $scope.newUrl;
+			$scope.linkToEdit = {};
+		} else {
+			$scope.links.add({
+				'name': $scope.newUrlTitle ? $scope.newUrlTitle : angular.lowercase($scope.newUrl).replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
+				'url': $scope.newUrl,
+			});
+		}
 		$scope.newUrl = '';
 		$scope.newUrlTitle = '';
-		console.log($scope.links.flatten())
 		saveTwice('links', $scope.links.flatten());
+	}
+
+	$scope.editLink = function(page, index) {
+		$scope.linkToEdit = $scope.links.get(page, index);
+		$scope.newUrlTitle = $scope.linkToEdit.name;
+		$scope.newUrl = $scope.linkToEdit.url;
 	}
 
 	$scope.removeLink = function(page, index){
