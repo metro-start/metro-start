@@ -34,6 +34,17 @@
 			<div class="internal">
 				<div class="links collection">
 					<div id="links">
+						<div class="options-color option sorting">
+							<span class="toggle">
+								<span>sort </span>
+								<span class="clickable sel-active" ng-click="changeSortMethod('links')">{{ sortMethod.links }}</span>
+							</span>
+							<span class="toggle">
+								<span>in </span>
+								<span class="clickable sel-active" ng-click="changeSortDirection('links')">{{ sortDirection.links }}</span>
+								<span> order</span>
+							</span>
+						</div>
 						<div class="external_selector" id="external_selector_links">
 							<div class="internal_selector" id="internal_selector_links">
 								<div class="page" ng-repeat="page in links.pages">
@@ -45,11 +56,11 @@
 								</div>
 							</div>
 						</div>
-							<form ng-submit="addLink()" class="add">
-								<input type="text" name="newUrlTitle" ng-model="newUrlTitle" placeholder="title" class="url option" size="10">
-								<input type="text" name="newUrl" ng-model="newUrl" placeholder="http://" class="url option" size="16">
-								<input type="submit" class="options-color option" value="save">
-							</form>
+						<form ng-submit="addLink()" class="add">
+							<input type="text" name="newUrlTitle" ng-model="newUrlTitle" placeholder="title" class="url option" size="10">
+							<input type="text" name="newUrl" ng-model="newUrl" placeholder="http://" class="url option" size="16">
+							<input type="submit" class="options-color option" value="save">
+						</form>
 					</div>
 				</div>
 				<div class="apps collection">

@@ -107,6 +107,12 @@ var Pages = function(newRows) {
 		}
 	}
 
+	this.sort = function(getFunction, compareFunction) {
+		var sorted = this.flatten().sort(compareFunction(getFunction));
+		this.pages = [[]];
+		this.addAll(sorted);
+	}
+
 	/**
 		Flatten the collection and turn it into a 1D array.
 
@@ -229,4 +235,49 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 			if (callback) callback();
 		});
 	});
+}
+
+var getFunctions = {
+	'links': {
+		'alphabetically': function(elem) {
+			return elem.name;
+		},
+		'chronologically': function(elem) {
+			return elem.date;
+		}
+	},
+	'apps': function() {
+
+	},
+	'bookmarks': function() {
+
+	},
+	'themes': function() {
+
+	}
+}
+
+var compareFunctions = {
+	'ascending': function(getFunction) {
+		return function(a, b) {
+			if (getFunction(a) > getFunction(b)) {
+				return 1;
+			} else if(getFunction(a) < getFunction(b)) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
+	},
+	'descending': function(getFunction) {
+		return function(a, b) {
+			if (getFunction(a) > getFunction(b)) {
+				return -1;
+			} else if(getFunction(a) < getFunction(b)) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+	}
 }

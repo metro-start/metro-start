@@ -7,6 +7,21 @@ function MetroStart($scope, $http) {
 	$scope.editThemeText = 'edit theme';
 	$scope.hideOptions = true;
 	$scope.linkToEdit = {};
+	$scope.sortMethods = 'alphabeticallychronologically';
+	$scope.sortMethod = {
+		'links': 'alphabetically',
+		'apps': '',
+		'bookmarks': '',
+		'themes': ''
+	};
+
+	$scope.sortDirections = 'ascendingdescending';
+	$scope.sortDirection = {
+		'links': 'ascending',
+		'apps': '',
+		'bookmarks': '',
+		'themes': ''
+	};
 
 	getLocalOrSync('page', 0, $scope, false);
 
@@ -67,6 +82,15 @@ function MetroStart($scope, $http) {
 			getLocalOrSync('page', 0, $scope, false);
 		}
 		$scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
+	}
+
+	$scope.changeSortMethod = function(key) {
+		$scope.sortMethod[key] = $scope.sortMethods.replace($scope.sortMethod[key], '');
+		$scope[key].sort(getFunctions[key][$scope.sortMethod[key]], compareFunctions[$scope.sortDirection[key]]);
+	}
+
+	$scope.changeSortDirection = function(key) {
+		$scope.sortDirection[key] = $scope.sortDirections.replace($scope.sortDirection[key], '');
 	}
 
 	$scope.addLink = function() {
@@ -234,6 +258,7 @@ function MetroStart($scope, $http) {
 			});
 		}
 	}
+
 	updateStyle(false);
 	$scope.updateWeather(false);
 }
