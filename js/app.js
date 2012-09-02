@@ -91,6 +91,7 @@ function MetroStart($scope, $http) {
 
 	$scope.changeSortDirection = function(key) {
 		$scope.sortDirection[key] = $scope.sortDirections.replace($scope.sortDirection[key], '');
+		$scope[key].sort(getFunctions[key][$scope.sortMethod[key]], compareFunctions[$scope.sortDirection[key]]);
 	}
 
 	$scope.addLink = function() {
