@@ -7,21 +7,8 @@ function MetroStart($scope, $http) {
 	$scope.editThemeText = 'edit theme';
 	$scope.hideOptions = true;
 	$scope.linkToEdit = {};
-	$scope.sortMethods = 'alphabeticallychronologically';
-	$scope.sortMethod = {
-		'links': 'alphabetically',
-		'apps': '',
-		'bookmarks': '',
-		'themes': ''
-	};
 
-	$scope.sortDirections = 'ascendingdescending';
-	$scope.sortDirection = {
-		'links': 'ascending',
-		'apps': '',
-		'bookmarks': '',
-		'themes': ''
-	};
+	getLocalOrSync('sort', defaultSort, $scope, true);
 
 	getLocalOrSync('page', 0, $scope, false);
 
@@ -41,31 +28,56 @@ function MetroStart($scope, $http) {
 
 	// Load list of links
 	// If there's no existing links (local or online) initiliazes with message.
-	getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
-		$scope.links = new Pages($scope.links);
-	});
+	$scope.loadLinks = function() {
+		getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
+			$scope.links = new Pages($scope.links, $scope.sort.links, getFunctions['name']);
+		});
+	}
 
 	// Load list of apps
-	(function() {
-		$scope.apps = new Pages([{
-			'name': 'Chrome Webstore', 
-			'appLaunchUrl': 'https://chrome.google.com/webstore'
-		}]);
+	$scope.loadApps = function() {
 	    chrome.management.getAll(function(res) {
+			var apps = [{
+				'name': 'Chrome Webstore', 
+				'appLaunchUrl': 'https://chrome.google.com/webstore'
+			}];
 	    	// Remove extensions and limit to apps.
-	        res = res.filter(function(item) { return item.isApp; });
-			$scope.apps.addAll(res);
+	        apps = apps.concat(res.filter(function(item) { return item.isApp; }));
+	        $scope.$apply(function() {
+				$scope.apps = new Pages(apps, $scope.sort.apps, getFunctions['name']);
+			});
 	    });
-	}());
+	};
 
 	// Load list of bookmarks
-	(function() {
+	$scope.loadBookmarks = function() {
 		chrome.bookmarks.getTree(function(data) {
 			$scope.$apply(function() {
 				$scope.bookmarks = [data[0].children];
 			});
 		});
-	}());
+	};
+
+	$scope.loadThemes = function() {
+		// Load local themes.
+		getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
+			$scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, getFunctions['title']);
+		});
+
+		// Load online themes.
+		$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
+			for (i in data) {
+				// colors = {};
+				data[i].colors = {
+					'options-color': data[i]['options_color'],
+					'main-color': data[i]['main_color'],
+					'title-color': data[i]['title_color'],
+					'background-color': data[i]['background_color'],
+				}
+			}
+			$scope.onlineThemes = new Pages(data, $scope.sort.themes, getFunctions['title']);
+		});
+	}
 
 	// Attach a watcher to the page to see page changes and save the value.
 	$scope.$watch('page', function(newValue, oldValue) {
@@ -84,14 +96,50 @@ function MetroStart($scope, $http) {
 		$scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
 	}
 
-	$scope.changeSortMethod = function(key) {
-		$scope.sortMethod[key] = $scope.sortMethods.replace($scope.sortMethod[key], '');
-		$scope[key].sort(getFunctions[key][$scope.sortMethod[key]], compareFunctions[$scope.sortDirection[key]]);
-	}
-
-	$scope.changeSortDirection = function(key) {
-		$scope.sortDirection[key] = $scope.sortDirections.replace($scope.sortDirection[key], '');
-		$scope[key].sort(getFunctions[key][$scope.sortMethod[key]], compareFunctions[$scope.sortDirection[key]]);
+	$scope.changeSorting = function(key, newSorting) {
+		$scope.sort[key] = newSorting;
+		saveTwice('sort', $scope.sort, $scope);
+		if ($scope.sort[key] == 0) {
+			if (key == 'links') {
+				$scope.loadLinks();
+			} else if(key == 'apps') {
+				$scope.loadApps();
+			} else if(key == 'themes') {
+				$scope.loadThemes();
+			} else if (key == 'bookmarks') {
+				for (i = $scope.bookmarks.length - 1; i >= 0; i--) {
+					if (typeof $scope.bookmarks[i][0].parentId !== 'undefined') {
+						(function(parentId, i) {
+							chrome.bookmarks.getChildren(parentId, function(res) {
+								$scope.$apply(function() {
+									$scope.bookmarks[i] = res;
+								});
+							});
+						})($scope.bookmarks[i][0].parentId, i);
+					}
+				}
+			}
+		}
+		else if ($scope.sort[key] == 1) {
+			if (key == 'themes') {
+				$scope.localThemes.sort();
+				$scope.onlineThemes.sort();
+			} else if (key == 'bookmarks') {
+				for (i = 0; i < $scope.bookmarks.length; i++) {
+					$scope.bookmarks[i].sort(function(a, b) {
+						if (angular.lowercase(a.title) > angular.lowercase(b.title)) {
+							return 1;
+						} else if(angular.lowercase(a.title) < angular.lowercase(b.title)) {
+							return -1;
+						} else {
+							return 0;
+						}
+					});
+				}
+			} else {
+				$scope[key].sort();
+			}
+		}
 	}
 
 	$scope.addLink = function() {
@@ -183,7 +231,19 @@ function MetroStart($scope, $http) {
 	$scope.clickBookmark = function(bookmark, pageIndex) {
 		if (bookmark.children.length > 0) {
 			$scope.bookmarks.length = pageIndex + 1;
-			$scope.bookmarks.push(bookmark.children);
+			if ($scope.sort.bookmarks) {
+				$scope.bookmarks.push(bookmark.children.sort(function(a, b) {
+					if (angular.lowercase(a.title) > angular.lowercase(b.title)) {
+						return 1;
+					} else if(angular.lowercase(a.title) < angular.lowercase(b.title)) {
+						return -1;
+					} else {
+						return 0;
+					}
+				}));
+			} else {
+				$scope.bookmarks.push(bookmark.children);
+			}
 			return false;
 		}
 	}
@@ -237,29 +297,9 @@ function MetroStart($scope, $http) {
 		$scope.editThemeText = 'edit themesave theme'.replace($scope.editThemeText, '');
 	}
 
-	$scope.loadThemes = function() {
-		// Load local themes.
-		if (typeof $scope.onlineThemes === 'undefined') {
-			getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
-				$scope.localThemes = new Pages($scope.localThemes);
-			});
-
-			// Load online themes.
-			$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
-				for (i in data) {
-					// colors = {};
-					data[i].colors = {
-						'options-color': data[i]['options_color'],
-						'main-color': data[i]['main_color'],
-						'title-color': data[i]['title_color'],
-						'background-color': data[i]['background_color'],
-					}
-				}
-				$scope.onlineThemes = new Pages(data);
-			});
-		}
-	}
-
+	$scope.loadLinks();
+	$scope.loadApps();
+	$scope.loadBookmarks();
 	updateStyle(false);
 	$scope.updateWeather(false);
 }

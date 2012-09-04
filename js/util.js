@@ -11,6 +11,13 @@ var defaultTheme = {
 	}
 };
 
+var defaultSort = {
+	'links': 0,
+	'apps': 0,
+	'bookmarks': 0,
+	'themes': 0 
+};
+
 /**
 	Saves the key, value pair to localStorage.
 	
@@ -57,9 +64,11 @@ var saveThrice = function(key, value, scope) {
 	
 	newRows: An array of items to initialize the collection with.
 */
-var Pages = function(newRows) {
+var Pages = function(newRows, sorted, getFunction) {
 	this.rows = 4;
 	this.pages = [[]];
+	this.sorted = false;
+	this.getFunction = function(elem) { return elem };
 
 	/**
 		Add an item to the collection.
@@ -73,6 +82,7 @@ var Pages = function(newRows) {
 		}
 		// Add item to last column.
 		this.pages[this.pages.length - 1].push(row);
+		if (this.sorted) this.sort();
 	}
 
 	/**
@@ -99,20 +109,34 @@ var Pages = function(newRows) {
 		// The the last page is now empty, pop it.
 		if (this.pages.length > 1 && this.pages[this.pages.length - 1].length == 0)
 			this.pages.pop();
+
+		if (this.sorted) this.sort();
 	}
 
 	this.addAll = function(newRows) {
 		for (index = 0; index < newRows.length; index++) {
 			this.add(newRows[index]);
 		}
+		if (this.sorted) this.sort();
 	}
 
-	this.sort = function(getFunction, compareFunction) {
-		var sorted = this.flatten().sort(compareFunction(getFunction));
-		this.pages = [[]];
-		this.addAll(sorted);
+	this.sort = function() {
+		if (this.sorted == false) {
+			this.sorted = true;
+			var sorted = this.flatten().sort(function(a, b) {
+				if (getFunction(a) > getFunction(b)) {
+					return 1;
+				} else if(getFunction(a) < getFunction(b)) {
+					return -1;
+				} else {
+					return 0; 
+				}
+			});
+			this.pages = [[]];
+			this.addAll(sorted);
+		}
 	}
-
+	// this.sort = function(getfunction, comparefunction) {var sorted = this.flatten().sort(comparefunction(getfunction)); this.pages = [[]]; this.addall(sorted); }
 	/**
 		Flatten the collection and turn it into a 1D array.
 
@@ -126,6 +150,10 @@ var Pages = function(newRows) {
 		Ininitializes the collection.
 	*/
 	if (newRows) this.addAll(newRows);
+	this.getFunction = getFunction;
+	if (sorted) {
+		this.sort();
+	}
 }
 
 /**
@@ -238,46 +266,10 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 }
 
 var getFunctions = {
-	'links': {
-		'alphabetically': function(elem) {
-			return elem.name;
-		},
-		'chronologically': function(elem) {
-			return elem.date;
-		}
+	'name': function(elem) {
+		return angular.lowercase(elem.name);
 	},
-	'apps': function() {
-
+	'title': function(elem) {
+		return angular.lowercase(elem.title);
 	},
-	'bookmarks': function() {
-
-	},
-	'themes': function() {
-
-	}
-}
-
-var compareFunctions = {
-	'ascending': function(getFunction) {
-		return function(a, b) {
-			if (getFunction(a) > getFunction(b)) {
-				return 1;
-			} else if(getFunction(a) < getFunction(b)) {
-				return -1;
-			} else {
-				return 0;
-			}
-		}
-	},
-	'descending': function(getFunction) {
-		return function(a, b) {
-			if (getFunction(a) > getFunction(b)) {
-				return -1;
-			} else if(getFunction(a) < getFunction(b)) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-	}
 }

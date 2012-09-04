@@ -62,7 +62,7 @@ h1 {
 }
 
 /* Header and menu */
-.page-chooser, .sorting {
+.page-chooser, .sort {
     margin-left: 50px;
     margin-bottom: 10px;
 }
@@ -78,11 +78,8 @@ h1 {
 	width: 25%;
 	float: left;
 }
-.sorting > span > span {
-	opacity: 0.5;
-}
-.sorting > span > .sel-active {
-	opacity: 1;
+.sort {
+	display: block
 }
 
 /* Weather section */

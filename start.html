@@ -34,16 +34,9 @@
 			<div class="internal">
 				<div class="links collection">
 					<div id="links">
-						<div class="options-color option sorting">
-							<span class="toggle">
-								<span>sort </span>
-								<span class="clickable sel-active" ng-click="changeSortMethod('links')">{{ sortMethod.links }}</span>
-							</span>
-							<span class="toggle">
-								<span>in </span>
-								<span class="clickable sel-active" ng-click="changeSortDirection('links')">{{ sortDirection.links }}</span>
-								<span> order</span>
-							</span>
+						<div class="options-color option sort chooser">
+							<span class="selection clickable" ng-class="'sel-active'|if:(sort.links==0)" ng-click="changeSorting('links', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="'sel-active'|if:(sort.links==1)" ng-click="changeSorting('links', 1)">sorted</span>
 						</div>
 						<div class="external_selector" id="external_selector_links">
 							<div class="internal_selector" id="internal_selector_links">
@@ -65,6 +58,10 @@
 				</div>
 				<div class="apps collection">
 					<div id="apps">
+						<div class="options-color option sort chooser">
+							<span class="selection clickable" ng-class="'sel-active'|if:(sort.apps==0)" ng-click="changeSorting('apps', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="'sel-active'|if:(sort.apps==1)" ng-click="changeSorting('apps', 1)">sorted</span>
+						</div>
 						<div class="external_selector" id="external_selector_apps">
 							<div class="internal_selector" id="internal_selector_apps">
 								<div class="page" ng-repeat="page in apps.pages">
@@ -80,6 +77,10 @@
 				</div>
 				<div class="bookmarks collection">
 					<div id="bookmarks">
+						<div class="options-color option sort chooser">
+							<span class="selection clickable" ng-class="'sel-active'|if:(sort.bookmarks==0)" ng-click="changeSorting('bookmarks', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="'sel-active'|if:(sort.bookmarks==1)" ng-click="changeSorting('bookmarks', 1)">sorted</span>
+						</div>
 						<div class="external_selector" id="external_selector_book">
 							<div class="internal_selector" id="internal_selector_book">
 								<div class="bookmark_page" id="bookmark_page_{{ $index }}" ng-repeat="page in bookmarks">
@@ -95,6 +96,10 @@
 				</div>
 				<div class="themes collection">
 					<div id="themes">
+						<div class="options-color option sort chooser">
+							<span class="selection clickable" ng-class="'sel-active'|if:(sort.themes==0)" ng-click="changeSorting('themes', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="'sel-active'|if:(sort.themes==1)" ng-click="changeSorting('themes', 1)">sorted</span>
+						</div>
 						<div class="external_selector" id="external_selector_theme">
 							<div class="internal_selector" id="internal_selector_theme">
 								<div class="column">
