@@ -67,7 +67,6 @@ function MetroStart($scope, $http) {
 		// Load online themes.
 		$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
 			for (i in data) {
-				// colors = {};
 				data[i].colors = {
 					'options-color': data[i]['options_color'],
 					'main-color': data[i]['main_color'],
@@ -78,7 +77,7 @@ function MetroStart($scope, $http) {
 			$scope.onlineThemes = new Pages(data, $scope.sort.themes, getFunctions['title']);
 		});
 	}
-
+//$('.external').height($('body').height() - ($('h1').height() + $('.page-chooser').height() + $('.wrench').height() + parseInt($('.wrench').css('bottom')) -  0))
 	// Attach a watcher to the page to see page changes and save the value.
 	$scope.$watch('page', function(newValue, oldValue) {
 		if (newValue != 3) { // Do not save navigation to themes page.
@@ -96,6 +95,9 @@ function MetroStart($scope, $http) {
 		$scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
 	}
 
+	$scope.setRows = function (elem, newRows) {
+		$scope[elem].setRows(newRows);
+	}
 	$scope.changeSorting = function(key, newSorting) {
 		$scope.sort[key] = newSorting;
 		saveTwice('sort', $scope.sort, $scope);

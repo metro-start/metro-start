@@ -136,7 +136,6 @@ var Pages = function(newRows, sorted, getFunction) {
 			this.addAll(sorted);
 		}
 	}
-	// this.sort = function(getfunction, comparefunction) {var sorted = this.flatten().sort(comparefunction(getfunction)); this.pages = [[]]; this.addall(sorted); }
 	/**
 		Flatten the collection and turn it into a 1D array.
 
@@ -144,6 +143,39 @@ var Pages = function(newRows, sorted, getFunction) {
 	*/
 	this.flatten = function() {
 		return this.pages.reduce(function(a, b) { return a.concat(b) });
+	}
+
+	this.setRows = function(newRows) {
+		this.rows = newRows;
+		var list = this.flatten();
+		this.pages = [[]];
+		this.addAll(list);
+		/*
+		if (this.rows > newRows) {
+			for (i = 0; i < this.pages.length; i++) {
+				while (this.pages[i].length > newRows) {
+					if (i + 1 >= this.pages.length) {
+						this.pages.push([]);
+					}
+					this.pages[i+1].unshift(this.pages[i].pop());
+				}
+			}
+		} else if(this.rows < newRows) {
+			for (i = 0; i < this.pages.length; i++) {
+				while (this.pages[i].length < newRows) {
+					if (i + 1 < this.pages.length) {
+						if (this.pages[i + 1].length == 0) {
+							this.pages.splice(i + 1, 1);
+						}
+						this.pages[i].push(this.pages[i+1].shift());
+					} else {
+						break;
+					}
+				}
+			}
+		}
+		this.rows = newRows;
+		*/
 	}
 
 	/*
@@ -222,6 +254,7 @@ var checkAndUpgradeVersion = function() {
 */
 var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 	// If the value is in localStorage, retieve from there.
+	var foundInLocalStorage = false;
 	if (localStorage.getItem(key)) {
 		if (jsonify) {
 			scope[key] = JSON.parse(localStorage.getItem(key));
@@ -229,6 +262,7 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 			scope[key] = localStorage.getItem(key);
 		}
 		if (callback) callback();
+		foundInLocalStorage = true;
 		// If we found it, still make the async call for synced data to update the storages.
 	} 
 	chrome.storage.sync.get(key, function(container) {
@@ -240,27 +274,20 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 				} else {
 					localStorage.setItem(key, container[key]);
 				}
-				scope[key] = container[key];
+
+				if (!foundInLocalStorage){
+					scope[key] = container[key];
+					if (callback) callback();
+				}
 			} else {
-				if (localStorage.getItem(key)) {
-					if (jsonify) {
-						scope[key] = JSON.parse(localStorage.getItem(key));
-					} else {
-						scope[key] = localStorage.getItem(key);
-					}
+				if (foundInLocalStorage) {
 					chrome.storage.sync.set({ key: scope[key] });
 				} else {
 					// Save defaultValue to all three storages.
-					if (jsonify) {
-						localStorage.setItem(key, JSON.stringify(defaultValue));
-					} else {
-						localStorage.setItem(key, defaultValue);
-					}
-					scope[key] = defaultValue;
-					chrome.storage.sync.set({ key: defaultValue });
+					saveThrice(key, defaultValue, scope);
+					if (callback) callback();
 				}
 			}
-			if (callback) callback();
 		});
 	});
 }

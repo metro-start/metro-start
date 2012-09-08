@@ -68,6 +68,7 @@ h1 {
 }
 .external {
 	width: 100%;
+	background-color: blue;
 	overflow: hidden;
 }
 .internal {
@@ -159,20 +160,24 @@ h1 {
 }
 
 /* Footer and bottom menu */
+.footer {
+	position: relative;
+	width: 100%;
+	margin: 15px 0px 15px 0px;
+}
 .wrench {
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
+    /*position: absolute;*/
+    /*bottom: 15px;*/
+    margin-left: 15px;
+    display: inline;
 }
 .font-chooser {
-	position: absolute;
-	bottom: 15px;
-	left: 150px;
+	margin-left: 50px;
 	width: 400px;
 }
 .theme-buttons {
 	position: absolute;
-	bottom: 15px;
+	/*bottom: 15px;*/
 	right: 15px;
 }
 .theme-buttons > p {

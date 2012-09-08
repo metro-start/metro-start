@@ -149,14 +149,16 @@
 				<p id="condition">{{ weather.condition }}</p>
 			</div>
 		</div>
-		<p class="options-color wrench clickable" id="wrench" ng-click="clickWrench()">wrench</p>
-		<div class="options-color option font-chooser chooser">
-			<span class="selection clickable" ng-class="'sel-active'|if:(font==0)" ng-click="changeFont(0)">normal fonts</span>
-			<span class="selection clickable" ng-class="'sel-active'|if:(font==1)" ng-click="changeFont(1)">thin fonts</span>
-		</div>
-		<div class="theme-buttons option">
-			<p class="options-color clickable" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
-			<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeText }}</p>
+		<div class="footer">
+			<p class="options-color wrench clickable" id="wrench" ng-click="clickWrench()">wrench</p>
+			<div class="options-color option font-chooser chooser">
+				<span class="selection clickable" ng-class="'sel-active'|if:(font==0)" ng-click="changeFont(0)">normal fonts</span>
+				<span class="selection clickable" ng-class="'sel-active'|if:(font==1)" ng-click="changeFont(1)">thin fonts</span>
+			</div>
+			<div class="theme-buttons option">
+				<p class="options-color clickable" id="reset-theme" ng-click="changeTheme(defaultTheme)">reset theme</p>
+				<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeText }}</p>
+			</div>
 		</div>
 		<div class="picker background-color" ng-show="editThemeText == 'save theme'">
 			<p>

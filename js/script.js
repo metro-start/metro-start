@@ -24,6 +24,16 @@ $(function() {
 			$.farbtastic('#' + key).setColor(newVal, true);
 		});
 	});
+
+	var height = $(window).height() - ($('h1').outerHeight(true) + $('.page-chooser').outerHeight(true) + $('.footer').outerHeight(true));
+	$('.external').height(height);
+
+		var rows = Math.floor((height + $('.sort').outerHeight()) / 55);
+		scope.setRows('links', rows - 1);
+//		scope.links.setRows(rows - 1);
+		//scope.apps.setRows(rows);
+		//scope.localThemes.setRows(rows);
+		//scope.onlineThemes.setRows(rows);
 });
 
 //TODO: Review this section. Is there a way to avoid the FOUC when launching first time?
