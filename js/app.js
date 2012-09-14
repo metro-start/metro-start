@@ -7,6 +7,8 @@ function MetroStart($scope, $http) {
 	$scope.editThemeText = 'edit theme';
 	$scope.hideOptions = true;
 	$scope.linkToEdit = {};
+	$scope.pageItemCount = 4;
+	$scope.lastHeight = 0;
 
 	getLocalOrSync('sort', defaultSort, $scope, true);
 
@@ -30,7 +32,7 @@ function MetroStart($scope, $http) {
 	// If there's no existing links (local or online) initiliazes with message.
 	$scope.loadLinks = function() {
 		getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
-			$scope.links = new Pages($scope.links, $scope.sort.links, getFunctions['name']);
+			$scope.links = new Pages($scope.links, $scope.sort.links, $scope.pageItemCount, getFunctions['name']);
 		});
 	}
 
@@ -44,7 +46,8 @@ function MetroStart($scope, $http) {
 	    	// Remove extensions and limit to apps.
 	        apps = apps.concat(res.filter(function(item) { return item.isApp; }));
 	        $scope.$apply(function() {
-				$scope.apps = new Pages(apps, $scope.sort.apps, getFunctions['name']);
+				$scope.apps = new Pages(apps, $scope.sort.apps, $scope.pageItemCount, getFunctions['name']);
+				$(window).resize();
 			});
 	    });
 	};
@@ -61,7 +64,8 @@ function MetroStart($scope, $http) {
 	$scope.loadThemes = function() {
 		// Load local themes.
 		getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
-			$scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, getFunctions['title']);
+			$scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, getFunctions['title']);
+			$(window).resize();
 		});
 
 		// Load online themes.
@@ -74,16 +78,33 @@ function MetroStart($scope, $http) {
 					'background-color': data[i]['background_color'],
 				}
 			}
-			$scope.onlineThemes = new Pages(data, $scope.sort.themes, getFunctions['title']);
+			$scope.onlineThemes = new Pages(data, $scope.sort.themes, $scope.pageItemCount, getFunctions['title']);
+			$(window).resize();
 		});
 	}
-//$('.external').height($('body').height() - ($('h1').height() + $('.page-chooser').height() + $('.wrench').height() + parseInt($('.wrench').css('bottom')) -  0))
 	// Attach a watcher to the page to see page changes and save the value.
 	$scope.$watch('page', function(newValue, oldValue) {
 		if (newValue != 3) { // Do not save navigation to themes page.
 			saveTwice('page', newValue);
 		}
 	}, true);
+
+	$scope.setPageItemCount = function(pageItemCount) {
+		$scope.$apply(function() {
+			$scope.pageItemCount = pageItemCount;
+			if (typeof $scope.links !== 'undefined')
+				$scope.links.setRows(pageItemCount - 1);
+
+			if (typeof $scope.apps !== 'undefined')
+				$scope.apps.setRows(pageItemCount);
+
+			if (typeof $scope.localThemes !== 'undefined')
+				$scope.localThemes.setRows(pageItemCount);
+
+			if (typeof $scope.onlineThemes !== 'undefined')
+				$scope.onlineThemes.setRows(pageItemCount);
+		});
+	};
 
 	$scope.clickWrench = function() {
 		$scope.hideOptions = !$scope.hideOptions;
@@ -95,9 +116,6 @@ function MetroStart($scope, $http) {
 		$scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
 	}
 
-	$scope.setRows = function (elem, newRows) {
-		$scope[elem].setRows(newRows);
-	}
 	$scope.changeSorting = function(key, newSorting) {
 		$scope.sort[key] = newSorting;
 		saveTwice('sort', $scope.sort, $scope);
@@ -142,6 +160,7 @@ function MetroStart($scope, $http) {
 				$scope[key].sort();
 			}
 		}
+		$(window).resize();
 	}
 
 	$scope.addLink = function() {

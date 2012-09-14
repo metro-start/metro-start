@@ -1,8 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:100&v2);
+html {
+	height: 100%;
+}
 body {
     font-size: 32px;
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
+    height: 100%;
 }
 /* Document wide styles */
 a {
@@ -38,7 +42,7 @@ h1 {
     font-size: 132px;
     font-weight: normal;
     font-style: normal;
-    margin: 15px;
+    margin: 0 0 15px 15px;
 }
 .small-text {
     font-size: 24px;
@@ -68,7 +72,6 @@ h1 {
 }
 .external {
 	width: 100%;
-	background-color: blue;
 	overflow: hidden;
 }
 .internal {

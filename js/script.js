@@ -25,15 +25,16 @@ $(function() {
 		});
 	});
 
-	var height = $(window).height() - ($('h1').outerHeight(true) + $('.page-chooser').outerHeight(true) + $('.footer').outerHeight(true));
-	$('.external').height(height);
+	$(window).resize(function() {
+		var height = $('body').height() - ($('h1').outerHeight(true) + $('.page-chooser').outerHeight(true) + $('.footer').outerHeight(true));
+		$('.external').height(height);
 
-		var rows = Math.floor((height + $('.sort').outerHeight()) / 55);
-		scope.setRows('links', rows - 1);
-//		scope.links.setRows(rows - 1);
-		//scope.apps.setRows(rows);
-		//scope.localThemes.setRows(rows);
-		//scope.onlineThemes.setRows(rows);
+		if (Math.abs(scope.lastHeight - $('body').height()) >= 60) {
+			scope.lastHeight = $('body').height();
+			scope.setPageItemCount(Math.floor((height) / 60) - 1);
+		}
+	});
+	$(window).resize();
 });
 
 //TODO: Review this section. Is there a way to avoid the FOUC when launching first time?

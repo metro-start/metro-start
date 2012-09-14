@@ -12,10 +12,10 @@ var defaultTheme = {
 };
 
 var defaultSort = {
-	'links': 0,
-	'apps': 0,
-	'bookmarks': 0,
-	'themes': 0 
+	'links': false,
+	'apps': false,
+	'bookmarks': false,
+	'themes': false 
 };
 
 /**
@@ -64,10 +64,11 @@ var saveThrice = function(key, value, scope) {
 	
 	newRows: An array of items to initialize the collection with.
 */
-var Pages = function(newRows, sorted, getFunction) {
-	this.rows = 4;
+var Pages = function(newRows, sorted, rows, getFunction) {
+	this.rows = rows;
+	this.sorted = sorted;
 	this.pages = [[]];
-	this.sorted = false;
+
 	this.getFunction = function(elem) { return elem };
 
 	/**
@@ -181,11 +182,8 @@ var Pages = function(newRows, sorted, getFunction) {
 	/*
 		Ininitializes the collection.
 	*/
-	if (newRows) this.addAll(newRows);
 	this.getFunction = getFunction;
-	if (sorted) {
-		this.sort();
-	}
+	if (newRows) this.addAll(newRows);
 }
 
 /**
