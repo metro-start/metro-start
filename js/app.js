@@ -64,7 +64,6 @@ function MetroStart($scope, $http) {
 		// Load local themes.
 		getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
 			$scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, getFunctions['title']);
-			$(window).resize();
 		});
 
 		// Load online themes.
@@ -78,7 +77,6 @@ function MetroStart($scope, $http) {
 				}
 			}
 			$scope.onlineThemes = new Pages(data, $scope.sort.themes, $scope.pageItemCount, getFunctions['title']);
-			$(window).resize();
 		});
 	}
 	// Attach a watcher to the page to see page changes and save the value.
