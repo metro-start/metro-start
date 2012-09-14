@@ -133,8 +133,7 @@ h1 {
 .bookmark_page {
 	margin-right: 10px;
 	float: left;
-	width: 320px;
-	height: 285px;
+	width: 320px; /* Can't use multi-column because its not one straight list */
 	overflow-x: auto;
 	overflow-y: auto;
 }

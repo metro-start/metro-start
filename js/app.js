@@ -8,7 +8,6 @@ function MetroStart($scope, $http) {
 	$scope.hideOptions = true;
 	$scope.linkToEdit = {};
 	$scope.pageItemCount = 4;
-	$scope.lastHeight = 0;
 
 	getLocalOrSync('sort', defaultSort, $scope, true);
 

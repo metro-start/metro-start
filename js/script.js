@@ -27,12 +27,14 @@ $(function() {
 
 	$(window).resize(function() {
 		var height = $('body').height() - ($('h1').outerHeight(true) + $('.page-chooser').outerHeight(true) + $('.footer').outerHeight(true));
-		$('.external').height(height);
+		jss('.external', {
+			'height': height
+		});
+		jss('.bookmark_page', {
+			'height': height
+		});
 
-		if (Math.abs(scope.lastHeight - $('body').height()) >= 60) {
-			scope.lastHeight = $('body').height();
-			scope.setPageItemCount(Math.floor((height) / 60) - 1);
-		}
+		scope.setPageItemCount(Math.floor((height) / 60) - 1);
 	});
 	$(window).resize();
 });
@@ -40,41 +42,67 @@ $(function() {
 //TODO: Review this section. Is there a way to avoid the FOUC when launching first time?
 var updateStyle = function(transition) {
 	var scope = angular.element(document.body).scope();
+
+	var options_color = '#ff0000';
+	var background_color = '#ff0000';
+	var main_color = '#ff0000';
+	var title_color = '#ff0000';
+
 	if (scope.theme) {
-		var style = '';
-		if(scope.font == 0) {
-			style += 'body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; }';
-			style += 'body { font-weight: normal; }';
-		} else { 
-			style += 'body { font-family: Raleway, "Segoe UI", Helvetica, Arial, sans-serif; }';
-			style += 'body { font-weight: bold; }';
-		}
-
-		var background_color = scope.theme.colors['background-color'];
-		var options_color = scope.theme.colors['options-color'];
-		var main_color = scope.theme.colors['main-color'];
-		var title_color = scope.theme.colors['title-color'];
-
-		style += '* { border-color: ' + options_color + '}';
-		style += '::-webkit-scrollbar { background: ' + background_color + '}';
-		style += '::-webkit-scrollbar-thumb { background: ' + options_color + '}';
-		style += '::-webkit-input-placeholder { color: ' + main_color + '; opacity: 0.3}';
-
-		// Transition the colors, but then we still add it to the DOM.
-		if (transition) {
-			$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
-			$('.title-color').animate({'color': title_color}, {duration: 400, queue: false});
-			$('body').animate({'color': main_color}, {duration: 400, queue: false});
-			$('input').animate({'color': main_color}, {duration: 400, queue: false});
-			$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
-		}
-		style += '.background-color { background-color: ' + background_color + '}';
-		style += '.title-color { color: ' + title_color + '}';
-		style += 'body { color: ' + main_color + '}';
-		style += 'input { color: ' + main_color + '}';
-		style += '.options-color { color: ' + options_color + '}';
-
-		$('#new-style').remove();
-		$('body').append('<style id="new-style">' + style + '</style>');
+		background_color = scope.theme.colors['background-color'];
+		options_color = scope.theme.colors['options-color'];
+		main_color = scope.theme.colors['main-color'];
+		title_color = scope.theme.colors['title-color'];
 	}
+
+	var style = {};
+	if(scope.font == 0) {
+		jss('body', {
+			'font-family': '"Segoe UI", Helvetica, Arial, sans-serif',
+			'font-weight': 'normal'
+		});
+	} else { 
+		jss('body', {
+			'font-family': 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif',
+			'font-weight': 'bold'
+		});
+	}
+
+	jss('*', {
+		'border-color': options_color
+	});
+	style += '* { border-color: ' + options_color + '}';
+	jss('::-webkit-scrollbar', {
+		'background': background_color
+	});
+
+	jss('::-webkit-scrollbar-thumb', {
+		'background': options_color
+	});
+
+	jss('::-webkit-input-placeholder', {
+		'background': main_color
+	});
+
+	// Transition the colors, but then we still add it to the DOM.
+	if (transition) {
+		$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
+		$('.title-color').animate({'color': title_color}, {duration: 400, queue: false});
+		$('body').animate({'color': main_color}, {duration: 400, queue: false});
+		$('input').animate({'color': main_color}, {duration: 400, queue: false});
+		$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
+	}
+
+	jss('.background-color', { 
+		'background-color': background_color
+	});
+	jss('body', { 
+		'color': main_color
+	});
+	jss('input', { 
+		'color': main_color
+	});
+	jss('.options-color', { 
+		'color': options_color
+	});
 }
