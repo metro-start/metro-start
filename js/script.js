@@ -26,19 +26,25 @@ $(function() {
 	});
 
 	$(window).resize(function() {
-		var height = $('body').height() - ($('h1').outerHeight(true) + $('.page-chooser').outerHeight(true) + $('.footer').outerHeight(true));
-		jss('.external', {
-			'height': height
+		scope.$apply(function() {
+			scope.setPageItemCount(getPageItemCount());
 		});
-		jss('.bookmark_page', {
-			'height': height
-		});
-
-		scope.setPageItemCount(Math.floor((height) / 60) - 1);
 	});
-	$(window).resize();
+
+	scope.setPageItemCount(getPageItemCount());
 });
 
+var getPageItemCount = function() {
+	var height = $('body').height() - ($('h1').outerHeight(true) + $('.page-chooser').outerHeight(true) + $('.footer').outerHeight(true));
+	jss('.external', {
+		'height': height
+	});
+	jss('.bookmark_page', {
+		'height': height
+	});
+
+	return Math.floor((height) / 60) - 1;
+}
 //TODO: Review this section. Is there a way to avoid the FOUC when launching first time?
 var updateStyle = function(transition) {
 	var scope = angular.element(document.body).scope();

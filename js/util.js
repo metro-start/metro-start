@@ -228,11 +228,10 @@ var checkAndUpgradeVersion = function() {
 			} else {
 				saveTwice('weatherToggleText', 'show weather');
 			}
-
-			localStorage.clear();
-		} else if(lastVersion != newVersion) {
-			localStorage.setItem('version', newVersion);
 		}
+		localStorage.setItem('version', newVersion);
+	} else if(lastVersion != newVersion) {
+		localStorage.setItem('version', newVersion);
 	}
 }
 
@@ -262,7 +261,10 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 		if (callback) callback();
 		foundInLocalStorage = true;
 		// If we found it, still make the async call for synced data to update the storages.
-	} 
+	} else {
+		scope[key] = defaultValue;
+		if (callback) callback();
+	}
 	chrome.storage.sync.get(key, function(container) {
 		scope.$apply(function () {
 			if (container[key]) {
@@ -282,8 +284,7 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 					chrome.storage.sync.set({ key: scope[key] });
 				} else {
 					// Save defaultValue to all three storages.
-					saveThrice(key, defaultValue, scope);
-					if (callback) callback();
+					saveTwice(key, defaultValue);
 				}
 			}
 		});

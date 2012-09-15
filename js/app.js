@@ -3,6 +3,8 @@ function MetroStart($scope, $http) {
 
 	$scope.total = ['links', 'apps', 'bookmarks', 'themes'];
 	$scope.units = ['fahrenheit', 'celsius'];
+
+	// These elements are refreshed on every page load.
 	$scope.editThemeButton = 'edit theme';
 	$scope.editThemeText = 'edit theme';
 	$scope.hideOptions = true;
@@ -46,7 +48,6 @@ function MetroStart($scope, $http) {
 	        apps = apps.concat(res.filter(function(item) { return item.isApp; }));
 	        $scope.$apply(function() {
 				$scope.apps = new Pages(apps, $scope.sort.apps, $scope.pageItemCount, getFunctions['name']);
-				$(window).resize();
 			});
 	    });
 	};
@@ -87,20 +88,18 @@ function MetroStart($scope, $http) {
 	}, true);
 
 	$scope.setPageItemCount = function(pageItemCount) {
-		$scope.$apply(function() {
-			$scope.pageItemCount = pageItemCount;
-			if (typeof $scope.links !== 'undefined')
-				$scope.links.setRows(pageItemCount - 1);
+		$scope.pageItemCount = pageItemCount;
+		if (typeof $scope.links !== 'undefined')
+			$scope.links.setRows(pageItemCount - 1);
 
-			if (typeof $scope.apps !== 'undefined')
-				$scope.apps.setRows(pageItemCount);
+		if (typeof $scope.apps !== 'undefined')
+			$scope.apps.setRows(pageItemCount);
 
-			if (typeof $scope.localThemes !== 'undefined')
-				$scope.localThemes.setRows(pageItemCount);
+		if (typeof $scope.localThemes !== 'undefined')
+			$scope.localThemes.setRows(pageItemCount);
 
-			if (typeof $scope.onlineThemes !== 'undefined')
-				$scope.onlineThemes.setRows(pageItemCount);
-		});
+		if (typeof $scope.onlineThemes !== 'undefined')
+			$scope.onlineThemes.setRows(pageItemCount);
 	};
 
 	$scope.clickWrench = function() {
@@ -157,7 +156,6 @@ function MetroStart($scope, $http) {
 				$scope[key].sort();
 			}
 		}
-		$(window).resize();
 	}
 
 	$scope.addLink = function() {
