@@ -1,6 +1,6 @@
 {
 	"name": "Metro Start",
-	"version": "5.4",
+	"version": "5.5",
 	"manifest_version": 2,
 	"description": "A start screen based on the Windows Metro UI",
 	"chrome_url_overrides": {
