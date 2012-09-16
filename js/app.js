@@ -232,7 +232,7 @@ function MetroStart($scope, $http) {
 		var unit = $scope.units[$scope.weatherUnit][0];
 	    var locat = $scope.locat;
 	    // If it has been more than an hour since last check.
-	    if(force || new Date().getTime() > parseInt($scope.time)) {
+	    if(force || new Date().getTime() > parseInt($scope.weatherUpdateTime)) {
 			saveThrice('weatherUpdateTime', parseInt(new Date().getTime()) + 3600000, $scope);
 	    	var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + locat + '" limit 1) and u="' + unit + '"');
 	    	var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
