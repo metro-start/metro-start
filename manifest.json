@@ -1,6 +1,6 @@
 {
 	"name": "Metro Start",
-	"version": "5.5",
+	"version": "5.6.1",
 	"manifest_version": 2,
 	"description": "A start screen based on the Windows Metro UI",
 	"chrome_url_overrides": {
@@ -19,5 +19,5 @@
 		"bookmarks",
 		"storage"
 	],
-	 "content_security_policy": "script-src 'self' https://ssl.google-analytics.com/ga.js; object-src 'self'"
+	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }
