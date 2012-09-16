@@ -39,7 +39,7 @@ var saveOnce = function(key, value) {
 	value: The value to be saved.
 */
 var saveTwice = function(key, value) {
-	chrome.storage.sync.set({ key: value });
+	if (chrome.storage) chrome.storage.sync.set({ key: value });
 	if (angular.isObject(value)) {
 		localStorage.setItem(key, JSON.stringify(value));
 	} else {
@@ -64,11 +64,18 @@ var saveThrice = function(key, value, scope) {
 	
 	newRows: An array of items to initialize the collection with.
 */
-var Pages = function(newRows, sorted, rows, getFunction) {
-	this.rows = rows;
+var Pages = function(newRows, sorted, pageItemCount, getFunction) {
+	this.pageItemCount = pageItemCount;
 	this.sorted = sorted;
 	this.pages = [[]];
 
+	/**
+		Defult function to retrieve the actionable member of the collection's items.
+
+		elem: The object that contains the element to be used.
+
+		returns: The element that should be used.
+	*/
 	this.getFunction = function(elem) { return elem };
 
 	/**
@@ -78,7 +85,7 @@ var Pages = function(newRows, sorted, rows, getFunction) {
 	*/
 	this.add = function(row) {
 		// If the last column is full, add a new column.
-		if (this.pages[this.pages.length - 1].length >= this.rows) {
+		if (this.pages[this.pages.length - 1].length >= this.pageItemCount) {
 			this.pages.push([]);
 		}
 		// Add item to last column.
@@ -114,6 +121,11 @@ var Pages = function(newRows, sorted, rows, getFunction) {
 		if (this.sorted) this.sort();
 	}
 
+	/**
+		Add all elements in the array to the object.
+
+		newRows: The array of elements to be added.
+	*/
 	this.addAll = function(newRows) {
 		for (index = 0; index < newRows.length; index++) {
 			this.add(newRows[index]);
@@ -121,6 +133,9 @@ var Pages = function(newRows, sorted, rows, getFunction) {
 		if (this.sorted) this.sort();
 	}
 
+	/**
+		Sort elements in the collection alphabetically in descending order
+	*/
 	this.sort = function() {
 		if (this.sorted == false) {
 			this.sorted = true;
@@ -140,43 +155,21 @@ var Pages = function(newRows, sorted, rows, getFunction) {
 	/**
 		Flatten the collection and turn it into a 1D array.
 
-		returns: The array in 2D format.
+		returns: The array in 1D format.
 	*/
 	this.flatten = function() {
 		return this.pages.reduce(function(a, b) { return a.concat(b) });
 	}
 
-	this.setRows = function(newRows) {
-		this.rows = newRows;
+	/**
+		Set the number of items per page.
+		pageItemCount: The new number of items per page.
+	*/
+	this.setPageItemCount = function(pageItemCount) {
+		this.pageItemCount = pageItemCount;
 		var list = this.flatten();
 		this.pages = [[]];
 		this.addAll(list);
-		/*
-		if (this.rows > newRows) {
-			for (i = 0; i < this.pages.length; i++) {
-				while (this.pages[i].length > newRows) {
-					if (i + 1 >= this.pages.length) {
-						this.pages.push([]);
-					}
-					this.pages[i+1].unshift(this.pages[i].pop());
-				}
-			}
-		} else if(this.rows < newRows) {
-			for (i = 0; i < this.pages.length; i++) {
-				while (this.pages[i].length < newRows) {
-					if (i + 1 < this.pages.length) {
-						if (this.pages[i + 1].length == 0) {
-							this.pages.splice(i + 1, 1);
-						}
-						this.pages[i].push(this.pages[i+1].shift());
-					} else {
-						break;
-					}
-				}
-			}
-		}
-		this.rows = newRows;
-		*/
 	}
 
 	/*
@@ -187,7 +180,7 @@ var Pages = function(newRows, sorted, rows, getFunction) {
 }
 
 /**
-	Upgrades the version of chrome installed by moving all saved data to new format.
+	Upgrades the version of metrostart installed by moving all saved data to new format.
 */
 var checkAndUpgradeVersion = function() {
 	var newVersion = chrome.app.getDetails().version;
@@ -265,32 +258,38 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 		scope[key] = defaultValue;
 		if (callback) callback();
 	}
-	chrome.storage.sync.get(key, function(container) {
-		scope.$apply(function () {
-			if (container[key]) {
-				// Save retrieved data to localStorage and scope.
-				if (jsonify) {
-					localStorage.setItem(key, JSON.stringify(container[key]));
-				} else {
-					localStorage.setItem(key, container[key]);
-				}
+	if (chrome.strorage) {
+		chrome.storage.sync.get(key, function(container) {
+			scope.$apply(function () {
+				if (container[key]) {
+					// Save retrieved data to localStorage and scope.
+					if (jsonify) {
+						localStorage.setItem(key, JSON.stringify(container[key]));
+					} else {
+						localStorage.setItem(key, container[key]);
+					}
 
-				if (!foundInLocalStorage){
-					scope[key] = container[key];
-					if (callback) callback();
-				}
-			} else {
-				if (foundInLocalStorage) {
-					chrome.storage.sync.set({ key: scope[key] });
+					if (!foundInLocalStorage){
+						scope[key] = container[key];
+						if (callback) callback();
+					}
 				} else {
-					// Save defaultValue to all three storages.
-					saveTwice(key, defaultValue);
+					if (foundInLocalStorage) {
+						chrome.storage.sync.set({ key: scope[key] });
+					} else {
+						// Save defaultValue to all three storages.
+						saveTwice(key, defaultValue);
+					}
 				}
-			}
+			});
 		});
-	});
+	}
 }
 
+/**
+	Get functions that retrieve different types of data from various things
+	that could be in the pages object.
+*/
 var getFunctions = {
 	'name': function(elem) {
 		return angular.lowercase(elem.name);

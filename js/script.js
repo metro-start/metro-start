@@ -25,6 +25,7 @@ $(function() {
 		});
 	});
 
+	// Add a listener to update the page item count when the window is resized.
 	$(window).resize(function() {
 		scope.$apply(function() {
 			scope.setPageItemCount(getPageItemCount());
@@ -34,6 +35,11 @@ $(function() {
 	scope.setPageItemCount(getPageItemCount());
 });
 
+/**
+	Compares window height to element height to fine the number of elements per page.
+
+	returns: The number of items to fit on a page.
+*/
 var getPageItemCount = function() {
 	var height = $('body').height() - ($('h1').outerHeight(true) + $('.page-chooser').outerHeight(true) + $('.footer').outerHeight(true));
 	jss('.external', {
@@ -45,7 +51,12 @@ var getPageItemCount = function() {
 
 	return Math.floor((height) / 60) - 1;
 }
-//TODO: Review this section. Is there a way to avoid the FOUC when launching first time?
+
+/**
+	Changes the style to whatever is in the scope.
+
+	transition: A bool indicating whether to slowly transition or immediately change.
+*/
 var updateStyle = function(transition) {
 	var scope = angular.element(document.body).scope();
 
@@ -77,7 +88,7 @@ var updateStyle = function(transition) {
 	jss('*', {
 		'border-color': options_color
 	});
-	style += '* { border-color: ' + options_color + '}';
+
 	jss('::-webkit-scrollbar', {
 		'background': background_color
 	});
@@ -99,6 +110,9 @@ var updateStyle = function(transition) {
 		$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
 	}
 
+	jss('.title-color', { 
+		'color': title_color
+	});
 	jss('.background-color', { 
 		'background-color': background_color
 	});

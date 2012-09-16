@@ -90,16 +90,16 @@ function MetroStart($scope, $http) {
 	$scope.setPageItemCount = function(pageItemCount) {
 		$scope.pageItemCount = pageItemCount;
 		if (typeof $scope.links !== 'undefined')
-			$scope.links.setRows(pageItemCount - 1);
+			$scope.links.setPageItemCount(pageItemCount - 1);
 
 		if (typeof $scope.apps !== 'undefined')
-			$scope.apps.setRows(pageItemCount);
+			$scope.apps.setPageItemCount(pageItemCount);
 
 		if (typeof $scope.localThemes !== 'undefined')
-			$scope.localThemes.setRows(pageItemCount);
+			$scope.localThemes.setPageItemCount(pageItemCount);
 
 		if (typeof $scope.onlineThemes !== 'undefined')
-			$scope.onlineThemes.setRows(pageItemCount);
+			$scope.onlineThemes.setPageItemCount(pageItemCount);
 	};
 
 	$scope.clickWrench = function() {
@@ -110,6 +110,7 @@ function MetroStart($scope, $http) {
 			getLocalOrSync('page', 0, $scope, false);
 		}
 		$scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
+		_gaq.push(['_trackEvent', 'Page', 'Wrench']);
 	}
 
 	$scope.changeSorting = function(key, newSorting) {
@@ -135,6 +136,7 @@ function MetroStart($scope, $http) {
 					}
 				}
 			}
+			_gaq.push(['_trackEvent', 'Page', 'Show Unsorted Items']);
 		}
 		else if ($scope.sort[key] == 1) {
 			if (key == 'themes') {
@@ -155,6 +157,7 @@ function MetroStart($scope, $http) {
 			} else {
 				$scope[key].sort();
 			}
+			_gaq.push(['_trackEvent', 'Page', 'Show Sorted Items']);
 		}
 	}
 
@@ -166,11 +169,15 @@ function MetroStart($scope, $http) {
 			$scope.linkToEdit.name =  $scope.newUrlTitle ? $scope.newUrlTitle : angular.lowercase($scope.newUrl).replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
 			$scope.linkToEdit.url = $scope.newUrl;
 			$scope.linkToEdit = {};
+
+			_gaq.push(['_trackEvent', 'Links', 'Save Edited Link']);
 		} else {
 			$scope.links.add({
 				'name': $scope.newUrlTitle ? $scope.newUrlTitle : angular.lowercase($scope.newUrl).replace(/^https?\:\/\//i, '').replace(/^www\./i, ''),
 				'url': $scope.newUrl,
 			});
+
+			_gaq.push(['_trackEvent', 'Links', 'Add New Link']);
 		}
 		$scope.newUrl = '';
 		$scope.newUrlTitle = '';
@@ -181,15 +188,23 @@ function MetroStart($scope, $http) {
 		$scope.linkToEdit = $scope.links.get(page, index);
 		$scope.newUrlTitle = $scope.linkToEdit.name;
 		$scope.newUrl = $scope.linkToEdit.url;
+		_gaq.push(['_trackEvent', 'Links', 'Start Editing Link']);
 	}
 
 	$scope.removeLink = function(page, index){
 		$scope.links.remove(page, index);
 		saveTwice('links', $scope.links.flatten());
+		_gaq.push(['_trackEvent', 'Links', 'Remove Link']);
 	}
 
 	$scope.toggleWeather = function() {
 		saveThrice('weatherToggleText', 'show weatherhide weather'.replace($scope.weatherToggleText, ''), $scope);
+
+		if ($scope.weatherToggleText == 'show weather') {
+			_gaq.push(['_trackEvent', 'Weather', 'Hide Weather']);
+		} else {
+			_gaq.push(['_trackEvent', 'Weather', 'Show Weather']);
+		}
 	}
 
 	$scope.saveLocat = function() {
@@ -197,6 +212,7 @@ function MetroStart($scope, $http) {
 			saveThrice('locat', $scope.newLocat, $scope);
 
 			$scope.updateWeather(true);
+			_gaq.push(['_trackEvent', 'Weather', 'Save Weather Location']);
 		}
 	}
 
@@ -204,8 +220,14 @@ function MetroStart($scope, $http) {
 		saveThrice('weatherUnit', newWeatherUnit, $scope);
 
 		$scope.updateWeather(true);
+		_gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', $scope.units[$scope.weatherUnit]]);
 	}
 
+	/**
+		Update the weather data being displayed.
+
+		force: Bypass the 1 hour wait requirement.
+	*/
 	$scope.updateWeather = function(force) {
 		var unit = $scope.units[$scope.weatherUnit][0];
 	    var locat = $scope.locat;
@@ -242,6 +264,8 @@ function MetroStart($scope, $http) {
 				break;
 			}
 		}
+
+		_gaq.push(['_trackEvent', 'Apps', 'Uninstall App']);
 	}
 
 	$scope.clickBookmark = function(bookmark, pageIndex) {
@@ -260,8 +284,10 @@ function MetroStart($scope, $http) {
 			} else {
 				$scope.bookmarks.push(bookmark.children);
 			}
+			_gaq.push(['_trackEvent', 'Bookmarks', 'Bookmarked Folder']);
 			return false;
 		}
+		_gaq.push(['_trackEvent', 'Bookmarks', 'Bookmarked Page']);
 	}
 
 	$scope.removeBookmark = function(bookmark, pageIndex, bookmarkIndex) {
@@ -270,18 +296,27 @@ function MetroStart($scope, $http) {
 				$scope.bookmarks[pageIndex].splice(bookmarkIndex, 1);
 			});
 		});
+
+		_gaq.push(['_trackEvent', 'Bookmarks', 'Remove Bookmarked']);
 	}
 
 	$scope.changeTheme = function(newTheme) {
 		saveThrice('theme', newTheme, $scope);
 
 		updateStyle(true);
+
+		_gaq.push(['_trackEvent', 'Theme', 'Change Theme', newTheme.title]);
 	}
 
 	$scope.changeFont = function(newFont) {
 		saveThrice('font', newFont, $scope);
 
 		updateStyle(true);
+		if (newFont == 0) {
+			_gaq.push(['_trackEvent', 'Theme', 'Change Font', 'Segoe/Helvetica']);
+		} else {
+			_gaq.push(['_trackEvent', 'Theme', 'Change Font', 'Raleway']);
+		}
 	}
 
 	$scope.shareTheme = function(theme) {
@@ -292,11 +327,13 @@ function MetroStart($scope, $http) {
 			'&titlecolor=' + encodeURIComponent(theme.colors['title-color']) +
 			'&backgroundcolor=' + encodeURIComponent(theme.colors['background-color']);
 		window.open(url);
+		_gaq.push(['_trackEvent', 'Theme', 'Share Theme']);
 	}
 
 	$scope.removeTheme = function(page, index) {
 		$scope.localThemes.remove(page, index);
 		saveTwice('localThemes', $scope.localThemes.flatten());
+		_gaq.push(['_trackEvent', 'Theme', 'Remove Theme']);
 	}
 
 	$scope.clickEditTheme = function() {
@@ -308,6 +345,10 @@ function MetroStart($scope, $http) {
 				saveTwice('theme', $scope.theme);
 				saveTwice('localThemes', $scope.localThemes.flatten());
 			}
+
+			_gaq.push(['_trackEvent', 'Theme', 'Stop Editing Theme']);
+		} else {
+			_gaq.push(['_trackEvent', 'Theme', 'Start Editing Theme']);
 		}
 
 		$scope.editThemeText = 'edit themesave theme'.replace($scope.editThemeText, '');
@@ -316,6 +357,7 @@ function MetroStart($scope, $http) {
 	$scope.loadLinks();
 	$scope.loadApps();
 	$scope.loadBookmarks();
+
 	updateStyle(false);
 	$scope.updateWeather(false);
 }
