@@ -92,7 +92,7 @@ function MetroStart($scope, $http) {
 			$scope.onlineThemes = new Pages(data, $scope.sort.themes, $scope.pageItemCount, getFunctions['title']);
 		});
 	}
-	
+
 	// Attach a watcher to the page to see page changes and save the value.
 	$scope.$watch('page', function(newValue, oldValue) {
 		if (newValue != 3) { // Do not save navigation to themes page.
@@ -283,6 +283,20 @@ function MetroStart($scope, $http) {
 
 	$scope.clickBookmark = function(bookmark, pageIndex) {
 		if (bookmark.children.length > 0) {
+			// Deactiviate siblings.
+			siblings = $scope.bookmarks[pageIndex];
+			for(i = 0; i < siblings.length; i++) {
+				siblings[i].active = false;
+			}
+
+			// Activate bookmark whenever siblings are deactiveated.
+			bookmark.active = true;
+
+			// Deactive children.
+			for(i = 0; i < bookmark.children.length; i++) {
+				bookmark.children[i].active = false;
+			}
+
 			$scope.bookmarks.length = pageIndex + 1;
 			if ($scope.sort.bookmarks) {
 				$scope.bookmarks.push(bookmark.children.sort(function(a, b) {

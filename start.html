@@ -86,7 +86,7 @@
 							<div class="internal_selector" id="internal_selector_book">
 								<div class="bookmark_page" id="bookmark_page_{{ $index }}" ng-repeat="page in bookmarks">
 									<div class="item" ng-repeat="bookmark in page">
-										<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
+										<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)" ng-class="'bookmark-active'|if:bookmark.active==true">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
 										</a>
 										<span class="remove option options-color small-text clickable" ng-click="removeBookmark(bookmark, $parent.$index, $index)">remove</span>								
 									</div>

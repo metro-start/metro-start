@@ -122,6 +122,10 @@ var updateStyle = function(transition) {
 	jss('.background-color', { 
 		'background-color': background_color
 	});
+	jss('.bookmark-active', {
+		'color': options_color
+		//'border-bottom': '2px solid ' + options_color 
+	});
 	jss('body', { 
 		'color': main_color
 	});
