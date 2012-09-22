@@ -8,6 +8,8 @@ _gaq.push(['_trackPageview']);
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
+
+// Need to marshall all calls to updateStyle through a central function. Maybe with a listener?
 function MetroStart($scope, $http) {
 	checkAndUpgradeVersion();
 
@@ -90,6 +92,7 @@ function MetroStart($scope, $http) {
 			$scope.onlineThemes = new Pages(data, $scope.sort.themes, $scope.pageItemCount, getFunctions['title']);
 		});
 	}
+	
 	// Attach a watcher to the page to see page changes and save the value.
 	$scope.$watch('page', function(newValue, oldValue) {
 		if (newValue != 3) { // Do not save navigation to themes page.
