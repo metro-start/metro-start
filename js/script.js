@@ -1,4 +1,13 @@
 $(function() {
+	//Load the raleway theme.
+	var style = $(
+		'<style>' +
+			'@font-face {' + 
+			'font-family: "Raleway";' +
+			'src: url("' + chrome.extension.getURL('css/Raleway-Regular.ttf') + '")' + 
+			'}' +
+		'</style>');
+	$('head').append(style); 
 	/*
 		Attaches the color pickers and binds them to $scope.
 	*/
@@ -24,15 +33,6 @@ $(function() {
 			$.farbtastic('#' + key).setColor(newVal, true);
 		});
 	});
-
-	var style = $(
-		'<style>' +
-			'@font-face {' + 
-			'font-family: "Raleway";' +
-			'src: url("' + chrome.extension.getURL('css/Raleway-Regular.ttf') + '")' + 
-			'}' +
-		'</style>');
-	$('head').append(style); 
 
 	// Add a listener to update the page item count when the window is resized.
 	$(window).resize(function() {

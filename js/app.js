@@ -8,8 +8,6 @@ _gaq.push(['_trackPageview']);
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
-
-// Need to marshall all calls to updateStyle through a central function. Maybe with a listener?
 function MetroStart($scope, $http) {
 	checkAndUpgradeVersion();
 
@@ -27,7 +25,7 @@ function MetroStart($scope, $http) {
 
 	getLocalOrSync('page', 0, $scope, false);
 
-	getLocalOrSync('theme', defaultTheme, $scope, true, function () { updateStyle(false) });
+	getLocalOrSync('theme', defaultTheme, $scope, true);
 
 	getLocalOrSync('font', 0, $scope, false);
 
@@ -269,6 +267,13 @@ function MetroStart($scope, $http) {
 		}
 	}
 
+	/**
+		Uninstall the given application.
+
+		app: The app to be uninstalled.
+		page: The page where the app is.
+		index: The index in the page.
+	*/
 	$scope.uninstallApp = function(app, page, index) {
 		for (id in $scope.apps) {
 			if ($scope.apps[id].id == app.id) {
@@ -281,10 +286,17 @@ function MetroStart($scope, $http) {
 		_gaq.push(['_trackEvent', 'Apps', 'Uninstall App']);
 	}
 
-	$scope.clickBookmark = function(bookmark, pageIndex) {
+	/**
+		Click event handler for bookmarks.
+		Allows me to capture folder clicks.
+
+		bookmark: The bookmark that was clicked.
+		pageIndex: The page that contains the bookmark.
+	*/
+	$scope.clickBookmark = function(bookmark, page) {
 		if (bookmark.children.length > 0) {
 			// Deactiviate siblings.
-			siblings = $scope.bookmarks[pageIndex];
+			siblings = $scope.bookmarks[page];
 			for(i = 0; i < siblings.length; i++) {
 				siblings[i].active = false;
 			}
@@ -297,7 +309,7 @@ function MetroStart($scope, $http) {
 				bookmark.children[i].active = false;
 			}
 
-			$scope.bookmarks.length = pageIndex + 1;
+			$scope.bookmarks.length = page + 1; // Remove all pages ahead of this.
 			if ($scope.sort.bookmarks) {
 				$scope.bookmarks.push(bookmark.children.sort(function(a, b) {
 					if (angular.lowercase(a.title) > angular.lowercase(b.title)) {
@@ -317,16 +329,28 @@ function MetroStart($scope, $http) {
 		_gaq.push(['_trackEvent', 'Bookmarks', 'Bookmarked Page']);
 	}
 
-	$scope.removeBookmark = function(bookmark, pageIndex, bookmarkIndex) {
+	/**
+		Remove the given bookmark.
+		
+		bookmark: The bookmark to be removed.
+		page: The page where the bookmark is.
+		index: The index for the bookmark.
+	*/
+	$scope.removeBookmark = function(bookmark, page, index) {
 		chrome.bookmarks.removeTree(bookmark.id, function() {
 			$scope.$apply(function() {
-				$scope.bookmarks[pageIndex].splice(bookmarkIndex, 1);
+				$scope.bookmarks[page].splice(index, 1);
 			});
 		});
 
 		_gaq.push(['_trackEvent', 'Bookmarks', 'Remove Bookmarked']);
 	}
 
+	/**
+		Change the currently enabled theme.
+		
+		newTheme: The theme to be enabled.
+	*/
 	$scope.changeTheme = function(newTheme) {
 		saveThrice('theme', newTheme, $scope);
 
@@ -335,6 +359,11 @@ function MetroStart($scope, $http) {
 		_gaq.push(['_trackEvent', 'Theme', 'Change Theme', newTheme.title]);
 	}
 
+	/**
+		Change the currently enabled font.
+		
+		newFont: The font to be enabled.
+	*/
 	$scope.changeFont = function(newFont) {
 		saveThrice('font', newFont, $scope);
 
@@ -346,6 +375,11 @@ function MetroStart($scope, $http) {
 		}
 	}
 
+	/**
+		Navigate the user to the page to share the theme.
+
+		theme: The theme being shared.
+	*/
 	$scope.shareTheme = function(theme) {
 		var url = 'http://metro-start.appspot.com/newtheme?' + 
 			'title=' + encodeURIComponent(theme.title) +
@@ -357,12 +391,22 @@ function MetroStart($scope, $http) {
 		_gaq.push(['_trackEvent', 'Theme', 'Share Theme']);
 	}
 
+	/**
+		Remove the given local theme.
+
+		page: The page that contains the theme to be removed.
+		index: The index of the theme to be removed.
+	*/
 	$scope.removeTheme = function(page, index) {
 		$scope.localThemes.remove(page, index);
 		saveTwice('localThemes', $scope.localThemes.flatten());
 		_gaq.push(['_trackEvent', 'Theme', 'Remove Theme']);
 	}
 
+	/**
+		Handle the editTheme button click. if what is being edited has a name, save it.
+		Otherwise, just close (temp theme).
+	*/
 	$scope.clickEditTheme = function() {
 		if ($scope.editThemeText == 'save theme') {
 			if ($scope.newThemeTitle && $scope.newThemeTitle.trim() != '') {
