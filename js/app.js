@@ -347,6 +347,17 @@ function MetroStart($scope, $http) {
 	}
 
 	/**
+		Reset to default theme.
+	*/
+	$scope.resetTheme = function() {
+		saveThrice('theme', defaultTheme, $scope);
+
+		updateStyle(true);
+
+		_gaq.push(['_trackEvent', 'Theme', 'Reset Theme']);
+	}
+
+	/**
 		Change the currently enabled theme.
 		
 		newTheme: The theme to be enabled.
