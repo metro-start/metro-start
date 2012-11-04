@@ -1,0 +1,108 @@
+body {
+	font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+	font-size: 28px;
+	background-color: black;
+	color: white;
+}
+h1 {
+	font-size: 128px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+}
+h2 {
+	font-size: 60px;
+}
+.info {
+	margin-bottom: 20px;
+	text-align: center;
+}
+.theme {
+	margin-bottom: 20px;
+}
+.title {
+	font-size: 40px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+.author {
+	font-size: 28px;
+}
+a {
+	text-decoration: none;
+	color: red;
+}
+form, .themes {
+	margin-left: 20%;
+	float: left;
+	margin-right: 20px;
+}
+form {
+	margin-left: 20px;
+}
+td {
+	padding-right: 26px;
+	padding-bottom: 13px;
+}
+input {
+	font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
+	font-size: 28px;
+	padding: 2px;
+	border-style: none;
+	border-style: solid;
+	border-width: 1px;
+	border-color: white;
+	outline: none;
+}
+.submit {
+	background-color: inherit;
+	padding-left: 0;
+	border-style: none;
+	color: red;
+}
+.sample {
+	float: right;
+	margin-right: 20%;
+
+}
+.background-color {
+	margin-top: 10px;
+	width: 360px;
+	height: 228px;
+	clear: both;
+}
+.start {
+	width: 300px;
+	float: left;
+	margin-top: 10px;
+	margin-left: 15px;
+	font-size: 40px;
+	color: white;
+	color: black;
+}
+.menu {
+	width: 180px;
+	height: 20px;
+	float: left;
+	margin-left: 15px;
+	margin-right: 200px;
+	margin-top: 10px;
+}
+.list {
+	width: 100px;
+	height: 100px;
+	margin-left: 15px;
+	margin-top: 15px;
+	float: left;
+}
+.main-text {
+	width: 100px;
+	height: 20px;
+	margin-bottom: 15px;
+}
+.wrench {
+	width: 100px;
+	height: 20px;
+	float: left;
+	margin-left: 15px;
+}
