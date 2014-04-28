@@ -51,7 +51,7 @@ function MetroStart($scope, $http) {
 	$scope.loadApps = function() {
 	    chrome.management.getAll(function(res) {
 			var apps = [{
-				'name': 'Chrome Webstore', 
+				'name': 'Chrome Webstore',
 				'appLaunchUrl': 'https://chrome.google.com/webstore'
 			}];
 	    	// Remove extensions and limit to apps.
@@ -269,7 +269,6 @@ function MetroStart($scope, $http) {
 
 	/**
 		Uninstall the given application.
-
 		app: The app to be uninstalled.
 		page: The page where the app is.
 		index: The index in the page.
@@ -289,19 +288,18 @@ function MetroStart($scope, $http) {
 	/**
 		Click event handler for bookmarks.
 		Allows me to capture folder clicks.
-
 		bookmark: The bookmark that was clicked.
 		pageIndex: The page that contains the bookmark.
 	*/
 	$scope.clickBookmark = function(bookmark, page) {
 		if (bookmark.children.length > 0) {
-			// Deactiviate siblings.
+			// Deactiviate bookmark and its siblings.
 			siblings = $scope.bookmarks[page];
 			for(i = 0; i < siblings.length; i++) {
 				siblings[i].active = false;
 			}
 
-			// Activate bookmark whenever siblings are deactiveated.
+			// Activate bookmark after it and it's siblings are deactiveated.
 			bookmark.active = true;
 
 			// Deactive children.
@@ -331,7 +329,6 @@ function MetroStart($scope, $http) {
 
 	/**
 		Remove the given bookmark.
-		
 		bookmark: The bookmark to be removed.
 		page: The page where the bookmark is.
 		index: The index for the bookmark.
@@ -359,7 +356,6 @@ function MetroStart($scope, $http) {
 
 	/**
 		Change the currently enabled theme.
-		
 		newTheme: The theme to be enabled.
 	*/
 	$scope.changeTheme = function(newTheme) {
@@ -372,7 +368,6 @@ function MetroStart($scope, $http) {
 
 	/**
 		Change the currently enabled font.
-		
 		newFont: The font to be enabled.
 	*/
 	$scope.changeFont = function(newFont) {
@@ -387,12 +382,11 @@ function MetroStart($scope, $http) {
 	}
 
 	/**
-		Navigate the user to the page to share the theme.
-
+		Navigate the user to the share theme page.
 		theme: The theme being shared.
 	*/
 	$scope.shareTheme = function(theme) {
-		var url = 'http://metro-start.appspot.com/newtheme?' + 
+		var url = 'http://metro-start.appspot.com/newtheme?' +
 			'title=' + encodeURIComponent(theme.title) +
 			'&maincolor=' + encodeURIComponent(theme.colors['main-color']) +
 			'&optionscolor=' + encodeURIComponent(theme.colors['options-color']) +
@@ -404,7 +398,6 @@ function MetroStart($scope, $http) {
 
 	/**
 		Remove the given local theme.
-
 		page: The page that contains the theme to be removed.
 		index: The index of the theme to be removed.
 	*/

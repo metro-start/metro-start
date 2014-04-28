@@ -2,12 +2,12 @@ $(function() {
 	//Load the raleway theme.
 	var style = $(
 		'<style>' +
-			'@font-face {' + 
+			'@font-face {' +
 			'font-family: "Raleway";' +
-			'src: url("' + chrome.extension.getURL('css/Raleway-Regular.ttf') + '")' + 
+			'src: url("' + chrome.extension.getURL('css/Raleway-Regular.ttf') + '")' +
 			'}' +
 		'</style>');
-	$('head').append(style); 
+	$('head').append(style);
 	/*
 		Attaches the color pickers and binds them to $scope.
 	*/
@@ -46,11 +46,14 @@ $(function() {
 
 /**
 	Compares window height to element height to fine the number of elements per page.
-
 	returns: The number of items to fit on a page.
 */
 var getPageItemCount = function() {
-	var height = $('body').height() - ($('h1').outerHeight(true) + $('.page-chooser').outerHeight(true) + $('.footer').outerHeight(true));
+	var pageHeight = $('body').height() - ($('h1').outerHeight(true);
+	var navBarHeight = $('.page-chooser').outerHeight(true);
+	var footerHeight = $('.footer').outerHeight(true));
+	var height =  pageHeight + navBarHeight + footerHeight;
+	 
 	jss('.external', {
 		'height': height
 	});
@@ -63,7 +66,6 @@ var getPageItemCount = function() {
 
 /**
 	Changes the style to whatever is in the scope.
-
 	transition: A bool indicating whether to slowly transition or immediately change.
 */
 var updateStyle = function(transition) {
@@ -85,7 +87,7 @@ var updateStyle = function(transition) {
 		jss('body', {
 			'font-family': '"Segoe UI", Helvetica, Arial, sans-serif',
 		});
-	} else { 
+	} else {
 		jss('body', {
 			'font-family': 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif',
 		});
@@ -107,7 +109,7 @@ var updateStyle = function(transition) {
 		'background': main_color
 	});
 
-	// Transition the colors, but then we still add it to the DOM.
+	// Transition the colors
 	if (transition) {
 		$('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
 		$('.title-color').animate({'color': title_color}, {duration: 400, queue: false});
@@ -116,23 +118,24 @@ var updateStyle = function(transition) {
 		$('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
 	}
 
-	jss('.title-color', { 
+	//but then we still need to add it to the DOM.
+	jss('.background-color', {
+		'background-color': background_color
+	});
+	jss('.title-color', {
 		'color': title_color
 	});
-	jss('.background-color', { 
-		'background-color': background_color
+	jss('body', {
+		'color': main_color
+	});
+	jss('input', {
+		'color': main_color
+	});
+	jss('.options-color', {
+		'color': options_color
 	});
 	jss('.bookmark-active', {
 		'color': options_color
-		//'border-bottom': '2px solid ' + options_color 
-	});
-	jss('body', { 
-		'color': main_color
-	});
-	jss('input', { 
-		'color': main_color
-	});
-	jss('.options-color', { 
-		'color': options_color
+		//'border-bottom': '2px solid ' + options_color
 	});
 }

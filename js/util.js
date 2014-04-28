@@ -15,12 +15,11 @@ var defaultSort = {
 	'links': false,
 	'apps': false,
 	'bookmarks': false,
-	'themes': false 
+	'themes': false
 };
 
 /**
 	Saves the key, value pair to localStorage.
-	
 	key: The name of the value to be saved.
 	value: The value to be saved.
 */
@@ -34,7 +33,6 @@ var saveOnce = function(key, value) {
 
 /**
 	Saves the key, value pair to localStorage and chrome.storage.
-	
 	key: The name of the value to be saved.
 	value: The value to be saved.
 */
@@ -49,7 +47,6 @@ var saveTwice = function(key, value) {
 
 /**
 	Saves the key, value pair to angularjs scope, localStorage and chrome.storage.
-	
 	key: The name of the value to be saved.
 	value: The value to be saved.
 	scope: The angularjs scope of the current app.
@@ -61,7 +58,6 @@ var saveThrice = function(key, value, scope) {
 
 /**
 	A collection to handle organizing data in pages.
-	
 	newRows: An array of items to initialize the collection with.
 */
 var Pages = function(newRows, sorted, pageItemCount, getFunction) {
@@ -71,16 +67,13 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 
 	/**
 		Defult function to retrieve the actionable member of the collection's items.
-
 		elem: The object that contains the element to be used.
-
 		returns: The element that should be used.
 	*/
 	this.getFunction = function(elem) { return elem };
 
 	/**
 		Add an item to the collection.
-
 		row: The item being added.
 	*/
 	this.add = function(row) {
@@ -95,7 +88,6 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 
 	/**
 		Get an item from the collection.
-
 		page: The page/column where the item is located.
 		index: The item's index in that page.
 	*/
@@ -104,14 +96,13 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 	}
 	/**
 		Remove an item from the collection.
-
 		page: The page/column where the item is located.
 		index: The item's index in that page.
 	*/
 	this.remove = function(page, index) {
 		this.pages[page].splice(index, 1);
 		// Shift items back from forward pages to fill the hole.
-		for (i = page; i < this.pages.length - 1; i++) {
+		for (var i = page; i < this.pages.length - 1; i++) {
 			this.pages[i].push(this.pages[i + 1].shift());
 		}
 		// The the last page is now empty, pop it.
@@ -123,7 +114,6 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 
 	/**
 		Add all elements in the array to the object.
-
 		newRows: The array of elements to be added.
 	*/
 	this.addAll = function(newRows) {
@@ -145,7 +135,7 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 				} else if(getFunction(a) < getFunction(b)) {
 					return -1;
 				} else {
-					return 0; 
+					return 0;
 				}
 			});
 			this.pages = [[]];
@@ -189,14 +179,12 @@ var checkAndUpgradeVersion = function() {
 	if (lastVersion == null) {
 		// Check if links exists. If it does, then its an upgrade.
 		if (localStorage.getItem('links') != null) {
+			saveTwice('page', localStorage.getItem('active'));
 			saveTwice('links', localStorage.getItem('links'));
-
 			saveTwice('localThemes', localStorage.getItem('themes'));
 
-			saveTwice('page', localStorage.getItem('active'));
-
-			var theme = { 
-				'title': '', 
+			var theme = {
+				'title': '',
 				'colors': {
 					'options-color': localStorage.getItem('options-color'),
 					'main-color': localStorage.getItem('main-color'),
@@ -229,18 +217,16 @@ var checkAndUpgradeVersion = function() {
 }
 
 /**
-	Tries to get the value from localStorage. 
+	Tries to get the value from localStorage.
 	If it fails, checks chrome.storage.
 	Retrieves the value and saves it to the angularjs scope.
 	Does not return the value beacuse it might need to make an async call.
-
 	key: The key to be retrieved.
 	defaultValue: The value to initialize all storages if the key does not exist.
 	scope: The angularjs scope where the value will be saved.
 	jsonify: A flag to identify whether the returned value should be parsed as JSON.
 		Only applicable to localStorage.
 	callback: A callback function to run when value has been retrieved.
-
 */
 var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 	// If the value is in localStorage, retieve from there.
