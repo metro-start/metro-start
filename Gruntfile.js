@@ -13,7 +13,6 @@ module.exports = function (grunt) {
           jshintrc: '.jshintrc'
         },
       }
-    }
   })
 
   grunt.loadNpmTasks('grunt-contrib-jshint')
