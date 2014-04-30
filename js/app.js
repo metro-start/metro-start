@@ -37,9 +37,9 @@ function MetroStart($scope, $http) {
 	// If there's no existing links (local or online) initiliazes with message.
 	$scope.loadLinks = function() {
 		getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
-			$scope.links = new Pages($scope.links, $scope.sort.links, $scope.pageItemCount, getFunctions['name']);
+			$scope.links = new Pages($scope.links, $scope.sort.links, $scope.pageItemCount, getFunctions.name);
 		});
-	}
+	};
 
 	// Load list of apps
 	$scope.loadApps = function() {
@@ -51,7 +51,7 @@ function MetroStart($scope, $http) {
 	    	// Remove extensions and limit to apps.
 	        apps = apps.concat(res.filter(function(item) { return item.isApp; }));
 	        $scope.$apply(function() {
-				$scope.apps = new Pages(apps, $scope.sort.apps, $scope.pageItemCount, getFunctions['name']);
+				$scope.apps = new Pages(apps, $scope.sort.apps, $scope.pageItemCount, getFunctions.name);
 			});
 	    });
 	};
@@ -68,22 +68,22 @@ function MetroStart($scope, $http) {
 	$scope.loadThemes = function() {
 		// Load local themes.
 		getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
-			$scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, getFunctions['title']);
+			$scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, getFunctions.title);
 		});
 
 		// Load online themes.
 		$http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
-			for (i in data) {
+			for (var i in data) {
 				data[i].colors = {
-					'options-color': data[i]['options_color'],
-					'main-color': data[i]['main_color'],
-					'title-color': data[i]['title_color'],
-					'background-color': data[i]['background_color'],
-				}
+					'options-color': data[i].options_color,
+					'main-color': data[i].main_color,
+					'title-color': data[i].title_color,
+					'background-color': data[i].background_color,
+				};
 			}
-			$scope.onlineThemes = new Pages(data, $scope.sort.themes, $scope.pageItemCount, getFunctions['title']);
+			$scope.onlineThemes = new Pages(data, $scope.sort.themes, $scope.pageItemCount, getFunctions.title);
 		});
-	}
+	};
 
 	// Attach a watcher to the page to see page changes and save the value.
 	$scope.$watch('page', function(newValue, oldValue) {
@@ -116,12 +116,12 @@ function MetroStart($scope, $http) {
 		}
 		$scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
 		_gaq.push(['_trackEvent', 'Page', 'Wrench']);
-	}
+	};
 
 	$scope.changeSorting = function(key, newSorting) {
 		$scope.sort[key] = newSorting;
 		saveTwice('sort', $scope.sort, $scope);
-		if ($scope.sort[key] == 0) {
+		if ($scope.sort[key] === 0) {
 			if (key == 'links') {
 				$scope.loadLinks();
 			} else if(key == 'apps') {
@@ -129,15 +129,15 @@ function MetroStart($scope, $http) {
 			} else if(key == 'themes') {
 				$scope.loadThemes();
 			} else if (key == 'bookmarks') {
+				var handleBookmarks = function(res) {
+					$scope.$apply(function() {
+						$scope.bookmarks[i] = res;
+					});
+				};
 				for (i = $scope.bookmarks.length - 1; i >= 0; i--) {
-					if (typeof $scope.bookmarks[i][0].parentId !== 'undefined') {
-						(function(parentId, i) {
-							chrome.bookmarks.getChildren(parentId, function(res) {
-								$scope.$apply(function() {
-									$scope.bookmarks[i] = res;
-								});
-							});
-						})($scope.bookmarks[i][0].parentId, i);
+					var parentId = typeof $scope.bookmarks[i][0].parentId;
+					if (typeof parentId !== 'undefined') {
+						chrome.bookmarks.getChildren(parentId, handleBookmarks);
 					}
 				}
 			}
@@ -148,23 +148,24 @@ function MetroStart($scope, $http) {
 				$scope.localThemes.sort();
 				$scope.onlineThemes.sort();
 			} else if (key == 'bookmarks') {
+				var compareFunction = function(a, b) {
+					if (angular.lowercase(a.title) > angular.lowercase(b.title)) {
+						return 1;
+					} else if(angular.lowercase(a.title) < angular.lowercase(b.title)) {
+						return -1;
+					} else {
+						return 0;
+					}
+				};
 				for (i = 0; i < $scope.bookmarks.length; i++) {
-					$scope.bookmarks[i].sort(function(a, b) {
-						if (angular.lowercase(a.title) > angular.lowercase(b.title)) {
-							return 1;
-						} else if(angular.lowercase(a.title) < angular.lowercase(b.title)) {
-							return -1;
-						} else {
-							return 0;
-						}
-					});
+					$scope.bookmarks[i].sort(compareFunction);
 				}
 			} else {
 				$scope[key].sort();
 			}
 			_gaq.push(['_trackEvent', 'Page', 'Show Sorted Items']);
 		}
-	}
+	};
 
 	$scope.addLink = function() {
 		if(!$scope.newUrl.match(/https?\:\/\//)) {
@@ -187,20 +188,20 @@ function MetroStart($scope, $http) {
 		$scope.newUrl = '';
 		$scope.newUrlTitle = '';
 		saveTwice('links', $scope.links.flatten());
-	}
+	};
 
 	$scope.editLink = function(page, index) {
 		$scope.linkToEdit = $scope.links.get(page, index);
 		$scope.newUrlTitle = $scope.linkToEdit.name;
 		$scope.newUrl = $scope.linkToEdit.url;
 		_gaq.push(['_trackEvent', 'Links', 'Start Editing Link']);
-	}
+	};
 
 	$scope.removeLink = function(page, index){
 		$scope.links.remove(page, index);
 		saveTwice('links', $scope.links.flatten());
 		_gaq.push(['_trackEvent', 'Links', 'Remove Link']);
-	}
+	};
 
 	$scope.toggleWeather = function() {
 		saveThrice('weatherToggleText', 'show weatherhide weather'.replace($scope.weatherToggleText, ''), $scope);
@@ -210,23 +211,23 @@ function MetroStart($scope, $http) {
 		} else {
 			_gaq.push(['_trackEvent', 'Weather', 'Show Weather']);
 		}
-	}
+	};
 
 	$scope.saveLocat = function() {
-		if ($scope.newLocat && $scope.newLocat.trim() != '') {
+		if ($scope.newLocat && $scope.newLocat.trim() !== '') {
 			saveThrice('locat', $scope.newLocat, $scope);
 
 			$scope.updateWeather(true);
 			_gaq.push(['_trackEvent', 'Weather', 'Save Weather Location']);
 		}
-	}
+	};
 
 	$scope.changeWeatherUnit = function(newWeatherUnit) {
 		saveThrice('weatherUnit', newWeatherUnit, $scope);
 
 		$scope.updateWeather(true);
 		_gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', $scope.units[$scope.weatherUnit]]);
-	}
+	};
 
 	/**
 		Update the weather data being displayed.
@@ -254,12 +255,12 @@ function MetroStart($scope, $http) {
 						'lowTemp': elem.item.forecast[0].low,
 						'condition': elem.item.condition.text.toLowerCase(),
 						'unit': elem.units.temperature.toLowerCase(),
-					}
+					};
 				}
 				saveTwice('weather', $scope.weather);
 			});
 		}
-	}
+	};
 
 	/**
 		Uninstall the given application.
@@ -268,7 +269,7 @@ function MetroStart($scope, $http) {
 		index: The index in the page.
 	*/
 	$scope.uninstallApp = function(app, page, index) {
-		for (id in $scope.apps) {
+		for (var id in $scope.apps) {
 			if ($scope.apps[id].id == app.id) {
 				chrome.management.uninstall(app.id);
 				$scope.apps.remove(page, index);
@@ -277,7 +278,7 @@ function MetroStart($scope, $http) {
 		}
 
 		_gaq.push(['_trackEvent', 'Apps', 'Uninstall App']);
-	}
+	};
 
 	/**
 		Click event handler for bookmarks.
@@ -319,7 +320,7 @@ function MetroStart($scope, $http) {
 			return false;
 		}
 		_gaq.push(['_trackEvent', 'Bookmarks', 'Bookmarked Page']);
-	}
+	};
 
 	/**
 		Remove the given bookmark.
@@ -335,7 +336,7 @@ function MetroStart($scope, $http) {
 		});
 
 		_gaq.push(['_trackEvent', 'Bookmarks', 'Remove Bookmarked']);
-	}
+	};
 
 	/**
 		Reset to default theme.
@@ -346,7 +347,7 @@ function MetroStart($scope, $http) {
 		updateStyle(true);
 
 		_gaq.push(['_trackEvent', 'Theme', 'Reset Theme']);
-	}
+	};
 
 	/**
 		Change the currently enabled theme.
@@ -358,7 +359,7 @@ function MetroStart($scope, $http) {
 		updateStyle(true);
 
 		_gaq.push(['_trackEvent', 'Theme', 'Change Theme', newTheme.title]);
-	}
+	};
 
 	/**
 		Change the currently enabled font.
@@ -368,12 +369,12 @@ function MetroStart($scope, $http) {
 		saveThrice('font', newFont, $scope);
 
 		updateStyle(true);
-		if (newFont == 0) {
+		if (newFont === 0) {
 			_gaq.push(['_trackEvent', 'Theme', 'Change Font', 'Segoe/Helvetica']);
 		} else {
 			_gaq.push(['_trackEvent', 'Theme', 'Change Font', 'Raleway']);
 		}
-	}
+	};
 
 	/**
 		Navigate the user to the share theme page.
@@ -388,7 +389,7 @@ function MetroStart($scope, $http) {
 			'&backgroundcolor=' + encodeURIComponent(theme.colors['background-color']);
 		window.open(url);
 		_gaq.push(['_trackEvent', 'Theme', 'Share Theme']);
-	}
+	};
 
 	/**
 		Remove the given local theme.
@@ -399,7 +400,7 @@ function MetroStart($scope, $http) {
 		$scope.localThemes.remove(page, index);
 		saveTwice('localThemes', $scope.localThemes.flatten());
 		_gaq.push(['_trackEvent', 'Theme', 'Remove Theme']);
-	}
+	};
 
 	/**
 		Handle the editTheme button click. if what is being edited has a name, save it.
@@ -407,7 +408,7 @@ function MetroStart($scope, $http) {
 	*/
 	$scope.clickEditTheme = function() {
 		if ($scope.editThemeText == 'save theme') {
-			if ($scope.newThemeTitle && $scope.newThemeTitle.trim() != '') {
+			if ($scope.newThemeTitle && $scope.newThemeTitle.trim() !== '') {
 				$scope.theme.title = $scope.newThemeTitle;
 				$scope.newThemeTitle = '';
 				$scope.localThemes.add($scope.theme);
@@ -421,7 +422,7 @@ function MetroStart($scope, $http) {
 		}
 
 		$scope.editThemeText = 'edit themesave theme'.replace($scope.editThemeText, '');
-	}
+	};
 
 	$scope.loadLinks();
 	$scope.loadApps();

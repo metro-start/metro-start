@@ -29,7 +29,7 @@ var saveOnce = function(key, value) {
 	} else {
 		localStorage.setItem(key, value);
 	}
-}
+};
 
 /**
 	Saves the key, value pair to localStorage and chrome.storage.
@@ -43,7 +43,7 @@ var saveTwice = function(key, value) {
 	} else {
 		localStorage.setItem(key, value);
 	}
-}
+};
 
 /**
 	Saves the key, value pair to angularjs scope, localStorage and chrome.storage.
@@ -54,7 +54,7 @@ var saveTwice = function(key, value) {
 var saveThrice = function(key, value, scope) {
 	scope[key] = value;
 	saveTwice(key, value);
-}
+};
 
 /**
 	A collection to handle organizing data in pages.
@@ -70,7 +70,7 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 		elem: The object that contains the element to be used.
 		returns: The element that should be used.
 	*/
-	this.getFunction = function(elem) { return elem };
+	this.getFunction = function(elem) { return elem; };
 
 	/**
 		Add an item to the collection.
@@ -84,7 +84,7 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 		// Add item to last column.
 		this.pages[this.pages.length - 1].push(row);
 		if (this.sorted) this.sort();
-	}
+	};
 
 	/**
 		Get an item from the collection.
@@ -93,7 +93,7 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 	*/
 	this.get = function(col, row) {
 		return this.pages[col][row];
-	}
+	};
 	/**
 		Remove an item from the collection.
 		page: The page/column where the item is located.
@@ -106,11 +106,11 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 			this.pages[i].push(this.pages[i + 1].shift());
 		}
 		// The the last page is now empty, pop it.
-		if (this.pages.length > 1 && this.pages[this.pages.length - 1].length == 0)
+		if (this.pages.length > 1 && this.pages[this.pages.length - 1].length === 0)
 			this.pages.pop();
 
 		if (this.sorted) this.sort();
-	}
+	};
 
 	/**
 		Add all elements in the array to the object.
@@ -121,13 +121,13 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 			this.add(newRows[index]);
 		}
 		if (this.sorted) this.sort();
-	}
+	};
 
 	/**
 		Sort elements in the collection alphabetically in descending order
 	*/
 	this.sort = function() {
-		if (this.sorted == false) {
+		if (this.sorted === false) {
 			this.sorted = true;
 			var sorted = this.flatten().sort(function(a, b) {
 				if (getFunction(a) > getFunction(b)) {
@@ -141,15 +141,14 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 			this.pages = [[]];
 			this.addAll(sorted);
 		}
-	}
+	};
 	/**
 		Flatten the collection and turn it into a 1D array.
-
 		returns: The array in 1D format.
 	*/
 	this.flatten = function() {
-		return this.pages.reduce(function(a, b) { return a.concat(b) });
-	}
+		return this.pages.reduce(function(a, b) { return a.concat(b); });
+	};
 
 	/**
 		Set the number of items per page.
@@ -160,14 +159,14 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
 		var list = this.flatten();
 		this.pages = [[]];
 		this.addAll(list);
-	}
+	};
 
 	/*
 		Ininitializes the collection.
 	*/
 	this.getFunction = getFunction;
 	if (newRows) this.addAll(newRows);
-}
+};
 
 /**
 	Upgrades the version of metrostart installed by moving all saved data to new format.
@@ -176,9 +175,9 @@ var checkAndUpgradeVersion = function() {
 	var newVersion = chrome.app.getDetails().version;
 	var lastVersion = localStorage.getItem('version');
 	// This means <= 4.2.2 or first run
-	if (lastVersion == null) {
+	if (lastVersion === null) {
 		// Check if links exists. If it does, then its an upgrade.
-		if (localStorage.getItem('links') != null) {
+		if (localStorage.getItem('links') !== null) {
 			saveTwice('page', localStorage.getItem('active'));
 			saveTwice('links', localStorage.getItem('links'));
 			saveTwice('localThemes', localStorage.getItem('themes'));
@@ -204,7 +203,7 @@ var checkAndUpgradeVersion = function() {
 				saveTwice('weatherUnit', 1);
 			}
 
-			if (localStorage.getItem('hide_weather') == false) {
+			if (localStorage.getItem('hide_weather') === false) {
 				saveTwice('weatherToggleText', 'hide weather');
 			} else {
 				saveTwice('weatherToggleText', 'show weather');
@@ -214,7 +213,7 @@ var checkAndUpgradeVersion = function() {
 	} else if(lastVersion != newVersion) {
 		localStorage.setItem('version', newVersion);
 	}
-}
+};
 
 /**
 	Tries to get the value from localStorage.
@@ -270,7 +269,7 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
 			});
 		});
 	}
-}
+};
 
 /**
 	Get functions that retrieve different types of data from various things
@@ -283,4 +282,4 @@ var getFunctions = {
 	'title': function(elem) {
 		return angular.lowercase(elem.title);
 	},
-}
+};
