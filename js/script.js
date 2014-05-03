@@ -49,11 +49,11 @@ $(function() {
 	returns: The number of items to fit on a page.
 */
 var getPageItemCount = function() {
-	var pageHeight = $('body').height() - ($('h1').outerHeight(true);
+	var pageHeight = $('body').height() - ($('h1').outerHeight(true));
 	var navBarHeight = $('.page-chooser').outerHeight(true);
-	var footerHeight = $('.footer').outerHeight(true));
+	var footerHeight = $('.footer').outerHeight(true);
 	var height =  pageHeight + navBarHeight + footerHeight;
-	 
+
 	jss('.external', {
 		'height': height
 	});
@@ -62,7 +62,7 @@ var getPageItemCount = function() {
 	});
 
 	return Math.floor((height) / 60) - 1;
-}
+};
 
 /**
 	Changes the style to whatever is in the scope.
@@ -83,7 +83,7 @@ var updateStyle = function(transition) {
 		title_color = scope.theme.colors['title-color'];
 	}
 
-	if(scope.font == 0) {
+	if(scope.font === 0) {
 		jss('body', {
 			'font-family': '"Segoe UI", Helvetica, Arial, sans-serif',
 		});
@@ -138,4 +138,4 @@ var updateStyle = function(transition) {
 		'color': options_color
 		//'border-bottom': '2px solid ' + options_color
 	});
-}
+};
