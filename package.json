@@ -1,16 +1,19 @@
 {
-    "name": "metro-start"
-  , "description": "A new start screen for Google Chrome, inspired by the Windows Phone Modern UI and its 'Glance and Go' philosophy"
-  , "homepage": "http://www.metro-start.com/"
-  , "scripts": { "test": "grunt test" }
-  , "repository": {
-      "type": "git"
-    , "url": "https://github.com/metro-start/metro-start.git"
-  }
-  , "devDependencies": {
-      "grunt": "~0.4.1"
-      "grunt-notify": "~0.3.0"
-    , "grunt-contrib-jshint": "~0.6.0"
-    , "grunt-contrib-jasmine": "git://github.com/travisjeffery/grunt-contrib-jasmine#9d5874dd592cf41e8268918fe9baeb261afd75b2"
+  "name": "metro-start",
+  "description": "A new start screen for Google Chrome, inspired by the Windows Phone Modern UI and its 'Glance and Go' philosophy",
+  "homepage": "http://www.metro-start.com/",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/metro-start/metro-start.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-notify": "~0.3.0",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-jasmine": "git://github.com/travisjeffery/grunt-contrib-jasmine#9d5874dd592cf41e8268918fe9baeb261afd75b2",
+    "grunt-contrib-watch": "^0.6.1"
   }
 }
