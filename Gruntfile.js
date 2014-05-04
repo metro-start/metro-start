@@ -15,17 +15,18 @@ module.exports = function (grunt) {
                 'lib/jquery.js',
                 'lib/jquery-ui.js',
                 'lib/angular.js',
-                'js/util.js'
+                'js/util.js',
+                'js/storage.js',
             ],
             options : {
-                specs : 'test/*.js'
+                specs : 'spec/*.js'
             }
         },
         watch: {
             scripts: {
                 files: [
                     'js/*.js',
-                    'test/*.js'
+                    'spec/*.js'
                 ],
                 tasks: ['test'],
                 options: {
