@@ -1,4 +1,3 @@
-
 var storage = (function () {
     return {
         /**
@@ -64,24 +63,26 @@ var storage = (function () {
                 scope[key] = defaultValue;
                 if (callback) callback();
             }
-            if (chrome.strorage) {
+            if (chrome.storage) {
                 chrome.storage.sync.get(key, function(container) {
                     scope.$apply(function () {
                         if (container[key]) {
                             // Save retrieved data to localStorage and scope.
-                            if (jsonify) {
-                                localStorage.setItem(key, JSON.stringify(container[key]));
-                            } else {
-                                localStorage.setItem(key, container[key]);
-                            }
+                            saveOnce(key, container[key]);
 
-                            if (!foundInLocalStorage){
-                                scope[key] = container[key];
-                                if (callback) callback();
-                            }
+                            saveThrice(key, container[key], scope);
+                            if (callback) callback();
+                            //
+                            // if (!foundInLocalStorage) {
+                            //     scope[key] = container[key];
+                            // } else {
+                            //     saveTwice()
+                            // }
                         } else {
                             if (foundInLocalStorage) {
-                                chrome.storage.sync.set({ key: scope[key] });
+                                var obj = {};
+                                obj[key] = scope[key];
+                                chrome.storage.sync.set(obj);
                             } else {
                                 // Save defaultValue to all three storages.
                                 saveTwice(key, defaultValue);
