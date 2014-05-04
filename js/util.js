@@ -223,8 +223,7 @@ var checkAndUpgradeVersion = function() {
     key: The key to be retrieved.
     defaultValue: The value to initialize all storages if the key does not exist.
     scope: The angularjs scope where the value will be saved.
-    jsonify: A flag to identify whether the returned value should be parsed as JSON.
-        Only applicable to localStorage.
+    jsonify: A flag to identify whether the returned value should be parsed as JSON. Only applicable to localStorage.
     callback: A callback function to run when value has been retrieved.
 */
 var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {

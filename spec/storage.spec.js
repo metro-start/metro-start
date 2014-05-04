@@ -15,8 +15,8 @@
 
             this.fakeChromeStorage = {};
             chrome = { storage: { sync: {get: function() {}, set: function() {}}}};
-            spyOn(chrome.storage.sync, 'get').and.callFake(function(key) {
-                return that.fakeChromeStorage[key];
+            spyOn(chrome.storage.sync, 'get').and.callFake(function(key, callback) {
+                callback(that.fakeChromeStorage);
             });
             spyOn(chrome.storage.sync, 'set').and.callFake(function(obj) {
                 var key = Object.keys(obj)[0];
@@ -28,25 +28,35 @@
             this.testObj = { first: 'first', second: { first: 'second' }};
         });
 
-        it('can saveOnce to localStorage', function() {
-            storage.saveOnce('index', this.testObj);
-            expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
-            expect(chrome.storage.sync.get('index')).toBeUndefined();
-            expect(this.fakeScope.index).toBeUndefined();
-        });
+        describe('can save data', function() {
+            it('to localStorage', function() {
+                storage.saveOnce('index', this.testObj);
+                expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
+                chrome.storage.sync.get('index', function(obj) {
+                    expect(obj.index).toBeUndefined();
+                });
+                expect(this.fakeScope.index).toBeUndefined();
+            });
 
-        it('can saveTwice to localStorage and chromeStorage', function() {
-            storage.saveTwice('index', this.testObj);
-            expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
-            expect(chrome.storage.sync.get('index')).toEqual(this.testObj);
-            expect(this.fakeScope.index).toBeUndefined();
-        });
+            it('to localStorage and chromeStorage', function() {
+                var that = this;
+                storage.saveTwice('index', this.testObj);
+                expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
+                chrome.storage.sync.get('index', function(obj) {
+                    expect(obj.index).toEqual(that.testObj);
+                });
+                expect(this.fakeScope.index).toBeUndefined();
+            });
 
-        it('can saveThrice to localStorage, chromeStorage and $scope', function() {
-            storage.saveThrice('index', this.testObj, this.fakeScope);
-            expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
-            expect(chrome.storage.sync.get('index')).toEqual(this.testObj);
-            expect(this.fakeScope.index).toEqual(this.testObj);
+            it('to localStorage, chromeStorage and $scope', function() {
+                var that = this;
+                storage.saveThrice('index', this.testObj, this.fakeScope);
+                expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
+                chrome.storage.sync.get('index', function(obj) {
+                    expect(obj.index).toEqual(that.testObj);
+                });
+                expect(this.fakeScope.index).toEqual(this.testObj);
+            });
         });
     });
 })();
