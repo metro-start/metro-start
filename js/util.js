@@ -18,7 +18,6 @@ var defaultSort = {
     'themes': false
 };
 
-
 /**
     Upgrades the version of metrostart installed by moving all saved data to new format.
 */
