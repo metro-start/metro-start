@@ -88,7 +88,7 @@ function MetroStart($scope, $http) {
     // Attach a watcher to the page to see page changes and save the value.
     $scope.$watch('page', function(newValue, oldValue) {
         if (newValue != 3) { // Do not save navigation to themes page.
-            saveTwice('page', newValue);
+            storage.saveTwice('page', newValue);
         }
     }, true);
 
@@ -120,7 +120,7 @@ function MetroStart($scope, $http) {
 
     $scope.changeSorting = function(key, newSorting) {
         $scope.sort[key] = newSorting;
-        saveTwice('sort', $scope.sort, $scope);
+        storage.saveTwice('sort', $scope.sort, $scope);
         if ($scope.sort[key] === 0) {
             if (key == 'links') {
                 $scope.loadLinks();
@@ -187,7 +187,7 @@ function MetroStart($scope, $http) {
         }
         $scope.newUrl = '';
         $scope.newUrlTitle = '';
-        saveTwice('links', $scope.links.flatten());
+        storage.saveTwice('links', $scope.links.flatten());
     };
 
     $scope.editLink = function(page, index) {
@@ -199,12 +199,12 @@ function MetroStart($scope, $http) {
 
     $scope.removeLink = function(page, index){
         $scope.links.remove(page, index);
-        saveTwice('links', $scope.links.flatten());
+        storage.saveTwice('links', $scope.links.flatten());
         _gaq.push(['_trackEvent', 'Links', 'Remove Link']);
     };
 
     $scope.toggleWeather = function() {
-        saveThrice('weatherToggleText', 'show weatherhide weather'.replace($scope.weatherToggleText, ''), $scope);
+        storage.saveThrice('weatherToggleText', 'show weatherhide weather'.replace($scope.weatherToggleText, ''), $scope);
 
         if ($scope.weatherToggleText == 'show weather') {
             _gaq.push(['_trackEvent', 'Weather', 'Hide Weather']);
@@ -215,7 +215,7 @@ function MetroStart($scope, $http) {
 
     $scope.saveLocat = function() {
         if ($scope.newLocat && $scope.newLocat.trim() !== '') {
-            saveThrice('locat', $scope.newLocat, $scope);
+            storage.saveThrice('locat', $scope.newLocat, $scope);
 
             $scope.updateWeather(true);
             _gaq.push(['_trackEvent', 'Weather', 'Save Weather Location']);
@@ -223,7 +223,7 @@ function MetroStart($scope, $http) {
     };
 
     $scope.changeWeatherUnit = function(newWeatherUnit) {
-        saveThrice('weatherUnit', newWeatherUnit, $scope);
+        storage.saveThrice('weatherUnit', newWeatherUnit, $scope);
 
         $scope.updateWeather(true);
         _gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', $scope.units[$scope.weatherUnit]]);
@@ -239,7 +239,7 @@ function MetroStart($scope, $http) {
         var locat = $scope.locat;
         // If it has been more than an hour since last check.
         if(force || new Date().getTime() > parseInt($scope.weatherUpdateTime, 10)) {
-            saveThrice('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000, $scope);
+            storage.saveThrice('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000, $scope);
             var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + locat + '" limit 1) and u="' + unit + '"');
             var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
             $http.get(url).success(function(data) {
@@ -257,7 +257,7 @@ function MetroStart($scope, $http) {
                         'unit': elem.units.temperature.toLowerCase(),
                     };
                 }
-                saveTwice('weather', $scope.weather);
+                storage.saveTwice('weather', $scope.weather);
             });
         }
     };
@@ -342,7 +342,7 @@ function MetroStart($scope, $http) {
         Reset to default theme.
     */
     $scope.resetTheme = function() {
-        saveThrice('theme', defaultTheme, $scope);
+        storage.saveThrice('theme', defaultTheme, $scope);
 
         updateStyle(true);
 
@@ -354,7 +354,7 @@ function MetroStart($scope, $http) {
         newTheme: The theme to be enabled.
     */
     $scope.changeTheme = function(newTheme) {
-        saveThrice('theme', newTheme, $scope);
+        storage.saveThrice('theme', newTheme, $scope);
 
         updateStyle(true);
 
@@ -366,7 +366,7 @@ function MetroStart($scope, $http) {
         newFont: The font to be enabled.
     */
     $scope.changeFont = function(newFont) {
-        saveThrice('font', newFont, $scope);
+        storage.saveThrice('font', newFont, $scope);
 
         updateStyle(true);
         if (newFont === 0) {
@@ -398,7 +398,7 @@ function MetroStart($scope, $http) {
     */
     $scope.removeTheme = function(page, index) {
         $scope.localThemes.remove(page, index);
-        saveTwice('localThemes', $scope.localThemes.flatten());
+        storage.saveTwice('localThemes', $scope.localThemes.flatten());
         _gaq.push(['_trackEvent', 'Theme', 'Remove Theme']);
     };
 
@@ -412,8 +412,8 @@ function MetroStart($scope, $http) {
                 $scope.theme.title = $scope.newThemeTitle;
                 $scope.newThemeTitle = '';
                 $scope.localThemes.add($scope.theme);
-                saveTwice('theme', $scope.theme);
-                saveTwice('localThemes', $scope.localThemes.flatten());
+                storage.saveTwice('theme', $scope.theme);
+                storage.saveTwice('localThemes', $scope.localThemes.flatten());
             }
 
             _gaq.push(['_trackEvent', 'Theme', 'Stop Editing Theme']);

@@ -19,44 +19,6 @@ var defaultSort = {
 };
 
 /**
-    Saves the key, value pair to localStorage.
-    key: The name of the value to be saved.
-    value: The value to be saved.
-*/
-var saveOnce = function(key, value) {
-    if (angular.isObject(value)) {
-        localStorage.setItem(key, JSON.stringify(value));
-    } else {
-        localStorage.setItem(key, value);
-    }
-};
-
-/**
-    Saves the key, value pair to localStorage and chrome.storage.
-    key: The name of the value to be saved.
-    value: The value to be saved.
-*/
-var saveTwice = function(key, value) {
-    if (chrome.storage) chrome.storage.sync.set({ key: value });
-    if (angular.isObject(value)) {
-        localStorage.setItem(key, JSON.stringify(value));
-    } else {
-        localStorage.setItem(key, value);
-    }
-};
-
-/**
-    Saves the key, value pair to angularjs scope, localStorage and chrome.storage.
-    key: The name of the value to be saved.
-    value: The value to be saved.
-    scope: The angularjs scope of the current app.
-*/
-var saveThrice = function(key, value, scope) {
-    scope[key] = value;
-    saveTwice(key, value);
-};
-
-/**
     A collection to handle organizing data in pages.
     newRows: An array of items to initialize the collection with.
 */
@@ -178,9 +140,9 @@ var checkAndUpgradeVersion = function() {
     if (lastVersion === null) {
         // Check if links exists. If it does, then its an upgrade.
         if (localStorage.getItem('links') !== null) {
-            saveTwice('page', localStorage.getItem('active'));
-            saveTwice('links', localStorage.getItem('links'));
-            saveTwice('localThemes', localStorage.getItem('themes'));
+            storage.saveTwice('page', localStorage.getItem('active'));
+            storage.saveTwice('links', localStorage.getItem('links'));
+            storage.saveTwice('localThemes', localStorage.getItem('themes'));
 
             var theme = {
                 'title': '',
@@ -191,22 +153,22 @@ var checkAndUpgradeVersion = function() {
                     'background-color': localStorage.getItem('background-color')
                 }
             };
-            saveTwice('theme', theme);
+            storage.saveTwice('theme', theme);
 
-            saveTwice('font', localStorage.getItem('font'));
+            storage.saveTwice('font', localStorage.getItem('font'));
 
-            saveTwice('locat', localStorage.getItem('locat'));
+            storage.saveTwice('locat', localStorage.getItem('locat'));
 
             if (localStorage.getItem('unit') == 'fahrenheit') {
-                saveTwice('weatherUnit', 0);
+                storage.saveTwice('weatherUnit', 0);
             } else {
-                saveTwice('weatherUnit', 1);
+                storage.saveTwice('weatherUnit', 1);
             }
 
             if (localStorage.getItem('hide_weather') === false) {
-                saveTwice('weatherToggleText', 'hide weather');
+                storage.saveTwice('weatherToggleText', 'hide weather');
             } else {
-                saveTwice('weatherToggleText', 'show weather');
+                storage.saveTwice('weatherToggleText', 'show weather');
             }
         }
         localStorage.setItem('version', newVersion);
@@ -262,7 +224,7 @@ var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
                         chrome.storage.sync.set({ key: scope[key] });
                     } else {
                         // Save defaultValue to all three storages.
-                        saveTwice(key, defaultValue);
+                        storage.saveTwice(key, defaultValue);
                     }
                 }
             });

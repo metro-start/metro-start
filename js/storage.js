@@ -68,9 +68,9 @@ var storage = (function () {
                     scope.$apply(function () {
                         if (container[key]) {
                             // Save retrieved data to localStorage and scope.
-                            saveOnce(key, container[key]);
+                            storage.saveOnce(key, container[key]);
 
-                            saveThrice(key, container[key], scope);
+                            storage.saveThrice(key, container[key], scope);
                             if (callback) callback();
                             //
                             // if (!foundInLocalStorage) {
@@ -85,7 +85,7 @@ var storage = (function () {
                                 chrome.storage.sync.set(obj);
                             } else {
                                 // Save defaultValue to all three storages.
-                                saveTwice(key, defaultValue);
+                                storage.saveTwice(key, defaultValue);
                             }
                         }
                     });
