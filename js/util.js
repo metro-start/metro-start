@@ -178,61 +178,6 @@ var checkAndUpgradeVersion = function() {
 };
 
 /**
-    Tries to get the value from localStorage.
-    If it fails, checks chrome.storage.
-    Retrieves the value and saves it to the angularjs scope.
-    Does not return the value beacuse it might need to make an async call.
-    key: The key to be retrieved.
-    defaultValue: The value to initialize all storages if the key does not exist.
-    scope: The angularjs scope where the value will be saved.
-    jsonify: A flag to identify whether the returned value should be parsed as JSON. Only applicable to localStorage.
-    callback: A callback function to run when value has been retrieved.
-*/
-var getLocalOrSync = function (key, defaultValue, scope, jsonify, callback) {
-    // If the value is in localStorage, retieve from there.
-    var foundInLocalStorage = false;
-    if (localStorage.getItem(key)) {
-        if (jsonify) {
-            scope[key] = JSON.parse(localStorage.getItem(key));
-        } else {
-            scope[key] = localStorage.getItem(key);
-        }
-        if (callback) callback();
-        foundInLocalStorage = true;
-        // If we found it, still make the async call for synced data to update the storages.
-    } else {
-        scope[key] = defaultValue;
-        if (callback) callback();
-    }
-    if (chrome.strorage) {
-        chrome.storage.sync.get(key, function(container) {
-            scope.$apply(function () {
-                if (container[key]) {
-                    // Save retrieved data to localStorage and scope.
-                    if (jsonify) {
-                        localStorage.setItem(key, JSON.stringify(container[key]));
-                    } else {
-                        localStorage.setItem(key, container[key]);
-                    }
-
-                    if (!foundInLocalStorage){
-                        scope[key] = container[key];
-                        if (callback) callback();
-                    }
-                } else {
-                    if (foundInLocalStorage) {
-                        chrome.storage.sync.set({ key: scope[key] });
-                    } else {
-                        // Save defaultValue to all three storages.
-                        storage.saveTwice(key, defaultValue);
-                    }
-                }
-            });
-        });
-    }
-};
-
-/**
     Get functions that retrieve different types of data from various things
     that could be in the pages object.
 */

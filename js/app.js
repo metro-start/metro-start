@@ -15,28 +15,28 @@ function MetroStart($scope, $http) {
     $scope.linkToEdit = {};
     $scope.pageItemCount = 4;
 
-    getLocalOrSync('sort', defaultSort, $scope, true);
+    storage.get('sort', defaultSort, $scope, true);
 
-    getLocalOrSync('page', 0, $scope, false);
+    storage.get('page', 0, $scope, false);
 
-    getLocalOrSync('theme', defaultTheme, $scope, true);
+    storage.get('theme', defaultTheme, $scope, true);
 
-    getLocalOrSync('font', 0, $scope, false);
+    storage.get('font', 0, $scope, false);
 
-    getLocalOrSync('weatherUpdateTime', 0, $scope, false);
+    storage.get('weatherUpdateTime', 0, $scope, false);
 
-    getLocalOrSync('locat', 'seattle, wa', $scope, false);
+    storage.get('locat', 'seattle, wa', $scope, false);
 
-    getLocalOrSync('weather', null, $scope, true);
+    storage.get('weather', null, $scope, true);
 
-    getLocalOrSync('weatherUnit', 0, $scope, false);
+    storage.get('weatherUnit', 0, $scope, false);
 
-    getLocalOrSync('weatherToggleText', 'hide weather', $scope, false);
+    storage.get('weatherToggleText', 'hide weather', $scope, false);
 
     // Load list of links
     // If there's no existing links (local or online) initiliazes with message.
     $scope.loadLinks = function() {
-        getLocalOrSync('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
+        storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
             $scope.links = new Pages($scope.links, $scope.sort.links, $scope.pageItemCount, getFunctions.name);
         });
     };
@@ -67,7 +67,7 @@ function MetroStart($scope, $http) {
 
     $scope.loadThemes = function() {
         // Load local themes.
-        getLocalOrSync('localThemes', [defaultTheme], $scope, true, function() {
+        storage.get('localThemes', [defaultTheme], $scope, true, function() {
             $scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, getFunctions.title);
         });
 
@@ -112,7 +112,7 @@ function MetroStart($scope, $http) {
         $scope.loadThemes();
         // If we're on the theme when wrench was clicked, navigate to the last page.
         if ($scope.page == 3) {
-            getLocalOrSync('page', 0, $scope, false);
+            storage.get('page', 0, $scope, false);
         }
         $scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
         _gaq.push(['_trackEvent', 'Page', 'Wrench']);
