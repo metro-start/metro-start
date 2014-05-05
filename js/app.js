@@ -15,11 +15,11 @@ function MetroStart($scope, $http) {
     $scope.linkToEdit = {};
     $scope.pageItemCount = 4;
 
-    storage.get('sort', defaultSort, $scope, true);
+    storage.get('sort', defaults.defaultSort, $scope, true);
 
     storage.get('page', 0, $scope, false);
 
-    storage.get('theme', defaultTheme, $scope, true);
+    storage.get('theme', defaults.defaultTheme, $scope, true);
 
     storage.get('font', 0, $scope, false);
 
@@ -67,7 +67,7 @@ function MetroStart($scope, $http) {
 
     $scope.loadThemes = function() {
         // Load local themes.
-        storage.get('localThemes', [defaultTheme], $scope, true, function() {
+        storage.get('localThemes', [defaults.defaultTheme], $scope, true, function() {
             $scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, getFunctions.title);
         });
 
@@ -342,7 +342,7 @@ function MetroStart($scope, $http) {
         Reset to default theme.
     */
     $scope.resetTheme = function() {
-        storage.saveThrice('theme', defaultTheme, $scope);
+        storage.saveThrice('theme', defaults.defaultTheme, $scope);
 
         updateStyle(true);
 

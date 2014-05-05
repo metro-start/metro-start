@@ -12,7 +12,7 @@ $(function() {
         Attaches the color pickers and binds them to $scope.
     */
     var scope = angular.element(document.body).scope();
-    $.each(defaultTheme.colors, function(key, value) {
+    $.each(defaults.defaultTheme.colors, function(key, value) {
         $('#' + key).farbtastic(function(color, scoped) {
             // If we are already in angularjs scope.
             if (scoped) {
