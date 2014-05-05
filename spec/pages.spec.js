@@ -1,4 +1,0 @@
-(function() {
-    describe('Pages', function() {
-    });
-})();
