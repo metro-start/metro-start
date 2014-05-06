@@ -3,8 +3,6 @@ _gaq.push(['_setAccount', 'UA-25604585-1']);
 _gaq.push(['_trackPageview']);
 
 function MetroStart($scope, $http) {
-    util.checkAndUpgradeVersion();
-
     $scope.total = ['links', 'apps', 'bookmarks', 'themes'];
     $scope.units = ['fahrenheit', 'celsius'];
 
