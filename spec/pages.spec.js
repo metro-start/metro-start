@@ -1,4 +1,4 @@
 (function() {
-    describe('Util', function() {
+    describe('Pages', function() {
     });
 })();

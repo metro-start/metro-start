@@ -19,7 +19,8 @@ module.exports = function (grunt) {
                 'js/storage.js',
             ],
             options : {
-                specs : 'spec/*.js'
+                specs : 'spec/*.js',
+                helpers: 'spec_helper.js'
             }
         },
         watch: {
