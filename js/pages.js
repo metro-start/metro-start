@@ -110,11 +110,12 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
     if (newRows) this.addAll(newRows);
 };
 
+
 /**
     Get functions that retrieve different types of data from various things
     that could be in the pages object.
 */
-Pages.prototype.getFunctions = {
+var getFunctions = {
     'name': function(elem) {
         return angular.lowercase(elem.name);
     },

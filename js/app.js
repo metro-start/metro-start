@@ -37,7 +37,7 @@ function MetroStart($scope, $http) {
     // If there's no existing links (local or online) initiliazes with message.
     $scope.loadLinks = function() {
         storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
-            $scope.links = new Pages($scope.links, $scope.sort.links, $scope.pageItemCount, Pages.getFunctions.name);
+            $scope.links = new Pages($scope.links, $scope.sort.links, $scope.pageItemCount, getFunctions.name);
         });
     };
 
@@ -51,7 +51,7 @@ function MetroStart($scope, $http) {
             // Remove extensions and limit to apps.
             apps = apps.concat(res.filter(function(item) { return item.isApp; }));
             $scope.$apply(function() {
-                $scope.apps = new Pages(apps, $scope.sort.apps, $scope.pageItemCount, Pages.getFunctions.name);
+                $scope.apps = new Pages(apps, $scope.sort.apps, $scope.pageItemCount, getFunctions.name);
             });
         });
     };
@@ -68,7 +68,7 @@ function MetroStart($scope, $http) {
     $scope.loadThemes = function() {
         // Load local themes.
         storage.get('localThemes', [defaults.defaultTheme], $scope, true, function() {
-            $scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, Pages.getFunctions.title);
+            $scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, getFunctions.title);
         });
 
         // Load online themes.
@@ -81,7 +81,7 @@ function MetroStart($scope, $http) {
                     'background-color': data[i].background_color,
                 };
             }
-            $scope.onlineThemes = new Pages(data, $scope.sort.themes, $scope.pageItemCount, Pages.getFunctions.title);
+            $scope.onlineThemes = new Pages(data, $scope.sort.themes, $scope.pageItemCount, getFunctions.title);
         });
     };
 
