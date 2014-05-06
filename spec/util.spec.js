@@ -9,11 +9,25 @@
         });
 
         describe('can upgrade app', function() {
-            it('when there no older versions', function() {
+            it('on first install', function() {
                 localStorage.setItem('version', undefined);
                 util.checkAndUpgradeVersion();
 
-                expect(localStorage.getItem('version')).toEqual('5.0.0');
+                expect(localStorage.getItem('version')).toEqual(this.fakeNewVersion);
+            });
+
+            it('on newer version', function() {
+                localStorage.setItem('version', this.fakeOldVersion);
+                util.checkAndUpgradeVersion();
+
+                expect(localStorage.getItem('version')).toEqual(this.fakeNewVersion);
+            });
+
+            it('on same version', function() {
+                localStorage.setItem('version', this.fakeNewVersion);
+                util.checkAndUpgradeVersion();
+
+                expect(localStorage.getItem('version')).toEqual(this.fakeNewVersion);
             });
         });
     });
