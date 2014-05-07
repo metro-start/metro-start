@@ -36,6 +36,7 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
     this.get = function(col, row) {
         return this.pages[col][row];
     };
+
     /**
         Remove an item from the collection.
         page: The page/column where the item is located.
@@ -84,6 +85,7 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
             this.addAll(sorted);
         }
     };
+
     /**
         Flatten the collection and turn it into a 1D array.
         returns: The array in 1D format.

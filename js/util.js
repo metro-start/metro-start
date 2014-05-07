@@ -1,3 +1,9 @@
 var util = (function() {
-    return {};
+    return {
+        maybe: function(func) {
+            return function() {
+                if(func) func(this.arguments);
+            };
+        }
+    };
 })();

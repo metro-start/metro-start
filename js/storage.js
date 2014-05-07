@@ -48,6 +48,7 @@ var storage = (function () {
         callback: A callback function to run when value has been retrieved.
     */
         get: function (key, defaultValue, scope, jsonify, callback) {
+            callback = util.maybe(callback);
             // If the value is in localStorage, retieve from there.
             var foundInLocalStorage = false;
             if (localStorage.getItem(key)) {
@@ -56,41 +57,23 @@ var storage = (function () {
                 } else {
                     scope[key] = localStorage.getItem(key);
                 }
-                if (callback) callback();
                 foundInLocalStorage = true;
                 // If we found it, still make the async call for synced data to update the storages.
             } else {
                 scope[key] = defaultValue;
-                if (callback) callback();
             }
-            if (chrome.storage) {
-                chrome.storage.sync.get(key, function(container) {
-                    scope.$apply(function () {
-                        if (container[key]) {
+            callback();
+            chrome.storage.sync.get(key, function(container) {
+                if (container[key]) {
+//                    if(!foundInLocalStorage) {
+                        scope.$apply(function () {
                             // Save retrieved data to localStorage and scope.
-                            storage.saveOnce(key, container[key]);
-
                             storage.saveThrice(key, container[key], scope);
-                            if (callback) callback();
-                            //
-                            // if (!foundInLocalStorage) {
-                            //     scope[key] = container[key];
-                            // } else {
-                            //     saveTwice()
-                            // }
-                        } else {
-                            if (foundInLocalStorage) {
-                                var obj = {};
-                                obj[key] = scope[key];
-                                chrome.storage.sync.set(obj);
-                            } else {
-                                // Save defaultValue to all three storages.
-                                storage.saveTwice(key, defaultValue);
-                            }
-                        }
-                    });
-                });
-            }
+                            callback();
+                        });
+//                    }
+                }
+            });
         }
     };
 })();

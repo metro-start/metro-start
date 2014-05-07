@@ -52,9 +52,6 @@
                 localStorage.setItem('index', JSON.stringify(this.testObj));
                 storage.get('index', {}, this.fakeScope, true, this.callbackSpy);
 
-                chrome.storage.sync.get('index', function(obj) {
-                    expect(obj.index).toEqual(that.testObj);
-                });
                 expect(this.fakeScope.index).toEqual(this.testObj);
                 expect(this.callbackSpy).toHaveBeenCalled();
                 expect(this.callbackSpy.calls.count()).toBe(1);
@@ -79,7 +76,7 @@
                 chrome.storage.sync.get('index', function(obj) {
                     expect(obj.index).toEqual(that.testObj);
                 });
-                expect(this.fakeScope.index).toEqual(this.testObj);
+                expect(this.fakeScope.index).toEqual(that.testObj);
                 expect(this.callbackSpy).toHaveBeenCalled();
                 expect(this.callbackSpy.calls.count()).toBe(2);
             });
