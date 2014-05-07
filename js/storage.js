@@ -38,9 +38,46 @@ var storage = (function () {
             this.saveTwice(key, value);
         },
 
+        saveLocal: function saveLocal(key, value) {
+            if (angular.isObject(value)) {
+                localStorage.setItem(key, JSON.stringify(value));
+            } else {
+                localStorage.setItem(key, value);
+            }
+        },
+        
+        saveRemote: function saveRemote(key, value) {
+            if (chrome.storage) {
+                var obj = {};
+                obj[key] = value;
+                chrome.storage.sync.set(obj);
+            }
+        },
+        
+        saveModel: function saveModel(key, value) {
+            saveLocal(key, value);
+            saveRemote(key, value);
+        },
+        
+        saveAll: function saveAll(key, value, scope) {
+            saveModel(key, value);
+            scope[key] = value;
+        },
+
+        getJSON: function getJSON(str) {
+            var res = {};
+            try {
+                res = JSON.parse(str);
+            } catch(e) {
+                res = str;
+            }
+            return res;
+        },
+            
         /**
         Gets the value from localStorage, syncs chrome.storage and saves it to angularjs scope.
         Does not return the value beacuse it might need to make an async call.
+        chrome.storage.sync always wins.
         key: The key to be retrieved.
         defaultValue: The value to initialize all storages if the key does not exist.
         scope: The angularjs scope where the value will be saved.
@@ -48,30 +85,19 @@ var storage = (function () {
         callback: A callback function to run when value has been retrieved.
     */
         get: function (key, defaultValue, scope, jsonify, callback) {
+            var that = this;
             callback = util.maybe(callback);
-            // If the value is in localStorage, retieve from there.
-            var foundInLocalStorage = false;
-            if (localStorage.getItem(key)) {
-                if (jsonify) {
-                    scope[key] = JSON.parse(localStorage.getItem(key));
-                } else {
-                    scope[key] = localStorage.getItem(key);
-                }
-                foundInLocalStorage = true;
-                // If we found it, still make the async call for synced data to update the storages.
-            } else {
-                scope[key] = defaultValue;
-            }
+
+            var value = this.getJSON(localStorage.getItem(key));
+            scope[key] = value ? value : defaultValue;
             callback();
             chrome.storage.sync.get(key, function(container) {
                 if (container[key]) {
-//                    if(!foundInLocalStorage) {
-                        scope.$apply(function () {
-                            // Save retrieved data to localStorage and scope.
-                            storage.saveThrice(key, container[key], scope);
-                            callback();
-                        });
-//                    }
+                    that.saveLocal(key, container[key]);
+                    scope.$apply(function () {
+                        scope[key] = container[key];
+                        callback();
+                    });
                 }
             });
         }
