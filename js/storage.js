@@ -59,15 +59,13 @@ var storage = (function () {
             
         /**
         Gets the value from localStorage, syncs chrome.storage and saves it to angularjs scope.
-        Does not return the value beacuse it might need to make an async call.
         chrome.storage.sync always wins.
         key: The key to be retrieved.
         defaultValue: The value to initialize all storages if the key does not exist.
         scope: The angularjs scope where the value will be saved.
-        jsonify: A flag to identify whether the returned value should be parsed as JSON. Only applicable to localStorage.
         callback: A callback function to run when value has been retrieved.
     */
-        get: function (key, defaultValue, scope, jsonify, callback) {
+        get: function (key, defaultValue, scope, callback) {
             var that = this;
             callback = util.maybe(callback);
 

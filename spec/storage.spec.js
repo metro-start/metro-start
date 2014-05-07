@@ -41,7 +41,7 @@
             });
 
             it('when nothing is saved', function() {
-                storage.get('index', {}, this.fakeScope, true, this.callbackSpy);
+                storage.get('index', {}, this.fakeScope, this.callbackSpy);
                 expect(this.fakeScope.index).toEqual({});
                 expect(this.callbackSpy).toHaveBeenCalled();
                 expect(this.callbackSpy.calls.count()).toBe(1);
@@ -50,7 +50,7 @@
             it('when saved only to localStorage', function() {
                 var that = this;
                 localStorage.setItem('index', JSON.stringify(this.testObj));
-                storage.get('index', {}, this.fakeScope, true, this.callbackSpy);
+                storage.get('index', {}, this.fakeScope, this.callbackSpy);
 
                 expect(this.fakeScope.index).toEqual(this.testObj);
                 expect(this.callbackSpy).toHaveBeenCalled();
@@ -59,7 +59,7 @@
 
             it ('when saved only to chromeStorage', function() {
                 chrome.storage.sync.set({index: this.testObj});
-                storage.get('index', {}, this.fakeScope, true, this.callbackSpy);
+                storage.get('index', {}, this.fakeScope, this.callbackSpy);
 
                 expect(localStorage.getItem('index')).toEqual(JSON.stringify(this.testObj));
                 expect(this.fakeScope.index).toEqual(this.testObj);
@@ -71,7 +71,7 @@
                 var that = this;
                 localStorage.setItem('index', JSON.stringify({bad: 'bad'}));
                 chrome.storage.sync.set({index: this.testObj});
-                storage.get('index', {}, this.fakeScope, true, this.callbackSpy);
+                storage.get('index', {}, this.fakeScope, this.callbackSpy);
 
                 chrome.storage.sync.get('index', function(obj) {
                     expect(obj.index).toEqual(that.testObj);
