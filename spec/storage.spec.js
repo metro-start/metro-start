@@ -6,7 +6,7 @@
 
         describe('can save data', function() {
             it('to localStorage', function() {
-                storage.saveOnce('index', this.testObj);
+                storage.saveLocal('index', this.testObj);
                 expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
                 chrome.storage.sync.get('index', function(obj) {
                     expect(obj.index).toBeUndefined();
@@ -16,7 +16,7 @@
 
             it('to localStorage and chromeStorage', function() {
                 var that = this;
-                storage.saveTwice('index', this.testObj);
+                storage.saveModel('index', this.testObj);
                 expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
                 chrome.storage.sync.get('index', function(obj) {
                     expect(obj.index).toEqual(that.testObj);
@@ -26,7 +26,7 @@
 
             it('to localStorage, chromeStorage and $scope', function() {
                 var that = this;
-                storage.saveThrice('index', this.testObj, this.fakeScope);
+                storage.saveAll('index', this.testObj, this.fakeScope);
                 expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
                 chrome.storage.sync.get('index', function(obj) {
                     expect(obj.index).toEqual(that.testObj);

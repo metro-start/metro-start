@@ -5,39 +5,6 @@ var storage = (function () {
         key: The name of the value to be saved.
         value: The value to be saved.
         */
-        saveOnce: function saveOnce(key, value) {
-            if (angular.isObject(value)) {
-                localStorage.setItem(key, JSON.stringify(value));
-            } else {
-                localStorage.setItem(key, value);
-            }
-        },
-
-        /**
-        Saves the key, value pair to localStorage and chrome.storage.
-        key: The name of the value to be saved.
-        value: The value to be saved.
-        */
-        saveTwice: function saveTwice(key, value) {
-            if (chrome.storage) {
-                var obj = {};
-                obj[key] = value;
-                chrome.storage.sync.set(obj);
-            }
-            this.saveOnce(key, value);
-        },
-
-        /**
-        Saves the key, value pair to angularjs scope, localStorage and chrome.storage.
-        key: The name of the value to be saved.
-        value: The value to be saved.
-        scope: The angularjs scope of the current app.
-        */
-        saveThrice: function saveThrice(key, value, scope) {
-            scope[key] = value;
-            this.saveTwice(key, value);
-        },
-
         saveLocal: function saveLocal(key, value) {
             if (angular.isObject(value)) {
                 localStorage.setItem(key, JSON.stringify(value));
@@ -45,7 +12,12 @@ var storage = (function () {
                 localStorage.setItem(key, value);
             }
         },
-        
+                
+        /**
+        Saves the key, value pair to chrome.storage.sync.
+        key: The name of the value to be saved.
+        value: The value to be saved.
+        */
         saveRemote: function saveRemote(key, value) {
             if (chrome.storage) {
                 var obj = {};
@@ -54,13 +26,24 @@ var storage = (function () {
             }
         },
         
+        /**
+        Saves the key, value pair to localStorage and chrome.storage.
+        key: The name of the value to be saved.
+        value: The value to be saved.
+        */
         saveModel: function saveModel(key, value) {
-            saveLocal(key, value);
-            saveRemote(key, value);
+            this.saveLocal(key, value);
+            this.saveRemote(key, value);
         },
         
+        /**
+        Saves the key, value pair to angularjs scope, localStorage and chrome.storage.
+        key: The name of the value to be saved.
+        value: The value to be saved.
+        scope: The angularjs scope of the current app.
+        */
         saveAll: function saveAll(key, value, scope) {
-            saveModel(key, value);
+            this.saveModel(key, value);
             scope[key] = value;
         },
 
