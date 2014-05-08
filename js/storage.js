@@ -12,7 +12,7 @@ var storage = (function () {
                 localStorage.setItem(key, value);
             }
         },
-                
+
         /**
         Saves the key, value pair to chrome.storage.sync.
         key: The name of the value to be saved.
@@ -25,7 +25,7 @@ var storage = (function () {
                 chrome.storage.sync.set(obj);
             }
         },
-        
+
         /**
         Saves the key, value pair to localStorage and chrome.storage.
         key: The name of the value to be saved.
@@ -35,7 +35,7 @@ var storage = (function () {
             this.saveLocal(key, value);
             this.saveRemote(key, value);
         },
-        
+
         /**
         Saves the key, value pair to angularjs scope, localStorage and chrome.storage.
         key: The name of the value to be saved.
@@ -47,16 +47,19 @@ var storage = (function () {
             scope[key] = value;
         },
 
+        /**
+        Figures out if the passed parameter is JSON or not.
+        str: String to test.
+        */
         getJSON: function getJSON(str) {
             var res = {};
             try {
-                res = JSON.parse(str);
+                return JSON.parse(str);
             } catch(e) {
-                res = str;
+                return str;
             }
-            return res;
         },
-            
+
         /**
         Gets the value from localStorage, syncs chrome.storage and saves it to angularjs scope.
         chrome.storage.sync always wins.
