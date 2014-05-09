@@ -5,33 +5,19 @@
         });
 
         describe('can save data', function() {
-            it('to localStorage', function() {
-                storage.saveLocal('index', this.testObj);
+            it('when chrome.storage is unavailable', function() {
+                chrome = { storage: undefined };
+                storage.save('index', this.testObj);
                 expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
-                chrome.storage.sync.get('index', function(obj) {
-                    expect(obj.index).toBeUndefined();
-                });
-                expect(this.fakeScope.index).toBeUndefined();
             });
 
-            it('to localStorage and chromeStorage', function() {
+            it('when chrome.storage is available', function() {
                 var that = this;
-                storage.saveModel('index', this.testObj);
-                expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
+                storage.save('index', this.testObj);
+                expect(localStorage.getItem('index')).toBeUndefined();
                 chrome.storage.sync.get('index', function(obj) {
                     expect(obj.index).toEqual(that.testObj);
                 });
-                expect(this.fakeScope.index).toBeUndefined();
-            });
-
-            it('to localStorage, chromeStorage and $scope', function() {
-                var that = this;
-                storage.saveAll('index', this.testObj, this.fakeScope);
-                expect(JSON.parse(localStorage.getItem('index'))).toEqual(this.testObj);
-                chrome.storage.sync.get('index', function(obj) {
-                    expect(obj.index).toEqual(that.testObj);
-                });
-                expect(this.fakeScope.index).toEqual(this.testObj);
             });
         });
 
@@ -47,8 +33,8 @@
                 expect(this.callbackSpy.calls.count()).toBe(1);
             });
 
-            it('when saved only to localStorage', function() {
-                var that = this;
+            it('when chrome.storage is unavailable', function() {
+                chrome = { storage: undefined };
                 localStorage.setItem('index', JSON.stringify(this.testObj));
                 storage.get('index', {}, this.fakeScope, this.callbackSpy);
 
@@ -57,28 +43,13 @@
                 expect(this.callbackSpy.calls.count()).toBe(1);
             });
 
-            it ('when saved only to chromeStorage', function() {
+            it ('when chrome.storage is available', function() {
                 chrome.storage.sync.set({index: this.testObj});
                 storage.get('index', {}, this.fakeScope, this.callbackSpy);
 
-                expect(localStorage.getItem('index')).toEqual(JSON.stringify(this.testObj));
                 expect(this.fakeScope.index).toEqual(this.testObj);
                 expect(this.callbackSpy).toHaveBeenCalled();
-                expect(this.callbackSpy.calls.count()).toBe(2);
-            });
-
-            it('when different data saved to localStorage and chromeStorage', function() {
-                var that = this;
-                localStorage.setItem('index', JSON.stringify({bad: 'bad'}));
-                chrome.storage.sync.set({index: this.testObj});
-                storage.get('index', {}, this.fakeScope, this.callbackSpy);
-
-                chrome.storage.sync.get('index', function(obj) {
-                    expect(obj.index).toEqual(that.testObj);
-                });
-                expect(this.fakeScope.index).toEqual(that.testObj);
-                expect(this.callbackSpy).toHaveBeenCalled();
-                expect(this.callbackSpy.calls.count()).toBe(2);
+                expect(this.callbackSpy.calls.count()).toBe(1);
             });
         });
     });
