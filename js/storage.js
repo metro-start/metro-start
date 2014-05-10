@@ -31,7 +31,6 @@ var storage = (function () {
             var that = this;
             callback = util.maybe(callback);
 
-            scope[key] = defaultValue;
             if (chrome.storage) {
                 chrome.storage.sync.get(key, function(container) {
                     scope[key] = container[key] ? container[key] : defaultValue;

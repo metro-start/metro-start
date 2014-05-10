@@ -33,6 +33,7 @@ function MetroStart($scope, $http) {
 
     $scope.saveScope = function saveScope(key, value) {
         $scope[key] = value;
+        storage.save(key, value);
     };
 
     // Load list of links
@@ -97,8 +98,9 @@ function MetroStart($scope, $http) {
     $scope.setPageItemCount = function(pageItemCount) {
         $scope.pageItemCount = pageItemCount;
         if (typeof $scope.links !== 'undefined')
+        {
             $scope.links.setPageItemCount(pageItemCount - 1);
-
+}
         if (typeof $scope.apps !== 'undefined')
             $scope.apps.setPageItemCount(pageItemCount);
 
@@ -233,14 +235,9 @@ function MetroStart($scope, $http) {
 
     /**
         Update the weather data being displayed.
-
         force: Bypass the 1 hour wait requirement.
     */
     $scope.updateWeather = function(force) {
-        console.log($scope);
-        console.log($scope.units);
-        console.log($scope.weatherUnit);
-        console.log($scope.units[$scope.weatherUnit]);
         var unit = $scope.units[$scope.weatherUnit][0];
         var locat = $scope.locat;
         // If it has been more than an hour since last check.
@@ -433,7 +430,6 @@ function MetroStart($scope, $http) {
     $scope.loadLinks();
     $scope.loadApps();
     $scope.loadBookmarks();
-    console.log($scope);
     updateStyle(false);
     $scope.updateWeather(false);
 }

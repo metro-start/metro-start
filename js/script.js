@@ -18,11 +18,11 @@ $(function() {
             if (scoped) {
                 // Change the specific color and save it.
                 scope.theme.colors[key] = color;
-                storage.saveModel('theme', scope.theme);
+                storage.save('theme', scope.theme);
             } else {
                 scope.$apply(function() {
                     scope.theme.colors[key] = color;
-                    storage.saveModel('theme', scope.theme);
+                    storage.save('theme', scope.theme);
                 });
             }
             updateStyle(false);
