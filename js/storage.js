@@ -19,6 +19,16 @@ var storage = (function () {
             }
         },
 
+        getAll: function getAll(scope, callback) {
+            var callbackWrapper = util.maybe(calback);
+            chrome.storage.sync.get(null, function(container) {
+                container.keys().forEach(function(key) {
+                    scope[key] = container[key];
+                });
+                callbackWrapper();
+            });
+        },
+
         /**
         Gets the value from localStorage, syncs chrome.storage and saves it to angularjs scope.
         chrome.storage.sync always wins.
@@ -29,17 +39,17 @@ var storage = (function () {
         */
         get: function get(key, defaultValue, scope, callback) {
             var that = this;
-            callback = util.maybe(callback);
+            var callbackWrapper = util.maybe(callback);
 
             if (chrome.storage) {
                 chrome.storage.sync.get(key, function(container) {
                     scope[key] = container[key] ? container[key] : defaultValue;
-                    callback();
+                    callbackWrapper();
                 });
             } else {
                 var value = util.getJSON(localStorage.getItem(key));
                 scope[key] = value ? value : defaultValue;
-                callback();
+                callbackWrapper();
             }
         }
     };
