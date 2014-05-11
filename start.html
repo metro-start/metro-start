@@ -31,10 +31,12 @@
 			</div>
 		</div>
 		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
-		<input type="radio" ng-model="page" value="0" class="ng-hide" id="links">
-		<input type="radio" ng-model="page" value="1" class="ng-hide" id="apps">
-		<input type="radio" ng-model="page" value="2" class="ng-hide" id="bookmarks">
-		<input type="radio" ng-model="page" value="3" class="ng-hide" id="themes">
+		<div class="ng-hide">
+			<input type="radio" ng-model="page" value="0" id="links">
+			<input type="radio" ng-model="page" value="1" id="apps">
+			<input type="radio" ng-model="page" value="2" id="bookmarks">
+			<input type="radio" ng-model="page" value="3" id="themes">
+		</div>
 		<div class="external">
 			<div class="internal">
 				<div class="links collection">
@@ -196,7 +198,7 @@
 		</div>
 		<!-- Rule to hide all options when page first loads.
 			 Removes option elements added after the calls to hide .option were made. -->
-		<style type="text/css" id="hide-rule" ngm-if="hideOptions">
+		<style type="text/css" id="hide-rule" ng-if="hideOptions">
 			.option, .picker {
 				display: none;
 			}
