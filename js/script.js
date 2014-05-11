@@ -13,7 +13,7 @@ $(function() {
     */
     var scope = angular.element(document.body).scope();
     $.each(defaults.defaultTheme.colors, function(key, value) {
-        $('#' + key).farbtastic(function(color, scoped) {
+        $('#' + key).farbtastic(function(color) {
             // Change the specific color and save it.
             var updateTheme = function() {
                 scope.theme.colors[key] = color;
@@ -29,7 +29,7 @@ $(function() {
 
         // Add a listener to update farbtastic when a color is changed.
         scope.$watch('theme.colors["' + key + '"]', function(newVal, oldVal) {
-            $.farbtastic('#' + key).setColor(newVal, true);
+            $.farbtastic('#' + key).setColor(newVal);
         });
     });
 
