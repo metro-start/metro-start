@@ -2,14 +2,15 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" type="text/css" href="lib/farbtastic/farbtastic.css">
-		<script type="text/javascript" src="lib/jquery.js"></script>
-		<script type="text/javascript" src="lib/angular.js"></script>
-		<script type="text/javascript" src="lib/ngif/ngif.js"></script>
-		<script type="text/javascript" src="lib/if/if.js"></script>
-		<script type="text/javascript" src="lib/jquery-ui.js"></script>
+
+		<script type="text/javascript" src="lib/jquery/dist/jquery.js"></script>
+		<script type="text/javascript" src="lib/jquery-migrate/jquery-migrate.js"></script>
+		<script type="text/javascript" src="lib/angular/angular.js"></script>
+		<script type="text/javascript" src="lib/jquery-ui/ui/minified/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="lib/jss/jss.js"></script>
-		<script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script>
+		<script type="text/javascript" src="lib/farbtastic/src/farbtastic.js"></script>
+
+		<script type="text/javascript" src="js/filters/if.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/storage.js"></script>
     	<script type="text/javascript" src="js/defaults.js"></script>
@@ -30,10 +31,10 @@
 			</div>
 		</div>
 		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
-		<input type="radio" ng-model="page" value="0" ng-show="false" id="links">
-		<input type="radio" ng-model="page" value="1" ng-show="false" id="apps">
-		<input type="radio" ng-model="page" value="2" ng-show="false" id="bookmarks">
-		<input type="radio" ng-model="page" value="3" ng-show="false" id="themes">
+		<input type="radio" ng-model="page" value="0" class="ng-hide" id="links">
+		<input type="radio" ng-model="page" value="1" class="ng-hide" id="apps">
+		<input type="radio" ng-model="page" value="2" class="ng-hide" id="bookmarks">
+		<input type="radio" ng-model="page" value="3" class="ng-hide" id="themes">
 		<div class="external">
 			<div class="internal">
 				<div class="links collection">

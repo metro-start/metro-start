@@ -14,17 +14,9 @@ $(function() {
     var scope = angular.element(document.body).scope();
     $.each(defaults.defaultTheme.colors, function(key, value) {
         $('#' + key).farbtastic(function(color, scoped) {
-            // If we are already in angularjs scope.
-            if (scoped) {
-                // Change the specific color and save it.
-                scope.theme.colors[key] = color;
-                storage.saveTwice('theme', scope.theme);
-            } else {
-                scope.$apply(function() {
-                    scope.theme.colors[key] = color;
-                    storage.saveTwice('theme', scope.theme);
-                });
-            }
+            // Change the specific color and save it.
+            scope.theme.colors[key] = color;
+            storage.saveTwice('theme', scope.theme);
             updateStyle(false);
         });
 
@@ -55,11 +47,11 @@ var getPageItemCount = function() {
     var footerHeight = $('.footer').outerHeight(true);
     var height =  pageHeight - (headerHeight + navBarHeight + footerHeight);
 
-    jss('.external', {
-        'height': height
+    jss.set('.external', {
+        'height': '' + height
     });
-    jss('.bookmark_page', {
-        'height': height
+    jss.set('.bookmark_page', {
+        'height': '' + height
     });
 
     return Math.floor((height) / 60) - 1;
@@ -85,28 +77,28 @@ var updateStyle = function(transition) {
     }
 
     if(scope.font === 0) {
-        jss('body', {
+        jss.set('body', {
             'font-family': '"Segoe UI", Helvetica, Arial, sans-serif',
         });
     } else {
-        jss('body', {
+        jss.set('body', {
             'font-family': 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif',
         });
     }
 
-    jss('*', {
+    jss.set('*', {
         'border-color': options_color
     });
 
-    jss('::-webkit-scrollbar', {
+    jss.set('::-webkit-scrollbar', {
         'background': background_color
     });
 
-    jss('::-webkit-scrollbar-thumb', {
+    jss.set('::-webkit-scrollbar-thumb', {
         'background': options_color
     });
 
-    jss('::-webkit-input-placeholder', {
+    jss.set('::-webkit-input-placeholder', {
         'background': main_color
     });
 
@@ -120,22 +112,22 @@ var updateStyle = function(transition) {
     }
 
     //but then we still need to add it to the DOM.
-    jss('.background-color', {
+    jss.set('.background-color', {
         'background-color': background_color
     });
-    jss('.title-color', {
+    jss.set('.title-color', {
         'color': title_color
     });
-    jss('body', {
+    jss.set('body', {
         'color': main_color
     });
-    jss('input', {
+    jss.set('input', {
         'color': main_color
     });
-    jss('.options-color', {
+    jss.set('.options-color', {
         'color': options_color
     });
-    jss('.bookmark-active', {
+    jss.set('.bookmark-active', {
         'color': options_color
         //'border-bottom': '2px solid ' + options_color
     });
