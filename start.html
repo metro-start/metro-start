@@ -34,12 +34,10 @@
 			</div>
 		</div>
 		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
-		<div class="ng-hide">
-			<input type="radio" ng-model="page" value="0" id="links">
-			<input type="radio" ng-model="page" value="1" id="apps">
-			<input type="radio" ng-model="page" value="2" id="bookmarks">
-			<input type="radio" ng-model="page" value="3" id="themes">
-		</div>
+		<input type="radio" ng-model="page" value="0" class="ng-hide" id="links">
+		<input type="radio" ng-model="page" value="1" class="ng-hide" id="apps">
+		<input type="radio" ng-model="page" value="2" class="ng-hide" id="bookmarks">
+		<input type="radio" ng-model="page" value="3" class="ng-hide" id="themes">
 		<div class="external">
 			<div class="internal">
 				<div class="links collection">

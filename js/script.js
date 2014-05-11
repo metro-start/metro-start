@@ -15,9 +15,16 @@ $(function() {
     $.each(defaults.defaultTheme.colors, function(key, value) {
         $('#' + key).farbtastic(function(color, scoped) {
             // Change the specific color and save it.
-            scope.theme.colors[key] = color;
-            storage.saveTwice('theme', scope.theme);
-            updateStyle(false);
+            var updateTheme = function() {
+                scope.theme.colors[key] = color;
+                storage.saveTwice('theme', scope.theme);
+                updateStyle(false);
+            };
+            if(scope.$digest) {
+                updateTheme();
+            } else {
+                scope.$apply(updateTheme);
+            }
         });
 
         // Add a listener to update farbtastic when a color is changed.
