@@ -49,10 +49,11 @@ $(function() {
     returns: The number of items to fit on a page.
 */
 var getPageItemCount = function() {
-    var pageHeight = $('body').height() - ($('h1').outerHeight(true));
+    var pageHeight = $('body').height();
+    var headerHeight = $('h1').outerHeight(true);
     var navBarHeight = $('.page-chooser').outerHeight(true);
     var footerHeight = $('.footer').outerHeight(true);
-    var height =  pageHeight + navBarHeight + footerHeight;
+    var height =  pageHeight - (headerHeight + navBarHeight + footerHeight);
 
     jss('.external', {
         'height': height
