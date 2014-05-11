@@ -12,9 +12,9 @@ module.exports = function (grunt) {
         },
         jasmine: {
             src : [
-                'lib/jquery.js',
-                'lib/jquery-ui.js',
-                'lib/angular.js',
+                'lib/jquery/dist/jquery.min.js',
+                'lib/jquery-ui/ui/minified/jquery-ui.min.js',
+                'lib/angular/angular.min.js',
                 'js/util.js',
                 'js/storage.js',
             ],
