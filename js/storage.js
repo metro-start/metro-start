@@ -1,5 +1,5 @@
-var storage = (function () {
-    return {
+define(['angular'], function(angular) {
+        return {
         /**
         Saves the key, value pair to chrome.storage.sync.
         key: The name of the value to be saved.
@@ -53,4 +53,4 @@ var storage = (function () {
             }
         }
     };
-})();
+});
