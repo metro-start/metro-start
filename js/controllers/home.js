@@ -329,7 +329,7 @@ define(['app', 'storage', 'defaults', 'pages', 'script'], function (app, storage
 
         $scope.updateTheme = function() {
             saveThrice('theme', $scope.theme,$scope);
-        },
+        };
 
         /**
             Reset to default theme.
@@ -340,7 +340,7 @@ define(['app', 'storage', 'defaults', 'pages', 'script'], function (app, storage
             script.updateStyle(true);
 
             _gaq.push(['_trackEvent', 'Theme', 'Reset Theme']);
-        },
+        };
 
         /**
             Change the currently enabled theme.
