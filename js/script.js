@@ -48,10 +48,10 @@ define(['angular', 'jquery', 'jss', 'farbtastic', 'defaults'], function(angular,
         updateStyle: function(transition) {
             var scope = angular.element(document.body).scope();
 
-            var options_color = $('.picker-text .options-color');
-            var background_color = $('.picker-text .background-color');
-            var main_color = $('.picker-text .main-color');
-            var title_color = $('.picker-text .title-color');
+            var options_color = defaults.defaultTheme['options-color'];
+            var background_color = defaults.defaultTheme['background-color'];
+            var main_color = defaults.defaultTheme['main-color'];
+            var title_color = defaults.defaultTheme['title-color'];
 
             jquery.each(defaults.defaultTheme.colors, function(key, value) {
 

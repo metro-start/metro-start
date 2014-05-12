@@ -31,7 +31,7 @@ require(['jquery'], function(jquery) {
 	jquery.migrateMute = true;
 });
 
-require(['angular', 'app', 'controllers/home'], function(angular) {
+require(['angular', 'storage', 'app', 'controllers/home'], function(angular) {
 	'use strict';
 
 	require(['domReady!'], function (document) {
