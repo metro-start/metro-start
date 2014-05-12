@@ -1,3 +1,3 @@
-var util = (function() {
+define(function() {
     return {};
-})();
+});

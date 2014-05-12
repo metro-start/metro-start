@@ -1,5 +1,5 @@
-var storage = (function () {
-    return {
+define(['angular'], function(angular) {
+        return {
         /**
         Saves the key, value pair to localStorage.
         key: The name of the value to be saved.
@@ -48,6 +48,7 @@ var storage = (function () {
         callback: A callback function to run when value has been retrieved.
     */
         get: function (key, defaultValue, scope, jsonify, callback) {
+            var that = this;
             // If the value is in localStorage, retieve from there.
             var foundInLocalStorage = false;
             if (localStorage.getItem(key)) {
@@ -68,9 +69,9 @@ var storage = (function () {
                     scope.$apply(function () {
                         if (container[key]) {
                             // Save retrieved data to localStorage and scope.
-                            storage.saveOnce(key, container[key]);
+                            that.saveOnce(key, container[key]);
 
-                            storage.saveThrice(key, container[key], scope);
+                            that.saveThrice(key, container[key], scope);
                             if (callback) callback();
                             //
                             // if (!foundInLocalStorage) {
@@ -85,7 +86,7 @@ var storage = (function () {
                                 chrome.storage.sync.set(obj);
                             } else {
                                 // Save defaultValue to all three storages.
-                                storage.saveTwice(key, defaultValue);
+                                that.saveTwice(key, defaultValue);
                             }
                         }
                     });
@@ -93,4 +94,4 @@ var storage = (function () {
             }
         }
     };
-})();
+});
