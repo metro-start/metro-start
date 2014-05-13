@@ -20,6 +20,8 @@ define(['angular', 'jquery', 'jss', 'farbtastic', 'defaults'], function(angular,
             });
 
             scope.setPageItemCount(that.getPageItemCount());
+
+            jquery('body').show();
         },
         /**
             Compares window height to element height to fine the number of elements per page.
