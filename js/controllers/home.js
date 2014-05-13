@@ -201,7 +201,7 @@ define(['app', 'storage', 'defaults', 'pages', 'script'], function (app, deferre
                 }
             };
 
-            $scope.saveLocat = function() {
+            $scope.saveLocation = function() {
                 if ($scope.newLocat && $scope.newLocat.trim() !== '') {
                     storage.save('locat', $scope.newLocat, $scope);
 

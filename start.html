@@ -123,7 +123,7 @@
 			<div id="weather" ng-show="weatherToggleText == 'hide weather'">
 				<div id="where" ng-bind="weather.city"></div>
 				<div>
-					<form ng-submit="saveLocat()">
+					<form ng-submit="saveLocation()">
 						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="{{ weather.city }}">
 						<input type="submit" class="options-color option" value="save">
 					</form>

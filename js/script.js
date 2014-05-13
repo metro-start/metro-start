@@ -3,6 +3,7 @@ define(['angular', 'jquery', 'jss', 'farbtastic', 'defaults'], function(angular,
         init: function(scope) {
             var that = this;
 
+            jquery('body').show();
             jquery.each(defaults.defaultTheme.colors, function(key, value) {
                 var inputFarbtastic = jquery('#' + key).farbtastic('#input-' + key);
                 // Add a listener to update farbtastic and style when a color is changed.
@@ -19,7 +20,6 @@ define(['angular', 'jquery', 'jss', 'farbtastic', 'defaults'], function(angular,
                 });
             });
 
-            jquery('body').show();
             scope.setPageItemCount(that.getPageItemCount());
         },
         /**
