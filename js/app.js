@@ -13,28 +13,28 @@ function MetroStart($scope, $http) {
     $scope.linkToEdit = {};
     $scope.pageItemCount = 4;
 
-    storage.get('sort', defaults.defaultSort, $scope, true);
+    storage.get('sort', defaults.defaultSort, $scope);
 
-    storage.get('page', 0, $scope, false);
+    storage.get('page', 0, $scope);
 
-    storage.get('theme', defaults.defaultTheme, $scope, true);
+    storage.get('theme', defaults.defaultTheme, $scope);
 
-    storage.get('font', 0, $scope, false);
+    storage.get('font', 0, $scope);
 
-    storage.get('weatherUpdateTime', 0, $scope, false);
+    storage.get('weatherUpdateTime', 0, $scope);
 
-    storage.get('locat', 'seattle, wa', $scope, false);
+    storage.get('locat', 'seattle, wa', $scope);
 
-    storage.get('weather', null, $scope, true);
+    storage.get('weather', null, $scope);
 
-    storage.get('weatherUnit', 0, $scope, false);
+    storage.get('weatherUnit', 0, $scope);
 
-    storage.get('weatherToggleText', 'hide weather', $scope, false);
+    storage.get('weatherToggleText', 'hide weather', $scope);
 
     // Load list of links
     // If there's no existing links (local or online) initiliazes with message.
     $scope.loadLinks = function() {
-        storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, true, function(links) {
+        storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}], $scope, function(links) {
             $scope.links = new Pages($scope.links, $scope.sort.links, $scope.pageItemCount, getFunctions.name);
         });
     };
@@ -65,7 +65,7 @@ function MetroStart($scope, $http) {
 
     $scope.loadThemes = function() {
         // Load local themes.
-        storage.get('localThemes', [defaults.defaultTheme], $scope, true, function() {
+        storage.get('localThemes', [defaults.defaultTheme], $scope, function() {
             $scope.localThemes = new Pages($scope.localThemes, $scope.sort.themes, $scope.pageItemCount, getFunctions.title);
         });
 
@@ -86,7 +86,7 @@ function MetroStart($scope, $http) {
     // Attach a watcher to the page to see page changes and save the value.
     $scope.$watch('page', function(newValue, oldValue) {
         if (newValue != 3) { // Do not save navigation to themes page.
-            storage.saveTwice('page', newValue);
+            storage.saveModel('page', newValue);
         }
     }, true);
 
@@ -110,7 +110,7 @@ function MetroStart($scope, $http) {
         $scope.loadThemes();
         // If we're on the theme when wrench was clicked, navigate to the last page.
         if ($scope.page == 3) {
-            storage.get('page', 0, $scope, false);
+            storage.get('page', 0, $scope);
         }
         $scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
         _gaq.push(['_trackEvent', 'Page', 'Wrench']);
@@ -118,7 +118,7 @@ function MetroStart($scope, $http) {
 
     $scope.changeSorting = function(key, newSorting) {
         $scope.sort[key] = newSorting;
-        storage.saveTwice('sort', $scope.sort, $scope);
+        storage.saveModel('sort', $scope.sort, $scope);
         if ($scope.sort[key] === 0) {
             if (key == 'links') {
                 $scope.loadLinks();
@@ -185,7 +185,7 @@ function MetroStart($scope, $http) {
         }
         $scope.newUrl = '';
         $scope.newUrlTitle = '';
-        storage.saveTwice('links', $scope.links.flatten());
+        storage.saveModel('links', $scope.links.flatten());
     };
 
     $scope.editLink = function(page, index) {
@@ -197,12 +197,12 @@ function MetroStart($scope, $http) {
 
     $scope.removeLink = function(page, index){
         $scope.links.remove(page, index);
-        storage.saveTwice('links', $scope.links.flatten());
+        storage.saveModel('links', $scope.links.flatten());
         _gaq.push(['_trackEvent', 'Links', 'Remove Link']);
     };
 
     $scope.toggleWeather = function() {
-        storage.saveThrice('weatherToggleText', 'show weatherhide weather'.replace($scope.weatherToggleText, ''), $scope);
+        storage.saveAll('weatherToggleText', 'show weatherhide weather'.replace($scope.weatherToggleText, ''), $scope);
 
         if ($scope.weatherToggleText == 'show weather') {
             _gaq.push(['_trackEvent', 'Weather', 'Hide Weather']);
@@ -213,7 +213,7 @@ function MetroStart($scope, $http) {
 
     $scope.saveLocat = function() {
         if ($scope.newLocat && $scope.newLocat.trim() !== '') {
-            storage.saveThrice('locat', $scope.newLocat, $scope);
+            storage.saveAll('locat', $scope.newLocat, $scope);
 
             $scope.updateWeather(true);
             _gaq.push(['_trackEvent', 'Weather', 'Save Weather Location']);
@@ -221,7 +221,7 @@ function MetroStart($scope, $http) {
     };
 
     $scope.changeWeatherUnit = function(newWeatherUnit) {
-        storage.saveThrice('weatherUnit', newWeatherUnit, $scope);
+        storage.saveAll('weatherUnit', newWeatherUnit, $scope);
 
         $scope.updateWeather(true);
         _gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', $scope.units[$scope.weatherUnit]]);
@@ -237,7 +237,7 @@ function MetroStart($scope, $http) {
         var locat = $scope.locat;
         // If it has been more than an hour since last check.
         if(force || new Date().getTime() > parseInt($scope.weatherUpdateTime, 10)) {
-            storage.saveThrice('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000, $scope);
+            storage.saveAll('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000, $scope);
             var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + locat + '" limit 1) and u="' + unit + '"');
             var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
             $http.get(url).success(function(data) {
@@ -255,7 +255,7 @@ function MetroStart($scope, $http) {
                         'unit': elem.units.temperature.toLowerCase(),
                     };
                 }
-                storage.saveTwice('weather', $scope.weather);
+                storage.saveModel('weather', $scope.weather);
             });
         }
     };
@@ -340,7 +340,7 @@ function MetroStart($scope, $http) {
         Reset to default theme.
     */
     $scope.resetTheme = function() {
-        storage.saveThrice('theme', defaults.defaultTheme, $scope);
+        storage.saveAll('theme', defaults.defaultTheme, $scope);
 
         updateStyle(true);
 
@@ -352,7 +352,7 @@ function MetroStart($scope, $http) {
         newTheme: The theme to be enabled.
     */
     $scope.changeTheme = function(newTheme) {
-        storage.saveThrice('theme', newTheme, $scope);
+        storage.saveAll('theme', newTheme, $scope);
 
         updateStyle(true);
 
@@ -364,7 +364,7 @@ function MetroStart($scope, $http) {
         newFont: The font to be enabled.
     */
     $scope.changeFont = function(newFont) {
-        storage.saveThrice('font', newFont, $scope);
+        storage.saveAll('font', newFont, $scope);
 
         updateStyle(true);
         if (newFont === 0) {
@@ -396,7 +396,7 @@ function MetroStart($scope, $http) {
     */
     $scope.removeTheme = function(page, index) {
         $scope.localThemes.remove(page, index);
-        storage.saveTwice('localThemes', $scope.localThemes.flatten());
+        storage.saveModel('localThemes', $scope.localThemes.flatten());
         _gaq.push(['_trackEvent', 'Theme', 'Remove Theme']);
     };
 
@@ -410,8 +410,8 @@ function MetroStart($scope, $http) {
                 $scope.theme.title = $scope.newThemeTitle;
                 $scope.newThemeTitle = '';
                 $scope.localThemes.add($scope.theme);
-                storage.saveTwice('theme', $scope.theme);
-                storage.saveTwice('localThemes', $scope.localThemes.flatten());
+                storage.saveModel('theme', $scope.theme);
+                storage.saveModel('localThemes', $scope.localThemes.flatten());
             }
 
             _gaq.push(['_trackEvent', 'Theme', 'Stop Editing Theme']);

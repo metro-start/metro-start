@@ -17,6 +17,7 @@ module.exports = function (grunt) {
                 'lib/angular/angular.min.js',
                 'js/util.js',
                 'js/storage.js',
+                'js/pages.js'
             ],
             options : {
                 specs : 'spec/*.js',

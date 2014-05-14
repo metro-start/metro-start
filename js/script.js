@@ -17,7 +17,7 @@ $(function() {
             // Change the specific color and save it.
             var updateTheme = function() {
                 scope.theme.colors[key] = color;
-                storage.saveTwice('theme', scope.theme);
+                storage.saveModel('theme', scope.theme);
                 updateStyle(false);
             };
             if(scope.$digest) {
