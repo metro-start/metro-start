@@ -60,7 +60,7 @@ var Pages = function(newRows, sorted, pageItemCount, getFunction) {
         newRows: The array of elements to be added.
     */
     this.addAll = function(newRows) {
-        for (index = 0; index < newRows.length; index++) {
+        for (var index = 0; index < newRows.length; index++) {
             this.add(newRows[index]);
         }
         if (this.sorted) this.sort();
