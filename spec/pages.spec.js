@@ -1,4 +1,4 @@
-(function() {
+require(['pages', function(Pages) {
     describe('Pages', function() {
         beforeEach(function() {
             this.generate = function(fields, number) {

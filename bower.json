@@ -14,7 +14,7 @@
     "jquery-ui": "~1.10.4",
     "jquery": "~2.1.1",
     "farbtastic": "~2.0.0-alpha.1",
-    "q": "~2.0.0",
-    "jquery-migrate": "~1.2.1"
+    "jquery-migrate": "~1.2.1",
+    "requirejs-domready": "~2.0.1"
   }
 }

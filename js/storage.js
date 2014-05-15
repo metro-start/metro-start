@@ -1,89 +1,52 @@
-var storage = (function () {
-    return {
-        /**
-        Saves the key, value pair to localStorage.
-        key: The name of the value to be saved.
-        value: The value to be saved.
-        */
-        saveLocal: function saveLocal(key, value) {
-            if (typeof value !== 'undefined' && value !== null) {
-                localStorage.setItem(key, JSON.stringify(value));
-            } else {
-                localStorage.setItem(key, value);
-            }
-        },
-
+define(['util', 'jquery'], function Storage(util, jquery) {
+    var storage = {
         /**
         Saves the key, value pair to chrome.storage.sync.
         key: The name of the value to be saved.
         value: The value to be saved.
         */
-        saveRemote: function saveRemote(key, value) {
-            if (chrome.storage) {
-                var obj = {};
-                obj[key] = value;
-                chrome.storage.sync.set(obj);
+        cache: undefined,
+
+        deferred: undefined,
+
+        save: function save(key, value, scope) {
+            var obj = {};
+            obj[key] = value;
+            if (scope) scope[key] = value;
+            chrome.storage.sync.set(obj);
+        },
+
+        getAll: function getAll() {
+            if (!this.deferred) {
+                this.cache = {};
+                this.deferred = jquery.Deferred();
+                var that = this;
+                chrome.storage.sync.get(null, function(container) {
+                    jquery.each(container, function (key, value) {
+                        that.cache[key] = value;
+                    });
+                    that.deferred.resolve(that);
+                });
             }
+            return this.deferred.promise();
         },
 
         /**
-        Saves the key, value pair to localStorage and chrome.storage.
-        key: The name of the value to be saved.
-        value: The value to be saved.
-        */
-        saveModel: function saveModel(key, value) {
-            this.saveLocal(key, value);
-            this.saveRemote(key, value);
-        },
-
-        /**
-        Saves the key, value pair to angularjs scope, localStorage and chrome.storage.
-        key: The name of the value to be saved.
-        value: The value to be saved.
-        scope: The angularjs scope of the current app.
-        */
-        saveAll: function saveAll(key, value, scope) {
-            this.saveModel(key, value);
-            scope[key] = value;
-        },
-
-        /**
-        Figures out if the passed parameter is JSON or not.
-        str: String to test.
-        */
-        getJSON: function getJSON(str) {
-            var res = {};
-            try {
-                return JSON.parse(str);
-            } catch(e) {
-                return str;
-            }
-        },
-
-        /**
-        Gets the value from localStorage, syncs chrome.storage and saves it to angularjs scope.
+        Gets the value from the cache.
         chrome.storage.sync always wins.
         key: The key to be retrieved.
         defaultValue: The value to initialize all storages if the key does not exist.
         scope: The angularjs scope where the value will be saved.
         callback: A callback function to run when value has been retrieved.
-    */
-        get: function (key, defaultValue, scope, callback) {
-            var that = this;
-            callback = util.maybe(callback);
-
-            var value = this.getJSON(localStorage.getItem(key));
-            scope[key] = value ? value : defaultValue;
-            callback();
-            chrome.storage.sync.get(key, function(container) {
-                if (container[key]) {
-                    that.saveLocal(key, container[key]);
-                    scope.$apply(function () {
-                        scope[key] = container[key];
-                        callback();
-                    });
-                }
-            });
+        */
+        get: function get(key, defaultValue, scope) {
+            var val = (this.cache && this.cache[key]) ? this.cache[key] : defaultValue;
+            if (scope) {
+                scope[key] = val;
+            }
+            return val;
         }
     };
-})();
+
+    return storage.getAll();
+});

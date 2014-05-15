@@ -1,7 +1,7 @@
 /**
 The default theme for metro start.
 */
-var defaults = (function() {
+define([], function() {
     return {
         defaultTheme: {
             'title': 'metro start',
@@ -19,4 +19,4 @@ var defaults = (function() {
             'themes': false
         }
     };
-})();
+});

@@ -1,11 +1,16 @@
 html {
 	height: 100%;
 }
+@font-face {
+	font-family: "Raleway";
+	src: url("chrome-extension://__MSG_@@extension_id__/css/Raleway-Regular.ttf");
+}
 body {
     font-size: 32px;
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
     height: 100%;
+	display: none;
 }
 /* Document wide styles */
 a {

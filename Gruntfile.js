@@ -12,16 +12,19 @@ module.exports = function (grunt) {
         },
         jasmine: {
             src : [
-                'lib/jquery/dist/jquery.min.js',
-                'lib/jquery-ui/ui/minified/jquery-ui.min.js',
-                'lib/angular/angular.min.js',
                 'js/util.js',
                 'js/storage.js',
                 'js/pages.js'
             ],
             options : {
                 specs : 'spec/*.js',
-                helpers: 'spec_helper.js'
+                helpers: 'spec_helper.js',
+                vendor: [
+                    'lib/jquery/dist/jquery.min.js',
+                    'lib/jquery-ui/ui/minified/jquery-ui.min.js',
+                    'lib/angular/angular.min.js',
+                    'lib/requirejs/require.js',
+                ]
             }
         },
         watch: {

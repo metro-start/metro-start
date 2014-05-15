@@ -1,4 +1,4 @@
-(function() {
+require(['util'], function(util) {
     describe('Util', function() {
         describe('has maybe', function() {
             it('works on null', function() {
@@ -12,4 +12,4 @@
             });
         });
     });
-})();
+});
