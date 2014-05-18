@@ -1,6 +1,6 @@
 define([], function Util() {
     return {
-        maybe: function(func) {
+        maybe: function maybe(func) {
             return function() {
                 if(func) return func(this.arguments);
             };

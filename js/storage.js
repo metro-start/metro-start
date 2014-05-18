@@ -10,9 +10,11 @@ define(['util', 'jquery'], function Storage(util, jquery) {
         deferred: undefined,
 
         save: function save(key, value, scope) {
+            if (scope) scope[key] = value;
+            if (this.cache) this.cache[key] = value;
+
             var obj = {};
             obj[key] = value;
-            if (scope) scope[key] = value;
             chrome.storage.sync.set(obj);
         },
 
@@ -48,5 +50,5 @@ define(['util', 'jquery'], function Storage(util, jquery) {
         }
     };
 
-    return storage.getAll();
+    return storage;
 });

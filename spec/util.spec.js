@@ -1,11 +1,11 @@
-require(['util'], function(util) {
+define(['util'], function (util) {
     describe('Util', function() {
         describe('has maybe', function() {
-            it('works on null', function() {
+            it('that works on null', function() {
                 util.maybe(void 0)();
             });
 
-            it('works on functions', function() {
+            it('that works on functions', function() {
                 spy = jasmine.createSpy('maybe spy');
                 util.maybe(spy)();
                 expect(spy).toHaveBeenCalled();

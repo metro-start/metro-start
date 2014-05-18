@@ -1,17 +1,6 @@
-(function() {
+define([], function() {
     beforeEach(function() {
         var that = this;
-        this.fakeLocalStorage = {};
-        spyOn(localStorage, 'getItem').and.callFake(function(key) {
-            return that.fakeLocalStorage[key];
-        });
-        spyOn(localStorage, 'setItem').and.callFake(function(key, value) {
-            that.fakeLocalStorage[key] = value;
-        });
-        spyOn(localStorage, 'clear').and.callFake(function() {
-            that.fakeLocalStorage = {};
-        });
-
         this.fakeChromeStorage = {};
         chrome = {
             app: {
@@ -19,6 +8,7 @@
             },
             storage: {
                 sync: {
+                    getAll: function() {},
                     get: function() {},
                     set: function() {}
                 }
@@ -43,4 +33,4 @@
             }
         };
     });
-})();
+});
