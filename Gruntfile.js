@@ -11,20 +11,24 @@ module.exports = function (grunt) {
             ]
         },
         jasmine: {
-            src : [
-                'js/util.js',
-                'js/storage.js',
-                'js/pages.js'
-            ],
-            options : {
-                specs : 'spec/*.js',
-                helpers: 'spec_helper.js',
-                vendor: [
-                    'lib/jquery/dist/jquery.min.js',
-                    'lib/jquery-ui/ui/minified/jquery-ui.min.js',
-                    'lib/angular/angular.min.js',
-                    'lib/requirejs/require.js',
-                ]
+            all : {
+                options : {
+                    specs : 'spec/*.spec.js',
+                    helpers: 'spec_helper.js',
+                    template: require('grunt-template-jasmine-requirejs'),
+                    templateOptions: {
+                        requireConfig: {
+                            baseUrl: './',
+                            paths: {
+                                'util': 'js/util',
+                                'pages': 'js/pages',
+                                'storage': 'js/storage',
+                                'jquery': 'lib/jquery/dist/jquery'
+                            },
+                            deps: ['spec/spec_helper']
+                        }
+                    }
+                }
             }
         },
         watch: {

@@ -1,4 +1,4 @@
-define(['util'], function (util) {
+define(['util'], function utilSpec(util) {
     describe('Util', function() {
         describe('has maybe', function() {
             it('that works on null', function() {
