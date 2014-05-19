@@ -1,49 +1,38 @@
-<html ng-app="MetroStart" ng-csp>
+<html ng-csp>
 	<head>
+		<!-- css stylesheets -->
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" type="text/css" href="lib/farbtastic/farbtastic.css">
-		<script type="text/javascript" src="lib/jquery.js"></script>
-		<script type="text/javascript" src="lib/angular.js"></script>
-		<script type="text/javascript" src="lib/ngif/ngif.js"></script>
-		<script type="text/javascript" src="lib/if/if.js"></script>
-		<script type="text/javascript" src="lib/jquery-ui.js"></script>
-		<script type="text/javascript" src="lib/jss/jss.js"></script>
-		<script type="text/javascript" src="lib/farbtastic/farbtastic.js"></script>
-		<script type="text/javascript" src="js/util.js"></script>
-		<script type="text/javascript" src="js/app.js"></script>
-		<script type="text/javascript" src="js/script.js"></script>
-		<script type="text/javascript" src="js/analytics.js"></script>
 		<title>start</title>
 	</head>
-	<body class="background-color" ng-controller="MetroStart">
+	<body class="background-color" ng-controller="Home">
 		<h1 class="title-color">start here . . .</h1>
 		<div class="page-chooser">
 			<div class="options-color chooser">
-				<label class="selection clickable" ng-class="'sel-active'|if:(page==0)" for="links">links</label>
-				<label class="selection clickable" ng-class="'sel-active'|if:(page==1)" for="apps">apps</label>
-				<label class="selection clickable" ng-class="'sel-active'|if:(page==2)" for="bookmarks">bookmarks</label>
-				<label class="selection option clickable" ng-class="'sel-active'|if:(page==3)" for="themes">themes</label>
+				<label class="selection clickable" ng-class="{'sel-active': page == 0}" for="links">links</label>
+				<label class="selection clickable" ng-class="{'sel-active': page == 1}" for="apps">apps</label>
+				<label class="selection clickable" ng-class="{'sel-active': page == 2}" for="bookmarks">bookmarks</label>
+				<label class="selection option clickable" ng-class="{'sel-active': page == 3}" for="themes">themes</label>
 			</div>
 		</div>
 		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
-		<input type="radio" ng-model="page" value="0" ng-show="false" id="links">
-		<input type="radio" ng-model="page" value="1" ng-show="false" id="apps">
-		<input type="radio" ng-model="page" value="2" ng-show="false" id="bookmarks">
-		<input type="radio" ng-model="page" value="3" ng-show="false" id="themes">
+		<input type="radio" ng-model="page" value="0" class="ng-hide" id="links">
+		<input type="radio" ng-model="page" value="1" class="ng-hide" id="apps">
+		<input type="radio" ng-model="page" value="2" class="ng-hide" id="bookmarks">
+		<input type="radio" ng-model="page" value="3" class="ng-hide" id="themes">
 		<div class="external">
 			<div class="internal">
 				<div class="links collection">
 					<div id="links">
 						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="'sel-active'|if:(sort.links==0)" ng-click="changeSorting('links', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="'sel-active'|if:(sort.links==1)" ng-click="changeSorting('links', 1)">sorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.links == 0}" ng-click="changeSorting('links', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.links ==1}" ng-click="changeSorting('links', 1)">sorted</span>
 						</div>
 						<div class="external_selector" id="external_selector_links">
 							<div class="internal_selector" id="internal_selector_links">
 								<div class="page" ng-repeat="page in links.pages">
 									<div class="item" ng-repeat="link in page">
-										<a class="title" ng-href="{{ link.url }}">{{ link.name }}</a>
+										<a class="title" ng-href="{{ link.url }}" ng-bind="link.name"></a>
 										<span class="remove option options-color small-text clickable" ng-click="removeLink($parent.$index, $index)">remove</span>
 										<span class="remove option options-color small-text clickable" ng-click="editLink($parent.$index, $index)">edit</span>
 									</div>
@@ -60,14 +49,14 @@
 				<div class="apps collection">
 					<div id="apps">
 						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="'sel-active'|if:(sort.apps==0)" ng-click="changeSorting('apps', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="'sel-active'|if:(sort.apps==1)" ng-click="changeSorting('apps', 1)">sorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.apps == 0}" ng-click="changeSorting('apps', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.apps == 1}" ng-click="changeSorting('apps', 1)">sorted</span>
 						</div>
 						<div class="external_selector" id="external_selector_apps">
 							<div class="internal_selector" id="internal_selector_apps">
 								<div class="page" ng-repeat="page in apps.pages">
 									<div class="item" ng-repeat="app in page">
-										<a class="title" ng-href="{{ app.appLaunchUrl }}">{{ app.name }}</a>
+										<a class="title" ng-href="{{ app.appLaunchUrl }}" ng-bind="app.name"></a>
 											<span class="remove option options-color small-text" ng-click="uninstallApp(app, $parent.$index, $index)" ngm-if="app.id">uninstall</span>
 											<a class="option options-color small-text" ngm-if="app.optionsUrl" ng-href="{{ app.optionsUrl }}">options</a>
 									</div>
@@ -79,14 +68,14 @@
 				<div class="bookmarks collection">
 					<div id="bookmarks">
 						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="'sel-active'|if:(sort.bookmarks==0)" ng-click="changeSorting('bookmarks', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="'sel-active'|if:(sort.bookmarks==1)" ng-click="changeSorting('bookmarks', 1)">sorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.bookmarks == 0}" ng-click="changeSorting('bookmarks', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.bookmarks == 1}" ng-click="changeSorting('bookmarks', 1)">sorted</span>
 						</div>
 						<div class="external_selector" id="external_selector_book">
 							<div class="internal_selector" id="internal_selector_book">
 								<div class="bookmark_page" id="bookmark_page_{{ $index }}" ng-repeat="page in bookmarks">
 									<div class="item" ng-repeat="bookmark in page">
-										<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)" ng-class="'bookmark-active'|if:bookmark.active==true">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
+										<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)" ng-class="{'bookmark-active': bookmark.active==true}">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
 										</a>
 										<span class="remove option options-color small-text clickable" ng-click="removeBookmark(bookmark, $parent.$index, $index)">remove</span>
 									</div>
@@ -98,8 +87,8 @@
 				<div class="themes collection">
 					<div id="themes">
 						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="'sel-active'|if:(sort.themes==0)" ng-click="changeSorting('themes', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="'sel-active'|if:(sort.themes==1)" ng-click="changeSorting('themes', 1)">sorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.themes == 0}" ng-click="changeSorting('themes', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.themes == 1}" ng-click="changeSorting('themes', 1)">sorted</span>
 						</div>
 						<div class="external_selector" id="external_selector_theme">
 							<div class="internal_selector" id="internal_selector_theme">
@@ -132,33 +121,33 @@
 		<div class="weather">
 			<div id="toggle-weather" class="options-color option clickable" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
 			<div id="weather" ng-show="weatherToggleText == 'hide weather'">
-				<div id="where">{{ weather.city }}</div>
+				<div id="where" ng-bind="weather.city"></div>
 				<div>
-					<form ng-submit="saveLocat()">
+					<form ng-submit="saveLocation()">
 						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="{{ weather.city }}">
 						<input type="submit" class="options-color option" value="save">
 					</form>
 				</div>
 				<div class="options-color option chooser">
-					<span class="selection clickable" ng-class="'sel-active'|if:(weatherUnit==$index)" ng-click="changeWeatherUnit($index)" ng-repeat="unit in units">{{ unit }}</span>
+					<span class="selection clickable" ng-class="{'sel-active': weatherUnit == $index}" ng-click="changeWeatherUnit($index)" ng-repeat="unit in units">{{ unit }}</span>
 				</div>
 				<p id="temp">
-					{{ weather.currentTemp }}<span class="options-color">&deg;{{ weather.unit }}</span> /
-					{{ weather.highTemp }} <span class="options-color">hi</span> /
-					{{ weather.lowTemp }} <span class="options-color">lo</span>
+					<span ng-bind="weather.currentTemp"></span>&deg;<span class="options-color" ng-bind="weather.unit"></span> /
+					<span ng-bind="weather.highTemp"></span><span class="options-color">hi</span> /
+					<span ng-bind="weather.lowTemp"></span><span class="options-color">lo</span>
 				</p>
-				<p id="condition">{{ weather.condition }}</p>
+				<p id="condition" ng-bind="weather.condition"></p>
 			</div>
 		</div>
 		<div class="footer">
 			<p class="options-color wrench clickable" id="wrench" ng-click="clickWrench()">wrench</p>
 			<div class="options-color option font-chooser chooser">
-				<span class="selection clickable" ng-class="'sel-active'|if:(font==0)" ng-click="changeFont(0)">normal fonts</span>
-				<span class="selection clickable" ng-class="'sel-active'|if:(font==1)" ng-click="changeFont(1)">thin fonts</span>
+				<span class="selection clickable" ng-class="{'sel-active': font==0}" ng-click="changeFont(0)">normal fonts</span>
+				<span class="selection clickable" ng-class="{'sel-active': font==1}" ng-click="changeFont(1)">thin fonts</span>
 			</div>
 			<div class="theme-buttons option">
-				<p class="options-color clickable" id="reset-theme" ng-click="resetTheme()">reset theme</p>
-				<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()">{{ editThemeText }}</p>
+				<p class="options-color clickable" id="reset-theme" ng-click="resetTheme()" ng-bind="'reset theme'"></p>
+				<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()" ng-bind="editThemeText"></p>
 			</div>
 		</div>
 		<div class="picker background-color" ng-show="editThemeText == 'save theme'">
@@ -167,35 +156,36 @@
 			</p>
 			<div>
 				<span class="picker-text options-color">background
-					<input type="text" ng-model="theme.colors['background-color']" class="show-color" size="9">
+					<input type="text" id="input-background-color" ng-model="theme.colors['background-color']" class="show-color" size="9">
 				</span>
 				<div id="background-color"></div>
 			</div>
 			<div>
 				<span class="picker-text options-color">title
-					<input type="text" ng-model="theme.colors['title-color']" class="show-color" size="9">
+					<input type="text" id="input-title-color" ng-model="theme.colors['title-color']" class="show-color" size="9">
 				</span>
 				<div id="title-color"></div>
 			</div>
 			<div>
 				<span class="picker-text options-color">main
-					<input type="text" ng-model="theme.colors['main-color']" class="show-color" size="9">
+					<input type="text" id="input-main-color" ng-model="theme.colors['main-color']" class="show-color" size="9">
 				</span>
 				<div id="main-color"></div>
 			</div>
 			<div>
 				<span class="picker-text options-color">options
-					<input type="text" ng-model="theme.colors['options-color']" class="show-color" size="9">
+					<input type="text" id="input-options-color" ng-model="theme.colors['options-color']" class="show-color" size="9">
 				</span>
 				<div id="options-color"></div>
 			</div>
 		</div>
 		<!-- Rule to hide all options when page first loads.
 			 Removes option elements added after the calls to hide .option were made. -->
-		<style type="text/css" id="hide-rule" ngm-if="hideOptions">
+		<style type="text/css" id="hide-rule" ng-if="hideOptions">
 			.option, .picker {
 				display: none;
 			}
 		</style>
+		<script data-main="js/main" src="lib/requirejs/require.js"></script>
 	</body>
 </html>
