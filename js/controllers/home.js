@@ -1,7 +1,7 @@
 define(['app', 'storage', 'defaults', 'pages', 'script'], function (app, deferredStorage, defaults, Pages, script) {
     'use strict';
     return app.controller('Home', ['$scope', '$http', function ($scope, $http) {
-        deferredStorage.done(function(storage) {
+        deferredStorage.getAll().done(function(storage) {
             $scope.total = ['links', 'apps', 'bookmarks', 'themes'];
             $scope.units = ['fahrenheit', 'celsius'];
 

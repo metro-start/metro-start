@@ -9,6 +9,7 @@
   "main": "start.html",
   "private": true,
   "dependencies": {
+    "requirejs": "~2.1.11"
     "angular": "~1.2.16",
     "jss": "*",
     "jquery-ui": "~1.10.4",
@@ -16,5 +17,5 @@
     "farbtastic": "~2.0.0-alpha.1",
     "jquery-migrate": "~1.2.1",
     "requirejs-domready": "~2.0.1"
-  }
+  },
 }
