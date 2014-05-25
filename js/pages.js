@@ -100,7 +100,7 @@ define([], function Pages() {
             this.pageItemCount = pageItemCount;
             var list = this.flatten();
             this.pages = [[]];
-            this.addAll(sorted);
+            this.addAll(list);
         };
 
         /**
