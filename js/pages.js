@@ -20,6 +20,7 @@ define([], function Pages() {
             row: The item being added.
         */
         this.add = function add(row) {
+            row.$$hashKey = undefined;
             // If the last column is full, add a new column.
             if (this.pages[this.pages.length - 1].length >= this.pageItemCount) {
                 this.pages.push([]);
