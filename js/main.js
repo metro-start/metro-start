@@ -1,5 +1,4 @@
 require.config({
-	baseUrl: 'js/components',
 	paths: {
         domReady: '../../lib/requirejs-domready/domReady',
 		jquery: '../../lib/jquery/dist/jquery',
@@ -7,6 +6,12 @@ require.config({
         jqueryUI: '../../lib/jquery-ui/ui/minified/jquery-ui.min',
         jss: '../../lib/jss/jss',
         farbtastic: '../../lib/farbtastic/src/farbtastic',
+
+		//utils
+		storage: 'utils/storage',
+		script: 'utils/script',
+		util: 'utils/util',
+		defaults: 'utils/defaults'
 	},
     shim: {
 		jqueryMigrate: ['jquery'],
