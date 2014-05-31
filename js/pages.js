@@ -127,9 +127,9 @@ define([], function Pages() {
 */
 var getFunctions = {
     'name': function(elem) {
-        return angular.lowercase(elem.name);
+        return elem.name.toLocaleLowerCase();
     },
     'title': function(elem) {
-        return angular.lowercase(elem.title);
+        return elem.title.toLocaleLowerCase();
     },
 };

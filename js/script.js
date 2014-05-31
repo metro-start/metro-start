@@ -1,16 +1,17 @@
-define(['angular', 'jquery', 'jss', 'farbtastic', 'defaults'], function(angular, jquery, jss, farbtastic, defaults) {
+define(['jquery', 'jss', 'farbtastic', 'defaults'], function(jquery, jss, farbtastic, defaults) {
     return {
-        init: function(scope) {
+        pageItemCount: 4,
+        init: function() {
             var that = this;
 
             jquery('body').show();
             jquery.each(defaults.defaultTheme.colors, function(key, value) {
                 var inputFarbtastic = jquery('#' + key).farbtastic('#input-' + key);
                 // Add a listener to update farbtastic and style when a color is changed.
-                scope.$watch('theme.colors["' + key + '"]', function(newVal, oldVal) {
-                    jquery.farbtastic('#' + key).setColor(newVal);
-                    that.updateStyle(false);
-                });
+                // scope.$watch('theme.colors["' + key + '"]', function(newVal, oldVal) {
+                //     jquery.farbtastic('#' + key).setColor(newVal);
+                //     that.updateStyle(false);
+                // });
             });
 
             // Add a listener to update the page item count when the window is resized.
@@ -20,7 +21,7 @@ define(['angular', 'jquery', 'jss', 'farbtastic', 'defaults'], function(angular,
                 });
             });
 
-            scope.setPageItemCount(that.getPageItemCount());
+            that.getPageItemCount();
         },
         /**
             Compares window height to element height to fine the number of elements per page.
@@ -47,8 +48,7 @@ define(['angular', 'jquery', 'jss', 'farbtastic', 'defaults'], function(angular,
             transition: A bool indicating whether to slowly transition or immediately change.
         */
         updateStyle: function(transition) {
-            var scope = angular.element(document.body).scope();
-
+            var scope = {};
             var options_color = defaults.defaultTheme['options-color'];
             var background_color = defaults.defaultTheme['background-color'];
             var main_color = defaults.defaultTheme['main-color'];
