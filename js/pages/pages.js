@@ -3,6 +3,11 @@
     newRows: An array of items to initialize the collection with.
 */
 define([], function Pages() {
+
+    // storage.get('sort', defaults.defaultSort, $scope);
+    //
+    // storage.get('page', 0, $scope);
+
     return function (newRows, sorted, pageItemCount, getFunction) {
         this.pageItemCount = pageItemCount;
         this.sorted = sorted;

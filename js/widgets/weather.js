@@ -4,6 +4,17 @@ define(['domReady!', 'storage'], function(document, storage) {
 
         init: function() {
             this.data = storage.get('weather');
+
+            // storage.get('weatherUpdateTime', 0, $scope);
+            //
+            // storage.get('locat', 'seattle, wa', $scope);
+            //
+            // storage.get('weather', null, $scope);
+            //
+            // storage.get('weatherUnit', 0, $scope);
+            //
+            // storage.get('weatherToggleText', 'hide weather', $scope);
+
         },
 
         toggleWeather: function() {
@@ -64,7 +75,6 @@ define(['domReady!', 'storage'], function(document, storage) {
                 });
             }
         }
-
-        return weather;
     };
+    return weather;
 });
