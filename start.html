@@ -121,7 +121,7 @@
 		<div class="weather">
 			<div id="toggle-weather" class="options-color option clickable" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
 			<div id="weather" ng-show="weatherToggleText == 'hide weather'">
-				<div id="where" ng-bind="weather.city"></div>
+				<div id="city"></div>
 				<div>
 					<form ng-submit="saveLocation()">
 						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="{{ weather.city }}">
@@ -132,11 +132,11 @@
 					<span class="selection clickable" ng-class="{'sel-active': weatherUnit == $index}" ng-click="changeWeatherUnit($index)" ng-repeat="unit in units">{{ unit }}</span>
 				</div>
 				<p id="temp">
-					<span ng-bind="weather.currentTemp"></span>&deg;<span class="options-color" ng-bind="weather.unit"></span> /
-					<span ng-bind="weather.highTemp"></span><span class="options-color"> hi</span> /
-					<span ng-bind="weather.lowTemp"></span><span class="options-color"> lo</span>
+					<span id="currentTemp"></span>&deg;<span class="options-color" id ="unit"></span> /
+					<span id="highTemp"></span><span class="options-color"> hi</span> /
+					<span id="lowTemp"></span><span class="options-color"> lo</span>
 				</p>
-				<p id="condition" ng-bind="weather.condition"></p>
+				<p id="condition"></p>
 			</div>
 		</div>
 		<div class="footer">

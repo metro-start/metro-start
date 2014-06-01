@@ -2,8 +2,16 @@ define(['domReady!', 'utils/storage'], function(document, storage) {
     var weather = {
         data: {},
 
+        elems: {},
+
         init: function() {
             this.data = storage.get('weather');
+
+            var that = this;
+            ['city', 'currentTemp', 'highTemp', 'lowTemp', 'condition', 'unit'].forEach(function(name) {
+                that.elems[name] = document.getElementById(name);
+                that.elems[name].innerText = that.data[name];
+            });
 
             // storage.get('weatherUpdateTime', 0, $scope);
             //
