@@ -2,18 +2,33 @@ var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25604585-1']);
 _gaq.push(['_trackPageview']);
 
-var modules = ['domReady!', 'pages/pages', 'widgets/widgets', 'utils/defaults', 'utils/script', 'utils/storage', 'utils/util'];
-define(modules, function (document, pages, widgets, defaults, script, storage, util) {
+var modules = ['domReady!', 'jss', 'pages/pages', 'widgets/widgets', 'utils/defaults', 'utils/script', 'utils/storage', 'utils/util'];
+define(modules, function (document, jss, pages, widgets, defaults, script, storage, util) {
         'use strict';
 
         var that = this;
         var app = {
-            modules: Array.prototype.slice.call(arguments).slice(1),
+            data: {},
+
+            elems: {},
+
+            modules: Array.prototype.slice.call(arguments).slice(2),
+
+            showOptions: false,
 
             init: function() {
                 this.modules.forEach(function(module) {
                     module.init(document);
                 });
+
+                var that = this;
+                var wrench = document.getElementById('wrench');
+                wrench.addEventListener('click', function() {
+                    that.clickWrench();
+                });
+
+                this.elems.hideRule = document.getElementById('hideRule');
+                // this.elems.head = document.getElementsByTagName('head')[0];
                 // themes.init();
                 // script.init();
                 // var $scope = {};
@@ -43,29 +58,36 @@ define(modules, function (document, pages, widgets, defaults, script, storage, u
             },
 
             clickWrench: function() {
-                $scope.hideOptions = !$scope.hideOptions;
-                $scope.loadThemes();
-                // If we're on the theme when wrench was clicked, navigate to the last page.
-                if ($scope.page == 3) {
-                    storage.get('page', 0, $scope, false);
+                this.data.showOptions = !this.data.showOptions;
+
+                if (this.data.showOptions) {
+                    document.body.removeChild(this.elems.hideRule);
+                } else {
+                    document.body.appendChild(this.elems.hideRule);
                 }
-                $scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
+
+                // If we're on the theme when wrench was clicked, navigate to the last page.
+                if (this.data.page == 3) {
+                    this.data.page = storage.get('page', 0);
+                }
+                // $scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
                 _gaq.push(['_trackEvent', 'Page', 'Wrench']);
             },
 
             setPageItemCount: function(pageItemCount) {
-                $scope.pageItemCount = pageItemCount;
-                if (typeof $scope.links !== 'undefined')
-                    $scope.links.setPageItemCount(pageItemCount - 1);
-
-                if (typeof $scope.apps !== 'undefined')
-                    $scope.apps.setPageItemCount(pageItemCount);
-
-                if (typeof $scope.localThemes !== 'undefined')
-                    $scope.localThemes.setPageItemCount(pageItemCount);
-
-                if (typeof $scope.onlineThemes !== 'undefined')
-                    $scope.onlineThemes.setPageItemCount(pageItemCount);
+                this.data.pageItemCount = pageItemCount;
+                pages.setPageItemCount(pageItemCount);
+                // if (typeof $scope.links !== 'undefined')
+                //     $scope.links.setPageItemCount(pageItemCount - 1);
+                //
+                // if (typeof $scope.apps !== 'undefined')
+                //     $scope.apps.setPageItemCount(pageItemCount);
+                //
+                // if (typeof $scope.localThemes !== 'undefined')
+                //     $scope.localThemes.setPageItemCount(pageItemCount);
+                //
+                // if (typeof $scope.onlineThemes !== 'undefined')
+                //     $scope.onlineThemes.setPageItemCount(pageItemCount);
             },
 
             changeSorting: function(key, newSorting) {

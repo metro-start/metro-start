@@ -16,10 +16,10 @@
 			</div>
 		</div>
 		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
-		<input type="radio" ng-model="page" value="0" class="ng-hide" id="links">
-		<input type="radio" ng-model="page" value="1" class="ng-hide" id="apps">
-		<input type="radio" ng-model="page" value="2" class="ng-hide" id="bookmarks">
-		<input type="radio" ng-model="page" value="3" class="ng-hide" id="themes">
+		<input type="radio" ng-model="page" value="0" class="hide" id="links">
+		<input type="radio" ng-model="page" value="1" class="hide" id="apps">
+		<input type="radio" ng-model="page" value="2" class="hide" id="bookmarks">
+		<input type="radio" ng-model="page" value="3" class="hide" id="themes">
 		<div class="external">
 			<div class="internal">
 				<div class="links collection">
@@ -140,7 +140,7 @@
 			</div>
 		</div>
 		<div class="footer">
-			<p class="options-color wrench clickable" id="wrench" ng-click="clickWrench()">wrench</p>
+			<p class="options-color wrench clickable" id="wrench">wrench</p>
 			<div class="options-color option font-chooser chooser">
 				<span class="selection clickable" ng-class="{'sel-active': font==0}" ng-click="changeFont(0)">normal fonts</span>
 				<span class="selection clickable" ng-class="{'sel-active': font==1}" ng-click="changeFont(1)">thin fonts</span>
@@ -150,7 +150,7 @@
 				<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()" ng-bind="editThemeText"></p>
 			</div>
 		</div>
-		<div class="picker background-color" ng-show="editThemeText == 'save theme'">
+		<div class="picker background-color" id="picker">
 			<p>
 				<input type="text" ng-model="newThemeTitle" class="options-color" size="12" placeholder="untitled">
 			</p>
@@ -181,7 +181,7 @@
 		</div>
 		<!-- Rule to hide all options when page first loads.
 			 Removes option elements added after the calls to hide .option were made. -->
-		<style type="text/css" id="hide-rule" ng-if="hideOptions">
+		<style type="text/css" id="hideRule">
 			.option, .picker {
 				display: none;
 			}

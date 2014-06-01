@@ -15,6 +15,16 @@ define(['utils/defaults', 'utils/script', 'utils/storage'], function Utils(defau
             } catch(e) {
                 return str;
             }
+        },
+
+        addClass: function addClass(elem, newClass) {
+            var oldClass = elem.className.split(' ');
+            if(oldClass.indexOf(newClass) !== -1) {
+                return;
+            } else {
+                oldClass.unshift(newClass);
+                elem.className = oldClass.join(' ');
+            }
         }
     };
 
