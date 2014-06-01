@@ -1,7 +1,7 @@
-define(['storage'], function(storage) {
+define(['utils/storage'], function(storage) {
     var links = {
         data: {},
-        init: function() {
+        init: function(document) {
 
         },
 

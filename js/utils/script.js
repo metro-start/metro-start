@@ -1,4 +1,4 @@
-define(['jquery', 'jss', 'farbtastic', 'defaults'], function(jquery, jss, farbtastic, defaults) {
+define(['jquery', 'jss', 'farbtastic', 'utils/defaults'], function(jquery, jss, farbtastic, defaults) {
     return {
         pageItemCount: 4,
         init: function() {

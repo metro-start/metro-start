@@ -2,12 +2,20 @@ var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-25604585-1']);
 _gaq.push(['_trackPageview']);
 
-define(['domReady!', 'storage', 'script'], function (document, storage, script) {
+var modules = ['domReady!', 'pages/pages', 'widgets/widgets', 'utils/defaults', 'utils/script', 'utils/storage', 'utils/util'];
+define(modules, function (document, pages, widgets, defaults, script, storage, util) {
         'use strict';
 
+        var that = this;
         var app = {
+            modules: Array.prototype.slice.call(arguments).slice(1),
+
             init: function() {
-                script.init();
+                this.modules.forEach(function(module) {
+                    module.init(document);
+                });
+                // themes.init();
+                // script.init();
                 // var $scope = {};
                 // var scope = {};
                 // $scope.total = ['links', 'apps', 'bookmarks', 'themes'];

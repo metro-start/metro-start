@@ -1,4 +1,4 @@
-define(['domReady!', 'storage'], function(document, storage) {
+define(['domReady!', 'utils/storage'], function(document, storage) {
     var weather = {
         data: {},
 

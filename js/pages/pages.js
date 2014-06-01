@@ -2,13 +2,23 @@
     A collection to handle organizing data in pages.
     newRows: An array of items to initialize the collection with.
 */
-define([], function Pages() {
+define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], function Pages(apps, bookmarks, themes, links) {
 
     // storage.get('sort', defaults.defaultSort, $scope);
     //
     // storage.get('page', 0, $scope);
 
-    return function (newRows, sorted, pageItemCount, getFunction) {
+    var pages = {
+        data: Array.prototype.slice.call(arguments),
+
+        init: function(document) {
+            this.data.forEach(function(module) {
+                module.init(document);
+            });
+        },
+    };
+
+    var Page = function (newRows, sorted, pageItemCount, getFunction) {
         this.pageItemCount = pageItemCount;
         this.sorted = sorted;
         this.pages = [[]];
@@ -123,6 +133,8 @@ define([], function Pages() {
         this.getFunction = getFunction;
         if (newRows) this.addAll(newRows);
     };
+
+    return pages;
 });
 
 

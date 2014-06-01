@@ -6,12 +6,6 @@ require.config({
         jqueryUI: '../../lib/jquery-ui/ui/minified/jquery-ui.min',
         jss: '../../lib/jss/jss',
         farbtastic: '../../lib/farbtastic/src/farbtastic',
-
-		//utils
-		storage: 'utils/storage',
-		script: 'utils/script',
-		util: 'utils/util',
-		defaults: 'utils/defaults'
 	},
     shim: {
 		jqueryMigrate: ['jquery'],
@@ -21,18 +15,16 @@ require.config({
 			exports: 'jss'
 		}
     },
-    // // kick start application
-    // deps: ['./bootstrap']
 });
 
 require(['jquery'], function(jquery) {
 	jquery.migrateMute = true;
 });
 
-require(['app', 'storage'], function(app, deferredStorage) {
+require(['app', 'utils/storage'], function(app, deferredStorage) {
 	'use strict';
 
-	deferredStorage.getAll().done(function(storage) {
+	deferredStorage.init().done(function(storage) {
 		app.init();
 	});
 });
