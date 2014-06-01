@@ -30,9 +30,9 @@ define(modules, function (document, pages, widgets, defaults, script, storage, u
                 // loadLinks();
                 // loadApps();
                 // loadBookmarks();
-
-                script.updateStyle(false);
-                $scope.updateWeather(false);
+                //
+                // script.updateStyle(false);
+                // $scope.updateWeather(false);
 
                 // Attach a watcher to the page to see page changes and save the value.
                 // $scope.$watch('page', function(newValue, oldValue) {

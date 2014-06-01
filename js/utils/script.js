@@ -5,6 +5,7 @@ define(['jquery', 'jss', 'farbtastic', 'utils/defaults'], function(jquery, jss, 
             var that = this;
 
             jquery('body').show();
+
             jquery.each(defaults.defaultTheme.colors, function(key, value) {
                 var inputFarbtastic = jquery('#' + key).farbtastic('#input-' + key);
                 // Add a listener to update farbtastic and style when a color is changed.
@@ -49,10 +50,10 @@ define(['jquery', 'jss', 'farbtastic', 'utils/defaults'], function(jquery, jss, 
         */
         updateStyle: function(transition) {
             var scope = {};
-            var options_color = defaults.defaultTheme['options-color'];
-            var background_color = defaults.defaultTheme['background-color'];
-            var main_color = defaults.defaultTheme['main-color'];
-            var title_color = defaults.defaultTheme['title-color'];
+            var options_color = defaults.defaultTheme.colors['options-color'];
+            var background_color = defaults.defaultTheme.colors['background-color'];
+            var main_color = defaults.defaultTheme.colors['main-color'];
+            var title_color = defaults.defaultTheme.colors['title-color'];
 
             jquery.each(defaults.defaultTheme.colors, function(key, value) {
 
