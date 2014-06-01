@@ -119,11 +119,11 @@
 			</div>
 		</div>
 		<div class="weather">
-			<div id="toggle-weather" class="options-color option clickable" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
-			<div id="weather" ng-show="weatherToggleText == 'hide weather'">
+			<div id="toggleWeather" class="options-color option clickable">{{ weatherToggleText }}</div>
+			<div id="weather">
 				<div id="city"></div>
 				<div>
-					<form ng-submit="saveLocation()">
+					<form id="saveLocation" ng-submit="saveLocation()">
 						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="{{ weather.city }}">
 						<input type="submit" class="options-color option" value="save">
 					</form>

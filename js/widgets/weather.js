@@ -1,4 +1,4 @@
-define(['domReady!', 'utils/storage'], function(document, storage) {
+define(['domReady!', 'jquery', 'utils/storage'], function(document, jquery, storage) {
     var weather = {
         data: {},
 
@@ -12,43 +12,48 @@ define(['domReady!', 'utils/storage'], function(document, storage) {
                 that.elems[name] = document.getElementById(name);
                 that.elems[name].innerText = that.data[name];
             });
-
-            // storage.get('weatherUpdateTime', 0, $scope);
-            //
-            // storage.get('locat', 'seattle, wa', $scope);
-            //
-            // storage.get('weather', null, $scope);
-            //
-            // storage.get('weatherUnit', 0, $scope);
-            //
-            // storage.get('weatherToggleText', 'hide weather', $scope);
-
+            document.getElementById('toggleWeather').addEventListener('click', toggleWeather);
+            document.getElementById('saveLocation').addEventListener('submit', saveLocation);
         },
 
         toggleWeather: function() {
-            storage.save('weatherToggleText', 'show weatherhide weather'.replace($scope.weatherToggleText, ''), $scope);
+            this.update('visible', !this.data.visible);
 
-            if ($scope.weatherToggleText == 'show weather') {
-                _gaq.push(['_trackEvent', 'Weather', 'Hide Weather']);
-            } else {
+            if (!this.elems.weather) {
+                this.elems.weather = document.getElementById('weather');
+            }
+
+            if (this.data.visible) {
+                this.elems.weather.addClass('show');
+                this.elems.weather.removeClass('hide');
                 _gaq.push(['_trackEvent', 'Weather', 'Show Weather']);
+            } else {
+                this.elems.weather.addClass('hide');
+                this.elems.weather.removeClass('show');
+                _gaq.push(['_trackEvent', 'Weather', 'Hide Weather']);
             }
         },
 
         saveLocation: function() {
-            if ($scope.newLocat && $scope.newLocat.trim() !== '') {
-                storage.save('locat', $scope.newLocat, $scope);
+            var newLocation = document.getElementById('newLocation').value.trim();
+            if (newLocation !== '' && newLocation !== this.data.city) {
+                this.udpate('city', newLocation);
 
-                $scope.updateWeather(true);
+                updateWeather(true);
                 _gaq.push(['_trackEvent', 'Weather', 'Save Weather Location']);
             }
         },
 
         changeWeatherUnit: function(newWeatherUnit) {
-            storage.save('weatherUnit', newWeatherUnit, $scope);
+            update('unit', newWeatherUnit);
 
-            $scope.updateWeather(true);
+            updateWeather(true);
             _gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', $scope.units[$scope.weatherUnit]]);
+        },
+
+        update: function(key, value) {
+            this.data[key] = value;
+            storage.save('weather', this.data);
         },
 
         /**
@@ -57,20 +62,20 @@ define(['domReady!', 'utils/storage'], function(document, storage) {
             force: Bypass the 1 hour wait requirement.
         */
         updateWeather: function(force) {
-            var unit = $scope.units[$scope.weatherUnit][0];
-            var locat = $scope.locat;
+            var unit = this.data.unit;
+            var city = this.data.city;
             // If it has been more than an hour since last check.
-            if(force || new Date().getTime() > parseInt($scope.weatherUpdateTime, 10)) {
-                storage.save('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000, $scope);
-                var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + locat + '" limit 1) and u="' + unit + '"');
+            if(force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
+                this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
+                var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit + '"');
                 var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
-                $http.get(url).success(function(data) {
+                jquery.ajax(url).done(function(data) {
                     // If data was actually returned, save it.
                     if (data.query.count) {
                         var elem = data.query.results.channel;
                         var city = elem.location.city + ', ';
                         city += (elem.location.region ? elem.location.region : elem.location.country);
-                        $scope.weather = {
+                        this.data = {
                             'city': city.toLowerCase(),
                             'currentTemp': elem.item.condition.temp,
                             'highTemp': elem.item.forecast[0].high,
@@ -79,7 +84,7 @@ define(['domReady!', 'utils/storage'], function(document, storage) {
                             'unit': elem.units.temperature.toLowerCase(),
                         };
                     }
-                    storage.save('weather', $scope.weather);
+                    storage.save('weather', this.data);
                 });
             }
         }
