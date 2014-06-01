@@ -66,11 +66,6 @@ define(['domReady!', 'jquery', 'utils/util', 'utils/storage'], function(document
             _gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', $scope.units[$scope.weatherUnit]]);
         },
 
-        update: function(key, value) {
-            this.data[key] = value;
-            storage.save('weather', this.data);
-        },
-
         /**
             Update the weather data being displayed.
 
@@ -102,6 +97,11 @@ define(['domReady!', 'jquery', 'utils/util', 'utils/storage'], function(document
                     storage.save('weather', this.data);
                 });
             }
+        },
+
+        update: function(key, value) {
+            this.data[key] = value;
+            storage.save('weather', this.data);
         }
     };
     return weather;
