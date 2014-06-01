@@ -1,4 +1,4 @@
-define(['domReady!', 'jquery', 'utils/storage'], function(document, jquery, storage) {
+define(['domReady!', 'jquery', 'utils/util', 'utils/storage'], function(document, jquery, util, storage) {
     var weather = {
         data: {},
 
@@ -6,32 +6,47 @@ define(['domReady!', 'jquery', 'utils/storage'], function(document, jquery, stor
 
         init: function() {
             this.data = storage.get('weather');
-
+            this.data.visible = !!this.data.visible;
             var that = this;
             ['city', 'currentTemp', 'highTemp', 'lowTemp', 'condition', 'unit'].forEach(function(name) {
                 that.elems[name] = document.getElementById(name);
                 that.elems[name].innerText = that.data[name];
             });
-            document.getElementById('toggleWeather').addEventListener('click', toggleWeather);
+
+            this.elems.weather = document.getElementById('weather');
+            this.elems.toggleWeather = document.getElementById('toggleWeather');
+            if (this.data.visible) {
+                this.showWeather();
+            } else {
+                this.hideWeather();
+            }
+
+            this.elems.toggleWeather.addEventListener('click', function() { that.toggleWeather(); });
             document.getElementById('saveLocation').addEventListener('submit', saveLocation);
         },
 
         toggleWeather: function() {
             this.update('visible', !this.data.visible);
 
-            if (!this.elems.weather) {
-                this.elems.weather = document.getElementById('weather');
-            }
-
             if (this.data.visible) {
-                this.elems.weather.addClass('show');
-                this.elems.weather.removeClass('hide');
+                this.showWeather();
                 _gaq.push(['_trackEvent', 'Weather', 'Show Weather']);
             } else {
-                this.elems.weather.addClass('hide');
-                this.elems.weather.removeClass('show');
+                this.hideWeather();
                 _gaq.push(['_trackEvent', 'Weather', 'Hide Weather']);
             }
+        },
+
+        showWeather: function() {
+            util.removeClass(this.elems.weather, 'hide');
+            util.addClass(this.elems.weather, 'show');
+            this.elems.toggleWeather.innerText = "hide weather";
+        },
+
+        hideWeather: function() {
+            util.removeClass(this.elems.weather, 'show');
+            util.addClass(this.elems.weather, 'hide');
+            this.elems.toggleWeather.innerText = "show weather";
         },
 
         saveLocation: function() {

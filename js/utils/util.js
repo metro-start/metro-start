@@ -19,10 +19,17 @@ define(['utils/defaults', 'utils/script', 'utils/storage'], function Utils(defau
 
         addClass: function addClass(elem, newClass) {
             var oldClass = elem.className.split(' ');
-            if(oldClass.indexOf(newClass) !== -1) {
-                return;
-            } else {
+            if (oldClass.indexOf(newClass) === -1) {
                 oldClass.unshift(newClass);
+                elem.className = oldClass.join(' ');
+            }
+        },
+
+        removeClass: function removeClass(elem, className) {
+            var oldClass = elem.className.split(' ');
+            var index = oldClass.indexOf(className);
+            if(index !== -1) {
+                oldClass.splice(index, 1);
                 elem.className = oldClass.join(' ');
             }
         }
