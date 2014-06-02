@@ -6,6 +6,10 @@ define([], function() {
             //this.loadApps();
         },
 
+        setPageItemCount: function(pageItemCount) {
+            // this.apps.setPageItemCount(pageItemCount);
+        },
+
         // Load list of apps
         loadApps: function() {
             chrome.management.getAll(function(res) {
@@ -14,7 +18,7 @@ define([], function() {
                     'appLaunchUrl': 'https://chrome.google.com/webstore'
                 }];
                 // Remove extensions and limit to apps.
-                apps = apps.concat(res.filter(function(item) { return item.isApp; }));
+                var apps = apps.concat(res.filter(function(item) { return item.isApp; }));
                 $scope.$apply(function() {
                     $scope.apps = new Pages(apps, $scope.sort.apps, $scope.pageItemCount, getFunctions.name);
                 });

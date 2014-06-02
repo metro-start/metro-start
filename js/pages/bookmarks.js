@@ -6,6 +6,10 @@ define([], function() {
 
         },
 
+        setPageItemCount: function(pageItemCount) {
+            // this.links.setPageItemCount(pageItemCount);
+        },
+
         loadBookmarks: function() {
             chrome.bookmarks.getTree(function(data) {
                 $scope.$apply(function() {

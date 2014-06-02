@@ -11,6 +11,10 @@ define(['pages/base','utils/storage', 'utils/util'], function(base, storage, uti
             this.loadLinks(sort, pageItemCount);
         },
 
+        setPageItemCount: function(pageItemCount) {
+            this.links.setPageItemCount(pageItemCount - 1); //TODO: Why -1?
+        },
+
         // Load list of links
         // If there's no existing links (local or online) initiliazes with message.
         loadLinks: function(sort, pageItemCount) {

@@ -14,36 +14,8 @@ define(['jquery', 'jss', 'farbtastic', 'utils/defaults'], function(jquery, jss, 
                 //     that.updateStyle(false);
                 // });
             });
-
-            // Add a listener to update the page item count when the window is resized.
-            jquery(window).resize(function() {
-                scope.$apply(function() {
-                    scope.setPageItemCount(that.getPageItemCount());
-                });
-            });
-
-            that.getPageItemCount();
         },
-        /**
-            Compares window height to element height to fine the number of elements per page.
-            returns: The number of items to fit on a page.
-        */
-        getPageItemCount: function() {
-            var pageHeight = jquery('body').height();
-            var headerHeight = jquery('h1').outerHeight(true);
-            var navBarHeight = jquery('.page-chooser').outerHeight(true);
-            var footerHeight = jquery('.footer').outerHeight(true);
-            var height =  pageHeight - (headerHeight + navBarHeight + footerHeight);
-
-            jss.set('.external', {
-                'height': '' + height
-            });
-            jss.set('.bookmark_page', {
-                'height': '' + height
-            });
-
-            return Math.floor((height) / 60) - 1;
-        },
+        
         /**
             Changes the style to whatever is in the scope.
             transition: A bool indicating whether to slowly transition or immediately change.

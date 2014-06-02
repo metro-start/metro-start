@@ -9,6 +9,10 @@ define([], function() {
 
         },
 
+        setPageItemCount: function(pageItemCount) {
+            // this.links.setPageItemCount(pageItemCount);
+        },
+
         loadThemes: function() {
             // Load local themes.
             storage.get('localThemes', [defaults.defaultTheme], $scope);
