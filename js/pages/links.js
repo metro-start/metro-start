@@ -1,15 +1,18 @@
-define(['utils/storage'], function(storage) {
+define(['utils/storage'], function(storage, base) {
     var links = {
         data: {},
-        init: function(document) {
 
+        elems: {},
+
+        init: function(document) {
+            //this.loadLinks();
         },
 
         // Load list of links
         // If there's no existing links (local or online) initiliazes with message.
         loadLinks: function() {
             var links = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-            $scope.links = new Pages(links, $scope.sort.links, $scope.pageItemCount, getFunctions.name);
+            this.data = new base(links, $scope.sort.links, $scope.pageItemCount, getFunctions.name);
         },
 
         addLink: function() {

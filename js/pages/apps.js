@@ -3,7 +3,7 @@ define([], function() {
         data: {},
 
         init: function() {
-
+            //this.loadApps();
         },
 
         // Load list of apps
