@@ -1,18 +1,36 @@
-define(['utils/storage'], function(storage, base) {
+define(['pages/base','utils/storage', 'utils/util'], function(base, storage, util) {
     var links = {
         data: {},
 
+        links: {},
+
         elems: {},
 
-        init: function(document) {
-            //this.loadLinks();
+        init: function(document, sort, pageItemCount) {
+            this.elems.rootDom = document.getElementById('internal_selector_links');
+            this.loadLinks(sort, pageItemCount);
         },
 
         // Load list of links
         // If there's no existing links (local or online) initiliazes with message.
-        loadLinks: function() {
-            var links = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-            this.data = new base(links, $scope.sort.links, $scope.pageItemCount, getFunctions.name);
+        loadLinks: function(sort, pageItemCount) {
+            this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+            this.links = new base(this.elems.rootDom, this.data, sort, pageItemCount, getFunctions.name, this.itemGenerator);
+            this.links.buildDom();
+        },
+
+        itemGenerator: function(elem, item) {
+            var fragment = util.createElement('<a class="title"></a>');
+            var linkDom = fragment.childNodes[0];
+            linkDom.href = item.url;
+            linkDom.textContent = item.name;
+            elem.appendChild(fragment);
+
+            fragment = util.createElement('<span class="remove option options-color small-text clickable">remove</span>');
+            elem.appendChild(fragment);
+
+            fragment = util.createElement('<span class="remove option options-color small-text clickable">edit</span>');
+            elem.appendChild(fragment);
         },
 
         addLink: function() {

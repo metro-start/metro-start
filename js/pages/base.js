@@ -2,21 +2,27 @@
     A collection to handle organizing data in pages.
     newRows: An array of items to initialize the collection with.
 */
-define([], function () {
-    var base = function (document, newRows, sorted, pageItemCount, getFunction) {
-        this.document = document;
+define(['utils/util'], function(util) {
+    var base = function (rootDom, newRows, sorted, pageItemCount, getFunction, itemGenerator) {
+        this.rootDom = rootDom;
         this.pageItemCount = pageItemCount;
         this.sorted = sorted;
         this.pages = [[]];
+        this.itemGenerator = itemGenerator;
 
-        this.buildDom = function(templateFunc) {
-            for (var i = 0; i < pages.length; i++) {
-                var page = pages[i];
-                var pageDom = jquery('<div class="page"></div>');
+        this.buildDom = function() {
+            var pageDomTemplate = util.createElement('<div class="page"></div>');
+            var itemDomTemplate = util.createElement('<div class="item"></div>');
+            for (var i = 0; i < this.pages.length; i++) {
+                var page = this.pages[i];
+                var pageDom = pageDomTemplate.cloneNode(true);
                 for (var j = 0; j < page.length; j++) {
                     var item = page[j];
-                    var itemDom = jquery('');
+                    var itemDom = itemDomTemplate.cloneNode(true);
+                    this.itemGenerator(itemDom.childNodes[0], item);
+                    pageDom.childNodes[0].appendChild(itemDom);
                 }
+                this.rootDom.appendChild(pageDom);
             }
         };
 
@@ -131,7 +137,7 @@ define([], function () {
         if (newRows) this.addAll(newRows);
     };
 
-    return pages;
+    return base;
 });
 
 
