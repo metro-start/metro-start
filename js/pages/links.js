@@ -12,31 +12,48 @@ define(['pages/base','utils/storage', 'utils/util'], function(base, storage, uti
         },
 
         setPageItemCount: function(pageItemCount) {
-            this.links.setPageItemCount(pageItemCount, this.data); //TODO: Why -1?
+            this.links.setPageItemCount(pageItemCount, this.data);
         },
 
-        // Load list of links
-        // If there's no existing links (local or online) initiliazes with message.
         loadLinks: function(sort, pageItemCount) {
-            this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-            this.links = new base(this.elems.rootDom, this.data, sort, pageItemCount, this.template);
+//            this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+            this.data = [
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+{'name': 'wrench ', 'url': ''},
+            ];
+            this.links = new base(this.elems.rootDom, this.data, sort, pageItemCount, this.callback.bind(this));
             this.links.buildDom();
         },
 
         template: {
-            elemFragment: util.createElement('<a class="title"></a>'),
+            linkFragment: util.createElement('<a class="title"></a>'),
             removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
             editFragment: util.createElement('<span class="remove option options-color small-text clickable">edit</span>'),
+        },
 
-            callback: function(elem, item) {
-                var linkDom = this.elemFragment.cloneNode(true);
-                linkDom.firstChild.href = item.url;
-                linkDom.firstChild.textContent = item.name;
+        callback: function(elem, item) {
+            var link = this.template.linkFragment.cloneNode(true);
+            link.firstChild.href = item.url;
+            link.firstChild.textContent = item.name;
+            elem.appendChild(link);
 
-                elem.appendChild(linkDom);
-                elem.appendChild(this.removeFragment);
-                elem.appendChild(this.editFragment);
-            }
+            var remove = this.template.removeFragment.cloneNode(true);
+            remove.firstChild.addEventListener('click', this.removeLink.bind(this, item));
+            elem.appendChild(remove);
+
+            var edit = this.template.editFragment.cloneNode(true);
+            edit.firstChild.addEventListener('click', this.editLink.bind(this, item));
+            elem.appendChild(edit);
         },
 
         addLink: function() {
@@ -62,16 +79,24 @@ define(['pages/base','utils/storage', 'utils/util'], function(base, storage, uti
             storage.save('links', $scope.links.flatten());
         },
 
-        editLink: function(page, index) {
+        editLink: function(link) {
+            console.log(this);
+            console.log(link);
             $scope.linkToEdit = $scope.links.get(page, index);
             $scope.newUrlTitle = $scope.linkToEdit.name;
             $scope.newUrl = $scope.linkToEdit.url;
             _gaq.push(['_trackEvent', 'Links', 'Start Editing Link']);
         },
 
-        removeLink: function(page, index){
-            $scope.links.remove(page, index);
-            storage.save('links', $scope.links.flatten());
+        removeLink: function(link){
+            for(var i = 0; i < this.data.length; i++) {
+                if (this.data[i] === link) {
+                    this.data.splice(i, 1);
+                    break;
+                }
+            }
+            storage.save('links', this.data);
+            this.links.relayout(this.data);
             _gaq.push(['_trackEvent', 'Links', 'Remove Link']);
         }
     };

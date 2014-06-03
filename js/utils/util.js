@@ -8,6 +8,12 @@ define(['utils/defaults', 'utils/script', 'utils/storage'], function Utils(defau
             };
         },
 
+        curry: function(arg, func) {
+            return function() {
+                func(arg);
+            };
+        },
+
         getJSON: function getJSON(str) {
             var res = {};
             try {

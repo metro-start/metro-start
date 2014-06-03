@@ -3,13 +3,13 @@
     newRows: An array of items to initialize the collection with.
 */
 define(['utils/util'], function(util) {
-    var base = function (rootDom, newRows, sorted, pageItemCount, itemGenerator) {
+    var base = function (rootDom, newRows, sorted, pageItemCount, templateCallback) {
         this.rootDom = rootDom;
         this.pageItemCount = pageItemCount;
         this.sorted = sorted;
         this.columns = [];
         this.columnsCount = [];
-        this.itemGenerator = itemGenerator;
+        this.templateCallback = templateCallback;
         this.templates = {
             column: util.createElement('<div class="page"></div>'),
             item: util.createElement('<div class="item"></div>')
@@ -32,7 +32,7 @@ define(['utils/util'], function(util) {
                 last++;
             }
             var item = this.templates.item.cloneNode(true);
-            this.itemGenerator.callback(item.firstChild, row);
+            this.templateCallback(item.firstChild, row);
             this.columns[last].firstChild.appendChild(item);
             this.columnsCount[last]++;
         };
