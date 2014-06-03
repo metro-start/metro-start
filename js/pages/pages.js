@@ -33,11 +33,12 @@ define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], functio
                         'height': '' + height
                     });
 
-                    var pageItemCount = Math.floor((height) / 60) - 1;
+                    var pageItemCount = Math.floor((height) / 60);
                     that.data.forEach(function(module) {
                         module.setPageItemCount(pageItemCount);
                     });
                 });
+                jquery(window).resize();
             });
 
         },

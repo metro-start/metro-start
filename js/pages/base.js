@@ -7,22 +7,20 @@ define(['utils/util'], function(util) {
         this.rootDom = rootDom;
         this.pageItemCount = pageItemCount;
         this.sorted = sorted;
-        this.pages = [[]];
+        this.columns = [];
+        this.columnsCount = [];
         this.itemGenerator = itemGenerator;
+        this.templates = {
+            column: util.createElement('<div class="page"></div>'),
+            item: util.createElement('<div class="item"></div>')
+        };
 
         this.buildDom = function() {
-            var pageDomTemplate = util.createElement('<div class="page"></div>');
-            var itemDomTemplate = util.createElement('<div class="item"></div>');
-            for (var i = 0; i < this.pages.length; i++) {
-                var page = this.pages[i];
-                var pageDom = pageDomTemplate.cloneNode(true);
-                for (var j = 0; j < page.length; j++) {
-                    var item = page[j];
-                    var itemDom = itemDomTemplate.cloneNode(true);
-                    this.itemGenerator(itemDom.childNodes[0], item);
-                    pageDom.childNodes[0].appendChild(itemDom);
-                }
-                this.rootDom.appendChild(pageDom);
+            while(this.rootDom.lastChild) {
+                this.rootDom.lastChild.remove();
+            }
+            for (var i = 0; i < this.columns.length; i++) {
+                this.rootDom.appendChild(this.columns[i]);
             }
         };
 
@@ -38,14 +36,16 @@ define(['utils/util'], function(util) {
             row: The item being added.
         */
         this.add = function add(row) {
-            row.$$hashKey = undefined;
-            // If the last column is full, add a new column.
-            if (this.pages[this.pages.length - 1].length >= this.pageItemCount) {
-                this.pages.push([]);
+            var last = this.columns.length -1;
+            if (last === -1 || this.columnsCount[last] >= this.pageItemCount) {
+                this.columns.push(this.templates.column.cloneNode(true));
+                this.columnsCount.push(0);
+                last++;
             }
-            // Add item to last column.
-            this.pages[this.pages.length - 1].push(row);
-            if (this.sorted) this.sort();
+            var item = this.templates.item.cloneNode(true);
+            this.itemGenerator.func(item.childNodes[0], row);
+            this.columns[last].childNodes[0].appendChild(item);
+            this.columnsCount[last]++;
         };
 
         /**
@@ -54,7 +54,7 @@ define(['utils/util'], function(util) {
             index: The item's index in that page.
         */
         this.get = function get(col, row) {
-            return this.pages[col][row];
+        //    return this.pages[col][row];
         };
         /**
             Remove an item from the collection.
@@ -78,10 +78,10 @@ define(['utils/util'], function(util) {
             newRows: The array of elements to be added.
         */
         this.addAll = function addAll(newRows) {
-            for (index = 0; index < newRows.length; index++) {
-                this.add(newRows[index]);
+            for (var i = 0; i < newRows.length; i++) {
+                this.add(newRows[i]);
             }
-            if (this.sorted) this.sort();
+//            if (this.sorted) this.sort();
         };
 
         /**
@@ -115,11 +115,16 @@ define(['utils/util'], function(util) {
             Set the number of items per page.
             pageItemCount: The new number of items per page.
         */
-        this.setPageItemCount = function(pageItemCount) {
+        this.setPageItemCount = function(pageItemCount, rows) {
             this.pageItemCount = pageItemCount;
-            var list = this.flatten();
-            this.pages = [[]];
-            this.addAll(list);
+            this.columns = [];
+            this.columnsCount = [];
+            this.addAll(rows);
+            this.buildDom();
+            // var list = this.flatten();
+            // this.pages = [[]];
+            // this.addAll(list);
+            // this.buildDom();
         };
 
         /**

@@ -12,29 +12,48 @@ define(['pages/base','utils/storage', 'utils/util'], function(base, storage, uti
         },
 
         setPageItemCount: function(pageItemCount) {
-            this.links.setPageItemCount(pageItemCount - 1); //TODO: Why -1?
+            this.links.setPageItemCount(pageItemCount, this.data); //TODO: Why -1?
         },
 
         // Load list of links
         // If there's no existing links (local or online) initiliazes with message.
         loadLinks: function(sort, pageItemCount) {
-            this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-            this.links = new base(this.elems.rootDom, this.data, sort, pageItemCount, getFunctions.name, this.itemGenerator);
+           this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+            // this.data = [
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            //     {'name': 'bleh', 'url': ''},
+            // ];
+
+            this.links = new base(this.elems.rootDom, this.data, sort, pageItemCount, getFunctions.name, this.template);
             this.links.buildDom();
         },
 
-        itemGenerator: function(elem, item) {
-            var fragment = util.createElement('<a class="title"></a>');
-            var linkDom = fragment.childNodes[0];
-            linkDom.href = item.url;
-            linkDom.textContent = item.name;
-            elem.appendChild(fragment);
+        template: {
+            elemFragment: util.createElement('<a class="title"></a>'),
 
-            fragment = util.createElement('<span class="remove option options-color small-text clickable">remove</span>');
-            elem.appendChild(fragment);
+            removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
 
-            fragment = util.createElement('<span class="remove option options-color small-text clickable">edit</span>');
-            elem.appendChild(fragment);
+            editFragment: util.createElement('<span class="remove option options-color small-text clickable">edit</span>'),
+
+            func: function(elem, item) {
+                var linkDom = this.elemFragment.cloneNode(true);
+                linkDom.childNodes[0].href = item.url;
+                linkDom.childNodes[0].textContent = item.name;
+                elem.appendChild(linkDom);
+
+                elem.appendChild(this.removeFragment);
+
+                elem.appendChild(this.editFragment);
+            }
         },
 
         addLink: function() {
