@@ -18,40 +18,23 @@ define(['pages/base','utils/storage', 'utils/util'], function(base, storage, uti
         // Load list of links
         // If there's no existing links (local or online) initiliazes with message.
         loadLinks: function(sort, pageItemCount) {
-           this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-            // this.data = [
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            //     {'name': 'bleh', 'url': ''},
-            // ];
-
-            this.links = new base(this.elems.rootDom, this.data, sort, pageItemCount, getFunctions.name, this.template);
+            this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+            this.links = new base(this.elems.rootDom, this.data, sort, pageItemCount, this.template);
             this.links.buildDom();
         },
 
         template: {
             elemFragment: util.createElement('<a class="title"></a>'),
-
             removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
-
             editFragment: util.createElement('<span class="remove option options-color small-text clickable">edit</span>'),
 
-            func: function(elem, item) {
+            callback: function(elem, item) {
                 var linkDom = this.elemFragment.cloneNode(true);
-                linkDom.childNodes[0].href = item.url;
-                linkDom.childNodes[0].textContent = item.name;
+                linkDom.firstChild.href = item.url;
+                linkDom.firstChild.textContent = item.name;
+
                 elem.appendChild(linkDom);
-
                 elem.appendChild(this.removeFragment);
-
                 elem.appendChild(this.editFragment);
             }
         },

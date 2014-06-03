@@ -5,9 +5,9 @@
 define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], function Pages(apps, bookmarks, themes, links) {
 
     // storage.get('sort', defaults.defaultSort, $scope);
-    //
-    // storage.get('page', 0, $scope);
     var pages = {
+        page: 0,
+
         data: Array.prototype.slice.call(arguments),
 
         init: function(document) {
@@ -46,17 +46,3 @@ define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], functio
 
     return pages;
 });
-
-
-/**
-    Get functions that retrieve different types of data from various things
-    that could be in the pages object.
-*/
-var getFunctions = {
-    'name': function(elem) {
-        return elem.name.toLocaleLowerCase();
-    },
-    'title': function(elem) {
-        return elem.title.toLocaleLowerCase();
-    },
-};
