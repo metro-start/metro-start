@@ -8,11 +8,11 @@ define(['jquery', 'utils/util'], function(jquery, util) {
        item: util.createElement('<div class="item"></div>')
     };
 
-    var pagebase = function pagebase(rootNode, sorted, pageItemCount, callback) {
+    var pagebase = function pagebase(rootNode, sorted, pageItemCount, templateFunc) {
         this.rootNode = rootNode;
         this.pageItemCount = pageItemCount;
         this.sorted = sorted;
-        this.callback = callback;
+        this.templateFunc = templateFunc;
     };
 
     pagebase.prototype.buildDom = function buildDom(rows) {
@@ -28,7 +28,7 @@ define(['jquery', 'utils/util'], function(jquery, util) {
                 columnNode = templates.column.cloneNode(true);
             }
             var item = templates.item.cloneNode(true);
-            this.callback(item.firstChild, rows[i]);
+            this.templateFunc(item.firstChild, rows[i]);
             columnNode.firstChild.appendChild(item);
         }
         if (i % this.pageItemCount === 0) {

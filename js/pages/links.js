@@ -20,7 +20,7 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
             this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-            this.links = new pagebase(this.elems.rootDom, sort, pageItemCount, this.callback.bind(this));
+            this.links = new pagebase(this.elems.rootDom, sort, pageItemCount, this.templateFunc.bind(this));
             this.links.buildDom(this.data);
         },
 
@@ -28,7 +28,7 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
             this.links.setPageItemCount(pageItemCount - 1, this.data); //-1 to account for addLink
         },
 
-        callback: function(elem, item) {
+        templateFunc: function(elem, item) {
             var link = this.templates.linkFragment.cloneNode(true);
             link.firstChild.href = item.url;
             link.firstChild.textContent = item.name;
