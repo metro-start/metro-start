@@ -15,7 +15,6 @@ define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], functio
                 module.init(document);
             });
 
-
             // Compare document height to element height to fine the number of elements per page.
             var that = this;
             require(['jquery', 'jss'], function(jquery, jss) {

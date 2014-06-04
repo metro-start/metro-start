@@ -6,6 +6,12 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
 
         elems: {},
 
+        templates: {
+            linkFragment: util.createElement('<a class="title"></a>'),
+            removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
+            editFragment: util.createElement('<span class="remove option options-color small-text clickable">edit</span>'),
+        },
+
         init: function(document, sort, pageItemCount) {
             this.elems.rootDom = document.getElementById('internal_selector_links');
             this.elems.newUrlTitle = document.getElementById('newUrlTitle');
@@ -19,13 +25,7 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
         },
 
         setPageItemCount: function(pageItemCount) {
-            this.links.setPageItemCount(pageItemCount - 1, this.data); //-1 to account for form
-        },
-
-        templates: {
-            linkFragment: util.createElement('<a class="title"></a>'),
-            removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
-            editFragment: util.createElement('<span class="remove option options-color small-text clickable">edit</span>'),
+            this.links.setPageItemCount(pageItemCount - 1, this.data); //-1 to account for addLink
         },
 
         callback: function(elem, item) {
@@ -68,6 +68,8 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
                 }
                 storage.save('links', this.data);
                 this.links.buildDom(this.data);
+                this.linkToEdit = null;
+                this.elems.addLink.reset();
             }
             event.preventDefault();
         },
