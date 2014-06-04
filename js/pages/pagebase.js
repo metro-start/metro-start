@@ -10,9 +10,11 @@ define(['jquery', 'utils/util'], function(jquery, util) {
 
     var pagebase = function pagebase(rootNode, sorted, pageItemCount, templateFunc) {
         this.rootNode = rootNode;
-        this.pageItemCount = pageItemCount;
         this.sorted = sorted;
         this.templateFunc = templateFunc;
+        if (!this.pageItemCount) {
+            this.pageItemCount = pageItemCount;
+        }
     };
 
     pagebase.prototype.buildDom = function buildDom(rows) {

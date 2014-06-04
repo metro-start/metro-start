@@ -2,14 +2,12 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
     var links = {
         data: {},
 
-        links: {},
-
         elems: {},
 
         templates: {
             linkFragment: util.createElement('<a class="title"></a>'),
-            removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
-            editFragment: util.createElement('<span class="remove option options-color small-text clickable">edit</span>'),
+            removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
+            editFragment: util.createElement('<span class="edit option options-color small-text clickable">edit</span>'),
         },
 
         init: function(document, sort, pageItemCount) {

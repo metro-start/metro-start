@@ -22,23 +22,6 @@
 		<input type="radio" ng-model="page" value="3" class="hide" id="themes">
 		<div class="external">
 			<div class="internal">
-				<div class="links collection">
-					<div id="links">
-						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="{'sel-active': sort.links == 0}" ng-click="changeSorting('links', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="{'sel-active': sort.links ==1}" ng-click="changeSorting('links', 1)">sorted</span>
-						</div>
-						<div class="external_selector" id="external_selector_links">
-							<div class="internal_selector" id="internal_selector_links">
-							</div>
-						</div>
-						<form id="addLink" class="add">
-							<input type="text" name="newUrlTitle" id="newUrlTitle" placeholder="title" class="url option" size="10">
-							<input type="text" name="newUrl" id="newUrl" placeholder="http://" class="url option" size="16">
-							<input type="submit" class="options-color option" value="save">
-						</form>
-					</div>
-				</div>
 				<div class="apps collection">
 					<div id="apps">
 						<div class="options-color option sort chooser">
@@ -56,6 +39,24 @@
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<div class="links collection">
+					<div id="links">
+						<div class="options-color option sort chooser">
+							<span class="selection clickable" ng-class="{'sel-active': sort.links == 0}" ng-click="changeSorting('links', 0)">unsorted</span>
+							<span class="selection clickable" ng-class="{'sel-active': sort.links ==1}" ng-click="changeSorting('links', 1)">sorted</span>
+						</div>
+						<div class="external_selector" id="external_selector_links">
+							<div class="internal_selector" id="internal_selector_links">
+							</div>
+						</div>
+						<form id="addLink" class="add">
+							<input type="text" name="newUrlTitle" id="newUrlTitle" placeholder="title" class="url option" size="10">
+							<input type="text" name="newUrl" id="newUrl" placeholder="http://" class="url option" size="16">
+							<input type="submit" class="options-color option" value="save">
+						</form>
 					</div>
 				</div>
 				<div class="bookmarks collection">
