@@ -12,9 +12,9 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
 
             elems: {},
 
-            modules: Array.prototype.slice.call(arguments).slice(2),
-
             showOptions: false,
+
+            modules: Array.prototype.slice.call(arguments).slice(2),
 
             init: function() {
                 this.modules.forEach(function(module) {
@@ -60,6 +60,12 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
             clickWrench: function() {
                 this.data.showOptions = !this.data.showOptions;
 
+                var that = this;
+                this.modules.forEach(function(module) {
+                    if (module.showOptionsChanged) {
+                        module.showOptionsChanged(that.data.showOptions);
+                    }
+                });
                 if (this.data.showOptions) {
                     document.body.removeChild(this.elems.hideRule);
                 } else {

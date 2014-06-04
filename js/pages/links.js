@@ -25,22 +25,25 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
         },
 
         setPageItemCount: function(pageItemCount) {
-            this.links.setPageItemCount(pageItemCount - 1, this.data); //-1 to account for addLink
+            this.links.setPageItemCount(pageItemCount, this.data); //-1 to account for addLink
         },
 
-        templateFunc: function(elem, item) {
+        templateFunc: function(item) {
+            var fragment = util.createElement('');
             var link = this.templates.linkFragment.cloneNode(true);
             link.firstChild.href = item.url;
             link.firstChild.textContent = item.name;
-            elem.appendChild(link);
+            fragment.appendChild(link);
 
             var remove = this.templates.removeFragment.cloneNode(true);
             remove.firstChild.addEventListener('click', this.removeLink.bind(this, item));
-            elem.appendChild(remove);
+            fragment.appendChild(remove);
 
             var edit = this.templates.editFragment.cloneNode(true);
             edit.firstChild.addEventListener('click', this.editLink.bind(this, item));
-            elem.appendChild(edit);
+            fragment.appendChild(edit);
+
+            return fragment;
         },
 
         addLink: function(event) {

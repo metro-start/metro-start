@@ -16,28 +16,28 @@ define(['jquery', 'utils/util'], function(jquery, util) {
     };
 
     pagebase.prototype.buildDom = function buildDom(rows) {
-        //first remove all nodes.
+        //Remove all existing nodes.
         while(this.rootNode.lastChild) {
             this.rootNode.lastChild.remove();
         }
-        //create columns for each row
+        //Add each row to an column and create new ones on the pageItemCount boundary.
         var columnNode = templates.column.cloneNode(true);
         for (var i = 0; i < rows.length; i++) {
-            if (i !== 0 && i % this.pageItemCount === 0) {
+            if (i !== 0 && i % this.pageItemCount === 0) { //Skip the first row.
                 this.rootNode.appendChild(columnNode);
                 columnNode = templates.column.cloneNode(true);
             }
             var item = templates.item.cloneNode(true);
-            this.templateFunc(item.firstChild, rows[i]);
+            item.firstChild.appendChild(this.templateFunc(rows[i]));
             columnNode.firstChild.appendChild(item);
         }
-        if (i % this.pageItemCount === 0) {
+        if (i % this.pageItemCount !== 0) {
             this.rootNode.appendChild(columnNode);
         }
     };
 
     pagebase.prototype.setPageItemCount = function setPageItemCount(pageItemCount, rows) {
-        this.pageItemCount = pageItemCount;
+        this.pageItemCount = Math.max(pageItemCount, 1);
         this.buildDom(rows);
     };
 

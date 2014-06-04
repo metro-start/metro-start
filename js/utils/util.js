@@ -24,10 +24,12 @@ define(['utils/defaults', 'utils/script', 'utils/storage'], function Utils(defau
         },
 
         createElement: function createDom(htmlStr) {
-            var temp = document.createElement('div');
-            temp.innerHTML = htmlStr;
             var fragment = document.createDocumentFragment();
-            fragment.appendChild(temp.firstChild);
+            if (htmlStr) {
+                var temp = document.createElement('div');
+                temp.innerHTML = htmlStr;
+                fragment.appendChild(temp.firstChild);
+            }
             return fragment;
         },
 

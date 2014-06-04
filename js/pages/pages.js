@@ -6,6 +6,7 @@ define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], functio
 
     // storage.get('sort', defaults.defaultSort, $scope);
     var pages = {
+
         page: 0,
 
         data: Array.prototype.slice.call(arguments),
@@ -32,15 +33,27 @@ define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], functio
                         'height': '' + height
                     });
 
-                    var pageItemCount = Math.floor((height) / 60);
-                    that.data.forEach(function(module) {
-                        module.setPageItemCount(pageItemCount);
-                    });
+                    var pageItemCount = Math.floor((height) / 60); //-1 to account for sorting
+                    that.setPageItemCount(pageItemCount);
                 });
                 jquery(window).resize();
             });
-
         },
+
+        setPageItemCount: function(pageItemCount) {
+            this.pageItemCount = pageItemCount;
+            this.data.forEach(function(module) {
+                module.setPageItemCount(pageItemCount);
+            });
+        },
+
+        showOptionsChanged: function(optionsAreVisible) {
+            if (optionsAreVisible) {
+                this.setPageItemCount(this.pageItemCount - 2);
+            } else {
+                this.setPageItemCount(this.pageItemCount + 2);
+            }
+        }
     };
 
     return pages;
