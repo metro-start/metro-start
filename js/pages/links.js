@@ -1,4 +1,4 @@
-define(['pages/base','utils/storage', 'utils/util'], function(base, storage, util) {
+define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, storage, util) {
     var links = {
         data: {},
 
@@ -13,17 +13,13 @@ define(['pages/base','utils/storage', 'utils/util'], function(base, storage, uti
             this.elems.addLink = document.getElementById('addLink');
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
-            this.loadLinks(sort, pageItemCount);
+            this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+            this.links = new pagebase(this.elems.rootDom, sort, pageItemCount, this.callback.bind(this));
+            this.links.buildDom(this.data);
         },
 
         setPageItemCount: function(pageItemCount) {
             this.links.setPageItemCount(pageItemCount - 1, this.data); //-1 to account for form
-        },
-
-        loadLinks: function(sort, pageItemCount) {
-            this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-            this.links = new base(this.elems.rootDom, this.data, sort, pageItemCount, this.callback.bind(this));
-            this.links.buildDom();
         },
 
         templates: {
@@ -71,7 +67,7 @@ define(['pages/base','utils/storage', 'utils/util'], function(base, storage, uti
                     _gaq.push(['_trackEvent', 'Links', 'Add New Link']);
                 }
                 storage.save('links', this.data);
-                this.links.relayout(this.data);
+                this.links.buildDom(this.data);
             }
             event.preventDefault();
         },
@@ -91,7 +87,7 @@ define(['pages/base','utils/storage', 'utils/util'], function(base, storage, uti
                 }
             }
             storage.save('links', this.data);
-            this.links.relayout(this.data);
+            this.links.buildDom(this.data);
             _gaq.push(['_trackEvent', 'Links', 'Remove Link']);
         }
     };
