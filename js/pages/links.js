@@ -14,8 +14,8 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
 
         init: function(document, sort, pageItemCount) {
             this.elems.rootDom = document.getElementById('internal_selector_links');
-            this.elems.newUrlTitle = document.getElementById('newUrlTitle');
             this.elems.newUrl = document.getElementById('newUrl');
+            this.elems.newUrlTitle = document.getElementById('newUrlTitle');
             this.elems.addLink = document.getElementById('addLink');
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
@@ -44,15 +44,16 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
         },
 
         addLink: function(event) {
-            var newUrlTitle = this.elems.newUrlTitle.value.trim();
             var newUrl = this.elems.newUrl.value.trim();
+            var newUrlTitle = this.elems.newUrlTitle.value.trim();
             if (newUrl !== '') {
-                if (!newUrl.match(/https?\:\/\//)) {
-                    newUrl = 'http://' + newUrl;
-                }
                 var formatTitle = function(title) {
                     return newUrlTitle ? newUrlTitle : newUrl.toLocaleLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
                 };
+
+                if (!newUrl.match(/https?\:\/\//)) {
+                    newUrl = 'http://' + newUrl;
+                }
                 if (this.linkToEdit) {
                     this.linkToEdit.name = formatTitle(newUrlTitle);
                     this.linkToEdit.url = newUrl;
