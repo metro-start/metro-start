@@ -19,19 +19,21 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
             this.pageItemCount = pageItemCount;
         }
 
+        this.init(document);
+    };
+
+    pagebase.prototype.init = function(document) {
         this.elems.sort = document.getElementById('sort_' + this.name);
         this.elems.sort.addEventListener('click', this.enableSort.bind(this));
 
         this.elems.unsort = document.getElementById('unsort_' + this.name);
         this.elems.unsort.addEventListener('click', this.disableSort.bind(this));
-    };
 
-    pagebase.prototype.init = function(document) {
-        this.elems.sort = document.getElementById('sort_' + this.name);
-        this.elems.addEventListener('click', this.enableSort.bind(this));
-
-        this.elems.unsort = document.getElementById('unsort_' + this.name);
-        this.elems.addEventListener('click', this.disableSort.bind(this));
+        if (this.sort) {
+            util.addClass(this.elems.sort, 'sel-active');
+        } else {
+            util.addClass(this.elems.unsort, 'sel-active');
+        }
     };
 
     pagebase.prototype.enableSort = function() {
@@ -83,7 +85,7 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
 
     pagebase.prototype.toggleSort = function toggleSort() {
         this.sort = !this.sort;
-        storage.save(this.name, this.sort);
+        storage.save(this.name + '_sort', this.sort);
         if (this.sort) {
             this.sortData(function(a, b) {
                 return a.id.toLocaleLowerCase() > b.id.toLocaleLowerCase();
