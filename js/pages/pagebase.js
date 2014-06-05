@@ -2,7 +2,7 @@
     A collection to handle organizing data in pages.
     newRows: An array of items to initialize the collection with.
 */
-define(['jquery', 'utils/util'], function(jquery, util) {
+define(['utils/util'], function(util) {
     var templates = {
        column: util.createElement('<div class="page"></div>'),
        item: util.createElement('<div class="item"></div>')
