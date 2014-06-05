@@ -25,8 +25,8 @@
 				<div class="apps collection">
 					<div id="apps">
 						<div class="options-color option sort chooser">
-							<span id="unsort_apps" class="selection clickable" ng-class="{'sel-active': sort.apps == 0}" ng-click="changeSorting('apps', 0)">unsorted</span>
-							<span id="sort_apps" class="selection clickable" ng-class="{'sel-active': sort.apps == 1}" ng-click="changeSorting('apps', 1)">sorted</span>
+							<span id="unsort_apps" class="selection clickable">unsorted</span>
+							<span id="sort_apps" class="selection clickable">sorted</span>
 						</div>
 						<div class="external_selector" id="external_selector_apps">
 							<div class="internal_selector" id="internal_selector_apps">
@@ -45,8 +45,8 @@
 				<div class="links collection">
 					<div id="links">
 						<div class="options-color option sort chooser">
-							<span id="unsort_links" class="selection clickable" ng-class="{'sel-active': sort.links == 0}" ng-click="changeSorting('links', 0)">unsorted</span>
-							<span id="sort_links" class="selection clickable" ng-class="{'sel-active': sort.links ==1}" ng-click="changeSorting('links', 1)">sorted</span>
+							<span id="unsort_links" class="selection clickable">unsorted</span>
+							<span id="sort_links" class="selection clickable">sorted</span>
 						</div>
 						<div class="external_selector" id="external_selector_links">
 							<div class="internal_selector" id="internal_selector_links">
@@ -118,12 +118,13 @@
 				<div id="city"></div>
 				<div>
 					<form id="saveLocation" ng-submit="saveLocation()">
-						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="{{ weather.city }}">
+						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="seattle, wa">
 						<input type="submit" class="options-color option" value="save">
 					</form>
 				</div>
 				<div class="options-color option chooser">
-					<span class="selection clickable" ng-class="{'sel-active': weatherUnit == $index}" ng-click="changeWeatherUnit($index)" ng-repeat="unit in units">{{ unit }}</span>
+					<span id="fahrenheit" class="selection clickable">fahrenheit</span>
+					<span id="celsius" class="selection clickable">celsius</span>
 				</div>
 				<p id="temp">
 					<span id="currentTemp"></span>&deg;<span class="options-color" id ="unit"></span> /
