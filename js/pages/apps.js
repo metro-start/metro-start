@@ -12,6 +12,7 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
 
         init: function(document, sort, pageItemCount) {
             this.elems.rootNode = document.getElementById('internal_selector_apps');
+            this.apps = new pagebase(this.elems.rootNode, sort, pageItemCount, this.templateFunc.bind(this));
             this.loadApps(sort, pageItemCount);
         },
 
@@ -24,7 +25,6 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
                 }];
                 // Remove extensions and limit to installed apps.
                 that.data = that.data.concat(res.filter(function(item) { return item.isApp; }));
-                that.apps = new pagebase(that.elems.rootNode, sort, pageItemCount, that.templateFunc.bind(that));
                 that.apps.buildDom(that.data);
             });
         },
