@@ -10,11 +10,14 @@
   "private": true,
   "dependencies": {
     "requirejs": "~2.1.11",
-    "jss": "*",
-    "jquery-ui": "~1.10.4",
+    "requirejs-domready": "~2.0.1",
+
     "jquery": "~2.1.1",
-    "farbtastic": "~2.0.0-alpha.1",
+    "jquery-ui": "~1.10.4",
     "jquery-migrate": "~1.2.1",
-    "requirejs-domready": "~2.0.1"
-  },
+
+    "jss": "*",
+    "farbtastic": "~2.0.0-alpha.1",
+    "metro-select": "*"
+  }
 }

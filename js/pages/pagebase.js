@@ -1,8 +1,4 @@
-/**
-    A collection to handle organizing data in pages.
-    newRows: An array of items to initialize the collection with.
-*/
-define(['utils/util', 'utils/storage'], function(util, storage) {
+define(['utils/util', 'utils/storage', 'metro-select'], function(util, storage, metroSelect) {
     var templates = {
        column: util.createElement('<div class="page"></div>'),
        item: util.createElement('<div class="item"></div>')
@@ -22,17 +18,19 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
     };
 
     pagebase.prototype.init = function(document) {
-        this.elems.sort = document.getElementById('sort_' + this.name);
-        this.elems.sort.addEventListener('click', this.enableSort.bind(this));
+        var that = this;
+        var selector = $('#' + this.name + '-chooser');
+        selector.attr('selectedIndex', this.sort ? 1 : 0);
+        selector.metroSelect({
+            'onchange': this.sortChanged.bind(this)
+        });
+    };
 
-        this.elems.unsort = document.getElementById('unsort_' + this.name);
-        this.elems.unsort.addEventListener('click', this.disableSort.bind(this));
+    pagebase.prototype.sortChanged = function sortChagned(sort) {
+        this.sort = !this.sort;
+        storage.save(this.name + '_sort', this.sort);
 
-        if (this.sort) {
-            util.addClass(this.elems.sort, 'sel-active');
-        } else {
-            util.addClass(this.elems.unsort, 'sel-active');
-        }
+        this.rebuildDom();
     };
 
     pagebase.prototype.compareFunc = function compareFunc(a, b) {
@@ -97,29 +95,6 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
             }
         }
     };
-
-    pagebase.prototype.enableSort = function enableSort() {
-        if (this.sort === false) {
-            util.addClass(this.elems.sort, 'sel-active');
-            util.removeClass(this.elems.unsort, 'sel-active');
-            this.toggleSort();
-        }
-    };
-
-    pagebase.prototype.disableSort = function disableSort() {
-        if (this.sort === true) {
-            util.removeClass(this.elems.sort, 'sel-active');
-            util.addClass(this.elems.unsort, 'sel-active');
-            this.toggleSort();
-        }
-    };
-
-    pagebase.prototype.toggleSort = function toggleSort() {
-        this.sort = !this.sort;
-        storage.save(this.name + '_sort', this.sort);
-        this.rebuildDom();
-    };
-
 
     pagebase.prototype.setPageItemCount = function setPageItemCount(pageItemCount) {
         if (pageItemCount !== this.pageItemCount) {
