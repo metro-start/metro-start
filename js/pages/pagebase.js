@@ -61,20 +61,24 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
         while(this.rootNode.lastChild) {
             this.rootNode.lastChild.remove();
         }
-        //Add each row to an column and create new ones on the pageItemCount boundary.
-        var columnNode = templates.column.cloneNode(true);
-        for (var i = 0; i < rows.length; i++) {
-            if (i !== 0 && i % this.pageItemCount === 0) { //Skip the first row.
-                this.rootNode.appendChild(columnNode);
-                columnNode = templates.column.cloneNode(true);
+        if (rows.length) {
+            var i = 0;
+            var columnNode = templates.column.cloneNode(true);
+            
+            //Add each row to an column and create new ones on the pageItemCount boundary.
+            for (i = 0; i < rows.length; i++) {
+                if (i !== 0 && i % this.pageItemCount === 0) { //Skip the first row.
+                    this.rootNode.appendChild(columnNode);
+                    columnNode = templates.column.cloneNode(true);
+                }
+                var item = templates.item.cloneNode(true);
+                item.firstChild.id = this.name + '_' + i;
+                item.firstChild.appendChild(this.templateFunc(rows[i]));
+                columnNode.firstChild.appendChild(item);
             }
-            var item = templates.item.cloneNode(true);
-            item.firstChild.id = this.name + '_' + i;
-            item.firstChild.appendChild(this.templateFunc(rows[i]));
-            columnNode.firstChild.appendChild(item);
-        }
-        if (i % this.pageItemCount !== 0) {
-            this.rootNode.appendChild(columnNode);
+            if ((i - 1) % this.pageItemCount !== 0) { // - 1 to account for the for loop going one past last good index.
+                this.rootNode.appendChild(columnNode);
+            }
         }
     };
 
