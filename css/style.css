@@ -219,10 +219,8 @@ h1 {
     display: block;
 	position: relative;
 }
-.show {
-	display: block;
-}
-.hide {
+
+.ng-hide {
 	display: none;
 }
 

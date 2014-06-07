@@ -20,9 +20,9 @@ module.exports = function (grunt) {
                         requireConfig: {
                             baseUrl: './',
                             paths: {
-                                'util': 'js/components/util',
-                                'pages': 'js/components/pages',
-                                'storage': 'js/components/storage',
+                                'util': 'js/util',
+                                'pages': 'js/pages',
+                                'storage': 'js/storage',
                                 'jquery': 'lib/jquery/dist/jquery'
                             },
                             deps: ['spec/spec_helper']
@@ -35,7 +35,6 @@ module.exports = function (grunt) {
             scripts: {
                 files: [
                     'js/*.js',
-                    'js/components/*.js',
                     'spec/*.js'
                 ],
                 tasks: ['test'],

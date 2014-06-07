@@ -1,4 +1,4 @@
-define(['jquery'], function Storage(jquery) {
+define(['util', 'jquery'], function Storage(util, jquery) {
     var storage = {
         /**
         Saves the key, value pair to chrome.storage.sync.
@@ -9,7 +9,16 @@ define(['jquery'], function Storage(jquery) {
 
         deferred: undefined,
 
-        init: function() {
+        save: function save(key, value, scope) {
+            if (scope) scope[key] = value;
+            if (this.cache) this.cache[key] = value;
+
+            var obj = {};
+            obj[key] = value;
+            chrome.storage.sync.set(obj);
+        },
+
+        getAll: function getAll() {
             if (!this.deferred) {
                 this.cache = {};
                 this.deferred = jquery.Deferred();
@@ -22,15 +31,6 @@ define(['jquery'], function Storage(jquery) {
                 });
             }
             return this.deferred.promise();
-        },
-
-        save: function save(key, value, scope) {
-            if (scope) scope[key] = value;
-            if (this.cache) this.cache[key] = value;
-
-            var obj = {};
-            obj[key] = value;
-            chrome.storage.sync.set(obj);
         },
 
         /**
