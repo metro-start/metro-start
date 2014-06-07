@@ -31,16 +31,16 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
         templateFunc: function(item) {
             var fragment = util.createElement('');
             var link = this.templates.linkFragment.cloneNode(true);
-            link.firstChild.href = item.url;
-            link.firstChild.textContent = item.name;
+            link.firstElementChild.href = item.url;
+            link.firstElementChild.textContent = item.name;
             fragment.appendChild(link);
 
             var remove = this.templates.removeFragment.cloneNode(true);
-            remove.firstChild.addEventListener('click', this.removeLink.bind(this, item));
+            remove.firstElementChild.addEventListener('click', this.removeLink.bind(this, item));
             fragment.appendChild(remove);
 
             var edit = this.templates.editFragment.cloneNode(true);
-            edit.firstChild.addEventListener('click', this.editLink.bind(this, item));
+            edit.firstElementChild.addEventListener('click', this.editLink.bind(this, item));
             fragment.appendChild(edit);
 
             return fragment;

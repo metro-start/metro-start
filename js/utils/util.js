@@ -28,7 +28,7 @@ define(['utils/defaults', 'utils/script', 'utils/storage'], function Utils(defau
             if (htmlStr) {
                 var temp = document.createElement('div');
                 temp.innerHTML = htmlStr;
-                fragment.appendChild(temp.firstChild);
+                fragment.appendChild(temp.firstElementChild);
             }
             return fragment;
         },

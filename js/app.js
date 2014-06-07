@@ -61,11 +61,6 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
                 this.data.showOptions = !this.data.showOptions;
 
                 var that = this;
-                this.modules.forEach(function(module) {
-                    if (module.showOptionsChanged) {
-                        module.showOptionsChanged(that.data.showOptions);
-                    }
-                });
                 if (this.data.showOptions) {
                     document.body.removeChild(this.elems.hideRule);
                 } else {
@@ -76,6 +71,11 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
                 if (this.data.page == 3) {
                     this.data.page = storage.get('page', 0);
                 }
+                this.modules.forEach(function(module) {
+                    if (module.showOptionsChanged) {
+                        module.showOptionsChanged(that.data.showOptions);
+                    }
+                });
                 // $scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
                 _gaq.push(['_trackEvent', 'Page', 'Wrench']);
             },

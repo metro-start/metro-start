@@ -51,15 +51,10 @@ define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], functio
 
         showOptionsChanged: function(showOptions) {
             this.data.forEach(function(module) {
-                if (module.showOptionsChanged) {
-                    module.showOptionsChanged(showOptions);
+                if (module.setShowOptions) {
+                    module.setShowOptions(showOptions);
                 }
             });
-            // if (optionsAreVisible) {
-            //     this.setPageItemCount(this.pageItemCount - 2);
-            // } else {
-            //     this.setPageItemCount(this.pageItemCount + 2);
-            // }
         }
     };
 
