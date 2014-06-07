@@ -56,25 +56,57 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
         return a.firstChild.textContent > b.firstChild.textContent;
     };
 
-    pagebase.prototype.buildDom = function buildDom(rows) {
-        //Remove all existing nodes.
-        while(this.rootNode.lastChild) {
-            this.rootNode.lastChild.remove();
+    pagebase.prototype.rebuildDom = function() {
+        var nodes = [];
+        while (this.rootNode.firstChild) {
+            var column = this.rootNode.firstChild;
+            while (column.firstChild) {
+                nodes.push(column.firstChild);
+                column.firstChild.remove();
+            }
         }
-        if (rows.length) {
-            var i = 0;
+        if (this.sort) {
+            nodes.sort(this.compareFunc ? this.compareFunc : this.defaultCompareFunc);
+        }
+        this.addAllNodes(nodes);
+    };
+
+    pagebase.prototype.buildDom = function buildDom(rows) {
+        while (this.rootNode.firstChild) {
+            this.rootNode.firstChild.remove();
+        }
+        this.addAllRows(rows);
+    };
+
+    pagebase.prototype.addAllRows = function addAllItems(rows) {
+        var nodes = [];
+        for (var i = 0; i < rows.length; i++) {
+            var item = templates.item.cloneNode(true);
+            item.firstChild.id = this.name + '_' + i;
+            item.firstChild.appendChild(this.templateFunc(rows[i]));
+            nodes.push(item);
+        }
+        this.addAllNodes(nodes);
+    };
+
+    pagebase.prototype.addAllNodes = function addAllNodes(nodes) {
+        if (nodes.length) {
             var columnNode = templates.column.cloneNode(true);
-            
+            var pageItemCount = this.pageItemCount;
+            if (this.showOptions) {
+                pageItemCount--;
+                console.log('ope')
+            }
+            if (this.name === 'link') {
+                pageItemCount--;
+            }
             //Add each row to an column and create new ones on the pageItemCount boundary.
-            for (i = 0; i < rows.length; i++) {
-                if (i !== 0 && i % this.pageItemCount === 0) { //Skip the first row.
+            for (var i = 0; i < nodes.length; i++) {
+                if (i !== 0 && i % pageItemCount === 0) { //Skip the first row.
                     this.rootNode.appendChild(columnNode);
                     columnNode = templates.column.cloneNode(true);
                 }
-                var item = templates.item.cloneNode(true);
-                item.firstChild.id = this.name + '_' + i;
-                item.firstChild.appendChild(this.templateFunc(rows[i]));
-                columnNode.firstChild.appendChild(item);
+                columnNode.firstChild.appendChild(nodes[i]);
             }
             if ((i - 1) % this.pageItemCount !== 0) { // - 1 to account for the for loop going one past last good index.
                 this.rootNode.appendChild(columnNode);
@@ -83,35 +115,21 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
     };
 
     pagebase.prototype.setPageItemCount = function setPageItemCount(pageItemCount, rows) {
-        this.pageItemCount = Math.max(pageItemCount, 1);
-        this.buildDom(rows);
+        if (pageItemCount !== this.pageItemCount) {
+            this.pageItemCount = Math.max(pageItemCount, 1);
+            this.buildDom(rows);
+        }
+    };
+
+    pagebase.prototype.showOptionsChanged = function showOptionsChanged(showOptions) {
+        this.showOptions = showOptions;
+        this.rebuildDom();
     };
 
     pagebase.prototype.toggleSort = function toggleSort() {
         this.sort = !this.sort;
         storage.save(this.name + '_sort', this.sort);
-        if (this.sort) {
-            this.sortData(function(a, b) {
-                return a.id.toLocaleLowerCase() > b.id.toLocaleLowerCase();
-            });
-        } else {
-            this.sortData(this.compareFunc ? this.compareFunc : this.defaultCompareFunc);
-        }
-    };
-
-    pagebase.prototype.sortData = function sortData(compareFunc) {
-        var nodes = [];
-        while(this.rootNode.lastChild) {
-            nodes.push(this.rootNode.lastChild);
-            this.rootNode.lastChild.remove();
-        }
-        nodes.sort(compareFunc);
-
-        var fragment = util.createElement();
-        for(var i = 0; i < nodes.length; i++) {
-            fragment.appendChild(nodes[i]);
-        }
-        this.rootNode.appendChild(fragment);
+        this.rebuildDom();
     };
 
     return pagebase;

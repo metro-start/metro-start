@@ -34,7 +34,9 @@ define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], functio
                     });
 
                     var pageItemCount = Math.floor((height) / 60); //-1 to account for sorting
-                    that.setPageItemCount(pageItemCount);
+                    that.data.forEach(function(module) {
+                        module.setPageItemCount(pageItemCount);
+                    });
                 });
                 jquery(window).resize();
             });
@@ -47,12 +49,17 @@ define(['pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'], functio
             });
         },
 
-        showOptionsChanged: function(optionsAreVisible) {
-            if (optionsAreVisible) {
-                this.setPageItemCount(this.pageItemCount - 2);
-            } else {
-                this.setPageItemCount(this.pageItemCount + 2);
-            }
+        showOptionsChanged: function(showOptions) {
+            this.data.forEach(function(module) {
+                if (module.showOptionsChanged) {
+                    module.showOptionsChanged(showOptions);
+                }
+            });
+            // if (optionsAreVisible) {
+            //     this.setPageItemCount(this.pageItemCount - 2);
+            // } else {
+            //     this.setPageItemCount(this.pageItemCount + 2);
+            // }
         }
     };
 
