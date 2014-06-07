@@ -3,6 +3,9 @@ The default theme for metro start.
 */
 define([], function() {
     return {
+        init: function() {
+
+        },
         defaultTheme: {
             'title': 'metro start',
             'colors': {

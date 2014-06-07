@@ -16,41 +16,17 @@
 			</div>
 		</div>
 		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
-		<input type="radio" ng-model="page" value="0" class="ng-hide" id="links">
-		<input type="radio" ng-model="page" value="1" class="ng-hide" id="apps">
-		<input type="radio" ng-model="page" value="2" class="ng-hide" id="bookmarks">
-		<input type="radio" ng-model="page" value="3" class="ng-hide" id="themes">
+		<input type="radio" ng-model="page" value="0" class="hide" id="links">
+		<input type="radio" ng-model="page" value="1" class="hide" id="apps">
+		<input type="radio" ng-model="page" value="2" class="hide" id="bookmarks">
+		<input type="radio" ng-model="page" value="3" class="hide" id="themes">
 		<div class="external">
 			<div class="internal">
-				<div class="links collection">
-					<div id="links">
-						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="{'sel-active': sort.links == 0}" ng-click="changeSorting('links', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="{'sel-active': sort.links ==1}" ng-click="changeSorting('links', 1)">sorted</span>
-						</div>
-						<div class="external_selector" id="external_selector_links">
-							<div class="internal_selector" id="internal_selector_links">
-								<div class="page" ng-repeat="page in links.pages">
-									<div class="item" ng-repeat="link in page">
-										<a class="title" ng-href="{{ link.url }}" ng-bind="link.name"></a>
-										<span class="remove option options-color small-text clickable" ng-click="removeLink($parent.$index, $index)">remove</span>
-										<span class="remove option options-color small-text clickable" ng-click="editLink($parent.$index, $index)">edit</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<form ng-submit="addLink()" class="add">
-							<input type="text" name="newUrlTitle" ng-model="newUrlTitle" placeholder="title" class="url option" size="10">
-							<input type="text" name="newUrl" ng-model="newUrl" placeholder="http://" class="url option" size="16">
-							<input type="submit" class="options-color option" value="save">
-						</form>
-					</div>
-				</div>
 				<div class="apps collection">
 					<div id="apps">
 						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="{'sel-active': sort.apps == 0}" ng-click="changeSorting('apps', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="{'sel-active': sort.apps == 1}" ng-click="changeSorting('apps', 1)">sorted</span>
+							<span id="unsort_apps" class="selection clickable">unsorted</span>
+							<span id="sort_apps" class="selection clickable">sorted</span>
 						</div>
 						<div class="external_selector" id="external_selector_apps">
 							<div class="internal_selector" id="internal_selector_apps">
@@ -63,6 +39,24 @@
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<div class="links collection">
+					<div id="links">
+						<div class="options-color option sort chooser">
+							<span id="unsort_links" class="selection clickable">unsorted</span>
+							<span id="sort_links" class="selection clickable">sorted</span>
+						</div>
+						<div class="external_selector" id="external_selector_links">
+							<div class="internal_selector" id="internal_selector_links">
+							</div>
+						</div>
+						<form id="addLink" class="add">
+							<input type="text" name="newUrlTitle" id="newUrlTitle" placeholder="title" class="url option" size="10">
+							<input type="text" name="newUrl" id="newUrl" placeholder="http://" class="url option" size="16">
+							<input type="submit" class="options-color option" value="save">
+						</form>
 					</div>
 				</div>
 				<div class="bookmarks collection">
@@ -119,28 +113,29 @@
 			</div>
 		</div>
 		<div class="weather">
-			<div id="toggle-weather" class="options-color option clickable" ng-click="toggleWeather()">{{ weatherToggleText }}</div>
-			<div id="weather" ng-show="weatherToggleText == 'hide weather'">
-				<div id="where" ng-bind="weather.city"></div>
+			<div id="toggleWeather" class="options-color option clickable"></div>
+			<div id="weather">
+				<div id="city"></div>
 				<div>
-					<form ng-submit="saveLocation()">
-						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="{{ weather.city }}">
+					<form id="saveLocation" ng-submit="saveLocation()">
+						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="seattle, wa">
 						<input type="submit" class="options-color option" value="save">
 					</form>
 				</div>
 				<div class="options-color option chooser">
-					<span class="selection clickable" ng-class="{'sel-active': weatherUnit == $index}" ng-click="changeWeatherUnit($index)" ng-repeat="unit in units">{{ unit }}</span>
+					<span id="fahrenheit" class="selection clickable">fahrenheit</span>
+					<span id="celsius" class="selection clickable">celsius</span>
 				</div>
 				<p id="temp">
-					<span ng-bind="weather.currentTemp"></span>&deg;<span class="options-color" ng-bind="weather.unit"></span> /
-					<span ng-bind="weather.highTemp"></span><span class="options-color"> hi</span> /
-					<span ng-bind="weather.lowTemp"></span><span class="options-color"> lo</span>
+					<span id="currentTemp"></span>&deg;<span class="options-color" id ="unit"></span> /
+					<span id="highTemp"></span><span class="options-color"> hi</span> /
+					<span id="lowTemp"></span><span class="options-color"> lo</span>
 				</p>
-				<p id="condition" ng-bind="weather.condition"></p>
+				<p id="condition"></p>
 			</div>
 		</div>
 		<div class="footer">
-			<p class="options-color wrench clickable" id="wrench" ng-click="clickWrench()">wrench</p>
+			<p class="options-color wrench clickable" id="wrench">wrench</p>
 			<div class="options-color option font-chooser chooser">
 				<span class="selection clickable" ng-class="{'sel-active': font==0}" ng-click="changeFont(0)">normal fonts</span>
 				<span class="selection clickable" ng-class="{'sel-active': font==1}" ng-click="changeFont(1)">thin fonts</span>
@@ -150,7 +145,7 @@
 				<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()" ng-bind="editThemeText"></p>
 			</div>
 		</div>
-		<div class="picker background-color" ng-show="editThemeText == 'save theme'">
+		<div class="picker background-color" id="picker">
 			<p>
 				<input type="text" ng-model="newThemeTitle" class="options-color" size="12" placeholder="untitled">
 			</p>
@@ -181,7 +176,7 @@
 		</div>
 		<!-- Rule to hide all options when page first loads.
 			 Removes option elements added after the calls to hide .option were made. -->
-		<style type="text/css" id="hide-rule" ng-if="hideOptions">
+		<style type="text/css" id="hideRule">
 			.option, .picker {
 				display: none;
 			}
