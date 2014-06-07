@@ -79,11 +79,10 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
             var columnNode = templates.column.cloneNode(true);
             var pageItemCount = this.pageItemCount;
             if (this.showOptions) {
-                pageItemCount--;
-                console.log('ope');
+                pageItemCount--; // If the options are showing, account for sort options.
             }
             if (this.name === 'link') {
-                pageItemCount--;
+                pageItemCount--; // If its links page, accoutn for add link options.
             }
             //Add each row to an column and create new ones on the pageItemCount boundary.
             for (var i = 0; i < nodes.length; i++) {
@@ -97,18 +96,6 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
                 this.rootNode.appendChild(columnNode);
             }
         }
-    };
-
-    pagebase.prototype.setPageItemCount = function setPageItemCount(pageItemCount) {
-        if (pageItemCount !== this.pageItemCount) {
-            this.pageItemCount = Math.max(pageItemCount, 1);
-            this.rebuildDom();
-        }
-    };
-
-    pagebase.prototype.setShowOptions = function setShowOptions(showOptions) {
-        this.showOptions = showOptions;
-        this.rebuildDom();
     };
 
     pagebase.prototype.enableSort = function enableSort() {
@@ -130,6 +117,19 @@ define(['utils/util', 'utils/storage'], function(util, storage) {
     pagebase.prototype.toggleSort = function toggleSort() {
         this.sort = !this.sort;
         storage.save(this.name + '_sort', this.sort);
+        this.rebuildDom();
+    };
+
+
+    pagebase.prototype.setPageItemCount = function setPageItemCount(pageItemCount) {
+        if (pageItemCount !== this.pageItemCount) {
+            this.pageItemCount = Math.max(pageItemCount, 1);
+            this.rebuildDom();
+        }
+    };
+
+    pagebase.prototype.setShowOptions = function setShowOptions(showOptions) {
+        this.showOptions = showOptions;
         this.rebuildDom();
     };
 
