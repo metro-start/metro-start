@@ -1,14 +1,23 @@
-define(['jquery', 'jss', 'pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'],
-    function Pages(jquery, jss, apps, bookmarks, themes, links) {
+define(['jquery', 'jss', 'utils/storage', 'pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'],
+    function Pages(jquery, jss, storage, apps, bookmarks, themes, links) {
     var pages = {
 
-        page: 0,
+        page: storage.get('page'),
 
-        data: Array.prototype.slice.call(arguments, 2),
+        name: 'pages',
+
+        data: Array.prototype.slice.call(arguments, 3),
 
         init: function(document) {
             this.data.forEach(function(module) {
                 module.init(document);
+            });
+
+            jquery('#' + this.name + '-chooser').metroSelect({
+                'onchange': function(page) {
+                    this.page = page;
+                    storage.save('page', page);
+                }
             });
 
             var that = this;
