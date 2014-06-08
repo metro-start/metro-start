@@ -12,7 +12,7 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
             editFragment: util.createElement('<span class="edit option options-color small-text clickable">edit</span>'),
         },
 
-        init: function(document, sort, pageItemCount) {
+        init: function(document) {
             this.elems.rootDom = document.getElementById('internal_selector_links');
             this.elems.newUrl = document.getElementById('newUrl');
             this.elems.newUrlTitle = document.getElementById('newUrlTitle');
@@ -20,7 +20,7 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
             this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
-            this.links = new pagebase(document, this.name, this.elems.rootDom, pageItemCount, this.templateFunc.bind(this));
+            this.links = new pagebase(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
             this.links.buildDom(this.data);
         },
 

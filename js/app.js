@@ -14,7 +14,7 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
 
             showOptions: false,
 
-            modules: Array.prototype.slice.call(arguments).slice(2),
+            modules: Array.prototype.slice.call(arguments, 2),
 
             init: function() {
                 this.modules.forEach(function(module) {

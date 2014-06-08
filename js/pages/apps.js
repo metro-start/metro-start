@@ -12,13 +12,13 @@ define(['pages/pagebase','utils/storage', 'utils/util'], function(pagebase, stor
             optionsFragment: util.createElement('<a class="option options-color small-text">options</a>'),
         },
 
-        init: function(document, sort, pageItemCount) {
+        init: function(document) {
             this.elems.rootNode = document.getElementById('internal_selector_apps');
-            this.apps = new pagebase(document, this.name, this.elems.rootNode, pageItemCount, this.templateFunc.bind(this));
-            this.loadApps(sort, pageItemCount);
+            this.apps = new pagebase(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
+            this.loadApps();
         },
 
-        loadApps: function(sort, pageItemCount) {
+        loadApps: function() {
             var that = this;
             chrome.management.getAll(function(res) {
                 that.data = [{

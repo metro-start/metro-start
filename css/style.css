@@ -57,17 +57,6 @@ h1 {
 .option {
 	display: inline-block;
 }
-.chooser > * {
-    margin-right: 3%;
-    display: inline;
-
-    -webkit-transition: opacity .25s linear;
-    opacity: 0.5;
-}
-.sel-active {
-    -webkit-transition: opacity .25s linear;
-    opacity: 1;
-}
 
 /* Header and menu */
 .page-chooser, .sort {

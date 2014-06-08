@@ -4,15 +4,12 @@ define(['utils/util', 'utils/storage', 'metro-select'], function(util, storage, 
        item: util.createElement('<div class="item"></div>')
     };
 
-    var pagebase = function pagebase(document, name, rootNode, pageItemCount, templateFunc) {
+    var pagebase = function pagebase(document, name, rootNode, templateFunc) {
         this.elems = {};
         this.name = name;
         this.rootNode = rootNode;
         this.sort = storage.get(this.name + '_sort') ? storage.get(this.name + '_sort') : false;
         this.templateFunc = templateFunc;
-        if (!this.pageItemCount) {
-            this.pageItemCount = pageItemCount;
-        }
 
         this.init(document);
     };

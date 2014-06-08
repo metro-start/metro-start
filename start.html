@@ -15,7 +15,12 @@
 				<label class="selection option clickable" ng-class="{'sel-active': page == 3}" for="themes">themes</label>
 			</div>
 		</div>
-		<!-- Cannot use ng-repeat here. Breaks the bindings somehow. -->
+		<select id="page-chooser">
+			<option class="clickable">links</option>
+			<option class="clickable">apps</option>
+			<option class="clickable">bookmarks</option>
+			<option class="clickable option">themes</option>
+		</select>
 		<input type="radio" ng-model="page" value="0" class="hide" id="links">
 		<input type="radio" ng-model="page" value="1" class="hide" id="apps">
 		<input type="radio" ng-model="page" value="2" class="hide" id="bookmarks">
@@ -26,8 +31,8 @@
 					<div id="apps">
 						<div class="options-color option sort chooser">
 							<select id="apps-chooser">
-								<option>unsorted</unsorted>
-								<option>sorted</unsorted>
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
 							</select>
 						</div>
 						<div class="external_selector" id="external_selector_apps">
@@ -48,8 +53,8 @@
 					<div id="links">
 						<div class="options-color option sort chooser">
 							<select id="links-chooser">
-								<option>unsorted</unsorted>
-								<option>sorted</unsorted>
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
 							</select>
 						</div>
 						<div class="external_selector" id="external_selector_links">
