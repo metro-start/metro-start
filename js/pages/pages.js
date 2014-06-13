@@ -1,35 +1,48 @@
-define(['jquery', 'jss', 'utils/storage', 'pages/apps', 'pages/bookmarks', 'pages/themes', 'pages/links'],
-    function Pages(jquery, jss, storage, apps, bookmarks, themes, links) {
+define(['jquery', 'jss', 'utils/storage', 'pages/links', 'pages/apps', 'pages/bookmarks', 'pages/themes'],
+    function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
     var pages = {
 
-        page: storage.get('page'),
-
         name: 'pages',
+
+        elems: {},
 
         data: Array.prototype.slice.call(arguments, 3),
 
         init: function(document) {
+            this.page = storage.get('page', 'links');
             this.data.forEach(function(module) {
                 module.init(document);
             });
 
-            jquery('#' + this.name + '-chooser').metroSelect({
-                'onchange': function(page) {
-                    this.page = page;
-                    storage.save('page', page);
-                }
+            this.elems.chooser = document.getElementById(this.name + '-chooser');
+            jquery(this.elems.chooser).attr('selectedIndex', this.indexOfModule(this.page));
+            this.changePage(this.page);
+
+            jquery(this.elems.chooser).metroSelect({
+                'onchange': this.changePage.bind(this)
             });
 
             var that = this;
             jquery(window).resize(that.windowResized.bind(that));
-            this.windowResized();
+            jquery(window).resize();
+//            this.windowResized();
+        },
+
+        changePage: function changePage(page) {
+            this.page = page;
+            storage.save('page', page);
+
+            console.log((this.data.map(function(m) { return m.name; }).indexOf(page) * -100) + '%');
+            jss.set('.external .internal', {
+                'margin-left': (this.indexOfModule(page) * -100) + '%'
+            });
         },
 
         // Compare document height to element height to fine the number of elements per page.
         windowResized: function() {
             var pageHeight = jquery('body').height();
             var headerHeight = jquery('h1').outerHeight(true);
-            var navBarHeight = jquery('.page-chooser').outerHeight(true);
+            var navBarHeight = jquery('.' + this.name + '-chooser').outerHeight(true);
             var footerHeight = jquery('.footer').outerHeight(true);
             var height =  pageHeight - (headerHeight + navBarHeight + footerHeight);
 
@@ -52,6 +65,10 @@ define(['jquery', 'jss', 'utils/storage', 'pages/apps', 'pages/bookmarks', 'page
                     module.setShowOptions(showOptions);
                 }
             });
+        },
+
+        indexOfModule: function indexOfModule(moduleName) {
+            return this.data.map(function(m) { return m.name; }).indexOf(moduleName);
         }
     };
 

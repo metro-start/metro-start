@@ -52,14 +52,13 @@ h1 {
     font-size: 24px;
 	display: inline-block;
 	margin-right: 20px;
-	float: left;
 }
 .option {
 	display: inline-block;
 }
 
 /* Header and menu */
-.page-chooser, .sort {
+.pages-chooser, .sort {
     margin-left: 50px;
     margin-bottom: 10px;
 }
@@ -88,11 +87,6 @@ h1 {
 }
 
 /* Main content area */
-.links-option:checked ~ .external .internal { margin-left:0; }
-.apps-option:checked ~ .external .internal { margin-left:-100%; }
-.bookmarks-option:checked ~ .external .internal { margin-left:-200%; }
-.themes-option:checked ~ .external .internal { margin-left:-300%; }
-
 .external_selector {
 	overflow: auto;
 	width: 100%;
@@ -158,7 +152,7 @@ h1 {
 .footer {
 	position: relative;
 	width: 100%;
-	margin: 15px 0px 15px 0px;
+	margin: 15px 0 15px 0;
 }
 .wrench {
     /*position: absolute;*/
@@ -184,7 +178,7 @@ h1 {
 .picker {
     position: absolute;
     bottom: 50px;
-    right: 0px;
+    right: 0;
 	padding-top: 10px;
 	padding-left: 10px;
 }
