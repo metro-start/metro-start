@@ -123,11 +123,13 @@
 					</form>
 				</div>
 				<div class="options-color option chooser">
-					<span id="fahrenheit" class="selection clickable">fahrenheit</span>
-					<span id="celsius" class="selection clickable">celsius</span>
+					<select class="chooser" id="weather-unit-chooser">
+						<option class="clickable">fahrenheit</option>
+						<option class="clickable">celsius</option>
+					</select>
 				</div>
 				<p id="temp">
-					<span id="currentTemp"></span>&deg;<span class="options-color" id ="unit"></span> /
+					<span id="currentTemp"></span>&deg;<span class="options-color" id="unit"></span> /
 					<span id="highTemp"></span><span class="options-color"> hi</span> /
 					<span id="lowTemp"></span><span class="options-color"> lo</span>
 				</p>

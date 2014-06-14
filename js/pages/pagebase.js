@@ -8,7 +8,7 @@ define(['utils/util', 'utils/storage', 'metro-select'], function(util, storage, 
         this.elems = {};
         this.name = name;
         this.rootNode = rootNode;
-        this.sort = storage.get(this.name + '_sort') ? storage.get(this.name + '_sort') : false;
+        this.sort = storage.get(this.name + '_sort', false);
         this.templateFunc = templateFunc;
 
         this.init(document);

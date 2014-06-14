@@ -48,13 +48,6 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
                 //
                 // script.updateStyle(false);
                 // $scope.updateWeather(false);
-
-                // Attach a watcher to the page to see page changes and save the value.
-                // $scope.$watch('page', function(newValue, oldValue) {
-                //     if (newValue != 3) { // Do not save navigation to themes page.
-                //         storage.save('page', newValue);
-                //     }
-                // }, true);
             },
 
             clickWrench: function() {

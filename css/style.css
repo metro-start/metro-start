@@ -88,6 +88,9 @@ select.chooser {
     right: 15px;
     font-style: normal;
 }
+#temp > #unit {
+	
+}
 
 /* Main content area */
 .external_selector {

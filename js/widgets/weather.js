@@ -1,14 +1,16 @@
-define(['domReady!', 'jquery', 'utils/util', 'utils/storage'], function(document, jquery, util, storage) {
+define(['jquery', 'utils/util', 'utils/storage'], function(jquery, util, storage) {
     var weather = {
         data: {},
 
         elems: {},
 
-        init: function() {
+        nodes: ['city', 'currentTemp', 'highTemp', 'lowTemp', 'condition', 'unit'],
+
+        init: function(document) {
             this.data = storage.get('weather');
             this.data.visible = !!this.data.visible;
             var that = this;
-            ['city', 'currentTemp', 'highTemp', 'lowTemp', 'condition', 'unit'].forEach(function(name) {
+            this.nodes.forEach(function(name) {
                 that.elems[name] = document.getElementById(name);
                 that.elems[name].innerText = that.data[name];
             });
@@ -21,8 +23,16 @@ define(['domReady!', 'jquery', 'utils/util', 'utils/storage'], function(document
                 this.hideWeather();
             }
 
-            this.elems.toggleWeather.addEventListener('click', function() { that.toggleWeather(); });
+            this.elems.toggleWeather.addEventListener('click', this.toggleWeather.bind(this));
             document.getElementById('saveLocation').addEventListener('submit', saveLocation);
+
+            var chooser = jquery('#weather-unit-chooser');
+            chooser.attr('selectedIndex', this.unit === 'fahrenheit' ? 0 : 1);
+            chooser.metroSelect({
+                'onchange': this.changeWeatherUnit.bind(this)
+            });
+
+            this.updateWeather(false);
         },
 
         toggleWeather: function() {
@@ -60,15 +70,13 @@ define(['domReady!', 'jquery', 'utils/util', 'utils/storage'], function(document
         },
 
         changeWeatherUnit: function(newWeatherUnit) {
-            update('unit', newWeatherUnit);
-
-            updateWeather(true);
-            _gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', $scope.units[$scope.weatherUnit]]);
+            this.update('unit', newWeatherUnit);
+            this.updateWeather(true);
+            _gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', newWeatherUnit]);
         },
 
         /**
             Update the weather data being displayed.
-
             force: Bypass the 1 hour wait requirement.
         */
         updateWeather: function(force) {
@@ -77,26 +85,37 @@ define(['domReady!', 'jquery', 'utils/util', 'utils/storage'], function(document
             // If it has been more than an hour since last check.
             if(force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
                 this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
-                var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit + '"');
+                var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit[0] + '"');
                 var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
+
+                var that = this;
                 jquery.ajax(url).done(function(data) {
                     // If data was actually returned, save it.
                     if (data.query.count) {
                         var elem = data.query.results.channel;
                         var city = elem.location.city + ', ';
                         city += (elem.location.region ? elem.location.region : elem.location.country);
-                        this.data = {
+                        that.data = {
+                            'visible': that.data.visible,
                             'city': city.toLowerCase(),
                             'currentTemp': elem.item.condition.temp,
                             'highTemp': elem.item.forecast[0].high,
                             'lowTemp': elem.item.forecast[0].low,
                             'condition': elem.item.condition.text.toLowerCase(),
-                            'unit': elem.units.temperature.toLowerCase(),
+                            'unit': ' ' + elem.units.temperature.toLowerCase(),
                         };
+                        storage.save('weather', that.data);
+                        that.rebuildDom();
                     }
-                    storage.save('weather', this.data);
                 });
             }
+        },
+
+        rebuildDom: function() {
+            var that = this;
+            this.nodes.forEach(function(node) {
+                that.elems[node].innerText = that.data[node];
+            });
         },
 
         update: function(key, value) {
