@@ -58,17 +58,6 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
             setPageItemCount: function(pageItemCount) {
                 this.data.pageItemCount = pageItemCount;
                 pages.setPageItemCount(pageItemCount);
-                // if (typeof $scope.links !== 'undefined')
-                //     $scope.links.setPageItemCount(pageItemCount - 1);
-                //
-                // if (typeof $scope.apps !== 'undefined')
-                //     $scope.apps.setPageItemCount(pageItemCount);
-                //
-                // if (typeof $scope.localThemes !== 'undefined')
-                //     $scope.localThemes.setPageItemCount(pageItemCount);
-                //
-                // if (typeof $scope.onlineThemes !== 'undefined')
-                //     $scope.onlineThemes.setPageItemCount(pageItemCount);
             },
 
             changeSorting: function(key, newSorting) {
