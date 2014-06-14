@@ -158,8 +158,6 @@ select.chooser {
 	margin: 15px 0 15px 0;
 }
 .wrench {
-    /*position: absolute;*/
-    /*bottom: 15px;*/
     margin-left: 15px;
     display: inline;
 }
