@@ -28,24 +28,6 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
                 });
 
                 this.elems.hideRule = document.getElementById('hideRule');
-                // this.elems.head = document.getElementsByTagName('head')[0];
-                // themes.init();
-                // script.init();
-                // var $scope = {};
-                // var scope = {};
-                // $scope.total = ['links', 'apps', 'bookmarks', 'themes'];
-                // $scope.units = ['fahrenheit', 'celsius'];
-                //
-                // // These elements are refreshed on every page load.
-                // $scope.editThemeButton = 'edit theme';
-                // $scope.editThemeText = 'edit theme';
-                // $scope.hideOptions = true;
-                // $scope.linkToEdit = {};
-                // $scope.pageItemCount = 4;
-                // loadLinks();
-                // loadApps();
-                // loadBookmarks();
-                //
                 // script.updateStyle(false);
                 // $scope.updateWeather(false);
             },
