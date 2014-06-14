@@ -8,11 +8,17 @@ define(['jquery', 'jss', 'utils/storage', 'pages/links', 'pages/apps', 'pages/bo
 
         data: Array.prototype.slice.call(arguments, 3),
 
+        forEachModule: function(func, value) {
+            this.data.forEach(function(module) {
+                if (module[func]) {
+                    module[func](value);
+                }
+            });
+        },
+
         init: function(document) {
             this.page = storage.get('page', 'links');
-            this.data.forEach(function(module) {
-                module.init(document);
-            });
+            this.forEachModule('init', document);
 
             this.elems.chooser = document.getElementById(this.name + '-chooser');
             jquery(this.elems.chooser).attr('selectedIndex', this.indexOfModule(this.page));
@@ -23,16 +29,14 @@ define(['jquery', 'jss', 'utils/storage', 'pages/links', 'pages/apps', 'pages/bo
             });
 
             var that = this;
-            jquery(window).resize(that.windowResized.bind(that));
-            jquery(window).resize();
-//            this.windowResized();
+            jquery(window).bind('resize', this.windowResized.bind(this));
+            this.windowResized();
         },
 
         changePage: function changePage(page) {
             this.page = page;
             storage.save('page', page);
 
-            console.log((this.data.map(function(m) { return m.name; }).indexOf(page) * -100) + '%');
             jss.set('.external .internal', {
                 'margin-left': (this.indexOfModule(page) * -100) + '%'
             });
@@ -53,18 +57,12 @@ define(['jquery', 'jss', 'utils/storage', 'pages/links', 'pages/apps', 'pages/bo
                 'height': '' + height
             });
 
-            var pageItemCount = Math.floor((height) / 60); //-1 to account for sorting
-            this.data.forEach(function(module) {
-                module.setPageItemCount(pageItemCount);
-            });
+            var pageItemCount = Math.floor((height) / 60);
+            this.forEachModule('setPageItemCount', pageItemCount);
         },
 
         showOptionsChanged: function(showOptions) {
-            this.data.forEach(function(module) {
-                if (module.setShowOptions) {
-                    module.setShowOptions(showOptions);
-                }
-            });
+            this.forEachModule('setShowOptions', showOptions);
         },
 
         indexOfModule: function indexOfModule(moduleName) {

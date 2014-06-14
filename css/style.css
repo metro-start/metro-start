@@ -10,7 +10,6 @@ body {
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
     height: 100%;
-	display: none;
 }
 /* Document wide styles */
 a {
@@ -55,6 +54,10 @@ h1 {
 }
 .option {
 	display: inline-block;
+}
+
+select.chooser {
+	display: none;
 }
 
 /* Header and menu */
