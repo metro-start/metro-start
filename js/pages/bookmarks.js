@@ -58,9 +58,9 @@ define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
             var itemNode = bookmarkElem.parentNode;
             var siblings = itemNode.parentNode.children;
             Array.prototype.slice.call(siblings).forEach(function(item) {
-                util.removeClass(item, 'active');
+                util.removeClass(item.firstElementChild, 'bookmark-active');
             });
-            util.addClass(itemNode, 'active');
+            util.addClass(itemNode.firstElementChild, 'bookmark-active');
         },
 
         templateFunc: function(bookmark) {
