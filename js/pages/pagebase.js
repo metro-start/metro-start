@@ -97,6 +97,9 @@ define(['utils/util', 'utils/storage', 'metro-select'], function(util, storage, 
             if (this.name === 'link') {
                 pageItemCount--; // If its links page, accoutn for add link options.
             }
+            if (this.name === 'bookmarks') {
+                util.addClass(columnNode.firstElementChild, 'bookmark-page');
+            }
             //Add each row to an column and create new ones on the pageItemCount boundary.
             for (var i = 0; i < nodes.length; i++) {
                 if (i !== 0 && i % pageItemCount === 0 && pageItemCount > 0) { //Skip the first row.

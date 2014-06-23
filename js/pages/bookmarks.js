@@ -80,6 +80,12 @@ define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
             fragment.appendChild(remove);
 
             return fragment;
+        },
+
+        setPageItemCount: function(pageItemCount) {
+            jss.set('.bookmark-page', {
+                'height': (pageItemCount * 60) + 'px'
+            });
         }
     };
     return bookmarks;
