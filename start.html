@@ -47,13 +47,6 @@
 						</div>
 						<div class="external_selector" id="external_selector_apps">
 							<div class="internal_selector" id="internal_selector_apps">
-								<div class="page" ng-repeat="page in apps.pages">
-									<div class="item" ng-repeat="app in page">
-										<a class="title" ng-href="{{ app.appLaunchUrl }}" ng-bind="app.name"></a>
-											<span class="remove option options-color small-text" ng-click="uninstallApp(app, $parent.$index, $index)" ngm-if="app.id">uninstall</span>
-											<a class="option options-color small-text" ngm-if="app.optionsUrl" ng-href="{{ app.optionsUrl }}">options</a>
-									</div>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -61,19 +54,14 @@
 
 				<div class="bookmarks collection">
 					<div id="bookmarks">
-						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="{'sel-active': sort.bookmarks == 0}" ng-click="changeSorting('bookmarks', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="{'sel-active': sort.bookmarks == 1}" ng-click="changeSorting('bookmarks', 1)">sorted</span>
+						<div class="options-color option sort">
+							<select class="chooser" id="apps-chooser">
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
+							</select>
 						</div>
-						<div class="external_selector" id="external_selector_book">
-							<div class="internal_selector" id="internal_selector_book">
-								<div class="bookmark_page" id="bookmark_page_{{ $index }}" ng-repeat="page in bookmarks">
-									<div class="item" ng-repeat="bookmark in page">
-										<a class="bookmark_item" ng-href="{{ bookmark.url }}" id="bookmark_{{ $index }}" ng-click="clickBookmark(bookmark, $parent.$index)" ng-class="{'bookmark-active': bookmark.active==true}">{{ bookmark.title }}<span class="options-color" ng-show="bookmark.children">/</span>
-										</a>
-										<span class="remove option options-color small-text clickable" ng-click="removeBookmark(bookmark, $parent.$index, $index)">remove</span>
-									</div>
-								</div>
+						<div class="external_selector" id="external_selector_bookmarks">
+							<div class="internal_selector" id="internal_selector_bookmarks">
 							</div>
 						</div>
 					</div>
