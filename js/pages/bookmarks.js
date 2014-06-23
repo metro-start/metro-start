@@ -31,8 +31,8 @@ define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
 
         clickBookmark: function(bookmark, bookmarkNode, event) {
             if (bookmark.children && bookmark.children.length > 0) {
-                this.activateBookmark(bookmarkNode);
                 var currentPage = bookmarkNode.parentNode.parentNode.id;
+                this.activateBookmark(bookmarkNode);
                 this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
                 this.bookmarks.addAll(bookmark.children);
                 event.preventDefault();
@@ -55,7 +55,12 @@ define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
         },
 
         activateBookmark: function activateBookmark(bookmarkElem) {
-            // bookmarkEle
+            var itemNode = bookmarkElem.parentNode;
+            var siblings = itemNode.parentNode.children;
+            Array.prototype.slice.call(siblings).forEach(function(item) {
+                util.removeClass(item, 'active');
+            });
+            util.addClass(itemNode, 'active');
         },
 
         templateFunc: function(bookmark) {
