@@ -1,4 +1,10 @@
-define(['jquery', 'jss', 'farbtastic', 'utils/defaults'], function(jquery, jss, farbtastic, defaults) {
+define(['jquery', 'jss', 'farbtastic', 'utils/util', 'utils/storage', 'utils/defaults'], function(jquery, jss, farbtastic, util, storage, defaults) {
+
+    var fonts = {
+        'normal fonts': '"Segoe UI", Helvetica, Arial, sans-serif',
+        'thin fonts': 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif'
+    };
+
     return {
         pageItemCount: 4,
         init: function() {
@@ -15,12 +21,14 @@ define(['jquery', 'jss', 'farbtastic', 'utils/defaults'], function(jquery, jss, 
                 // });
             });
         },
-        
+
         /**
             Changes the style to whatever is in the scope.
             transition: A bool indicating whether to slowly transition or immediately change.
         */
         updateStyle: function(transition) {
+            updateFont();
+
             var scope = {};
             var options_color = defaults.defaultTheme.colors['options-color'];
             var background_color = defaults.defaultTheme.colors['background-color'];
@@ -41,16 +49,6 @@ define(['jquery', 'jss', 'farbtastic', 'utils/defaults'], function(jquery, jss, 
                 options_color = scope.theme.colors['options-color'];
                 main_color = scope.theme.colors['main-color'];
                 title_color = scope.theme.colors['title-color'];
-            }
-
-            if(scope.font === 0) {
-                jss.set('body', {
-                    'font-family': '"Segoe UI", Helvetica, Arial, sans-serif',
-                });
-            } else {
-                jss.set('body', {
-                    'font-family': 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif',
-                });
             }
 
             jss.set('*', {
@@ -97,6 +95,12 @@ define(['jquery', 'jss', 'farbtastic', 'utils/defaults'], function(jquery, jss, 
             jss.set('.bookmark-active', {
                 'color': options_color
                 //'border-bottom': '2px solid ' + options_color
+            });
+        },
+
+        updateFont: function () {
+            jss.set('body', {
+                'font-family': fonts[storage.get('font', 'normal fonts')],
             });
         }
     };

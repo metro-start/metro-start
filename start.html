@@ -126,9 +126,11 @@
 		</div>
 		<div class="footer">
 			<p class="options-color wrench clickable" id="wrench">wrench</p>
-			<div class="options-color option font-chooser chooser">
-				<span class="selection clickable" ng-class="{'sel-active': font==0}" ng-click="changeFont(0)">normal fonts</span>
-				<span class="selection clickable" ng-class="{'sel-active': font==1}" ng-click="changeFont(1)">thin fonts</span>
+			<div class="options-color option font">
+				<select class="chooser font-chooser" id="font-chooser">
+					<option class="clickable">normal fonts</unsorted>
+					<option class="clickable">thin fonts</unsorted>
+				</select>
 			</div>
 			<div class="theme-buttons option">
 				<p class="options-color clickable" id="reset-theme" ng-click="resetTheme()" ng-bind="'reset theme'"></p>
