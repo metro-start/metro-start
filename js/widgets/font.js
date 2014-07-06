@@ -1,13 +1,9 @@
 define(['jquery', 'utils/script', 'utils/storage'], function(jquery, script, storage) {
     var font = {
-        data: {},
-
-        elems: {},
-
-        nodes: ['city', 'currentTemp', 'highTemp', 'lowTemp', 'condition', 'unit'],
-
         init: function(document) {
-            jquery('#font-chooser').metroSelect({
+            var selector = jquery('#font-chooser');
+            selector.attr('selectedIndex', storage.get('fonts') == 'normal fonts' ? 0 : 1);
+            selector.metroSelect({
                 'onchange': this.changeFont
             });
         },
