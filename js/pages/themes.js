@@ -1,5 +1,7 @@
 define([], function() {
     var themes = {
+        name: "themes",
+        
         data: undefined,
 
         init: function() {

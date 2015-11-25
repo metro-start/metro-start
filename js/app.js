@@ -33,30 +33,31 @@ define(modules, function (document, jss, pages, widgets, defaults, script, stora
             },
 
             clickWrench: function() {
-                this.data.showOptions = !this.data.showOptions;
+                pages.showOptions = !pages.showOptions;
 
                 var that = this;
-                if (this.data.showOptions) {
+                if (pages.showOptions) {
                     document.body.removeChild(this.elems.hideRule);
                 } else {
                     document.body.appendChild(this.elems.hideRule);
                 }
 
                 // If we're on the theme when wrench was clicked, navigate to the last page.
-                if (this.data.page == 3) {
-                    this.data.page = storage.get('page', 0);
+                if (pages.page == 'themes') {
+                    console.log(storage.get('page', 'links'));
+                    pages.changePage(storage.get('page', 'links'));
                 }
+
                 this.modules.forEach(function(module) {
                     if (module.showOptionsChanged) {
                         module.showOptionsChanged(that.data.showOptions);
                     }
                 });
-                // $scope.editThemeText = 'edit theme'; // Hide the theme editing panel.
                 _gaq.push(['_trackEvent', 'Page', 'Wrench']);
             },
 
             setPageItemCount: function(pageItemCount) {
-                this.data.pageItemCount = pageItemCount;
+                pages.pageItemCount = pageItemCount;
                 pages.setPageItemCount(pageItemCount);
             },
 

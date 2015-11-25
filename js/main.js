@@ -9,13 +9,13 @@ require.config({
 		'metro-select': '../../lib/metro-select/metro-select',
 	},
     shim: {
-		jqueryMigrate: ['jquery'],
-		metroSelect: ['metro-select'],
-		farbtastic: ['jquery', 'jqueryMigrate'],
-		jss: {
-			deps: ['jquery'],
-			exports: 'jss'
-		}
+			jqueryMigrate: ['jquery'],
+			metroSelect: ['metro-select'],
+			farbtastic: ['jquery', 'jqueryMigrate'],
+			jss: {
+				deps: ['jquery'],
+				exports: 'jss'
+			}
     },
 });
 
