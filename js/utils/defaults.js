@@ -6,6 +6,7 @@ define([], function() {
         init: function() {
 
         },
+
         defaultTheme: {
             'title': 'metro start',
             'colors': {
@@ -13,8 +14,13 @@ define([], function() {
                 'main-color': '#ffffff',
                 'title-color': '#4a4a4a',
                 'background-color': '#000000'
+            },
+            'author': {
+              'name': 'metro-start',
+              'link': 'chumannaji.com'
             }
         },
+
         defaultSort: {
             'links': false,
             'apps': false,

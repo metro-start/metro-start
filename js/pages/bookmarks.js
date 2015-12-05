@@ -10,7 +10,7 @@ define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
 
         templates: {
             titleFragment: util.createElement('<a class="bookmark_item"></a>'),
-            removeFragment: util.createElement('<span class="remove option options-color small-text clickable" ng-click="removeBookmark(bookmark, $parent.$index, $index)">remove</span>'),
+            removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
             slashFragment: util.createElement('<span class="options-color">/</span>'),
         },
 

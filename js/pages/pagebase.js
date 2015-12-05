@@ -95,7 +95,7 @@ define(['utils/util', 'utils/storage', 'metro-select'], function(util, storage, 
                 pageItemCount--; // If the options are showing, account for sort options.
             }
             if (this.name === 'link') {
-                pageItemCount--; // If its links page, accoutn for add link options.
+                pageItemCount--; // If its links page, account for add link options.
             }
             if (this.name === 'bookmarks') {
                 util.addClass(columnNode.firstElementChild, 'bookmark-page');

@@ -1,4 +1,5 @@
-define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
+define([ 'jquery', 'pages/pagebase', 'utils/util', 'utils/storage', 'utils/defaults'],
+function(jquery, pagebase, util, storage, defaults) {
     var themes = {
         name: 'themes',
 
@@ -12,14 +13,13 @@ define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
 
         templates: {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
-            titleFragment: util.createElement('<span class="remove option options-color small-text clickable" ng-click="changeTheme(theme)"></span>'),
-            removeFragment: util.createElement('<span class="remove option options-color small-text clickable" ng-click="removeTheme(theme, $parent.$index, $index)">remove</span>'),
-            shareFragment: util.createElement('<span class="options-color small-text clickable" ng-click="shareTheme(theme)">share</span>'),
+            titleFragment: util.createElement('<span class="title"></span>'),
+            removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
+            shareFragment: util.createElement('<span class="options-color small-text clickable">share</span>'),
             authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>')
         },
 
         init: function() {
-            console.log("initThemes");
             this.elems.rootNode = document.getElementById('internal_selector_themes');
             this.localThemes = new pagebase(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.onlineThemes = new pagebase(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
@@ -30,12 +30,11 @@ define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
 
         loadThemes: function() {
             var that = this;
-            console.log("loadThemes");
             that.localThemes.addAll(storage.get('localThemes', [defaults.defaultTheme]));
 
             // Load online themes.
-            $http.get('http://metro-start.appspot.com/themes.json').success(function(data) {
-              console.log(data)
+            jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
+                data = JSON.parse(data);
                 for (var i in data) {
                     data[i].colors = {
                         'options-color': data[i].options_color,
@@ -50,23 +49,44 @@ define(['pages/pagebase', 'utils/util'], function(pagebase, util) {
 
         templateFunc: function(theme) {
             var fragment = util.createElement('');
+
             var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.href = bookmark.url;
-            title.firstElementChild.textContent = bookmark.title;
-            title.firstElementChild.id = 'bookmark_' + bookmark.id;
-            if (bookmark.children && bookmark.children.length > 0) {
-                title.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
-            }
-            title.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, title.firstElementChild));
+            title.firstElementChild.id = 'theme_' + theme.id;
+            title.firstElementChild.textContent = theme.title;
+            title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
             fragment.appendChild(title);
 
+            var author = this.templates.authorFragment.cloneNode(true);
+            author.firstElementChild.textContent = theme.author.name;
+            // author.firstElementChild.href = theme.author.link;
+            fragment.appendChild(author);
+
+            var share = this.templates.shareFragment.cloneNode(true);
+            share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
+            fragment.appendChild(share);
+
             var remove = this.templates.removeFragment.cloneNode(true);
-            remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark));
+            remove.firstElementChild.addEventListener('click', this.removeTheme.bind(this, theme));
             fragment.appendChild(remove);
 
             return fragment;
         },
 
+        applyTheme: function(theme) {
+
+        },
+
+        shareTheme: function(theme) {
+
+        },
+
+        removeTheme: function(theme) {
+
+        },
+
+        editTheme: function(theme) {
+
+        }
 //
 //         clickBookmark: function(bookmark, bookmarkNode, event) {
 //             if (bookmark.children && bookmark.children.length > 0) {

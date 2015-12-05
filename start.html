@@ -55,7 +55,7 @@
 				<div class="bookmarks collection">
 					<div id="bookmarks">
 						<div class="options-color option sort">
-							<select class="chooser" id="apps-chooser">
+							<select class="chooser" id="bookmarks-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
@@ -68,31 +68,14 @@
 				</div>
 				<div class="themes collection">
 					<div id="themes">
-						<div class="options-color option sort chooser">
-							<span class="selection clickable" ng-class="{'sel-active': sort.themes == 0}" ng-click="changeSorting('themes', 0)">unsorted</span>
-							<span class="selection clickable" ng-class="{'sel-active': sort.themes == 1}" ng-click="changeSorting('themes', 1)">sorted</span>
+						<div class="options-color option sort">
+							<select class="chooser" id="themes-chooser">
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
+							</select>
 						</div>
-						<div class="external_selector" id="external_selector_theme">
-							<div class="internal_selector" id="internal_selector_theme">
-								<div class="column">
-									<div class="options-color">my themes</div>
-									<div class="page" id="local-themes" ng-repeat="page in localThemes.pages">
-										<div class="item" ng-repeat="theme in page">
-											<p class="clickable" ng-click="changeTheme(theme)">{{ theme.title }}</p>
-											<span class="remove options-color small-text clickable" ng-click="removeTheme($parent.$index, $index)">remove</span>
-											<span class="options-color small-text clickable" ng-click="shareTheme(theme)">share</span>
-										</div>
-									</div>
-								</div>
-								<div>
-									<div class="options-color">online themes</div>
-									<div class="page" id="online-themes" ng-repeat="page in onlineThemes.pages">
-										<div class="item" ng-repeat="theme in page">
-											<p class="clickable" ng-click="changeTheme(theme)">{{ theme.title }}</p>
-											<a class="options-color gallery-bio small-text" ng-href="{{ theme.website }}">{{ theme.author }}</a>
-										</div>
-									</div>
-								</div>
+						<div class="external_selector" id="external_selector_themes">
+							<div class="internal_selector" id="internal_selector_themes">
 							</div>
 						</div>
 					</div>
