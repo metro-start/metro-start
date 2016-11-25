@@ -144,6 +144,9 @@ select.chooser {
 }
 
 /* Themes section */
+.group {
+	display: inline-block;
+}
 .column {
 	float: left;
 }

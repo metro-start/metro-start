@@ -1,4 +1,4 @@
-define(['jquery', 'utils/util', 'utils/storage'], function(jquery, util, storage) {
+define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, storage) {
     var weather = {
         data: {},
 
@@ -40,10 +40,10 @@ define(['jquery', 'utils/util', 'utils/storage'], function(jquery, util, storage
 
             if (this.data.visible) {
                 this.showWeather();
-                _gaq.push(['_trackEvent', 'Weather', 'Show Weather']);
+                
             } else {
                 this.hideWeather();
-                _gaq.push(['_trackEvent', 'Weather', 'Hide Weather']);
+                
             }
         },
 
@@ -65,14 +65,14 @@ define(['jquery', 'utils/util', 'utils/storage'], function(jquery, util, storage
                 this.udpate('city', newLocation);
 
                 updateWeather(true);
-                _gaq.push(['_trackEvent', 'Weather', 'Save Weather Location']);
+                
             }
         },
 
         changeWeatherUnit: function(newWeatherUnit) {
             this.update('unit', newWeatherUnit);
             this.updateWeather(true);
-            _gaq.push(['_trackEvent', 'Weather', 'Set Weather Unit', newWeatherUnit]);
+            
         },
 
         /**
@@ -82,6 +82,7 @@ define(['jquery', 'utils/util', 'utils/storage'], function(jquery, util, storage
         updateWeather: function(force) {
             var unit = this.data.unit;
             var city = this.data.city;
+            
             // If it has been more than an hour since last check.
             if(force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
                 this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);

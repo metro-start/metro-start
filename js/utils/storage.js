@@ -1,14 +1,13 @@
 define(['jquery'], function Storage(jquery) {
+    // Saves the key, value pair to chrome.storage.sync.
+    // key: The name of the value to be saved.
+    // value: The value to be saved.
     var storage = {
-        /**
-        Saves the key, value pair to chrome.storage.sync.
-        key: The name of the value to be saved.
-        value: The value to be saved.
-        */
         cache: undefined,
 
         deferred: undefined,
 
+        // Initializes the module.
         init: function() {
             if (!this.deferred) {
                 this.cache = {};
@@ -24,6 +23,12 @@ define(['jquery'], function Storage(jquery) {
             return this.deferred.promise();
         },
 
+        // Savs the provded data to both lcoal and shared stoarge.
+        // key: The name of the property to save.
+        // value: The value to be saved.
+        // scope: A location to store the value after it has been written.
+        // Remarks: Scope is generally used to update an object with
+        // the new value after saving it.
         save: function save(key, value, scope) {
             if (scope) scope[key] = value;
             if (this.cache) this.cache[key] = value;
@@ -33,16 +38,13 @@ define(['jquery'], function Storage(jquery) {
             chrome.storage.sync.set(obj);
         },
 
-        /**
-        Gets the value from the cache.
-        chrome.storage.sync always wins.
-        key: The key to be retrieved.
-        defaultValue: The value to initialize all storages if the key does not exist.
-        scope: The angularjs scope where the value will be saved.
-        callback: A callback function to run when value has been retrieved.
-        */
+        // Gets a value from the cache; note that chrome.storage.sync always wins.
+        // key: The key to be retrieved.
+        // defaultValue: The value to initialize all storages if the key does not exist.
+        // scope: The angularjs scope where the value will be saved.
+        // callback: A callback function to run when value has been retrieved.
         get: function get(key, defaultValue, scope) {
-            var val = (this.cache && this.cache[key]) ? this.cache[key] : defaultValue;
+            var val = (this.cache !== null && this.cache[key] !== null) ? this.cache[key] : defaultValue;
             if (scope) {
                 scope[key] = val;
             }

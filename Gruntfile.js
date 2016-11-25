@@ -1,42 +1,65 @@
 /* jshint node: true */
 
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = function (grunt) {
     "use strict";
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        webpack: {
+            all: {
+                entry: './js/app.js',
+                output: {
+                    filename: 'bundle.js',
+                    path: './dist',
+                    sourceMapFileName: 'bundle.map'
+                },
+                stats: {
+                    // Configure the console output
+                    colors: false,
+                    modules: true,
+                    reasons: true
+                },
+                resolve: {
+                    alias: {
+                        jss: '../../node_modules/jss/jss.js'
+                    }
+                },
+
+                // Source map option. Eval provides a little less info, but is faster
+                devtool: 'eval',
+                // Our loader configuration
+                module: {
+                    loaders: [{
+                        test: /\.html$/,
+                        loader: "file-loader?name=/dist/[name].[ext]"
+                    },
+                    {
+                        test: /\.(png)$/i, 
+                        loader: "file-loader?name=/dist/[name].[ext]"
+                    }]
+                },
+
+                plugins: [
+                    new CopyWebpackPlugin([
+                        { from: 'css', to: 'css' },
+                        { from: 'icons', to: 'icons' },
+                        { from: 'manifest.json' },
+                        { from: 'start.html' }
+                    ])
+                ]
+            }
+        },
         jshint: {
             all: [
-                "js/*.js"
+                "js/**/*.js"
             ]
-        },
-        jasmine: {
-            all : {
-                options : {
-                    specs : 'spec/*.spec.js',
-                    helpers: 'spec_helper.js',
-                    template: require('grunt-template-jasmine-requirejs'),
-                    templateOptions: {
-                        requireConfig: {
-                            baseUrl: './',
-                            paths: {
-                                'util': 'js/components/util',
-                                'pages': 'js/components/pages',
-                                'storage': 'js/components/storage',
-                                'jquery': 'lib/jquery/dist/jquery'
-                            },
-                            deps: ['spec/spec_helper']
-                        }
-                    }
-                }
-            }
         },
         watch: {
             scripts: {
                 files: [
-                    'js/*.js',
-                    'js/components/*.js',
-                    'spec/*.js'
+                    'js/**/*.js',
                 ],
                 tasks: ['test'],
                 options: {
@@ -47,10 +70,11 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-notify');
+    grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
-    grunt.registerTask('test', ['jshint', 'jasmine']);
-    grunt.registerTask('default', ['test']);
+    grunt.registerTask('build', ['webpack']);
+    grunt.registerTask('test', ['webpack', 'jshint']);
+    grunt.registerTask('default', ['webpack', 'test']);
 };

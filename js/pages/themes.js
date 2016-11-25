@@ -1,11 +1,13 @@
-define([ 'jquery', 'pages/pagebase', 'utils/util', 'utils/storage', 'utils/defaults'],
-function(jquery, pagebase, util, storage, defaults) {
+define([ 'jquery', '../pagebase/pagebase_grouped', '../utils/util', '../utils/storage', '../utils/defaults'],
+function(jquery, pagebase_grouped, util, storage, defaults) {
     var themes = {
         name: 'themes',
 
         data: {},
 
         elems: {},
+
+        themes: {},
 
         localThemes: {},
 
@@ -19,18 +21,22 @@ function(jquery, pagebase, util, storage, defaults) {
             authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>')
         },
 
+        // Initialize this module.
         init: function() {
             this.elems.rootNode = document.getElementById('internal_selector_themes');
-            this.localThemes = new pagebase(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
-            this.onlineThemes = new pagebase(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
-            this.localThemes.pageItemCount = -1;
-            this.onlineThemes.pageItemCount = -1;
+            this.themes = new pagebase_grouped();
+            this.themes.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadThemes();
         },
 
+        // Loads the available themes from local and web storage
         loadThemes: function() {
             var that = this;
-            that.localThemes.addAll(storage.get('localThemes', [defaults.defaultTheme]));
+
+            that.themes.addAll({
+              'heading': 'my themes',
+              'themes': storage.get('localThemes', [defaults.defaultTheme])
+            });
 
             // Load online themes.
             jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
@@ -43,10 +49,28 @@ function(jquery, pagebase, util, storage, defaults) {
                         'background-color': data[i].background_color,
                     };
                 }
-                that.onlineThemes.addAll(data);
+
+                that.themes.addAll({
+                  'heading': 'online themes',
+                  'themes': data
+                });
             });
         },
 
+        // Sets the new number of pages for the block.
+        // pageItemCount: The maximum number of pages able to be displayed.
+        setPageItemCount: function(pageItemCount) {
+          this.themes.setPageItemCount(pageItemCount, this.data); //-1 to account for addLink
+        },
+
+        // Sets the new number of pages for the block.
+        // pageItemCount: The maximum number of pages able to be displayed.
+        setShowOptions: function setShowOptions(showOptions) {
+            this.themes.setShowOptions(showOptions);
+        },
+
+        // Returns an HTML link node item.
+        // item: The link item to be converted into a node.
         templateFunc: function(theme) {
             var fragment = util.createElement('');
 
@@ -58,7 +82,7 @@ function(jquery, pagebase, util, storage, defaults) {
 
             var author = this.templates.authorFragment.cloneNode(true);
             author.firstElementChild.textContent = theme.author.name;
-            // author.firstElementChild.href = theme.author.link;
+            author.firstElementChild.href = theme.author.link;
             fragment.appendChild(author);
 
             var share = this.templates.shareFragment.cloneNode(true);
@@ -72,18 +96,26 @@ function(jquery, pagebase, util, storage, defaults) {
             return fragment;
         },
 
+        // Applies the provided theme to the whole app.
+        // theme: Theme to be applied.
         applyTheme: function(theme) {
 
         },
 
+        // Shares the provided theme to the web storage.
+        // theme: Theme to be shared.
         shareTheme: function(theme) {
 
         },
 
+        // Remove the provided theme from the local storage.
+        // theme: Theme to be removed.
         removeTheme: function(theme) {
 
         },
 
+        // Edits the provided theme.
+        // theme: Theme to be edited.
         editTheme: function(theme) {
 
         }
@@ -95,9 +127,9 @@ function(jquery, pagebase, util, storage, defaults) {
 //                 this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
 //                 this.bookmarks.addAll(bookmark.children);
 //                 event.preventDefault();
-//                 _gaq.push(['_trackEvent', 'Bookmarks', 'Click Bookmark Folder']);
+//                 
 //             }
-//             _gaq.push(['_trackEvent', 'Bookmarks', 'Click Bookmarked Page']);
+//             
 //         },
 //
 //         removeBookmark: function(bookmark, page, index) {
@@ -106,7 +138,7 @@ function(jquery, pagebase, util, storage, defaults) {
 //                     $scope.bookmarks[page].splice(index, 1);
 //                 });
 //             });
-//             _gaq.push(['_trackEvent', 'Bookmarks', 'Remove Bookmarked']);
+//             
 //         },
 //
 //         setShowOptions: function setShowOptions(showOptions) {
@@ -196,7 +228,7 @@ function(jquery, pagebase, util, storage, defaults) {
 //
 //             script.updateStyle(true);
 //
-//             _gaq.push(['_trackEvent', 'Theme', 'Reset Theme']);
+//             
 //         },
 //
 //         /**
@@ -208,7 +240,7 @@ function(jquery, pagebase, util, storage, defaults) {
 //
 //             script.updateStyle(true);
 //
-//             _gaq.push(['_trackEvent', 'Theme', 'Change Theme', newTheme.title]);
+//             
 //         },
 //
 //         /**
@@ -220,9 +252,9 @@ function(jquery, pagebase, util, storage, defaults) {
 //
 //             script.updateStyle(true);
 //             if (newFont === 0) {
-//                 _gaq.push(['_trackEvent', 'Theme', 'Change Font', 'Segoe/Helvetica']);
+//                 
 //             } else {
-//                 _gaq.push(['_trackEvent', 'Theme', 'Change Font', 'Raleway']);
+//                 
 //             }
 //         },
 //
@@ -238,7 +270,7 @@ function(jquery, pagebase, util, storage, defaults) {
 //                 '&titlecolor=' + encodeURIComponent(theme.colors['title-color']) +
 //                 '&backgroundcolor=' + encodeURIComponent(theme.colors['background-color']);
 //             window.open(url);
-//             _gaq.push(['_trackEvent', 'Theme', 'Share Theme']);
+//             
 //         },
 //
 //         /**
@@ -249,7 +281,7 @@ function(jquery, pagebase, util, storage, defaults) {
 //         removeTheme: function(page, index) {
 //             $scope.localThemes.remove(page, index);
 //             storage.save('localThemes', $scope.localThemes.flatten());
-//             _gaq.push(['_trackEvent', 'Theme', 'Remove Theme']);
+//             
 //         },
 //
 //         /**
@@ -266,9 +298,9 @@ function(jquery, pagebase, util, storage, defaults) {
 //                     storage.save('localThemes', $scope.localThemes.flatten());
 //                 }
 //
-//                 _gaq.push(['_trackEvent', 'Theme', 'Stop Editing Theme']);
+//                 
 //             } else {
-//                 _gaq.push(['_trackEvent', 'Theme', 'Start Editing Theme']);
+//                 
 //             }
 //
 //             $scope.editThemeText = 'edit themesave theme'.replace($scope.editThemeText, '');

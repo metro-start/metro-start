@@ -1,3 +1,4 @@
-node_modules/*
-lib/*
 .grunt/*
+.vscode/*
+dist/*
+node_modules/*

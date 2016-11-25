@@ -1,23 +1,21 @@
 {
 	"name": "Metro Start",
-	"version": "6.0",
+	"version": "6.1",
 	"manifest_version": 2,
 	"description": "A start screen based on the Windows Metro UI",
 	"chrome_url_overrides": {
 		"newtab": "start.html"
 	},
 	"icons": {
-		"16": "icon16.png",
-		"32": "icon32.png",
-		"128": "icon128.png"
+		"16": "icons/icon16.png",
+		"32": "icons/icon32.png",
+		"128": "icons/icon128.png"
 	},
 	"permissions": [
 		"http://metro-start.appspot.com/*",
 		"http://query.yahooapis.com/*",
-		"http://google-analytics.com/ga.js",
 		"management",
 		"bookmarks",
 		"storage"
-	],
-	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com 'unsafe-eval'; object-src 'self'"
+	]
 }

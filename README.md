@@ -10,4 +10,5 @@ Install the theme: https://chrome.google.com/webstore/detail/bbhdfpmfdplolnnkpde
 
 -------
 JSHint Status  
-[![JSHint Build Status](https://travis-ci.org/metro-start/metro-start.svg?branch=master)](https://travis-ci.org/metro-start/metro-start)  
+[![TravisCI Build Status](https://travis-ci.org/metro-start/metro-start.svg?branch=master)](https://travis-ci.org/metro-start/metro-start)  
+[![CircleCI Build Status](https://circleci.com/gh/chustar/metro-start/tree/webpack-amdjs.png?circle-token=:circle-token)](https://travis-ci.org/chustar/metro-start/)  
