@@ -24,7 +24,8 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
         });
 
         this.elems.hideRule = document.getElementById('hideRule');
-        // script.updateStyle(false);
+        // widgets.weather.updateWeather(false);
+        // script.updateStyle(defaults.defaultTheme, false);
         // $scope.updateWeather(false);
       },
 
@@ -40,7 +41,6 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
 
         // If we're on the theme when wrench was clicked, navigate to the last page.
         if (pages.page == 'themes') {
-          console.log(storage.get('page', 'links'));
           pages.changePage(storage.get('page', 'links'));
         }
 

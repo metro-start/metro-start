@@ -9,7 +9,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
     pagebase_paneled.prototype = Object.create(pagebase.prototype);
 
     pagebase_paneled.prototype.rebuildDom = function () {
-      console.log("nope");
+      console.log("pagebase_paneled.rebuildDom was called");
     };
 
     // Adds all the given HTML nodes to the DOM in one single column.

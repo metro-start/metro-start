@@ -1,0 +1,116 @@
+html(ng-csp='')
+  head
+    link(rel='stylesheet', type='text/css', href='css/reset.css')
+    title start
+  body.background-color
+    h1.title-color start here . . .
+    .pages-chooser
+      select#pages-chooser.chooser
+        option.clickable.links-option links
+        option.clickable.apps-option apps
+        option.clickable.bookmarks-option bookmarks
+        option.clickable.themes-option.option themes
+    .external
+      .internal
+        .links.collection
+          #links
+            .options-color.option.sort
+              select#links-chooser.chooser
+                option.clickable unsorted
+                option.clickable sorted
+            #external_selector_links.external_selector
+              #internal_selector_links.internal_selector
+            form#addLink.add
+              input#newUrlTitle.url.option(type='text', name='newUrlTitle', placeholder='title', size='10')
+              |  
+              input#newUrl.url.option(type='text', name='newUrl', placeholder='http://', size='16')
+              |  
+              input.options-color.option(type='submit', value='save')
+        .apps.collection
+          #apps
+            .options-color.option.sort
+              select#apps-chooser.chooser
+                option.clickable unsorted
+                option.clickable sorted
+            #external_selector_apps.external_selector
+              #internal_selector_apps.internal_selector
+        .bookmarks.collection
+          #bookmarks
+            .options-color.option.sort
+              select#bookmarks-chooser.chooser
+                option.clickable unsorted
+                option.clickable sorted
+            #external_selector_bookmarks.external_selector
+              #internal_selector_bookmarks.internal_selector
+        .themes.collection
+          #themes
+            .options-color.option.sort
+              select#themes-chooser.chooser
+                option.clickable unsorted
+                option.clickable sorted
+            #external_selector_themes.external_selector
+              #internal_selector_themes.internal_selector
+        div(style='clear: both') &nbsp;
+    .weather
+      #toggleWeather.options-color.option.clickable
+      #weather
+        #city
+        div
+          form#saveLocation(ng-submit='saveLocation()')
+            input.option(type='text', name='newLocat', ng-model='newLocat', size='10', placeholder='seattle, wa')
+            |  
+            input.options-color.option(type='submit', value='save')
+        .options-color.option.chooser
+          select#weather-unit-chooser.chooser
+            option.clickable fahrenheit
+            option.clickable celsius
+        p#temp
+          span#currentTemp
+          |  &deg;
+          span#unit.options-color
+          |  /
+          span#highTemp
+          |  
+          span.options-color hi
+          |  /
+          span#lowTemp
+          |  
+          span.options-color lo
+        p#condition
+    .footer
+      p#wrench.options-color.wrench.clickable wrench
+      .options-color.option.font
+        select#font-chooser.chooser.font-chooser
+          option.clickable(value='0') normal fonts
+          option.clickable(value='1') thin fonts
+      .theme-buttons.option
+        p#resetTheme.options-color.wrench.clickable reset theme
+        p#editTheme.options-color.wrench.clickable edit theme
+    #picker.picker.background-color
+      p
+        input#newThemeTitle.options-color(type='text', size='12', placeholder='untitled')
+      div
+        span.picker-text.options-color
+          | background 
+          input#input-background-color.show-color(type='text', size='9')
+        #background-color
+      div
+        span.picker-text.options-color
+          | title 
+          input#input-title-color.show-color(type='text', size='9')
+        #title-color
+      div
+        span.picker-text.options-color
+          | main 
+          input#input-main-color.show-color(type='text', size='9')
+        #main-color
+      div
+        span.picker-text.options-color
+          | options 
+          input#input-options-color.show-color(type='text', size='9')
+        #options-color
+    style#hideRule(type='text/css').
+      .option, .picker {
+      display: none;
+      }
+    script(src='bundle.js')

@@ -1,4 +1,4 @@
-require(['./app', './utils/storage'], function(app, deferredStorage) {
+require(['./utils/storage', './app'], function(deferredStorage, app) {
 	'use strict';
 
 	deferredStorage.init().done(function(storage) {

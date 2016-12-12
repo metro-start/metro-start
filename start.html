@@ -85,11 +85,11 @@
 		</div>
 		<div class="weather">
 			<div id="toggleWeather" class="options-color option clickable"></div>
-			<div id="weather">
+			<div id="weather" class="hide">
 				<div id="city"></div>
 				<div>
-					<form id="saveLocation" ng-submit="saveLocation()">
-						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="seattle, wa">
+					<form id="saveLocation">
+						<input type="text" id="newLocation" class="option" size="10" placeholder="seattle, wa">
 						<input type="submit" class="options-color option" value="save">
 					</form>
 				</div>
@@ -127,7 +127,7 @@
 				<input type="text" id="newThemeTitle" class="options-color" size="12" placeholder="untitled">
 			</p>
 			<div>
-				<span class="picker-text options-color">background
+				<span class="picker-text options-color">background 
 					<input type="text" id="input-background-color" class="show-color" size="9">
 				</span>
 				<div id="background-color"></div>
@@ -158,6 +158,6 @@
 				display: none;
 			}
 		</style>
-		<script src="dist/bundle.js"></script>
+		<script src="bundle.js"></script>
 	</body>
 </html>

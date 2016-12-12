@@ -53,6 +53,10 @@ function(jquery, pagebase_grouped, util, storage, defaults) {
                 that.themes.addAll({
                   'heading': 'online themes',
                   'themes': data
+                },
+                function(error)
+                {
+                    console.log(error);
                 });
             });
         },

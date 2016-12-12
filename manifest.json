@@ -11,6 +11,9 @@
 		"32": "icons/icon32.png",
 		"128": "icons/icon128.png"
 	},
+	"web_accessible_resources": [
+  		"bundle.map"
+	],
 	"permissions": [
 		"http://metro-start.appspot.com/*",
 		"http://query.yahooapis.com/*",

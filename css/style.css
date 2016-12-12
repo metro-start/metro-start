@@ -227,3 +227,8 @@ select.chooser {
 		zoom: 0.8;
 	}
 }
+
+.show-color {
+	font-size: 2vw;
+	display: inline-block;
+}

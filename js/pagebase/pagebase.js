@@ -1,7 +1,4 @@
 define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function(jquery, util, storage, metroSelect) {
-
-    var validPageBases = ['simple', 'grouped', 'paneled'];
-
     var templates = {
        column: util.createElement('<div class="page"></div>'),
        item: util.createElement('<div class="item"></div>')
@@ -92,9 +89,7 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     // Remove pages.
     // pageNumber: The page to start removing data.
     pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
-        // var page_number = this.parentNode.id.remove('pages_');
         var nodes = Array.prototype.slice.call(this.elems.internal_selector.children);
-        console.log(parseInt(pageNumber) + 1);
         nodes.splice(0, parseInt(pageNumber) + 1);
         nodes.forEach(function(node) {
             node.remove();

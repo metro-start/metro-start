@@ -1,6 +1,7 @@
 /* jshint node: true */
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (grunt) {
     "use strict";
@@ -10,6 +11,7 @@ module.exports = function (grunt) {
         webpack: {
             all: {
                 entry: './js/app.js',
+                devtool: 'sourcemap',
                 output: {
                     filename: 'bundle.js',
                     path: './dist',
@@ -26,29 +28,13 @@ module.exports = function (grunt) {
                         jss: '../../node_modules/jss/jss.js'
                     }
                 },
-
-                // Source map option. Eval provides a little less info, but is faster
-                devtool: 'eval',
-                // Our loader configuration
-                module: {
-                    loaders: [{
-                        test: /\.html$/,
-                        loader: "file-loader?name=/dist/[name].[ext]"
-                    },
-                    {
-                        test: /\.(png)$/i, 
-                        loader: "file-loader?name=/dist/[name].[ext]"
-                    }]
-                },
-
                 plugins: [
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },
                         { from: 'manifest.json' },
                         { from: 'start.html' }
-                    ])
-                ]
+                    ])]
             }
         },
         jshint: {
@@ -60,6 +46,8 @@ module.exports = function (grunt) {
             scripts: {
                 files: [
                     'js/**/*.js',
+                    'start.html',
+                    'css/*.css'
                 ],
                 tasks: ['test'],
                 options: {

@@ -2,109 +2,115 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
     var weather = {
         data: {},
 
-        elems: {},
+        elems: {
+            weather: document.getElementById('weather'),
+            saveLocation: document.getElementById('saveLocation'),
+            newLocation: document.getElementById('newLocation'),
+            toggleWeather: document.getElementById('toggleWeather'),
 
-        nodes: ['city', 'currentTemp', 'highTemp', 'lowTemp', 'condition', 'unit'],
-
+            city: document.getElementById('city'),
+            currentTemp: document.getElementById('currentTemp'),
+            highTemp: document.getElementById('highTemp'),
+            lowTemp: document.getElementById('lowTemp'),
+            condition: document.getElementById('condition'),
+            unit: document.getElementById('unit')
+        },
+        
         init: function(document) {
             this.data = storage.get('weather');
-            this.data.visible = !!this.data.visible;
-            var that = this;
-            this.nodes.forEach(function(name) {
-                that.elems[name] = document.getElementById(name);
-                that.elems[name].innerText = that.data[name];
-            });
 
-            this.elems.weather = document.getElementById('weather');
-            this.elems.toggleWeather = document.getElementById('toggleWeather');
-            if (this.data.visible) {
-                this.showWeather();
-            } else {
-                this.hideWeather();
+            if (!!this.data) {
+                this.elems.city.innerText = this.data.city;
+                this.elems.currentTemp.innerText = this.data.currentTemp;
+                this.elems.highTemp.innerText = this.data.highTemp;
+                this.elems.lowTemp.innerText = this.data.lowTemp;
+                this.elems.condition.innerText = this.data.condition;
+                this.elems.unit.innerText = this.data.unit;
+
+                this.elems.toggleWeather.addEventListener('click', this.toggleWeatherVisibilityDelegate.bind(this));
+                this.elems.saveLocation.addEventListener('submit', this.saveLocationDelegate.bind(this));
+
+                var chooser = jquery('#weather-unit-chooser');
+
+                chooser.metroSelect({
+                    'initial': this.data.unit === 'f' ? '0' : '1',
+                    'onchange': this.setWeatherUnitDelegate.bind(this)
+                });
+            }
+            else
+            {
+                this.data = {
+                    "city": "vancouver, bc",
+                    "unit": "c",
+                    "visible": true
+                };
             }
 
-            this.elems.toggleWeather.addEventListener('click', this.toggleWeather.bind(this));
-            document.getElementById('saveLocation').addEventListener('submit', saveLocation);
-
-            var chooser = jquery('#weather-unit-chooser');
-            chooser.attr('selectedIndex', this.unit === 'fahrenheit' ? 0 : 1);
-            chooser.metroSelect({
-                'onchange': this.changeWeatherUnit.bind(this)
-            });
-
-            this.updateWeather(false);
+            this.updateWeather(this.data.city, this.data.unit, true);
+            this.setWeatherVisibility(this.data.visible);
         },
 
-        toggleWeather: function() {
-            this.update('visible', !this.data.visible);
+        /**
+         * Toggles whether the weather panel is visible.
+         */
+        toggleWeatherVisibilityDelegate: function() {
+            this.setWeatherVisibility(!this.data.visible);
+        },
 
-            if (this.data.visible) {
-                this.showWeather();
-                
-            } else {
-                this.hideWeather();
-                
+        /**
+         * Updates the current weather units.
+         */
+        setWeatherUnitDelegate: function(newWeatherUnit) {
+            this.update('unit', newWeatherUnit[0]);
+            this.updateWeather(this.data.city, newWeatherUnit[0], true);            
+        },
+
+        /**
+         * Updates the current weather location when the weather form is submitted.
+         */
+        saveLocationDelegate: function(event) {
+            event.preventDefault();
+            if (this.elems.newLocation.value.trim() !== this.data.city) {
+                this.updateWeather(this.elems.newLocation.value.trim(), this.data.unit, true);
             }
+
+            return false;
         },
+        
+        /**
+         * Sets the visibility of the weather panel.
+         */
+        setWeatherVisibility: function(visible) {
+            util.removeClass(this.elems.weather, visible ? 'hide' : 'show');
+            util.addClass(this.elems.weather, visible ? 'show' : 'hide');
 
-        showWeather: function() {
-            util.removeClass(this.elems.weather, 'hide');
-            util.addClass(this.elems.weather, 'show');
-            this.elems.toggleWeather.innerText = "hide weather";
-        },
-
-        hideWeather: function() {
-            util.removeClass(this.elems.weather, 'show');
-            util.addClass(this.elems.weather, 'hide');
-            this.elems.toggleWeather.innerText = "show weather";
-        },
-
-        saveLocation: function() {
-            var newLocation = document.getElementById('newLocation').value.trim();
-            if (newLocation !== '' && newLocation !== this.data.city) {
-                this.udpate('city', newLocation);
-
-                updateWeather(true);
-                
-            }
-        },
-
-        changeWeatherUnit: function(newWeatherUnit) {
-            this.update('unit', newWeatherUnit);
-            this.updateWeather(true);
-            
+            this.elems.toggleWeather.innerText = visible ? 'hide weather' : 'show weather';
+            this.update('visible', visible);
         },
 
         /**
             Update the weather data being displayed.
             force: Bypass the 1 hour wait requirement.
         */
-        updateWeather: function(force) {
-            var unit = this.data.unit;
-            var city = this.data.city;
-            
+        updateWeather: function(city, unit, force) {
             // If it has been more than an hour since last check.
             if(force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
                 this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
-                var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit[0] + '"');
+                var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit + '"');
                 var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
 
                 var that = this;
                 jquery.ajax(url).done(function(data) {
-                    // If data was actually returned, save it.
                     if (data.query.count) {
-                        var elem = data.query.results.channel;
-                        var city = elem.location.city + ', ';
-                        city += (elem.location.region ? elem.location.region : elem.location.country);
-                        that.data = {
-                            'visible': that.data.visible,
-                            'city': city.toLowerCase(),
-                            'currentTemp': elem.item.condition.temp,
-                            'highTemp': elem.item.forecast[0].high,
-                            'lowTemp': elem.item.forecast[0].low,
-                            'condition': elem.item.condition.text.toLowerCase(),
-                            'unit': ' ' + elem.units.temperature.toLowerCase(),
-                        };
+                        var result = data.query.results.channel;
+
+                        that.data.city = (result.location.city + ', ' + (result.location.region ? result.location.region : result.location.country)).toLowerCase();
+                        that.data.currentTemp = result.item.condition.temp;
+                        that.data.highTemp = result.item.forecast[0].high;
+                        that.data.lowTemp = result.item.forecast[0].low;
+                        that.data.condition = result.item.condition.text.toLowerCase();
+                        that.data.unit = result.units.temperature.toLowerCase();
+
                         storage.save('weather', that.data);
                         that.rebuildDom();
                     }
@@ -113,10 +119,12 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
         },
 
         rebuildDom: function() {
-            var that = this;
-            this.nodes.forEach(function(node) {
-                that.elems[node].innerText = that.data[node];
-            });
+            this.elems.city.innerText = this.data.city;
+            this.elems.currentTemp.innerText = this.data.currentTemp;
+            this.elems.highTemp.innerText = this.data.highTemp;
+            this.elems.lowTemp.innerText = this.data.lowTemp;
+            this.elems.condition.innerText = this.data.condition;
+            this.elems.unit.innerText = this.data.unit;
         },
 
         update: function(key, value) {

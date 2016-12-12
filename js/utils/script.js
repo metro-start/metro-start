@@ -46,7 +46,7 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
     updateStyle: function(theme, transition) {
       //updateFont();
 
-      var scope = {};
+      // var scope = {};
       var options_color = theme.colors['options-color'];
       var background_color = theme.colors['background-color'];
       var main_color = theme.colors['main-color'];
@@ -117,7 +117,7 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
 
     updateFont: function () {
       jss.set('body', {
-        'font-family': fonts[storage.get('currentFont', 'normal fonts')],
+        'font-family': fonts[storage.get('currentFont', 0)],
       });
     }
   };
