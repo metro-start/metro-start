@@ -9,18 +9,20 @@ define(function() {
         },
 
         // The default theme for the app.
-        defaultTheme: {
-            'title': 'metro start',
-            'colors': {
-                'options-color': '#ff0000',
-                'main-color': '#ffffff',
-                'title-color': '#4a4a4a',
-                'background-color': '#000000'
-            },
-            'author': {
-              'name': 'metro-start',
-              'link': 'chumannaji.com'
-            }
+        getDefaultTheme: function() {
+            return {
+                'title': 'metro start',
+                'colors': {
+                    'options-color': '#ff0000',
+                    'main-color': '#ffffff',
+                    'title-color': '#4a4a4a',
+                    'background-color': '#000000'
+                },
+                'author': {
+                'name': 'metro-start',
+                'link': 'chumannaji.com'
+                }
+            };
         },
 
         // The default sortnig for the app.

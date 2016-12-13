@@ -188,6 +188,9 @@ select.chooser {
     right: 0;
 	padding-top: 10px;
 	padding-left: 10px;
+	padding: 10px;
+	border: solid thin;
+
 }
 .picker > div {
     display: inline-block;

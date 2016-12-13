@@ -33,7 +33,7 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
 
         var that = this;
         if (this.showOptions) {
-          document.body.removeChild(this.elems.hideRule);
+          this.elems.hideRule.remove();
         } else {
           document.body.appendChild(this.elems.hideRule);
         }

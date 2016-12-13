@@ -27,7 +27,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
             var item = templates.item.cloneNode(true);
             item.id = this.name + '_' + i;
             item.firstElementChild.id = this.name + '_' + i;
-            item.firstElementChild.appendChild(this.templateFunc(rows.themes[i], this.currentPage));
+            item.firstElementChild.appendChild(this.templateFunc(rows.themes[i], this.currentPage, rows.local));
             group.nodes.push(item);
           }
         }
@@ -74,6 +74,12 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
         }
     };
 
+    pagebase_grouped.prototype.clear = function clear() {
+        while (this.rootNode.firstChild) {
+            this.rootNode.removeChild(this.rootNode.firstChild);
+        }
+    };
+    
     // Gets how much space to reserve when displaying items.
     pagebase_grouped.prototype.getReservedItemCount = function getReservedItemCount() {
       // If the options are showing, account for sort options.

@@ -11,7 +11,7 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
 
       jquery('body').show();
 
-      jquery.each(defaults.defaultTheme.colors, function(key, value) {
+      jquery.each(defaults.getDefaultTheme().colors, function(key, value) {
         // jquery('#' + key).farbtastic(function(color) {
         //   var inputNode = document.getElementById('input-' + key);
         //   inputNode.value = color;
@@ -44,29 +44,10 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
     transition: A bool indicating whether to slowly transition or immediately change.
     */
     updateStyle: function(theme, transition) {
-      //updateFont();
-
-      var scope = {};
       var options_color = theme.colors['options-color'];
       var background_color = theme.colors['background-color'];
       var main_color = theme.colors['main-color'];
       var title_color = theme.colors['title-color'];
-
-      // jquery.each(defaults.defaultTheme.colors, function(key, value) {
-      //
-      //     jquery('#' + key).farbtastic('.color-picker .' + key);
-      //     //
-      //     // // Add a listener to update farbtastic when a color is changed.
-      //     // scope.$watch('theme.colors["' + key + '"]', function(newVal, oldVal) {
-      //     //     jquery.farbtastic('#' + key).setColor(newVal);
-      //     // });
-      // });
-      // if (scope.theme) {
-      //   background_color = scope.theme.colors['background-color'];
-      //   options_color = scope.theme.colors['options-color'];
-      //   main_color = scope.theme.colors['main-color'];
-      //   title_color = scope.theme.colors['title-color'];
-      // }
 
       jss.set('*', {
         'border-color': options_color
@@ -113,11 +94,14 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
         'color': options_color
         //'border-bottom': '2px solid ' + options_color
       });
+      jss.set('.border-options', {
+        'border-color': options_color
+      });
     },
 
     updateFont: function () {
       jss.set('body', {
-        'font-family': fonts[storage.get('currentFont', 'normal fonts')],
+        'font-family': fonts[storage.get('currentFont', 0)],
       });
     }
   };

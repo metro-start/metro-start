@@ -24,7 +24,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
             }
 
             this.elems.toggleWeather.addEventListener('click', this.toggleWeather.bind(this));
-            document.getElementById('saveLocation').addEventListener('submit', saveLocation);
+            document.getElementById('saveLocation').addEventListener('submit', this.saveLocation.bind(this));
 
             var chooser = jquery('#weather-unit-chooser');
             chooser.attr('selectedIndex', this.unit === 'fahrenheit' ? 0 : 1);

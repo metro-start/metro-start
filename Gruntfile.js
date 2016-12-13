@@ -28,7 +28,7 @@ module.exports = function (grunt) {
                 },
 
                 // Source map option. Eval provides a little less info, but is faster
-                devtool: 'eval',
+                devtool: 'source-map',
                 // Our loader configuration
                 module: {
                     loaders: [{
@@ -46,7 +46,8 @@ module.exports = function (grunt) {
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },
                         { from: 'manifest.json' },
-                        { from: 'start.html' }
+                        { from: 'start.html' },
+                        { from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
                     ])
                 ]
             }
