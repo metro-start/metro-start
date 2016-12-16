@@ -3,12 +3,10 @@ The default theme for metro start.
 */
 define(function() {
     return {
-        // Initializes the defalt settings and theme for the app.
         init: function() {
 
         },
 
-        // The default theme for the app.
         getDefaultTheme: function() {
             return {
                 'title': 'metro start',
@@ -25,7 +23,6 @@ define(function() {
             };
         },
 
-        // The default sortnig for the app.
         defaultSort: {
             'links': false,
             'apps': false,

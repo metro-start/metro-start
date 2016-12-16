@@ -6,6 +6,9 @@
         "node": true,
         "amd": true
     },
+    "globals": {
+        "chrome": true
+    },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true

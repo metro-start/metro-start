@@ -2,11 +2,12 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
   function (domready, pages, widgets, defaults, script, storage, util) {
     'use strict';
 
-    var that = this;
     var app = {
       data: {},
 
-      elems: {},
+      elems: {
+        hideRule: document.getElementById('hideRule')
+      },
 
       showOptions: false,
 
@@ -17,31 +18,20 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
           module.init(document);
         });
 
-        var that = this;
         var wrench = document.getElementById('wrench');
-        wrench.addEventListener('click', function () {
-          that.clickWrench();
-        });
-
-        this.elems.hideRule = document.getElementById('hideRule');
-        // script.updateStyle(false);
-        // $scope.updateWeather(false);
+        wrench.addEventListener('click', this.clickwrench.bind(this));
       },
 
       clickWrench: function () {
         this.showOptions = !this.showOptions;
 
+        this.pages.wrenchClickDelegate();
+        
         var that = this;
         if (this.showOptions) {
           this.elems.hideRule.remove();
         } else {
           document.body.appendChild(this.elems.hideRule);
-        }
-
-        // If we're on the theme when wrench was clicked, navigate to the last page.
-        if (pages.page == 'themes') {
-          console.log(storage.get('page', 'links'));
-          pages.changePage(storage.get('page', 'links'));
         }
 
         this.modules.forEach(function (module) {

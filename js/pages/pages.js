@@ -27,14 +27,14 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
         'onchange': this.changePage.bind(this)
       });
 
-      var that = this;
       jquery(window).bind('resize', this.onWindowResized.bind(this));
       this.onWindowResized();
     },
 
     changePage: function changePage(page) {
       this.page = page;
-      if (page != 'themes') {
+      if (page !== 'themes') {
+        jquery(this.elems.chooser).attr('selectedIndex', page);
         storage.save('page', page);
       }
 
@@ -90,7 +90,15 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
     // module: The module to find the index of.
     indexOfModule: function indexOfModule(moduleName) {
       return this.data.map(function(m) { return m.name; }).indexOf(moduleName);
-    }
+    },
+
+    wrenchClickDelegate: function() {
+        // If we're on the theme when wrench was clicked, navigate to the last page.
+        if (this.page == 'themes') {
+          console.log(storage.get('page', 'links'));
+          pages.changePage(storage.get('page', 'links'));
+        }
+      }
   };
 
   return pages;
