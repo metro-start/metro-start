@@ -101,9 +101,46 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             chrome.bookmarks.removeTree(bookmark.id, function() {
               bookmarkNode.remove();
             });
-            
         },
 
+    //     changeSort: function(newSort) {
+    //         var handleBookmarks = function (res) {
+    //           $scope.$apply(function () {
+    //             $scope.bookmarks[i] = res;
+    //           });
+    //         };
+
+    //         for (var i = )
+    //         for (i = $scope.bookmarks.length - 1; i >= 0; i--) {
+    //           var parentId = typeof $scope.bookmarks[i][0].parentId;
+    //           if (typeof parentId !== 'undefined') {
+    //             chrome.bookmarks.getChildren(parentId, handleBookmarks);
+    //           }
+    //         }
+    //       }
+    //     } else if ($scope.sort[key] == 1) {
+    //       if (key == 'themes') {
+    //         $scope.localThemes.sort();
+    //         $scope.onlineThemes.sort();
+    //       } else if (key == 'bookmarks') {
+    //         var compareFunction = function (a, b) {
+    //           if (a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase()) {
+    //             return 1;
+    //           } else if (a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase()) {
+    //             return -1;
+    //           } else {
+    //             return 0;
+    //           }
+    //         };
+    //         for (i = 0; i < $scope.bookmarks.length; i++) {
+    //           $scope.bookmarks[i].sort(compareFunction);
+    //         }
+    //       } else {
+    //         $scope[key].sort();
+    //       }
+    //     }
+    //   }
+    //     }
         // Sets the height of the bookmark module. This tells when to begin scrolling.
         // height: The new height of the bookmark page.
         setHeight: function(height) {

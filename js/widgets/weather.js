@@ -63,10 +63,14 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
             var newLocation = document.getElementById('newLocation').value.trim();
             if (newLocation !== '' && newLocation !== this.data.city) {
                 this.udpate('city', newLocation);
-
-                updateWeather(true);
-                
+                this.updateWeather(true);
+            } else {
+                this.alertWeatherLocation();
             }
+        },
+
+        alertWeatherLocation: function() {
+
         },
 
         changeWeatherUnit: function(newWeatherUnit) {

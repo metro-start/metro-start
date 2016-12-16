@@ -79,8 +79,6 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
         // item: The link item to be converted into a node.
         // local: Local theme, or online?
         templateFunc: function(theme, page, local) {
-            console.log(local);
-            
             var fragment = util.createElement('');
 
             var title = this.templates.titleFragment.cloneNode(true);
@@ -89,16 +87,7 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
             fragment.appendChild(title);
 
-            if (!local)
-            {
-                var author = this.templates.authorFragment.cloneNode(true);
-                author.firstElementChild.textContent = theme.author.name;
-                author.firstElementChild.href = theme.author.link;
-                fragment.appendChild(author);
-            }
-
-            if (!!local)
-            {
+            if (local) {
                 var share = this.templates.shareFragment.cloneNode(true);
                 share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
                 fragment.appendChild(share);
@@ -110,6 +99,11 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
                 var remove = this.templates.removeFragment.cloneNode(true);
                 remove.firstElementChild.addEventListener('click', this.removeTheme.bind(this, theme));
                 fragment.appendChild(remove);
+            } else {
+                var author = this.templates.authorFragment.cloneNode(true);
+                author.firstElementChild.textContent = theme.author.name;
+                author.firstElementChild.href = theme.author.link;
+                fragment.appendChild(author);
             }
 
             return fragment;

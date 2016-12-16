@@ -4,7 +4,9 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         data: {},
 
-        elems: {},
+        elems: {
+            rootNode: document.getElementById('internal_selector_apps')
+        },
 
         templates: {
             titleFragment: util.createElement('<a class="title"></a>'),
@@ -14,7 +16,6 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         // Initialize this module.
         init: function(document) {
-            this.elems.rootNode = document.getElementById('internal_selector_apps');
             this.apps = new pagebase_simple();
             this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadApps();

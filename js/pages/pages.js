@@ -4,7 +4,9 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
 
     name: 'pages',
 
-    elems: {},
+    elems: {
+      chooser: document.getElementById('pages-chooser')
+    },
 
     data: Array.prototype.slice.call(arguments, 3),
 
@@ -38,7 +40,6 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
         storage.save('page', page);
       }
 
-      this.elems.chooser = document.getElementById(this.name + '-chooser');
       jquery(this.elems.chooser).attr('selectedIndex', this.indexOfModule(this.page));
       jquery(this.elems.chooser).change();
 
@@ -86,6 +87,26 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
       this.forEachModule('setShowOptions', showOptions);
     },
 
+
+    changeSort: function (key, newSort) {
+      if (this.sort === newSort) {
+        return;
+      }
+
+      this.sort = newSort;
+      storage.save('sort', this.sort);
+
+      if (key === 'links') {
+        links.changeSort(newSort);
+      } else if (key === 'apps') {
+        apps.changeSort(newSort);
+      } else if (key === 'themes') {
+        themes.changeSort(newSort);
+      } else if (key === 'bookmarks') {
+        bookmarks.changeSort(newSort);
+      }
+    },
+
     // Returns the index of a provided module.
     // module: The module to find the index of.
     indexOfModule: function indexOfModule(moduleName) {
@@ -94,7 +115,7 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
 
     wrenchClickDelegate: function() {
         // If we're on the theme when wrench was clicked, navigate to the last page.
-        if (this.page == 'themes') {
+        if (this.page === 'themes') {
           console.log(storage.get('page', 'links'));
           pages.changePage(storage.get('page', 'links'));
         }
