@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], function(pagebase_simple, storage, util) {
+define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util', '../utils/defaults'], function(pagebase_simple, storage, util, defaults) {
     var apps = {
         name: 'apps',
 
@@ -16,7 +16,7 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         // Initialize this module.
         init: function(document) {
-            this.sort = storage.get('sort', { apps: false }).apps;
+            this.sort = storage.get('sort', defaults.getDefaultSort()).apps;
 
             this.apps = new pagebase_simple();
             this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
@@ -37,10 +37,10 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
                     return item.isApp; 
                 });
 
-                if (this.sort)
+                if (that.sort === 'sorted')
                 {
                     res = res.sort(function(a, b) { 
-                        return a < b;
+                        return a.name < b.name ? -1 : 1;
                     });
                 }
                 that.data = that.data.concat(res);
@@ -64,11 +64,13 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         sortChanged: function(newSort) {
             this.sort = newSort;
+            var sortOrder = storage.get('sort', defaults.getDefaultSort());
+            sortOrder.apps = newSort;
+            storage.save('sort', sortOrder);
+
             this.loadApps();
         },
 
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
         templateFunc: function(app) {
             var fragment = util.createElement('');
             var title = this.templates.titleFragment.cloneNode(true);
@@ -87,8 +89,6 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             return fragment;
         },
 
-        // Uninistall an app from Chrome.
-        // app: THe app to be uninstalled.
         uninstallApp: function(app) {
             var that = this;
             chrome.management.uninstall(app.id, { showConfirmDialog: true}, function() {

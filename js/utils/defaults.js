@@ -4,7 +4,6 @@ The default theme for metro start.
 define(function() {
     return {
         init: function() {
-
         },
 
         getDefaultFont: function () {
@@ -29,7 +28,11 @@ define(function() {
 
         getDefaultWeather: function() {
             return {
-                city: 'vancouver, bc'
+                city: 'vancouver, bc',
+                currentTemp: '-',
+                highTemp: '-',
+                lowTemp: '-',
+                condition: '-'
             };
         },
 
@@ -37,11 +40,13 @@ define(function() {
             return "celcius";
         },
 
-        defaultSort: {
-            'links': false,
-            'apps': false,
-            'bookmarks': false,
-            'themes': false
+        getDefaultSort: function() {
+            return {
+                links: 'unsorted',
+                apps: 'unsorted',
+                bookmarks: 'unsorted',
+                themes: 'unsorted'
+            };
         }
     };
 });

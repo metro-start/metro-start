@@ -60,6 +60,7 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
             }
             column.remove();
         }
+
         this.addAllNodes(nodes);
     };
 

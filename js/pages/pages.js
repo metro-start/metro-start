@@ -1,5 +1,5 @@
-define(['jquery', 'jss', '../utils/storage', './links', './apps', './bookmarks', './themes'],
-function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
+define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './links', './apps', './bookmarks', './themes'],
+function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
   var pages = {
 
     name: 'pages',
@@ -29,6 +29,18 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
         initial: this.page,
         onchange: this.changePage.bind(this)
       });
+
+      var sortOrder = storage.get('sort', defaults.getDefaultSort());
+      for (var i = 0; i < this.data.length; i++) {
+        var module = this.data[i];
+        if (module.sortChanged) {
+          module.sort = sortOrder[module.name];
+          jquery("#" + module.name + "-sort-chooser").metroSelect({ 
+            initial: module.sort,
+            onchange: module.sortChanged.bind(module)
+          });
+        }
+      }
 
       jquery(window).bind('resize', this.onWindowResized.bind(this));
       this.onWindowResized();

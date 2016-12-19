@@ -11,14 +11,6 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
   // Adds all the given HTML nodes to the DOM, in a naive way (top to bottom, left to right).
   // nodes: List of nodes to be added.
   pagebase_simple.prototype.addAllNodes = function addAllNodes(nodes) {
-    if (this.sort) {
-      nodes.sort(this.compareFunc);
-    } else {
-      nodes.sort(function(a, b) {
-        return a.id.toLocaleLowerCase() > b.id.toLocaleLowerCase();
-      });
-    }
-
     if (nodes.length) {
       var pageIndex = this.elems.internal_selector.children.length;
       var columnNode = templates.column.cloneNode(true);
