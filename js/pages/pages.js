@@ -10,6 +10,8 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
 
     data: Array.prototype.slice.call(arguments, 3),
 
+    showOptions: false,
+
     forEachModule: function(func) {
       var thatArgs = arguments;
       this.data.forEach(function(module) {
@@ -22,11 +24,10 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
     init: function(document) {
       this.forEachModule('init', document, this.getPageItemCount());
 
-      this.showOptions = false;
-      this.changePage(storage.get('page', 'links'));
-
+      this.page = storage.get('page', 'links');
       jquery(this.elems.chooser).metroSelect({
-        'onchange': this.changePage.bind(this)
+        initial: this.page,
+        onchange: this.changePage.bind(this)
       });
 
       jquery(window).bind('resize', this.onWindowResized.bind(this));
@@ -34,14 +35,14 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
     },
 
     changePage: function changePage(page) {
+      console.log("new page: " + page);
       this.page = page;
       if (page !== 'themes') {
-        jquery(this.elems.chooser).attr('selectedIndex', page);
         storage.save('page', page);
       }
 
-      jquery(this.elems.chooser).attr('selectedIndex', this.indexOfModule(this.page));
-      jquery(this.elems.chooser).change();
+      // jquery(this.elems.chooser).attr('selectedIndex', this.indexOfModule(this.page));
+      // jquery(this.elems.chooser).change();
 
       jss.set('.external .internal', {
         'margin-left': (this.indexOfModule(page) * -100) + '%'
@@ -87,37 +88,17 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
       this.forEachModule('setShowOptions', showOptions);
     },
 
-
-    changeSort: function (key, newSort) {
-      if (this.sort === newSort) {
-        return;
-      }
-
-      this.sort = newSort;
-      storage.save('sort', this.sort);
-
-      if (key === 'links') {
-        links.changeSort(newSort);
-      } else if (key === 'apps') {
-        apps.changeSort(newSort);
-      } else if (key === 'themes') {
-        themes.changeSort(newSort);
-      } else if (key === 'bookmarks') {
-        bookmarks.changeSort(newSort);
-      }
-    },
-
     // Returns the index of a provided module.
     // module: The module to find the index of.
     indexOfModule: function indexOfModule(moduleName) {
       return this.data.map(function(m) { return m.name; }).indexOf(moduleName);
     },
 
-    wrenchClickDelegate: function() {
+    wrenchClicked: function() {
         // If we're on the theme when wrench was clicked, navigate to the last page.
         if (this.page === 'themes') {
           console.log(storage.get('page', 'links'));
-          pages.changePage(storage.get('page', 'links'));
+          jquery(this.elems.chooser).metroSelect().select_child(storage.get('page', 'links'));
         }
       }
   };

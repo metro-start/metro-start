@@ -1,4 +1,4 @@
-define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, pagebase_paneled, util) {
+define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storage'], function(jss, pagebase_paneled, util, storage) {
     var bookmarks = {
         name: 'bookmarks',
 
@@ -16,6 +16,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
 
         // Initialize this module.
         init: function() {
+            this.sort = storage.get('sort', { bookmarks: false }).bookmarks;
             this.elems.rootNode = document.getElementById('internal_selector_bookmarks');
             this.bookmarks = new pagebase_paneled();
             this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
@@ -44,6 +45,11 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         // showOptions: true, if options are now showing; false otherwise.
         setShowOptions: function setShowOptions(showOptions) {
             this.bookmarks.setShowOptions(showOptions);
+        },
+
+        sortChanged: function(newSort) {
+            this.sort = newSort;
+            this.bookmarks.sortChanged(newSort);
         },
 
         // Returns an HTML link node item.

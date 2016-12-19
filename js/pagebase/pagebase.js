@@ -1,7 +1,4 @@
 define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function(jquery, util, storage, metroSelect) {
-
-    var validPageBases = ['simple', 'grouped', 'paneled'];
-
     var templates = {
        column: util.createElement('<div class="page"></div>'),
        item: util.createElement('<div class="item"></div>')
@@ -19,11 +16,11 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
         this.templateFunc = templateFunc;
         this.page = 0;
 
-        var that = this;
         var selector = jquery('#' + this.name + '-chooser');
         selector.attr('selectedIndex', this.sort ? 1 : 0);
         selector.metroSelect({
-            'onchange': this.sortChanged.bind(this)
+            initial: this.sort ? "sorted" : "unsorted",
+            onchange: this.sortChanged.bind(this)
         });
 
         this.elems.internal_selector = document.getElementById('internal_selector_' + this.name);
@@ -34,6 +31,8 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     pagebase.prototype.sortChanged = function sortChagned(sort) {
         this.sort = !this.sort;
         storage.save(this.name + '_sort', this.sort);
+
+        
     };
 
 

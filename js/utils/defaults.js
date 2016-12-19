@@ -7,6 +7,10 @@ define(function() {
 
         },
 
+        getDefaultFont: function () {
+            return 'normal fonts';
+        },
+
         getDefaultTheme: function() {
             return {
                 'title': 'metro start',
@@ -21,6 +25,16 @@ define(function() {
                 'link': 'chumannaji.com'
                 }
             };
+        },
+
+        getDefaultWeather: function() {
+            return {
+                city: 'vancouver, bc'
+            };
+        },
+
+        getDefaultWeatherUnit: function() {
+            return "celcius";
         },
 
         defaultSort: {

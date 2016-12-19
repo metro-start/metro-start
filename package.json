@@ -18,7 +18,7 @@
     "jquery": "*",
     "jquery-ui": "*",
     "jss": "git+https://github.com/Box9/jss.git",
-    "metro-select": "*",
+    "metro-select": "1.0.9",
     "spectrum-colorpicker": "^1.8.0",
     "transfer-webpack-plugin": "^0.1.4"
   },

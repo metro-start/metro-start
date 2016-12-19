@@ -24,7 +24,7 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
       clickWrench: function () {
         this.showOptions = !this.showOptions;
 
-        pages.wrenchClickDelegate();
+        pages.wrenchClicked();
         
         if (this.showOptions) {
           this.elems.hideRule.remove();

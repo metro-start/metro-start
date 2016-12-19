@@ -16,6 +16,8 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         // Initialize this module.
         init: function(document) {
+            this.sort = storage.get('sort', { apps: false }).apps;
+
             this.apps = new pagebase_simple();
             this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadApps();
@@ -31,7 +33,17 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
                 }];
 
                 // Remove extensions and limit to installed apps.
-                that.data = that.data.concat(res.filter(function(item) { return item.isApp; }));
+                res = res.filter(function(item) { 
+                    return item.isApp; 
+                });
+
+                if (this.sort)
+                {
+                    res = res.sort(function(a, b) { 
+                        return a < b;
+                    });
+                }
+                that.data = that.data.concat(res);
                 that.apps.buildDom(that.data);
             });
         },
@@ -48,6 +60,11 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         // showOptions: true, if options are now showing; false otherwise.
         setShowOptions: function setShowOptions(showOptions) {
             this.apps.setShowOptions(showOptions);
+        },
+
+        sortChanged: function(newSort) {
+            this.sort = newSort;
+            this.loadApps();
         },
 
         // Returns an HTML link node item.

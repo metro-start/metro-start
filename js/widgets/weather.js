@@ -1,13 +1,14 @@
-define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, storage) {
+define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults'], function(jquery, util, storage, defaults) {
     var weather = {
         data: {},
 
         elems: {},
 
-        nodes: ['city', 'currentTemp', 'highTemp', 'lowTemp', 'condition', 'unit'],
+        nodes: ['city', 'currentTemp', 'highTemp', 'lowTemp', 'condition'],
 
         init: function(document) {
-            this.data = storage.get('weather');
+            this.data = storage.get('weather', defaults.getDefaultWeather());
+            this.weatherUnit = storage.get('weatherUnit', defaults.getDefaultWeatherUnit());
             this.data.visible = !!this.data.visible;
             var that = this;
             this.nodes.forEach(function(name) {
@@ -26,10 +27,9 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
             this.elems.toggleWeather.addEventListener('click', this.toggleWeather.bind(this));
             document.getElementById('saveLocation').addEventListener('submit', this.saveLocation.bind(this));
 
-            var chooser = jquery('#weather-unit-chooser');
-            chooser.attr('selectedIndex', this.unit === 'fahrenheit' ? 0 : 1);
-            chooser.metroSelect({
-                'onchange': this.changeWeatherUnit.bind(this)
+            jquery('#weather-unit-chooser').metroSelect({
+                initial: this.weatherUnit,
+                onchange: this.changeWeatherUnit.bind(this)
             });
 
             this.updateWeather(false);
@@ -74,9 +74,9 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
         },
 
         changeWeatherUnit: function(newWeatherUnit) {
-            this.update('unit', newWeatherUnit);
+            this.weatherUnit = newWeatherUnit;
+            storage.save('weatherUnit', this.weatherUnit);
             this.updateWeather(true);
-            
         },
 
         /**
@@ -84,7 +84,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
             force: Bypass the 1 hour wait requirement.
         */
         updateWeather: function(force) {
-            var unit = this.data.unit;
+            var unit = this.weatherUnit;
             var city = this.data.city;
             
             // If it has been more than an hour since last check.
@@ -101,14 +101,14 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
                         var city = elem.location.city + ', ';
                         city += (elem.location.region ? elem.location.region : elem.location.country);
                         that.data = {
-                            'visible': that.data.visible,
-                            'city': city.toLowerCase(),
-                            'currentTemp': elem.item.condition.temp,
-                            'highTemp': elem.item.forecast[0].high,
-                            'lowTemp': elem.item.forecast[0].low,
-                            'condition': elem.item.condition.text.toLowerCase(),
-                            'unit': ' ' + elem.units.temperature.toLowerCase(),
+                            visible: that.data.visible,
+                            city: city.toLowerCase(),
+                            currentTemp: elem.item.condition.temp,
+                            highTemp: elem.item.forecast[0].high,
+                            lowTemp: elem.item.forecast[0].low,
+                            condition: elem.item.condition.text.toLowerCase()
                         };
+
                         storage.save('weather', that.data);
                         that.rebuildDom();
                     }

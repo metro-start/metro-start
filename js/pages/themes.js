@@ -75,6 +75,11 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
             this.themes.setShowOptions(showOptions);
         },
 
+        sortChanged: function(newSort) {
+            this.sort = newSort;
+            this.loadThemes();
+        },
+
         // Returns an HTML link node item.
         // item: The link item to be converted into a node.
         // local: Local theme, or online?

@@ -75,7 +75,7 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
 
     updateFont: function () {
       jss.set('body', {
-        'font-family': fonts[storage.get('currentFont', 0)],
+        'font-family': fonts[storage.get('currentFont', defaults.defaultFont)],
       });
     }
   };

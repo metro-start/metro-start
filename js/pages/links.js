@@ -14,6 +14,7 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         // Initialize this module.
         init: function(document, pageItemCount) {
+            this.sort = storage.get('sort', { links: false }).links;
             this.elems.rootDom = document.getElementById('internal_selector_links');
             this.elems.newUrl = document.getElementById('newUrl');
             this.elems.newUrlTitle = document.getElementById('newUrlTitle');
@@ -41,6 +42,11 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         // showOptions: true, if options are now showing; false otherwise.
         setShowOptions: function setShowOptions(showOptions) {
             this.links.setShowOptions(showOptions);
+        },
+
+        sortChanged: function(newSort) {
+            this.sort = newSort;
+            this.loadLinks();
         },
 
         // Returns an HTML link node item.
@@ -119,7 +125,6 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             }
             storage.save('links', this.data);
             this.links.buildDom(this.data);
-            
         }
     };
 

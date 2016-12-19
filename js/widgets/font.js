@@ -1,32 +1,26 @@
-define(['jquery', '../utils/script', '../utils/storage'], function(jquery, script, storage) {
+define(['jquery', 'jss', '../utils/defaults', '../utils/storage'], function(jquery, jss, defaults, storage) {
     var font = {
+        fonts: {
+            'normal fonts': '"Segoe UI", Helvetica, Arial, sans-serif',
+            'thin fonts': 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif'
+        },
+
         init: function(document) {
             var selector = jquery('#font-chooser');
-            var currentFont = storage.get('currentFont');
+            var currentFont = storage.get('currentFont', defaults.getDefaultFont());
 
-            if (isNaN(parseInt(currentFont)))
-            {
-                currentFont = 0;
-            }
-
-            selector.attr('selectedIndex', currentFont);
-            font.changeFont(currentFont);
-            
             selector.metroSelect({
-                'onchange': this.changeFont
+                initial: currentFont,
+                onchange: this.changeFont.bind(this)
             });
         },
 
         changeFont: function(font) {
-            if (font === 'normal fonts') {
-                font = 0;
-            } else if (font === 'thin fonts') {
-                font = 1;
-            }
             storage.save('currentFont', font);
-            script.updateFont();
-            
-        },
+            jss.set('body', {
+                'font-family': this.fonts[font],
+            });
+        }
     };
 
     return font;
