@@ -8,7 +8,7 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
       chooser: document.getElementById('pages-chooser')
     },
 
-    data: Array.prototype.slice.call(arguments, 3),
+    data: Array.prototype.slice.call(arguments, 2),
 
     showOptions: false,
 
@@ -52,9 +52,6 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
       if (page !== 'themes') {
         storage.save('page', page);
       }
-
-      // jquery(this.elems.chooser).attr('selectedIndex', this.indexOfModule(this.page));
-      // jquery(this.elems.chooser).change();
 
       jss.set('.external .internal', {
         'margin-left': (this.indexOfModule(page) * -100) + '%'
