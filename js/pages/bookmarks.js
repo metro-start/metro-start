@@ -4,7 +4,9 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
 
         data: {},
 
-        elems: {},
+        elems: {
+            rootNode: document.getElementById('internal_selector_bookmarks')
+        },
 
         bookmarks: {},
 
@@ -17,7 +19,6 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         // Initialize this module.
         init: function() {
             this.sort = storage.get('sort', { bookmarks: false }).bookmarks;
-            this.elems.rootNode = document.getElementById('internal_selector_bookmarks');
             this.bookmarks = new pagebase_paneled();
             this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.bookmarks.pageItemCount = -1;
@@ -59,7 +60,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.href = bookmark.url;
             title.firstElementChild.textContent = bookmark.title;
-            title.firstElementChild.id = 'bookmark_' + bookmark.id;
+            title.firstElementChild.id = 'bookmark_' + bookmark.parentId + '_' + bookmark.id;
             if (bookmark.children && bookmark.children.length > 0) {
                 title.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
             }
@@ -67,7 +68,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
             fragment.appendChild(title);
 
             var remove = this.templates.removeFragment.cloneNode(true);
-            remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark, fragment));
+            remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark));
             fragment.appendChild(remove);
 
             return fragment;
@@ -103,9 +104,10 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         // Removes a bookmark from the DOM and the chrome bookmark storage.
         // bookmark: The bookmark to be removed.
         // bookmarkNode: The DOM node of the bookmark to be removed.
-        removeBookmark: function(bookmark, page, index) {
+        removeBookmark: function(bookmark) {
+            var bookmarkNode = document.getElementById('bookmark_' + bookmark.parentId + '_' + bookmark.id);
             chrome.bookmarks.removeTree(bookmark.id, function() {
-              bookmarkNode.remove();
+                bookmarkNode.parentElement.remove();
             });
         },
 

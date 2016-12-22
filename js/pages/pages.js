@@ -8,7 +8,9 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
       chooser: document.getElementById('pages-chooser')
     },
 
-    data: Array.prototype.slice.call(arguments, 2),
+    modules: [links, apps, bookmarks, themes],
+    
+    data: Array.prototype.slice.call(arguments, 4),
 
     showOptions: false,
 

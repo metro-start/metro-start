@@ -34,13 +34,18 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
             this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
         },
 
-        // Loads the available themes from local and web storage
         loadThemes: function() {
             this.themes.clear();
+            var localThemes = storage.get('localThemes', [defaults.getDefaultTheme()]);
+            if (this.sort === "sorted") {
+                localThemes.sort(function(a, b) {
+                    return a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1;
+                });
+            }
             this.themes.addAll({
-              'local': true,
-              'heading': 'my themes',
-              'themes': storage.get('localThemes', [defaults.getDefaultTheme()])
+              local: true,
+              heading: 'my themes',
+              themes: localThemes
             });
 
             var that = this;
@@ -55,6 +60,11 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
                     };
                 }
 
+                if (that.sort === "sorted") {
+                    data.sort(function(obj1, obj2) {
+                        return obj1.title.toLowerCase() > obj2.title.toLowerCase() ? 1 : -1;
+                    });
+                }
                 that.themes.addAll({
                   'local': false,
                   'heading': 'online themes',
@@ -77,6 +87,10 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
 
         sortChanged: function(newSort) {
             this.sort = newSort;
+            var sortOrder = storage.get('sort', defaults.getDefaultSort());
+            sortOrder.themes = newSort;
+            storage.save('sort', sortOrder);
+
             this.loadThemes();
         },
 

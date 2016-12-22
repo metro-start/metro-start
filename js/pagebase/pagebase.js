@@ -31,8 +31,6 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     pagebase.prototype.sortChanged = function sortChagned(sort) {
         this.sort = !this.sort;
         storage.save(this.name + '_sort', this.sort);
-
-        
     };
 
 
@@ -70,7 +68,9 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
         var nodes = [];
         for (var i = 0; i < rows.length; i++) {
             var item = templates.item.cloneNode(true);
-            item.id = this.name + '_' + i;
+            if (!item.id) {
+                item.id = this.name + '_' + i;
+            }
             item.firstElementChild.id = this.name + '_' + i;
             item.firstElementChild.appendChild(this.templateFunc(rows[i], this.currentPage));
             nodes.push(item);
