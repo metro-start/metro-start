@@ -38,7 +38,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         // pageItemCount: The maximum number of pages able to be displayed.
         setPageItemCount: function(pageItemCount) {
             jss.set('.bookmark-page', {
-                'height': (pageItemCount * 60) + 'px'
+                height: (pageItemCount * 60) + 'px'
             });
         },
 
@@ -149,13 +149,6 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
     //     }
     //   }
     //     }
-        // Sets the height of the bookmark module. This tells when to begin scrolling.
-        // height: The new height of the bookmark page.
-        setHeight: function(height) {
-          jss.set('.bookmark-page', {
-              'height': height + 'px'
-          });
-        }
     };
     return bookmarks;
 });

@@ -12,16 +12,16 @@ define(function() {
 
         getDefaultTheme: function() {
             return {
-                'title': 'metro start',
-                'colors': {
+                title: 'metro start',
+                colors: {
                     'options-color': '#ff0000',
                     'main-color': '#ffffff',
                     'title-color': '#4a4a4a',
                     'background-color': '#000000'
                 },
-                'author': {
-                'name': 'metro-start',
-                'link': 'chumannaji.com'
+                author: {
+                name: 'metro-start',
+                link: 'chumannaji.com'
                 }
             };
         },

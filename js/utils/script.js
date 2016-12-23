@@ -28,24 +28,24 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
       });
 
       jss.set('::-webkit-scrollbar', {
-        'background': background_color
+        background: background_color
       });
 
       jss.set('::-webkit-scrollbar-thumb', {
-        'background': options_color
+        background: options_color
       });
 
       jss.set('::-webkit-input-placeholder', {
-        'background': main_color
+        background: main_color
       });
 
       // Transition the colors
       if (transition) {
-        jquery('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
-        jquery('.title-color').animate({'color': title_color}, {duration: 400, queue: false});
-        jquery('body').animate({'color': main_color}, {duration: 400, queue: false});
-        jquery('input').animate({'color': main_color}, {duration: 400, queue: false});
-        jquery('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
+        jquery('.background-color').animate({backgroundColor: background_color}, {duration: 800, queue: false});
+        jquery('.title-color').animate({color: title_color}, {duration: 400, queue: false});
+        jquery('body').animate({color: main_color}, {duration: 400, queue: false});
+        jquery('input').animate({color: main_color}, {duration: 400, queue: false});
+        jquery('.options-color').animate({color: options_color}, {duration: 400, queue: false});
       }
 
       //but then we still need to add it to the DOM.
@@ -53,19 +53,19 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
         'background-color': background_color
       });
       jss.set('.title-color', {
-        'color': title_color
+        color: title_color
       });
       jss.set('body', {
-        'color': main_color
+        color: main_color
       });
       jss.set('input', {
-        'color': main_color
+        color: main_color
       });
       jss.set('.options-color', {
-        'color': options_color
+        color: options_color
       });
       jss.set('.bookmark-active', {
-        'color': options_color
+        color: options_color
         //'border-bottom': '2px solid ' + options_color
       });
       jss.set('.border-options', {

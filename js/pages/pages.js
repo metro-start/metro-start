@@ -49,7 +49,6 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
     },
 
     changePage: function changePage(page) {
-      console.log("new page: " + page);
       this.page = page;
       if (page !== 'themes') {
         storage.save('page', page);
@@ -63,24 +62,20 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
     // Compare document height to element height to fine the number of elements per page.
     onWindowResized: function() {
       var height = this.getContentHeight();
-
       jss.set('.external', {
-        'height': '' + height
-      });
-      jss.set('.bookmark-page', {
-        'height': '' + height
+        height: '' + height + 'px'
       });
 
       var pageItemCount = this.getPageItemCount();
       this.forEachModule('setPageItemCount', pageItemCount);
-      this.forEachModule('setHeight', height);
+      //this.forEachModule('setHeight', height);
     },
 
     // Gets the current height of the content page.
     getContentHeight: function() {
       var pageHeight = jquery('body').height();
       var headerHeight = jquery('h1').outerHeight(true);
-      var navBarHeight = jquery('.' + this.name + '-chooser').outerHeight(true);
+      var navBarHeight = jquery('.pages-chooser').outerHeight(true);
       var footerHeight = jquery('.footer').outerHeight(true);
       return pageHeight - (headerHeight + navBarHeight + footerHeight);
     },
@@ -108,7 +103,6 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
     wrenchClicked: function() {
         // If we're on the theme when wrench was clicked, navigate to the last page.
         if (this.page === 'themes') {
-          console.log(storage.get('page', 'links'));
           jquery(this.elems.chooser).metroSelect().select_child(storage.get('page', 'links'));
         }
       }

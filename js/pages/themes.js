@@ -65,10 +65,11 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
                         return obj1.title.toLowerCase() > obj2.title.toLowerCase() ? 1 : -1;
                     });
                 }
+
                 that.themes.addAll({
-                  'local': false,
-                  'heading': 'online themes',
-                  'themes': data
+                  local: false,
+                  heading: 'online themes',
+                  themes: data
                 });
             });
         },

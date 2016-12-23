@@ -28,7 +28,7 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         // Loads the links from storage into the DOM.
         loadLinks: function() {
-          this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+          this.data = storage.get('links', [{name: 'use the wrench to get started. . . ', url: ''}]);
           this.links.buildDom(this.data);
         },
 
@@ -91,8 +91,8 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
                     
                 } else {
                     this.data.push({
-                        'name': formatTitle(newUrlTitle),
-                        'url': newUrl
+                        name: formatTitle(newUrlTitle),
+                        url: newUrl
                     });
 
                     
