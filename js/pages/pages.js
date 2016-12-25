@@ -63,12 +63,15 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
     onWindowResized: function() {
       var height = this.getContentHeight();
       jss.set('.external', {
-        height: '' + height + 'px'
+        height: height + 'px'
       });
+      jss.set('.bookmark-page', {
+        height: height + 'px'
+      });
+      console.log("content height: " + height);
 
       var pageItemCount = this.getPageItemCount();
       this.forEachModule('setPageItemCount', pageItemCount);
-      //this.forEachModule('setHeight', height);
     },
 
     // Gets the current height of the content page.
@@ -77,13 +80,14 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
       var headerHeight = jquery('h1').outerHeight(true);
       var navBarHeight = jquery('.pages-chooser').outerHeight(true);
       var footerHeight = jquery('.footer').outerHeight(true);
+      console.log("page: " + pageHeight + ", header: " + headerHeight + ", navBar: " + navBarHeight + ", footer: " + footerHeight);
       return pageHeight - (headerHeight + navBarHeight + footerHeight);
     },
 
     // Sets the new number of pages for the block.
     // pageItemCount: The maximum number of pages able to be displayed.
     getPageItemCount: function() {
-      return Math.floor((this.getContentHeight()) / 60);
+      return Math.floor((this.getContentHeight()) / 65);
     },
 
     // Sets whether options are currently showing.
