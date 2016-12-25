@@ -46,7 +46,9 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         sortChanged: function(newSort) {
             this.sort = newSort;
-            this.loadLinks();
+            this.links.sort = newSort;
+            this.links.sortChanged();
+            // this.loadLinks();
         },
 
         // Returns an HTML link node item.

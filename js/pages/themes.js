@@ -60,11 +60,21 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
                     };
                 }
 
-                if (that.sort === "sorted") {
-                    data.sort(function(obj1, obj2) {
-                        return obj1.title.toLowerCase() > obj2.title.toLowerCase() ? 1 : -1;
-                    });
-                }
+                // if (that.sort === "sorted") {
+                //     // data.sort(function(obj1, obj2) {
+                //     //     return obj1.title.toLowerCase() > obj2.title.toLowerCase() ? 1 : -1;
+                //     // });
+                //     data.sort(function(a, b) {
+                //         var nameA = a.title.toUpperCase(); // ignore upper and lowercase
+                //         var nameB = b.title.toUpperCase(); // ignore upper and lowercase
+                //         if (nameA < nameB) {
+                //             return -1;
+                //         } else if (nameA > nameB) {
+                //             return 1;
+                //         }
+                //         return 0;
+                //     });
+                // }
 
                 that.themes.addAll({
                   local: false,
@@ -92,7 +102,9 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
             sortOrder.themes = newSort;
             storage.save('sort', sortOrder);
 
-            this.loadThemes();
+            this.themes.sort = newSort;
+            this.themes.sortChanged();
+            // this.loadThemes();
         },
 
         // Returns an HTML link node item.

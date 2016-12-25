@@ -79,6 +79,27 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
             this.rootNode.removeChild(this.rootNode.firstChild);
         }
     };
+
+    pagebase_grouped.prototype.sortChanged = function sortChanged() {
+        // var groups = this.rootNode.children();
+        // for (var i = 0; i < columns.length; i++) {
+        //     var column = columns[i];
+        //     var rows = [];
+        //     while (column.lastChild) {
+        //         rows.append(column.lastChild);
+        //         column.removeChild(column.lastChild);
+        //     }
+
+        //     rows.sort(this.sortFunc);
+
+        //     for (var j = 0; j < rows.length; j++) {
+        //         column.appendChild(rows[j]);
+        //         // if (rows[j] is selected) {
+        //         //     scroll to it.
+        //         // }
+        //     }
+        // }
+    };
     
     // Gets how much space to reserve when displaying items.
     pagebase_grouped.prototype.getReservedItemCount = function getReservedItemCount() {

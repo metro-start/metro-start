@@ -68,7 +68,9 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util', '../u
             sortOrder.apps = newSort;
             storage.save('sort', sortOrder);
 
-            this.loadApps();
+            this.apps.sort = newSort;
+            this.apps.sortChanged();
+            // this.loadApps();
         },
 
         templateFunc: function(app) {

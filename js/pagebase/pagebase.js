@@ -122,7 +122,13 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     // a: First node to compare.
     // b: Second node to compare.
     pagebase.prototype.compareFunc = function compareFunc(a, b) {
-        return a.firstElementChild.textContent > b.firstElementChild.textContent;
+        var nameA = a.textContent.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.textContent.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+            return -1;
+        } else if (nameA > nameB) {
+            return 1;
+        }
     };
 
     return pagebase;

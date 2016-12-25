@@ -47,6 +47,27 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
         }
     };
 
+    pagebase_paneled.prototype.sortChanged = function sortChanged() {
+        var columns = this.rootNode.childNodes;
+        for (var i = 0; i < columns.length; i++) {
+            var column = columns[i];
+            var rows = [];
+            while (column.lastChild) {
+                rows.push(column.lastChild);
+                column.removeChild(column.lastChild);
+            }
+
+            rows.sort(this.compareFunc);
+
+            for (var j = 0; j < rows.length; j++) {
+                column.appendChild(rows[j]);
+                // if (rows[j] is selected) {
+                //     scroll to it.
+                // }
+            }
+        }
+    };
+
     // Gets how much space to reserve when displaying items.
     pagebase_paneled.prototype.getReservedItemCount = function getReservedItemCount() {
       // If the options are showing, account for sort options.

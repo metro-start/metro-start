@@ -22,6 +22,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
             this.bookmarks = new pagebase_paneled();
             this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.bookmarks.pageItemCount = -1;
+            this.bookmarks.sortFunc = this.sortFunc.bind(this);
             this.loadBookmarks();
         },
 
@@ -50,8 +51,20 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
 
         sortChanged: function(newSort) {
             this.sort = newSort;
+            this.bookmarks.sort = newSort;
             this.bookmarks.sortChanged(newSort);
         },
+
+        // sortFunc: function(a, b) {
+        //     var nameA = a.title.toUpperCase(); // ignore upper and lowercase
+        //     var nameB = b.title.toUpperCase(); // ignore upper and lowercase
+        //     if (nameA < nameB) {
+        //         return -1;
+        //     } else if (nameA > nameB) {
+        //         return 1;
+        //     }
+        //     return 0;
+        // },
 
         // Returns an HTML link node item.
         // item: The link item to be converted into a node.
