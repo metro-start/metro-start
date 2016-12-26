@@ -16,10 +16,10 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util', '../utils/de
 
         // Initialize this module.
         init: function(document) {
-            this.sort = storage.get('sort', defaults.getDefaultSort()).apps;
+            // this.sort = storage.get('sort', defaults.getDefaultSort()).apps;
 
             this.apps = new pagebase_simple();
-            this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
+            this.apps.init(document, this.name, this.elems.rootNode, this.nameFunc.bind(this), this.templateFunc.bind(this));
             this.loadApps();
         },
 
@@ -37,12 +37,12 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util', '../utils/de
                     return item.isApp; 
                 });
 
-                if (that.sort === 'sorted')
-                {
-                    res = res.sort(function(a, b) { 
-                        return a.name < b.name ? -1 : 1;
-                    });
-                }
+                // if (that.sort === 'sorted')
+                // {
+                //     res = res.sort(function(a, b) { 
+                //         return a.name < b.name ? -1 : 1;
+                //     });
+                // }
                 that.data = that.data.concat(res);
                 that.apps.buildDom(that.data);
             });
@@ -62,15 +62,19 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util', '../utils/de
             this.apps.setShowOptions(showOptions);
         },
 
-        sortChanged: function(newSort) {
-            this.sort = newSort;
-            var sortOrder = storage.get('sort', defaults.getDefaultSort());
-            sortOrder.apps = newSort;
-            storage.save('sort', sortOrder);
+        // sortChanged: function(newSort) {
+        //     this.sort = newSort;
+        //     var sortOrder = storage.get('sort', defaults.getDefaultSort());
+        //     sortOrder.apps = newSort;
+        //     storage.save('sort', sortOrder);
 
-            this.apps.sort = newSort;
-            this.apps.sortChanged();
-            this.loadApps();
+        //     this.apps.sort = newSort;
+        //     this.apps.sortChanged();
+        //     this.loadApps();
+        // },
+
+        nameFunc: function(app) {
+            return app.name;
         },
 
         templateFunc: function(app) {

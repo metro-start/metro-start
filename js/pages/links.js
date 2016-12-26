@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], function(pagebase_simple, storage, util) {
+define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pagebase_simple, storage, util) {
     var links = {
         name: 'links',
 
@@ -12,9 +12,8 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             editFragment: util.createElement('<span class="edit option options-color small-text clickable">edit</span>'),
         },
 
-        // Initialize this module.
-        init: function(document, pageItemCount) {
-            this.sort = storage.get('sort', { links: false }).links;
+        init: function(document) {
+            // this.sort = storage.get('sort', { links: false }).links;
             this.elems.rootDom = document.getElementById('internal_selector_links');
             this.elems.newUrl = document.getElementById('newUrl');
             this.elems.newUrlTitle = document.getElementById('newUrlTitle');
@@ -22,20 +21,13 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
             this.links = new pagebase_simple();
-            this.links.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
-            this.links.setPageItemCount(pageItemCount);
+            this.links.init(document, this.name, this.elems.rootDom, this.nameFunc.bind(this), this.templateFunc.bind(this));
+            this.loadLinks();
         },
 
-        // Loads the links from storage into the DOM.
         loadLinks: function() {
           this.data = storage.get('links', [{name: 'use the wrench to get started. . . ', url: ''}]);
           this.links.buildDom(this.data);
-        },
-
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
-            this.links.setPageItemCount(pageItemCount, this.data);
         },
 
         // Sets whether options are currently showing.
@@ -44,11 +36,15 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             this.links.setShowOptions(showOptions);
         },
 
-        sortChanged: function(newSort) {
-            this.sort = newSort;
-            this.links.sort = newSort;
-            this.links.sortChanged();
-            // this.loadLinks();
+        // sortChanged: function(newSort) {
+        //     this.sort = newSort;
+        //     this.links.sort = newSort;
+        //     this.links.sortChanged();
+        //     // this.loadLinks();
+        // },
+
+        nameFunc: function(item) {
+            return item.name;
         },
 
         // Returns an HTML link node item.
@@ -77,7 +73,7 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             var newUrl = this.elems.newUrl.value.trim();
             var newUrlTitle = this.elems.newUrlTitle.value.trim();
             if (newUrl !== '') {
-                var formatTitle = function(title) {
+                var formatTitle = function() {
                     return newUrlTitle ? newUrlTitle : newUrl.toLocaleLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
                 };
 

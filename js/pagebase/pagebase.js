@@ -1,4 +1,4 @@
-define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function(jquery, util, storage, metroSelect) {
+define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'metro-select'], function(jquery, util, storage, defaults, metroSelect) {
     var templates = {
        item: util.createElement('<div class="item"></div>')
     };
@@ -6,19 +6,17 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     var pagebase = function pagebase() { };
 
     // Initialize the module.
-    pagebase.prototype.init = function(document, name, rootNode, templateFunc) {
+    pagebase.prototype.init = function(document, name, rootNode, nameFunc, templateFunc) {
         this.elems = {};
         this.name = name;
         this.rootNode = rootNode;
-        this.sort = storage.get(this.name + '_sort', false);
         this.currentPage = 0;
+        this.nameFunc = nameFunc;
         this.templateFunc = templateFunc;
         this.page = 0;
 
-        var selector = jquery('#' + this.name + '-chooser');
-        selector.attr('selectedIndex', this.sort ? 1 : 0);
-        selector.metroSelect({
-            initial: this.sort ? "sorted" : "unsorted",
+        jquery('#' + this.name + '-sort-chooser').metroSelect({
+            initial: this.getSort(),
             onchange: this.sortChanged.bind(this)
         });
 
@@ -27,43 +25,23 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
 
     // Ordering of elements on the page has changd.
     // sort: New sort order.
-    pagebase.prototype.sortChanged = function sortChagned(sort) {
-        this.sort = !this.sort;
-        storage.save(this.name + '_sort', this.sort);
-    };
+    // pagebase.prototype.sortChanged = function sortChagned(sort) {
+    //     this.sort = !this.sort;
+    //     storage.save(this.name + '_sort', this.sort);
+    // };
 
 
     // Build the dom.
     // rows: HTML rows to be added to the Dom.
     pagebase.prototype.buildDom = function buildDom(rows) {
         // this.currentPage = 0;
-        while (this.rootNode.firstElementChild) {
-            this.rootNode.firstElementChild.remove();
-        }
-        this.addAll(rows);
-    };
-
-    // Rebuild the dom by removing all nodes and re-adding them.
-    // This is useful for resetting state.
-    pagebase.prototype.rebuildDom = function() {
-        // var nodes = [];
-        // this.currentPage = 0;
-
         // while (this.rootNode.firstElementChild) {
-        //     var column = this.rootNode.firstElementChild;
-        //     while (column.firstElementChild) {
-        //         nodes.push(column.firstElementChild);
-        //         column.firstElementChild.remove();
-        //     }
-        //     column.remove();
+        //     this.rootNode.firstElementChild.remove();
         // }
+    //     this.addAll(rows);
+    // };
 
-        // this.addAllNodes(nodes);
-    };
-
-    // Add all rows to the page.
-    // rows: The new ros to be added to the page.
-    pagebase.prototype.addAll = function addAll(rows) {
+    // pagebase.prototype.addAll = function addAll(rows) {
         var nodes = [];
         for (var i = 0; i < rows.length; i++) {
             var item = templates.item.cloneNode(true);
@@ -72,15 +50,39 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
             }
             item.firstElementChild.id = this.name + '_' + i;
             item.firstElementChild.appendChild(this.templateFunc(rows[i], this.currentPage));
-            this.rootNode.appendChild(item);
+            nodes.push(item);
+            // this.rootNode.appendChild(item);
         }
-        // this.addAllNodes(nodes);
+
+        if (this.getSort() === 'sorted') {
+            var that = this;
+            nodes.sort(function(a, b) { return that.compareFunc(a.textContent, b.textContent); });
+        }
+
+        for (var j = 0; j < nodes.length; j++) {
+            this.rootNode.appendChild(nodes[j]);
+        }
     };
 
-    // Adds all provided HTML nodes to the page.
-    // nodes: The nodes to be added.
-    pagebase.prototype.addAllNodes = function addAllNodes(nodes) {
-    //   throw "#notmyjob";
+    pagebase.prototype.sortChanged = function sortChanged(newSort) {
+        this.updateSort(newSort);
+
+        var items = Array.prototype.slice.call(this.rootNode.childNodes);
+        if (items.length !== 0) {
+            while (this.rootNode.lastChild) {
+                this.rootNode.removeChild(this.rootNode.lastChild);
+            }
+
+            if  (newSort === 'sorted') {
+                items.sort(this.sortFunc.bind(this));
+            } else {
+                items.sort(this.unsortFunc.bind(this));
+            }
+
+            for (var i = 0; i < items.length; i++) {
+                this.rootNode.appendChild(items[i]);
+            }
+        }
     };
 
     // Returns the pages in the module.
@@ -113,21 +115,38 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     pagebase.prototype.setShowOptions = function setShowOptions(showOptions) {
         if (this.showOptions !== showOptions) {
             this.showOptions = showOptions;
-            this.rebuildDom();
+            // this.rebuildDom();
         }
     };
+    
+    pagebase.prototype.sortFunc = function sortFunc(a, b) {
+        return this.compareFunc(a.textContent, b.textContent);
+    };
 
-    // Compare two different HTML nodes.
-    // a: First node to compare.
-    // b: Second node to compare.
+    pagebase.prototype.unsortFunc = function unsortFunc(a, b) {
+        return this.compareFunc(a.id, b.id);
+    };
+
     pagebase.prototype.compareFunc = function compareFunc(a, b) {
-        var nameA = a.textContent.toUpperCase(); // ignore upper and lowercase
-        var nameB = b.textContent.toUpperCase(); // ignore upper and lowercase
+        var nameA = a.toUpperCase();
+        var nameB = b.toUpperCase();
         if (nameA < nameB) {
             return -1;
         } else if (nameA > nameB) {
             return 1;
         }
+    };
+    
+    pagebase.prototype.getSort = function getSort() {
+        var sort = storage.get('sort', defaults.getDefaultSort());
+        return sort[this.name];
+    };
+
+
+    pagebase.prototype.updateSort = function updateSort(newSort) {
+        var sort = storage.get('sort', defaults.getDefaultSort());
+        sort[this.name] = newSort;
+        storage.save('sort', sort);
     };
 
     return pagebase;
