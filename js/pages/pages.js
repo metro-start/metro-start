@@ -54,24 +54,24 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
         storage.save('page', page);
       }
 
-      jss.set('.external .internal', {
+      jss.set('.internal', {
         'margin-left': (this.indexOfModule(page) * -100) + '%'
       });
     },
 
     // Compare document height to element height to fine the number of elements per page.
     onWindowResized: function() {
-      var height = this.getContentHeight();
-      jss.set('.external', {
-        height: height + 'px'
-      });
-      jss.set('.bookmark-page', {
-        height: height + 'px'
-      });
-      console.log("content height: " + height);
+      // var height = this.getContentHeight();
+      // jss.set('.internal_selector', {
+      //   height: height + 'px'
+      // });
+      // jss.set('.bookmark-page', {
+      //   height: height + 'px'
+      // });
+      // console.log("content height: " + height);
 
-      var pageItemCount = this.getPageItemCount();
-      this.forEachModule('setPageItemCount', pageItemCount);
+      // var pageItemCount = this.getPageItemCount();
+      // this.forEachModule('setPageItemCount', pageItemCount);
     },
 
     // Gets the current height of the content page.

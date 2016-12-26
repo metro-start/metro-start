@@ -1,6 +1,5 @@
 define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function(jquery, util, storage, metroSelect) {
     var templates = {
-       column: util.createElement('<div class="page"></div>'),
        item: util.createElement('<div class="item"></div>')
     };
 
@@ -23,7 +22,7 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
             onchange: this.sortChanged.bind(this)
         });
 
-        this.elems.internal_selector = document.getElementById('internal_selector_' + this.name);
+        // this.rootNode = document.getElementById('internal_selector_' + this.name);
     };
 
     // Ordering of elements on the page has changd.
@@ -37,7 +36,7 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     // Build the dom.
     // rows: HTML rows to be added to the Dom.
     pagebase.prototype.buildDom = function buildDom(rows) {
-        this.currentPage = 0;
+        // this.currentPage = 0;
         while (this.rootNode.firstElementChild) {
             this.rootNode.firstElementChild.remove();
         }
@@ -47,19 +46,19 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     // Rebuild the dom by removing all nodes and re-adding them.
     // This is useful for resetting state.
     pagebase.prototype.rebuildDom = function() {
-        var nodes = [];
-        this.currentPage = 0;
+        // var nodes = [];
+        // this.currentPage = 0;
 
-        while (this.rootNode.firstElementChild) {
-            var column = this.rootNode.firstElementChild;
-            while (column.firstElementChild) {
-                nodes.push(column.firstElementChild);
-                column.firstElementChild.remove();
-            }
-            column.remove();
-        }
+        // while (this.rootNode.firstElementChild) {
+        //     var column = this.rootNode.firstElementChild;
+        //     while (column.firstElementChild) {
+        //         nodes.push(column.firstElementChild);
+        //         column.firstElementChild.remove();
+        //     }
+        //     column.remove();
+        // }
 
-        this.addAllNodes(nodes);
+        // this.addAllNodes(nodes);
     };
 
     // Add all rows to the page.
@@ -73,40 +72,40 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
             }
             item.firstElementChild.id = this.name + '_' + i;
             item.firstElementChild.appendChild(this.templateFunc(rows[i], this.currentPage));
-            nodes.push(item);
+            this.rootNode.appendChild(item);
         }
-        this.addAllNodes(nodes);
+        // this.addAllNodes(nodes);
     };
 
     // Adds all provided HTML nodes to the page.
     // nodes: The nodes to be added.
     pagebase.prototype.addAllNodes = function addAllNodes(nodes) {
-      throw "#notmyjob";
+    //   throw "#notmyjob";
     };
 
     // Returns the pages in the module.
     pagebase.prototype.getPages = function getPages() {
-        return Array.prototype.slice.call(this.elems.internal_selector.children);
+        // return Array.prototype.slice.call(this.elems.internal_selector.children);
     };
 
     // Remove pages.
     // pageNumber: The page to start removing data.
     pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
         // var page_number = this.parentNode.id.remove('pages_');
-        var nodes = Array.prototype.slice.call(this.elems.internal_selector.children);
-        nodes.splice(0, parseInt(pageNumber) + 1);
-        nodes.forEach(function(node) {
-            node.remove();
-        });
+        // var nodes = Array.prototype.slice.call(this.elems.internal_selector.children);
+        // nodes.splice(0, parseInt(pageNumber) + 1);
+        // nodes.forEach(function(node) {
+        //     node.remove();
+        // });
     };
 
     // Called when the number of items on a page changes.
     // pageItemCount: New number of items per page.
     pagebase.prototype.setPageItemCount = function setPageItemCount(pageItemCount) {
-        if (this.pageItemCount !== pageItemCount) {
-            this.pageItemCount = Math.max(pageItemCount, 1);
-            this.rebuildDom();
-        }
+        // if (this.pageItemCount !== pageItemCount) {
+        //     this.pageItemCount = Math.max(pageItemCount, 1);
+        //     this.rebuildDom();
+        // }
     };
 
     // Called when the visibility of options changes.

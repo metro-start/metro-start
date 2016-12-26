@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util', '../utils/defaults'], function(pagebase_simple, storage, util, defaults) {
+define(['../pagebase/pagebase','../utils/storage', '../utils/util', '../utils/defaults'], function(pagebase_simple, storage, util, defaults) {
     var apps = {
         name: 'apps',
 
@@ -51,9 +51,9 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util', '../u
         // Sets the new number of pages for the block.
         // pageItemCount: The maximum number of pages able to be displayed.
         setPageItemCount: function(pageItemCount) {
-            if (this.apps) {
-                this.apps.setPageItemCount(pageItemCount);
-            }
+            // if (this.apps) {
+            //     this.apps.setPageItemCount(pageItemCount);
+            // }
         },
 
         // Sets whether options are currently showing.
@@ -70,7 +70,7 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util', '../u
 
             this.apps.sort = newSort;
             this.apps.sortChanged();
-            // this.loadApps();
+            this.loadApps();
         },
 
         templateFunc: function(app) {

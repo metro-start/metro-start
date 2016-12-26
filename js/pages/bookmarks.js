@@ -18,41 +18,41 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
 
         // Initialize this module.
         init: function() {
-            this.sort = storage.get('sort', { bookmarks: false }).bookmarks;
-            this.bookmarks = new pagebase_paneled();
-            this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
-            this.bookmarks.pageItemCount = -1;
-            this.bookmarks.sortFunc = this.sortFunc.bind(this);
-            this.loadBookmarks();
+            // this.sort = storage.get('sort', { bookmarks: false }).bookmarks;
+            // this.bookmarks = new pagebase_paneled();
+            // this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
+            // this.bookmarks.pageItemCount = -1;
+            // this.bookmarks.sortFunc = this.sortFunc.bind(this);
+            // this.loadBookmarks();
         },
 
         // Loads the bookmarks from Chrome local synced storage.
         loadBookmarks: function() {
-            var that = this;
-            chrome.bookmarks.getTree(function(data) {
-                that.data = data[0].children;
-                that.bookmarks.addAll(that.data);
-            });
+            // var that = this;
+            // chrome.bookmarks.getTree(function(data) {
+            //     that.data = data[0].children;
+            //     that.bookmarks.addAll(that.data);
+            // });
         },
 
         // Sets the new number of pages for the block.
         // pageItemCount: The maximum number of pages able to be displayed.
         setPageItemCount: function(pageItemCount) {
-            jss.set('.bookmark-page', {
-                height: (pageItemCount * 60) + 'px'
-            });
+            // jss.set('.bookmark-page', {
+            //     height: (pageItemCount * 60) + 'px'
+            // });
         },
 
         // Sets whether options are currently showing.
         // showOptions: true, if options are now showing; false otherwise.
         setShowOptions: function setShowOptions(showOptions) {
-            this.bookmarks.setShowOptions(showOptions);
+            // this.bookmarks.setShowOptions(showOptions);
         },
 
         sortChanged: function(newSort) {
-            this.sort = newSort;
-            this.bookmarks.sort = newSort;
-            this.bookmarks.sortChanged(newSort);
+            // this.sort = newSort;
+            // this.bookmarks.sort = newSort;
+            // this.bookmarks.sortChanged(newSort);
         },
 
         // sortFunc: function(a, b) {
@@ -70,19 +70,19 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         // item: The link item to be converted into a node.
         templateFunc: function(bookmark) {
             var fragment = util.createElement('');
-            var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.href = bookmark.url;
-            title.firstElementChild.textContent = bookmark.title;
-            title.firstElementChild.id = 'bookmark_' + bookmark.parentId + '_' + bookmark.id;
-            if (bookmark.children && bookmark.children.length > 0) {
-                title.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
-            }
-            title.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, title.firstElementChild));
-            fragment.appendChild(title);
+            // var title = this.templates.titleFragment.cloneNode(true);
+            // title.firstElementChild.href = bookmark.url;
+            // title.firstElementChild.textContent = bookmark.title;
+            // title.firstElementChild.id = 'bookmark_' + bookmark.parentId + '_' + bookmark.id;
+            // if (bookmark.children && bookmark.children.length > 0) {
+            //     title.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
+            // }
+            // title.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, title.firstElementChild));
+            // fragment.appendChild(title);
 
-            var remove = this.templates.removeFragment.cloneNode(true);
-            remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark));
-            fragment.appendChild(remove);
+            // var remove = this.templates.removeFragment.cloneNode(true);
+            // remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark));
+            // fragment.appendChild(remove);
 
             return fragment;
         },
@@ -92,14 +92,14 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         // bookmarkNode: The DOM node of the clicked bookmark.
         // event: The JS event that triggered this function.
         clickBookmark: function(bookmark, bookmarkNode, event) {
-            if (bookmark.children && bookmark.children.length > 0) {
-                var currentPage = bookmarkNode.parentNode.parentNode.id;
-                this.activateBookmark(bookmarkNode);
-                this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
-                this.bookmarks.addAll(bookmark.children);
-                event.preventDefault();
+            // if (bookmark.children && bookmark.children.length > 0) {
+            //     var currentPage = bookmarkNode.parentNode.parentNode.id;
+            //     this.activateBookmark(bookmarkNode);
+            //     this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
+            //     this.bookmarks.addAll(bookmark.children);
+            //     event.preventDefault();
                 
-            }
+            // }
             
         },
 
@@ -118,10 +118,10 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         // bookmark: The bookmark to be removed.
         // bookmarkNode: The DOM node of the bookmark to be removed.
         removeBookmark: function(bookmark) {
-            var bookmarkNode = document.getElementById('bookmark_' + bookmark.parentId + '_' + bookmark.id);
-            chrome.bookmarks.removeTree(bookmark.id, function() {
-                bookmarkNode.parentElement.remove();
-            });
+            // var bookmarkNode = document.getElementById('bookmark_' + bookmark.parentId + '_' + bookmark.id);
+            // chrome.bookmarks.removeTree(bookmark.id, function() {
+            //     bookmarkNode.parentElement.remove();
+            // });
         },
 
     //     changeSort: function(newSort) {

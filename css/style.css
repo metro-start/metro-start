@@ -62,8 +62,8 @@ select.chooser {
 
 /* Header and menu */
 .pages-chooser, .sort {
+    margin-top: 10px;
     margin-left: 50px;
-    margin-bottom: 10px;
 }
 .external {
 	width: 100%;
@@ -77,47 +77,46 @@ select.chooser {
 	width: 25%;
 	float: left;
 }
-.sort {
-	display: block
-}
+/*.sort {
+	/*display: block;
+}*/
 
 /* Weather section */
 .weather {
-    position: absolute;
-    top: 30px;
-    right: 15px;
+    position: fixed;
+    top: 1vh;
+    right: 1vw;
     font-style: normal;
 }
-#temp > #unit {
+/*#temp > #unit {
 
-}
+}*/
 
 /* Main content area */
-.external_selector {
+/*.external_selector {
 	overflow: auto;
 	width: 100%;
-}
+}*/
 .internal_selector {
-    display: inline-block;
+    /*display: inline-block;*/
     white-space: nowrap;
 	margin-left: 50px;
-	margin-bottom: 10px;
 }
-.page {
+/*.page {
     display: inline-block;
     margin-right: 30px;
     vertical-align: top;
-}
-.page:last-child {
+}*/
+/*.page:last-child {
 	margin-right: 5px;
-}
+}*/
 .item {
 	height: 55px;
 	margin-bottom: 10px;
 }
-.item:last-child {
+/*.item:last-child {
 	margin-bottom: 5px;
-}
+}*/
 .title {
 	display: block;
 }
@@ -125,8 +124,8 @@ select.chooser {
 /* Bookmarks section */
 .bookmark-page {
 	margin-right: 10px;
-	float: left;
-	width: 320px; /* Can't use multi-column because its not one straight list */
+	/*float: left;
+	width: 320px;  Can't use multi-column because its not one straight list */
 	overflow-x: auto;
 	overflow-y: auto;
 }
@@ -229,4 +228,40 @@ select.chooser {
 	body {
 		zoom: 0.8;
 	}
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+.external {
+	flex-grow: 3;
+	display: flex;
+	flex-direction: column;
+}
+
+.internal {
+	display: flex;
+}
+
+.collection {
+	display: flex;
+	flex-direction: column;
+	float: none;
+}
+
+.internal_selector {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.pages-chooser {
+	margin-bottom: 0px;
+}
+
+.item {
+	margin-top: 10px;
+	margin-bottom: 0px;
 }

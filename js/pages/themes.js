@@ -1,4 +1,4 @@
-define([ 'jquery', '../pagebase/pagebase_grouped', '../utils/util', '../utils/script', '../utils/storage', '../utils/defaults', '../widgets/themes'],
+define([ 'jquery', '../pagebase/pagebase', '../utils/util', '../utils/script', '../utils/storage', '../utils/defaults', '../widgets/themes'],
 function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget) {
     var themes = {
         name: 'themes',
@@ -35,59 +35,59 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
         },
 
         loadThemes: function() {
-            this.themes.clear();
-            var localThemes = storage.get('localThemes', [defaults.getDefaultTheme()]);
-            if (this.sort === "sorted") {
-                localThemes.sort(function(a, b) {
-                    return a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1;
-                });
-            }
-            this.themes.addAll({
-              local: true,
-              heading: 'my themes',
-              themes: localThemes
-            });
+            // this.themes.clear();
+            // var localThemes = storage.get('localThemes', [defaults.getDefaultTheme()]);
+            // if (this.sort === "sorted") {
+            //     localThemes.sort(function(a, b) {
+            //         return a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1;
+            //     });
+            // }
+            // this.themes.addAll({
+            //   local: true,
+            //   heading: 'my themes',
+            //   themes: localThemes
+            // });
 
-            var that = this;
-            jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
-                data = JSON.parse(data);
-                for (var i in data) {
-                    data[i].colors = {
-                        'options-color': data[i].options_color,
-                        'main-color': data[i].main_color,
-                        'title-color': data[i].title_color,
-                        'background-color': data[i].background_color,
-                    };
-                }
+            // var that = this;
+            // jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
+            //     data = JSON.parse(data);
+            //     for (var i in data) {
+            //         data[i].colors = {
+            //             'options-color': data[i].options_color,
+            //             'main-color': data[i].main_color,
+            //             'title-color': data[i].title_color,
+            //             'background-color': data[i].background_color,
+            //         };
+            //     }
 
-                // if (that.sort === "sorted") {
-                //     // data.sort(function(obj1, obj2) {
-                //     //     return obj1.title.toLowerCase() > obj2.title.toLowerCase() ? 1 : -1;
-                //     // });
-                //     data.sort(function(a, b) {
-                //         var nameA = a.title.toUpperCase(); // ignore upper and lowercase
-                //         var nameB = b.title.toUpperCase(); // ignore upper and lowercase
-                //         if (nameA < nameB) {
-                //             return -1;
-                //         } else if (nameA > nameB) {
-                //             return 1;
-                //         }
-                //         return 0;
-                //     });
-                // }
+            //     // if (that.sort === "sorted") {
+            //     //     // data.sort(function(obj1, obj2) {
+            //     //     //     return obj1.title.toLowerCase() > obj2.title.toLowerCase() ? 1 : -1;
+            //     //     // });
+            //     //     data.sort(function(a, b) {
+            //     //         var nameA = a.title.toUpperCase(); // ignore upper and lowercase
+            //     //         var nameB = b.title.toUpperCase(); // ignore upper and lowercase
+            //     //         if (nameA < nameB) {
+            //     //             return -1;
+            //     //         } else if (nameA > nameB) {
+            //     //             return 1;
+            //     //         }
+            //     //         return 0;
+            //     //     });
+            //     // }
 
-                that.themes.addAll({
-                  local: false,
-                  heading: 'online themes',
-                  themes: data
-                });
-            });
+            //     that.themes.addAll({
+            //       local: false,
+            //       heading: 'online themes',
+            //       themes: data
+            //     });
+            // });
         },
 
         // Sets the new number of pages for the block.
         // pageItemCount: The maximum number of pages able to be displayed.
         setPageItemCount: function(pageItemCount) {
-          this.themes.setPageItemCount(pageItemCount, this.data); //-1 to account for addLink
+        //   this.themes.setPageItemCount(pageItemCount, this.data); //-1 to account for addLink
         },
 
         // Sets the new number of pages for the block.
@@ -97,13 +97,13 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
         },
 
         sortChanged: function(newSort) {
-            this.sort = newSort;
-            var sortOrder = storage.get('sort', defaults.getDefaultSort());
-            sortOrder.themes = newSort;
-            storage.save('sort', sortOrder);
+            // this.sort = newSort;
+            // var sortOrder = storage.get('sort', defaults.getDefaultSort());
+            // sortOrder.themes = newSort;
+            // storage.save('sort', sortOrder);
 
-            this.themes.sort = newSort;
-            this.themes.sortChanged();
+            // this.themes.sort = newSort;
+            // this.themes.sortChanged();
             // this.loadThemes();
         },
 

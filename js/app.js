@@ -41,8 +41,8 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
       },
 
       setPageItemCount: function (pageItemCount) {
-        pages.pageItemCount = pageItemCount;
-        pages.setPageItemCount(pageItemCount);
+        // pages.pageItemCount = pageItemCount;
+        // pages.setPageItemCount(pageItemCount);
       },
 
       // changeSorting: function (key, newSorting) {

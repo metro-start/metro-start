@@ -12,24 +12,8 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
   // nodes: List of nodes to be added.
   pagebase_simple.prototype.addAllNodes = function addAllNodes(nodes) {
     if (nodes.length) {
-      var pageIndex = this.elems.internal_selector.children.length;
-      var columnNode = templates.column.cloneNode(true);
-      columnNode.firstElementChild.id = this.name + '_' + pageIndex;
-      var pageItemCount = this.pageItemCount - this.getReservedItemCount();
-
-      // Add each row to an column and create new ones on the pageItemCount boundary.
       for (var i = 0; i < nodes.length; i++) {
-        if (i !== 0 && i % pageItemCount === 0) { //Skip the first row.
-          this.rootNode.appendChild(columnNode);
-          columnNode = templates.column.cloneNode(true);
-          columnNode.firstElementChild.id = this.name + '_' + (++pageIndex);
-        }
-        columnNode.firstElementChild.appendChild(nodes[i]);
-      }
-
-      // i - 1 to account because the for-loop will go one past last good index.
-      if (i >= nodes.length) {
-        this.rootNode.appendChild(columnNode);
+          this.rootNode.appendChild(nodes[i]);
       }
     }
   };

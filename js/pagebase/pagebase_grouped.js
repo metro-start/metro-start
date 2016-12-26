@@ -81,24 +81,24 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
     };
 
     pagebase_grouped.prototype.sortChanged = function sortChanged() {
-        // var groups = this.rootNode.children();
-        // for (var i = 0; i < columns.length; i++) {
-        //     var column = columns[i];
-        //     var rows = [];
-        //     while (column.lastChild) {
-        //         rows.append(column.lastChild);
-        //         column.removeChild(column.lastChild);
-        //     }
+        var groups = this.rootNode.childNodes;
+        for (var i = 0; i < groups.length; i++) {
+            var group = groups[i];
+            var rows = [];
+            while (column.lastChild) {
+                rows.append(column.lastChild);
+                column.removeChild(column.lastChild);
+            }
 
-        //     rows.sort(this.sortFunc);
+            rows.sort(this.sortFunc);
 
-        //     for (var j = 0; j < rows.length; j++) {
-        //         column.appendChild(rows[j]);
-        //         // if (rows[j] is selected) {
-        //         //     scroll to it.
-        //         // }
-        //     }
-        // }
+            for (var j = 0; j < rows.length; j++) {
+                column.appendChild(rows[j]);
+                // if (rows[j] is selected) {
+                //     scroll to it.
+                // }
+            }
+        }
     };
     
     // Gets how much space to reserve when displaying items.

@@ -60,6 +60,8 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: [
+                    'start.html',
+                    'css/**/*.css',
                     'js/**/*.js',
                 ],
                 tasks: ['test'],

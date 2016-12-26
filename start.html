@@ -1,127 +1,82 @@
 <html>
-	<head>
-		<!-- css stylesheets -->
-		<link rel="stylesheet" type="text/css" href="css/reset.css">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel='stylesheet' href='css/spectrum.css' />
-		<title>start</title>
-	</head>
-	<body class="background-color">
-		<h1 class="title-color">start here . . .</h1>
-		<div class="pages-chooser">
-			<select class="chooser" id="pages-chooser">
+
+<head>
+	<!-- css stylesheets -->
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel='stylesheet' href='css/spectrum.css' />
+	<title>start</title>
+</head>
+
+<body class="background-color">
+	<h1 class="title-color">start here . . .</h1>
+	<div class="pages-chooser">
+		<select class="chooser" id="pages-chooser">
 				<option class="clickable links-option">links</option>
 				<option class="clickable apps-option">apps</option>
 				<option class="clickable bookmarks-option">bookmarks</option>
 				<option class="clickable themes-option option">themes</option>
 			</select>
-		</div>
-		<div class="external">
-			<div class="internal">
-				<div class="links collection">
-					<div id="links">
-						<div class="options-color option sort">
-							<select class="chooser" id="links-sort-chooser">
+	</div>
+	<div class="external">
+		<div class="internal">
+			<div id="links" class="collection">
+				<div class="options-color option sort">
+					<select class="chooser" id="links-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
-						</div>
-						<div class="external_selector" id="external_selector_links">
-							<div class="internal_selector" id="internal_selector_links">
-							</div>
-						</div>
-						<form id="addLink" class="add">
-							<input type="text" name="newUrlTitle" id="newUrlTitle" placeholder="title" class="url option" size="10">
-							<input type="text" name="newUrl" id="newUrl" placeholder="http://" class="url option" size="16">
-							<input type="submit" class="options-color option" value="save">
-						</form>
-					</div>
 				</div>
-
-				<div class="apps collection">
-					<div id="apps">
-						<div class="options-color option sort">
-							<select class="chooser" id="apps-sort-chooser">
+				<div class="internal_selector" id="internal_selector_links"></div>
+				<form id="addLink" class="add option">
+					<input type="text" name="newUrlTitle" id="newUrlTitle" placeholder="title" class="url option" size="10">
+					<input type="text" name="newUrl" id="newUrl" placeholder="http://" class="url option" size="16">
+					<input type="submit" class="options-color option" value="save">
+				</form>
+			</div>
+			<div id="apps" class="collection">
+				<div class="options-color option sort">
+					<select class="chooser" id="apps-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
-						</div>
-						<div class="external_selector" id="external_selector_apps">
-							<div class="internal_selector" id="internal_selector_apps">
-							</div>
-						</div>
-					</div>
 				</div>
-
-				<div class="bookmarks collection">
-					<div id="bookmarks">
-						<div class="options-color option sort">
-							<select class="chooser" id="bookmarks-sort-chooser">
+				<div class="internal_selector" id="internal_selector_apps"></div>
+			</div>
+			<div id="bookmarks" class="collection">
+				<div class="options-color option sort">
+					<select class="chooser" id="bookmarks-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
-						</div>
-						<div class="external_selector" id="external_selector_bookmarks">
-							<div class="internal_selector" id="internal_selector_bookmarks">
-							</div>
-						</div>
-					</div>
 				</div>
-				<div class="themes collection">
-					<div id="themes">
-						<div class="options-color option sort">
-							<select class="chooser" id="themes-sort-chooser">
+				<div class="internal_selector" id="internal_selector_bookmarks"></div>
+			</div>
+			<div id="themes" class="collection">
+				<div class="options-color option sort">
+					<select class="chooser" id="themes-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
-						</div>
-						<div class="external_selector" id="external_selector_themes">
-							<div class="internal_selector" id="internal_selector_themes">
-							</div>
-						</div>
-					</div>
 				</div>
-				<div style="clear: both">&nbsp;</div>
+				<div class="internal_selector" id="internal_selector_themes"></div>
 			</div>
 		</div>
-		<div class="weather">
-			<div id="toggleWeather" class="options-color option clickable"></div>
-			<div id="weather">
-				<div id="city"></div>
-				<div>
-					<form id="saveLocation" ng-submit="saveLocation()">
-						<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="seattle, wa">
-						<input type="submit" class="options-color option" value="save">
-					</form>
-				</div>
-				<div class="options-color option chooser">
-					<select class="chooser" id="weather-unit-chooser">
-						<option class="clickable">fahrenheit</option>
-						<option class="clickable">celsius</option>
-					</select>
-				</div>
-				<p id="temp">
-					<span id="currentTemp"></span>&deg;<span class="options-color" id="unit"></span> /
-					<span id="highTemp"></span><span class="options-color"> hi</span> /
-					<span id="lowTemp"></span><span class="options-color"> lo</span>
-				</p>
-				<p id="condition"></p>
-			</div>
-		</div>
-		<div class="footer">
-			<p class="options-color wrench clickable" id="wrench">wrench</p>
-			<div class="options-color option font">
-				<select class="chooser font-chooser" id="font-chooser">
+	</div>
+
+	<div class="footer">
+		<p class="options-color wrench clickable" id="wrench">wrench</p>
+		<div class="options-color option font">
+			<select class="chooser font-chooser" id="font-chooser">
 					<option class="clickable" value="0">normal fonts</option>
 					<option class="clickable" value="1">thin fonts</option>
 				</select>
-			</div>
-			<div class="theme-buttons option">
-				<p class="options-color wrench clickable" id="resetTheme">reset theme</p>
-				<p class="options-color wrench clickable" id="editTheme">edit theme</p>
-				<!-- <p class="options-color clickable" id="reset-theme" ng-click="resetTheme()" ng-bind="'reset theme'"></p>
+		</div>
+		<div class="theme-buttons option">
+			<p class="options-color wrench clickable" id="resetTheme">reset theme</p>
+			<p class="options-color wrench clickable" id="editTheme">edit theme</p>
+			<!-- <p class="options-color clickable" id="reset-theme" ng-click="resetTheme()" ng-bind="'reset theme'"></p>
 				<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()" ng-bind="editThemeText"></p> -->
-			</div>
 		</div>
 		<div class="picker background-color border-options hide" id="picker">
 			<div>
@@ -145,13 +100,41 @@
 				</span>
 			</div>
 		</div>
-		<!-- Rule to hide all options when page first loads.
+	</div>
+	<div class="weather">
+		<div id="toggleWeather" class="options-color option clickable"></div>
+		<div id="weather">
+			<div id="city"></div>
+			<div>
+				<form id="saveLocation" ng-submit="saveLocation()">
+					<input type="text" name="newLocat" ng-model="newLocat" class="option" size="10" placeholder="seattle, wa">
+					<input type="submit" class="options-color option" value="save">
+				</form>
+			</div>
+			<div class="options-color option chooser">
+				<select class="chooser" id="weather-unit-chooser">
+						<option class="clickable">fahrenheit</option>
+						<option class="clickable">celsius</option>
+					</select>
+			</div>
+			<p id="temp">
+				<span id="currentTemp"></span>&deg;<span class="options-color" id="internal_selector_unit"></span> /
+				<span id="highTemp"></span><span class="options-color"> hi</span> /
+				<span id="lowTemp"></span><span class="options-color"> lo</span>
+			</p>
+			<p id="condition"></p>
+		</div>
+	</div>
+
+	<!-- Rule to hide all options when page first loads.
 			 Removes option elements added after the calls to hide .option were made. -->
-		<style type="text/css" id="hideRule">
-			.option, .picker {
-				display: none;
-			}
-		</style>
-		<script src="bundle.js"></script>
-	</body>
+	<style type="text/css" id="hideRule">
+		.option,
+		.picker {
+			display: none;
+		}
+	</style>
+	<script src="bundle.js"></script>
+</body>
+
 </html>
