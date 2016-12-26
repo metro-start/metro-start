@@ -13,7 +13,6 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pa
         },
 
         init: function(document) {
-            // this.sort = storage.get('sort', { links: false }).links;
             this.elems.rootDom = document.getElementById('internal_selector_links');
             this.elems.newUrl = document.getElementById('newUrl');
             this.elems.newUrlTitle = document.getElementById('newUrlTitle');
@@ -21,7 +20,7 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pa
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
             this.links = new pagebase_simple();
-            this.links.init(document, this.name, this.elems.rootDom, this.nameFunc.bind(this), this.templateFunc.bind(this));
+            this.links.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
             this.loadLinks();
         },
 
@@ -30,25 +29,6 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pa
           this.links.buildDom(this.data);
         },
 
-        // Sets whether options are currently showing.
-        // showOptions: true, if options are now showing; false otherwise.
-        setShowOptions: function setShowOptions(showOptions) {
-            this.links.setShowOptions(showOptions);
-        },
-
-        // sortChanged: function(newSort) {
-        //     this.sort = newSort;
-        //     this.links.sort = newSort;
-        //     this.links.sortChanged();
-        //     // this.loadLinks();
-        // },
-
-        nameFunc: function(item) {
-            return item.name;
-        },
-
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
         templateFunc: function(item) {
             var fragment = util.createElement('');
             var link = this.templates.linkFragment.cloneNode(true);

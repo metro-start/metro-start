@@ -77,9 +77,6 @@ select.chooser {
 	width: 25%;
 	float: left;
 }
-/*.sort {
-	/*display: block;
-}*/
 
 /* Weather section */
 .weather {
@@ -264,12 +261,4 @@ body {
 .item {
 	margin-top: 10px;
 	margin-bottom: 0px;
-}
-
-.sorted {
-	
-}
-
-.unsorted {
-
 }
