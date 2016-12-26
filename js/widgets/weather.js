@@ -92,7 +92,6 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults'], fun
                 this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
                 var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit[0] + '"');
                 var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
-
                 var that = this;
                 jquery.ajax(url).done(function(data) {
                     // If data was actually returned, save it.

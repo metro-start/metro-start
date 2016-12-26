@@ -25,13 +25,14 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
         this.showOptions = !this.showOptions;
 
         pages.wrenchClicked();
+        widgets.themes.bindSpectrum();
         
         if (this.showOptions) {
           this.elems.hideRule.remove();
         } else {
           document.body.appendChild(this.elems.hideRule);
         }
-      }
+      },
     };
 
     storage.init().done(function () {
