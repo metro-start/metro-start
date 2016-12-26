@@ -9,14 +9,15 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         this.elems = {};
         this.name = name;
         this.rootNode = rootNode;
-        this.currentPage = 0;
         this.templateFunc = templateFunc;
-        this.page = 0;
 
-        jquery('#' + this.name + '-sort-chooser').metroSelect({
-            initial: this.getSort(),
-            onchange: this.sortChanged.bind(this)
-        });
+        if (jquery('#' + this.name + '-sort-chooser').length !== 0)
+        {
+            jquery('#' + this.name + '-sort-chooser').metroSelect({
+                initial: this.getSort(),
+                onchange: this.sortChanged.bind(this)
+            });
+        }
     };
 
     pagebase.prototype.buildDom = function buildDom(rows) {
@@ -27,7 +28,7 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
                 item.id = this.name + '_' + i;
             }
             item.firstElementChild.id = this.name + '_' + i;
-            item.firstElementChild.appendChild(this.templateFunc(rows[i], this.currentPage));
+            item.firstElementChild.appendChild(this.templateFunc(rows[i]));
             nodes.push(item);
         }
 

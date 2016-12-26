@@ -5,7 +5,11 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
 
         data: {},
 
-        elems: {},
+        elems: {
+            rootNode: document.getElementById('internal_selector_themes'),
+            localRootNode: document.getElementById('internal_selector_themes_local'),
+            onlineRootNode: document.getElementById('internal_selector_themes_online')
+        },
 
         themes: {},
 
@@ -16,6 +20,10 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
         themesWidget: themesWidget,
 
         templates: {
+            headingFragment: util.createElement('<div class="options-color"></div>'),
+            containerFragment: util.createElement('<div class="internal_container"></div>'),
+            internalFragment: util.createElement('<div class="internal_internal"></div>'),
+
             itemFragment: util.createElement('<div class="theme_item"></div>'),
             titleFragment: util.createElement('<span class="title"></span>'),
             removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
@@ -25,28 +33,71 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
         },
 
         init: function() {
-            this.elems.rootNode = document.getElementById('internal_selector_themes');
-            this.themes = new pagebase_grouped();
-            this.themes.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
+            this.localThemes = new pagebase_grouped();
+            // this.localThemes.init(document, this.name + '_local', this.elems.localRootNode, this.templateFunc.bind(this));
+            
+            this.onlineThemes = new pagebase_grouped();
+            // this.onlineThemes.init(document, this.name + '_online', this.elems.onlineRootNode, this.templateFunc.bind(this));
+           
             this.loadThemes();
 
             this.themesWidget.themeAdded = this.themeAdded.bind(this);
             this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
         },
 
+        addGroup: function(group, groupName, data) {
+            var heading = this.templates.headingFragment.cloneNode(true);
+            heading.firstElementChild.textContent = groupName;
+
+            var internal = this.templates.internalFragment.cloneNode(true);
+            group.init(document, this.name + '_' + groupName.replace(' ', '_'), internal.firstElementChild, this.templateFunc.bind(this));
+            group.buildDom(data);
+            
+            var container = this.templates.containerFragment.cloneNode(true);
+            container.firstElementChild.appendChild(heading);
+            container.firstElementChild.appendChild(internal);
+            this.elems.rootNode.appendChild(container);
+        },
+
+        // loadOnlineThemes: function() {
+        //     var that = this;
+        //     jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
+        //         data = JSON.parse(data);
+        //         for (var i in data) {
+        //             data[i].colors = {
+        //                 'options-color': data[i].options_color,
+        //                 'main-color': data[i].main_color,
+        //                 'title-color': data[i].title_color,
+        //                 'background-color': data[i].background_color,
+        //             };
+        //         }
+
+        //         // that.themes.addAll({
+        //         //   local: false,
+        //         //   heading: 'online themes',
+        //         //   themes: data
+        //         // });
+        //     });
+        // },
+
         loadThemes: function() {
-            // this.themes.clear();
-            // var localThemes = storage.get('localThemes', [defaults.getDefaultTheme()]);
-            // if (this.sort === "sorted") {
-            //     localThemes.sort(function(a, b) {
-            //         return a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1;
-            //     });
-            // }
-            // this.themes.addAll({
-            //   local: true,
-            //   heading: 'my themes',
-            //   themes: localThemes
-            // });
+            var localData = storage.get('localThemes', defaults.getDefaultTheme(0));
+            this.addGroup(this.localThemes, 'my themes', localData);
+
+            var that = this;
+            jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
+                data = JSON.parse(data);
+                for (var i in data) {
+                    data[i].colors = {
+                        'options-color': data[i].options_color,
+                        'main-color': data[i].main_color,
+                        'title-color': data[i].title_color,
+                        'background-color': data[i].background_color,
+                    };
+                }
+
+                that.addGroup(that.onlineThemes, 'online themes', data);
+            });
 
             // var that = this;
             // jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
