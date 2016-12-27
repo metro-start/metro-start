@@ -40,6 +40,22 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
 
             this.themesWidget.themeAdded = this.themeAdded.bind(this);
             this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
+
+            jquery('#' + this.name + '-sort-chooser').metroSelect({
+                initial: this.getSort(),
+                onchange: this.sortChanged.bind(this)
+            });
+        },
+
+        getSort: function() {
+            var sort = storage.get('sort', defaults.getDefaultSort());
+            return sort[this.name];
+        },
+
+        updateSort: function (newSort) {
+            var sort = storage.get('sort', defaults.getDefaultSort());
+            sort[this.name] = newSort;
+            storage.save('sort', sort);
         },
 
         addGroup: function(group, groupName, data) {
@@ -104,6 +120,19 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
             }
 
             return fragment;
+        },
+
+        sortChanged: function (newSort) {
+            this.updateSort(newSort);
+
+            if (this.localThemes.sortChanged)
+            {
+                this.localThemes.sortChanged(newSort, false);
+            }
+            if (this.onlineThemes.sortChanged)
+            {
+                this.onlineThemes.sortChanged(newSort, false);
+            }
         },
 
         applyTheme: function(theme) {

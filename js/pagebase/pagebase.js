@@ -44,11 +44,13 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         }
     };
 
-    pagebase.prototype.sortChanged = function sortChanged(newSort) {
-        this.updateSort(newSort);
+    pagebase.prototype.sortChanged = function sortChanged(newSort, saveSort) {
+        if (saveSort !== true) {
+            this.updateSort(newSort);
+        }
 
-        var items = Array.prototype.slice.call(this.rootNode.childNodes);
-        if (items.length !== 0) {
+        if (!!this.rootNode && !!this.rootNode.childNodes && this.rootNode.childNodes.length !== 0) {
+            var items = Array.prototype.slice.call(this.rootNode.childNodes);
             while (this.rootNode.lastChild) {
                 this.rootNode.removeChild(this.rootNode.lastChild);
             }
