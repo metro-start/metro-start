@@ -34,10 +34,7 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
 
         init: function() {
             this.localThemes = new pagebase_grouped();
-            // this.localThemes.init(document, this.name + '_local', this.elems.localRootNode, this.templateFunc.bind(this));
-            
             this.onlineThemes = new pagebase_grouped();
-            // this.onlineThemes.init(document, this.name + '_online', this.elems.onlineRootNode, this.templateFunc.bind(this));
            
             this.loadThemes();
 
@@ -50,7 +47,7 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
             heading.firstElementChild.textContent = groupName;
 
             var internal = this.templates.internalFragment.cloneNode(true);
-            group.init(document, this.name + '_' + groupName.replace(' ', '_'), internal.firstElementChild, this.templateFunc.bind(this));
+            group.init(document, this.name + '_' + groupName.replace(' ', '_'), internal.firstElementChild, this.templateFunc.bind(this, groupName === 'my themes'));
             group.buildDom(data);
             
             var container = this.templates.containerFragment.cloneNode(true);
@@ -58,27 +55,6 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
             container.firstElementChild.appendChild(internal);
             this.elems.rootNode.appendChild(container);
         },
-
-        // loadOnlineThemes: function() {
-        //     var that = this;
-        //     jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
-        //         data = JSON.parse(data);
-        //         for (var i in data) {
-        //             data[i].colors = {
-        //                 'options-color': data[i].options_color,
-        //                 'main-color': data[i].main_color,
-        //                 'title-color': data[i].title_color,
-        //                 'background-color': data[i].background_color,
-        //             };
-        //         }
-
-        //         // that.themes.addAll({
-        //         //   local: false,
-        //         //   heading: 'online themes',
-        //         //   themes: data
-        //         // });
-        //     });
-        // },
 
         loadThemes: function() {
             var localData = storage.get('localThemes', defaults.getDefaultTheme(0));
@@ -98,74 +74,12 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
 
                 that.addGroup(that.onlineThemes, 'online themes', data);
             });
-
-            // var that = this;
-            // jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
-            //     data = JSON.parse(data);
-            //     for (var i in data) {
-            //         data[i].colors = {
-            //             'options-color': data[i].options_color,
-            //             'main-color': data[i].main_color,
-            //             'title-color': data[i].title_color,
-            //             'background-color': data[i].background_color,
-            //         };
-            //     }
-
-            //     // if (that.sort === "sorted") {
-            //     //     // data.sort(function(obj1, obj2) {
-            //     //     //     return obj1.title.toLowerCase() > obj2.title.toLowerCase() ? 1 : -1;
-            //     //     // });
-            //     //     data.sort(function(a, b) {
-            //     //         var nameA = a.title.toUpperCase(); // ignore upper and lowercase
-            //     //         var nameB = b.title.toUpperCase(); // ignore upper and lowercase
-            //     //         if (nameA < nameB) {
-            //     //             return -1;
-            //     //         } else if (nameA > nameB) {
-            //     //             return 1;
-            //     //         }
-            //     //         return 0;
-            //     //     });
-            //     // }
-
-            //     that.themes.addAll({
-            //       local: false,
-            //       heading: 'online themes',
-            //       themes: data
-            //     });
-            // });
         },
 
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
-        //   this.themes.setPageItemCount(pageItemCount, this.data); //-1 to account for addLink
-        },
-
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        setShowOptions: function setShowOptions(showOptions) {
-            this.themes.setShowOptions(showOptions);
-        },
-
-        sortChanged: function(newSort) {
-            // this.sort = newSort;
-            // var sortOrder = storage.get('sort', defaults.getDefaultSort());
-            // sortOrder.themes = newSort;
-            // storage.save('sort', sortOrder);
-
-            // this.themes.sort = newSort;
-            // this.themes.sortChanged();
-            // this.loadThemes();
-        },
-
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
-        // local: Local theme, or online?
-        templateFunc: function(theme, page, local) {
+        templateFunc: function(local, theme) {
             var fragment = util.createElement('');
 
             var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.id = 'theme_' + theme.id;
             title.firstElementChild.textContent = theme.title;
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
             fragment.appendChild(title);
@@ -184,8 +98,8 @@ function(jquery, pagebase_grouped, util, script, storage, defaults, themesWidget
                 fragment.appendChild(remove);
             } else {
                 var author = this.templates.authorFragment.cloneNode(true);
-                author.firstElementChild.textContent = theme.author.name;
-                author.firstElementChild.href = theme.author.link;
+                author.firstElementChild.textContent = theme.author;
+                author.firstElementChild.href = theme.website;
                 fragment.appendChild(author);
             }
 

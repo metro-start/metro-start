@@ -263,6 +263,9 @@ body {
 	margin-top: 10px;
 	margin-right: 10px;
 	margin-bottom: 0px;
+	max-width: 30vw;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .internal_container {
@@ -275,4 +278,10 @@ body {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
+}
+
+.title, .gallery-bio {
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
