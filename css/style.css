@@ -119,10 +119,11 @@ select.chooser {
 }
 
 /* Bookmarks section */
-.bookmark-page {
+.bookmark_page {
 	margin-right: 10px;
-	/*float: left;
-	width: 320px;  Can't use multi-column because its not one straight list */
+	float: left;
+	width: 320px;  
+	/*Can't use multi-column because its not one straight list */
 	overflow-x: auto;
 	overflow-y: auto;
 }
@@ -251,8 +252,8 @@ body {
 
 .internal_selector {
 	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
+	flex-direction: row;
+	align-items: flex-start;
 }
 
 .pages-chooser {
@@ -277,11 +278,21 @@ body {
 	flex-grow: 3;
 	display: flex;
 	flex-direction: column;
-	flex-wrap: wrap;
+	overflow-y: auto;
 }
 
 .title, .gallery-bio {
 	width: 100%;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.bookmark_page {
+	display: inline;
+	overflow-y: auto;
+	height: 60%;
+}
+
+.padding {
+	flex-grow: 10;
 }

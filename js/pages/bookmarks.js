@@ -1,4 +1,4 @@
-define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storage'], function(jss, pagebase_paneled, util, storage) {
+define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], function(jss, pagebase, util, storage) {
     var bookmarks = {
         name: 'bookmarks',
 
@@ -11,6 +11,9 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         bookmarks: {},
 
         templates: {
+            containerFragment: util.createElement('<div class="internal_container"></div>'),
+            internalFragment: util.createElement('<div class="internal_internal bookmark_page"></div>'),
+
             titleFragment: util.createElement('<a class="bookmark_item"></a>'),
             removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
             slashFragment: util.createElement('<span class="options-color">/</span>'),
@@ -18,6 +21,8 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
 
         // Initialize this module.
         init: function() {
+            this.bookmarks = new pagebase();
+            this.loadBookmarks();
             // this.sort = storage.get('sort', { bookmarks: false }).bookmarks;
             // this.bookmarks = new pagebase_paneled();
             // this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
@@ -26,28 +31,40 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
             // this.loadBookmarks();
         },
 
+        addPanel: function(panel, panelName, data) {
+            var internal = this.templates.internalFragment.cloneNode(true);
+            panel.init(document, this.name + '_' + panelName.replace(' ', '_'), internal.firstElementChild, this.templateFunc.bind(this));
+            panel.buildDom(data);
+            
+            var container = this.templates.containerFragment.cloneNode(true);
+            container.firstElementChild.appendChild(internal);
+            this.elems.rootNode.appendChild(container);
+        },
+
         // Loads the bookmarks from Chrome local synced storage.
         loadBookmarks: function() {
-            // var that = this;
-            // chrome.bookmarks.getTree(function(data) {
-            //     that.data = data[0].children;
-            //     that.bookmarks.addAll(that.data);
-            // });
+            var that = this;
+            chrome.bookmarks.getTree(function(data) {
+                that.data = data[0].children;
+                that.addPanel(that.bookmarks, "name", data[0].children);
+                // that.bookmarks.init(document, that.name + '');
+                // that.bookmarks.addAll(that.data);
+            });
         },
 
         // Sets the new number of pages for the block.
         // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
+        // setPageItemCount: function(pageItemCount) {
             // jss.set('.bookmark-page', {
             //     height: (pageItemCount * 60) + 'px'
             // });
-        },
+        // },
 
         // Sets whether options are currently showing.
         // showOptions: true, if options are now showing; false otherwise.
-        setShowOptions: function setShowOptions(showOptions) {
+        // setShowOptions: function setShowOptions(showOptions) {
             // this.bookmarks.setShowOptions(showOptions);
-        },
+        // },
 
         sortChanged: function(newSort) {
             // this.sort = newSort;
@@ -70,19 +87,19 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         // item: The link item to be converted into a node.
         templateFunc: function(bookmark) {
             var fragment = util.createElement('');
-            // var title = this.templates.titleFragment.cloneNode(true);
-            // title.firstElementChild.href = bookmark.url;
-            // title.firstElementChild.textContent = bookmark.title;
-            // title.firstElementChild.id = 'bookmark_' + bookmark.parentId + '_' + bookmark.id;
-            // if (bookmark.children && bookmark.children.length > 0) {
-            //     title.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
-            // }
-            // title.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, title.firstElementChild));
-            // fragment.appendChild(title);
+            var title = this.templates.titleFragment.cloneNode(true);
+            title.firstElementChild.href = bookmark.url;
+            title.firstElementChild.textContent = bookmark.title;
+            title.firstElementChild.id = 'bookmark_' + bookmark.parentId + '_' + bookmark.id;
+            if (bookmark.children && bookmark.children.length > 0) {
+                title.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
+            }
+            title.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, title.firstElementChild));
+            fragment.appendChild(title);
 
-            // var remove = this.templates.removeFragment.cloneNode(true);
-            // remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark));
-            // fragment.appendChild(remove);
+            var remove = this.templates.removeFragment.cloneNode(true);
+            remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark));
+            fragment.appendChild(remove);
 
             return fragment;
         },
@@ -92,14 +109,17 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util', '../utils/storag
         // bookmarkNode: The DOM node of the clicked bookmark.
         // event: The JS event that triggered this function.
         clickBookmark: function(bookmark, bookmarkNode, event) {
-            // if (bookmark.children && bookmark.children.length > 0) {
-            //     var currentPage = bookmarkNode.parentNode.parentNode.id;
-            //     this.activateBookmark(bookmarkNode);
-            //     this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
-            //     this.bookmarks.addAll(bookmark.children);
-            //     event.preventDefault();
+            if (bookmark.children && bookmark.children.length > 0) {
+                var currentPage = bookmarkNode.parentNode.parentNode.id;
+                this.activateBookmark(bookmarkNode);
+                // this.truncatePages(currentPage.replace('bookmarks_', ''));
+
+                var bookmarkPage = new pagebase();
+                this.addPanel(bookmarkPage, "name", bookmark.children);
+
+                event.preventDefault();
                 
-            // }
+            }
             
         },
 
