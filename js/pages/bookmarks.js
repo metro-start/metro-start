@@ -1,8 +1,10 @@
-define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], function(jss, pagebase, util, storage) {
+define(['jquery', 'jss', '../pagebase/pagebase', '../utils/util', '../utils/storage', '../utils/defaults'], function(jquery, jss, pagebase, util, storage, defaults) {
     var bookmarks = {
         name: 'bookmarks',
 
         data: {},
+
+        pages: [],
 
         elems: {
             rootNode: document.getElementById('internal_selector_bookmarks')
@@ -23,12 +25,11 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
         init: function() {
             this.bookmarks = new pagebase();
             this.loadBookmarks();
-            // this.sort = storage.get('sort', { bookmarks: false }).bookmarks;
-            // this.bookmarks = new pagebase_paneled();
-            // this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
-            // this.bookmarks.pageItemCount = -1;
-            // this.bookmarks.sortFunc = this.sortFunc.bind(this);
-            // this.loadBookmarks();
+
+            jquery('#bookmarks-sort-chooser').metroSelect({
+                initial: this.getSort(),
+                onchange: this.sortChanged.bind(this)
+            });
         },
 
         // Loads the bookmarks from Chrome local synced storage.
@@ -36,15 +37,19 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
             var that = this;
             chrome.bookmarks.getTree(function(data) {
                 that.data = data[0].children;
-                that.addPanel(that.bookmarks, "name", data[0].children);
+                that.addPanel('bookmark_' + data[0].id, data[0].children);
             });
         },
 
-        addPanel: function(panel, panelName, data) {
+        addPanel: function(panelName, data) {
             var internal = this.templates.internalFragment.cloneNode(true);
+
+            var panel = new pagebase();
             panel.init(document, this.name + '_' + panelName.replace(' ', '_'), internal.firstElementChild, this.templateFunc.bind(this));
+            panel.getSort = this.getSort.bind(this);
             panel.buildDom(data);
-            
+            this.pages.push(panel);
+
             var container = this.templates.containerFragment.cloneNode(true);
             container.id = panelName;
             container.firstElementChild.appendChild(internal);
@@ -52,39 +57,6 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
             this.elems.rootNode.appendChild(container);
         },
 
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        // setPageItemCount: function(pageItemCount) {
-            // jss.set('.bookmark-page', {
-            //     height: (pageItemCount * 60) + 'px'
-            // });
-        // },
-
-        // Sets whether options are currently showing.
-        // showOptions: true, if options are now showing; false otherwise.
-        // setShowOptions: function setShowOptions(showOptions) {
-            // this.bookmarks.setShowOptions(showOptions);
-        // },
-
-        sortChanged: function(newSort) {
-            // this.sort = newSort;
-            // this.bookmarks.sort = newSort;
-            // this.bookmarks.sortChanged(newSort);
-        },
-
-        // sortFunc: function(a, b) {
-        //     var nameA = a.title.toUpperCase(); // ignore upper and lowercase
-        //     var nameB = b.title.toUpperCase(); // ignore upper and lowercase
-        //     if (nameA < nameB) {
-        //         return -1;
-        //     } else if (nameA > nameB) {
-        //         return 1;
-        //     }
-        //     return 0;
-        // },
-
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
         templateFunc: function(bookmark) {
             var fragment = util.createElement('');
             var title = this.templates.titleFragment.cloneNode(true);
@@ -104,6 +76,13 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
             return fragment;
         },
 
+        sortChanged: function(newSort) {
+            this.updateSort(newSort);
+            for (var i = 0; i < this.pages.length; i++) {
+                this.pages[i].sortChanged(newSort, false);
+            }
+        },
+
         // Called when a bookmark has been clicked.
         // bookmark: The bookamrk that was clicked.
         // bookmarkNode: The DOM node of the clicked bookmark.
@@ -114,8 +93,7 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
 
                 this.truncatePages(bookmarkNode);
 
-                var bookmarkPage = new pagebase();
-                this.addPanel(bookmarkPage, 'panel_' + bookmark.id, bookmark.children);
+                this.addPanel('panel_' + bookmark.id, bookmark.children);
 
                 event.preventDefault();
             }
@@ -131,10 +109,11 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
             while (!!localRoot.lastElementChild && localRoot.lastElementChild !== searchNode) {
                 localRoot.lastElementChild.remove();
             }
+
+            // Assuming this.pages and this.elems.rootNode were kept up to date...
+            this.pages.splice(localRoot.childElementCount - 1);
         },
 
-        // Activiates a clicked bookmark folder.
-        // bookmarkNode: The DOM node of the clicked bookmark.
         activateBookmark: function activateBookmark(bookmarkNode) {
             var itemNode = bookmarkNode.parentNode;
             var siblings = itemNode.parentNode.children;
@@ -148,50 +127,23 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
         // bookmark: The bookmark to be removed.
         // bookmarkNode: The DOM node of the bookmark to be removed.
         removeBookmark: function(bookmark) {
-            // var bookmarkNode = document.getElementById('bookmark_' + bookmark.parentId + '_' + bookmark.id);
-            // chrome.bookmarks.removeTree(bookmark.id, function() {
-            //     bookmarkNode.parentElement.remove();
-            // });
+            var bookmarkNode = document.getElementById('bookmark_' + bookmark.parentId + '_' + bookmark.id);
+            chrome.bookmarks.removeTree(bookmark.id, function() {
+                bookmarkNode.parentElement.remove();
+            });
         },
 
-    //     changeSort: function(newSort) {
-    //         var handleBookmarks = function (res) {
-    //           $scope.$apply(function () {
-    //             $scope.bookmarks[i] = res;
-    //           });
-    //         };
+        getSort: function getSort() {
+            var sort = storage.get('sort', defaults.getDefaultSort());
+            return sort[this.name];
+        },
 
-    //         for (var i = )
-    //         for (i = $scope.bookmarks.length - 1; i >= 0; i--) {
-    //           var parentId = typeof $scope.bookmarks[i][0].parentId;
-    //           if (typeof parentId !== 'undefined') {
-    //             chrome.bookmarks.getChildren(parentId, handleBookmarks);
-    //           }
-    //         }
-    //       }
-    //     } else if ($scope.sort[key] == 1) {
-    //       if (key == 'themes') {
-    //         $scope.localThemes.sort();
-    //         $scope.onlineThemes.sort();
-    //       } else if (key == 'bookmarks') {
-    //         var compareFunction = function (a, b) {
-    //           if (a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase()) {
-    //             return 1;
-    //           } else if (a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase()) {
-    //             return -1;
-    //           } else {
-    //             return 0;
-    //           }
-    //         };
-    //         for (i = 0; i < $scope.bookmarks.length; i++) {
-    //           $scope.bookmarks[i].sort(compareFunction);
-    //         }
-    //       } else {
-    //         $scope[key].sort();
-    //       }
-    //     }
-    //   }
-    //     }
+        updateSort: function updateSort(newSort) {
+            var sort = storage.get('sort', defaults.getDefaultSort());
+            sort[this.name] = newSort;
+            storage.save('sort', sort);
+        }
     };
+
     return bookmarks;
 });

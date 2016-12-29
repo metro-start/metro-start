@@ -3,7 +3,7 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         item: util.createElement('<div class="item"></div>')
     };
 
-    var pagebase = function pagebase() {};
+    var pagebase = function pagebase() { };
 
     pagebase.prototype.init = function (document, name, rootNode, templateFunc) {
         this.elems = {};
@@ -49,7 +49,7 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
             this.updateSort(newSort);
         }
 
-        if (!!this.rootNode && !!this.rootNode.childNodes && this.rootNode.childNodes.length !== 0) {
+        if (!!this.rootNode && this.rootNode.childElementCount !== 0) {
             var items = Array.prototype.slice.call(this.rootNode.childNodes);
             while (this.rootNode.lastChild) {
                 this.rootNode.removeChild(this.rootNode.lastChild);
