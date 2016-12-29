@@ -31,25 +31,25 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
             // this.loadBookmarks();
         },
 
-        addPanel: function(panel, panelName, data) {
-            var internal = this.templates.internalFragment.cloneNode(true);
-            panel.init(document, this.name + '_' + panelName.replace(' ', '_'), internal.firstElementChild, this.templateFunc.bind(this));
-            panel.buildDom(data);
-            
-            var container = this.templates.containerFragment.cloneNode(true);
-            container.firstElementChild.appendChild(internal);
-            this.elems.rootNode.appendChild(container);
-        },
-
         // Loads the bookmarks from Chrome local synced storage.
         loadBookmarks: function() {
             var that = this;
             chrome.bookmarks.getTree(function(data) {
                 that.data = data[0].children;
                 that.addPanel(that.bookmarks, "name", data[0].children);
-                // that.bookmarks.init(document, that.name + '');
-                // that.bookmarks.addAll(that.data);
             });
+        },
+
+        addPanel: function(panel, panelName, data) {
+            var internal = this.templates.internalFragment.cloneNode(true);
+            panel.init(document, this.name + '_' + panelName.replace(' ', '_'), internal.firstElementChild, this.templateFunc.bind(this));
+            panel.buildDom(data);
+            
+            var container = this.templates.containerFragment.cloneNode(true);
+            container.id = panelName;
+            container.firstElementChild.appendChild(internal);
+
+            this.elems.rootNode.appendChild(container);
         },
 
         // Sets the new number of pages for the block.
@@ -110,17 +110,27 @@ define(['jss', '../pagebase/pagebase', '../utils/util', '../utils/storage'], fun
         // event: The JS event that triggered this function.
         clickBookmark: function(bookmark, bookmarkNode, event) {
             if (bookmark.children && bookmark.children.length > 0) {
-                var currentPage = bookmarkNode.parentNode.parentNode.id;
                 this.activateBookmark(bookmarkNode);
-                // this.truncatePages(currentPage.replace('bookmarks_', ''));
+
+                this.truncatePages(bookmarkNode);
 
                 var bookmarkPage = new pagebase();
-                this.addPanel(bookmarkPage, "name", bookmark.children);
+                this.addPanel(bookmarkPage, 'panel_' + bookmark.id, bookmark.children);
 
                 event.preventDefault();
-                
             }
-            
+        },
+
+        truncatePages: function(bookmarkNode) {
+            var searchNode = bookmarkNode;
+            while (!!searchNode && searchNode.className !== "internal_container") {
+                searchNode = searchNode.parentNode;
+            }
+
+            var localRoot = this.elems.rootNode;
+            while (!!localRoot.lastElementChild && localRoot.lastElementChild !== searchNode) {
+                localRoot.lastElementChild.remove();
+            }
         },
 
         // Activiates a clicked bookmark folder.
