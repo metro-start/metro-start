@@ -329,3 +329,11 @@ body {
 	flex-wrap: wrap;
 	overflow: initial;
 }
+
+#internal_selector_links item {
+	max-width: initial;
+}
+
+#addLink {
+	max-width: inherit;
+}
