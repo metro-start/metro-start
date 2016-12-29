@@ -330,7 +330,7 @@ body {
 	overflow: initial;
 }
 
-#internal_selector_links item {
+#internal_selector_links .item {
 	max-width: initial;
 }
 
