@@ -1,3 +1,6 @@
+* {
+	box-sizing: border-box;
+}
 html {
 	height: 100%;
 }
@@ -252,8 +255,7 @@ body {
 
 .internal_selector {
 	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
+	flex-direction: column;
 }
 
 .pages-chooser {
@@ -274,6 +276,11 @@ body {
 	flex-direction: column;
 }
 
+#internal_selector_bookmarks {
+	flex-direction: row;
+	align-items: flex-start;
+}
+
 .internal_internal {
 	flex-grow: 3;
 	display: flex;
@@ -287,10 +294,18 @@ body {
 	text-overflow: ellipsis;
 }
 
+#internal_selector_bookmarks {
+	height: 100%;
+}
+
+.internal_container {
+	height: 100%;
+}
+
 .bookmark_page {
-	display: inline;
-	overflow-y: auto;
-	height: 60%;
+	height: 100%;
+	display: inline-block;
+	overflow-y: scroll;
 }
 
 .padding {
