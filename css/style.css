@@ -311,3 +311,21 @@ body {
 .padding {
 	flex-grow: 10;
 }
+
+#themes {
+	overflow-y: hidden;
+}
+#internal_selector_themes {
+	flex-direction: row;
+	height: 100%;
+}
+
+#internal_selector_themes .internal_container {
+	height: 100%;
+	width: 100%;
+}
+
+#internal_selector_themes .internal_container .internal_internal {
+	flex-wrap: wrap;
+	overflow: initial;
+}
