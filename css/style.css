@@ -131,10 +131,12 @@ select.chooser {
 	overflow-y: auto;
 }
 .bookmark_item {
-	width: 290px;
+	max-width: 290px;
 	display: block;
 	white-space: nowrap;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	height: 100%;
 	text-overflow: ellipsis;
 }
 
@@ -266,9 +268,14 @@ body {
 	margin-top: 10px;
 	margin-right: 10px;
 	margin-bottom: 0px;
-	max-width: 30vw;
-	overflow: hidden;
+	max-width: 268px;
+	overflow-y: hidden;
 	text-overflow: ellipsis;
+	overflow-x: hidden;
+}
+
+.item .title {
+	overflow: visible;
 }
 
 .internal_container {
@@ -332,6 +339,11 @@ body {
 
 #internal_selector_links .item {
 	max-width: initial;
+}
+
+#internal_selector_themes .item {
+	max-width: initial;
+	height: initial;
 }
 
 #addLink {
