@@ -341,6 +341,10 @@ body {
 	max-width: initial;
 }
 
+#internal_selector_apps .item {
+	max-width: initial;
+}
+
 #internal_selector_themes .item {
 	max-width: initial;
 	height: initial;
