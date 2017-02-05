@@ -4,6 +4,4 @@ Metro Start
 
 A new tab page for Google Chrome inspired by Windows Phone.
 
-[Install from the WebStore](https://chrome.google.com/webstore/detail/bbhdfpmfdplolnnkpdepnelcfdmikjfd)
-
--------
+[Available on the Google Chrome Store](https://chrome.google.com/webstore/detail/bbhdfpmfdplolnnkpdepnelcfdmikjfd)
