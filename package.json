@@ -18,9 +18,7 @@
     "jquery": "*",
     "jquery-ui": "*",
     "jss": "git+https://github.com/Box9/jss.git",
-    "metro-select": "*",
-    "pug": "^2.0.0-beta6",
-    "pug-static-loader": "^0.0.1"
+    "metro-select": "*"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",
@@ -33,7 +31,6 @@
     "requirejs": "^2.3.2",
     "transfer-webpack-plugin": "^0.1.4",
     "webpack": "*",
-    "webpack-dev-server": "*",
-    "xo": "^0.17.1"
+    "webpack-dev-server": "*"
   }
 }
