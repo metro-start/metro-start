@@ -104,7 +104,7 @@
 					<span id="highTemp"></span><span class="options-color"> hi</span> /
 					<span id="lowTemp"></span><span class="options-color"> lo</span>
 				</p>
-				<p id="condition" ng-bind="weather.condition"></p>
+				<p id="condition"></p>
 			</div>
 		</div>
 		<div class="footer">
@@ -122,7 +122,7 @@
 				<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()" ng-bind="editThemeText"></p> -->
 			</div>
 		</div>
-		<div class="picker background-color" ng-show="editThemeText == 'save theme'">
+		<div class="picker background-color" id="picker">
 			<p>
 				<input type="text" id="newThemeTitle" class="options-color" size="12" placeholder="untitled">
 			</p>
@@ -153,7 +153,7 @@
 		</div>
 		<!-- Rule to hide all options when page first loads.
 			 Removes option elements added after the calls to hide .option were made. -->
-		<style type="text/css" id="hide-rule" ng-if="hideOptions">
+		<style type="text/css" id="hideRule">
 			.option, .picker {
 				display: none;
 			}

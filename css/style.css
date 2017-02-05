@@ -209,8 +209,10 @@ select.chooser {
     display: block;
 	position: relative;
 }
-
-.ng-hide {
+.show {
+	display: block;
+}
+.hide {
 	display: none;
 }
 
