@@ -85,10 +85,10 @@ function(jquery, pagebase_grouped, util, storage, defaults) {
             fragment.appendChild(title);
 
             var author = this.templates.authorFragment.cloneNode(true);
-            author.firstElementChild.textContent = theme.author.name;
-            author.firstElementChild.href = theme.author.link;
+            author.firstElementChild.textContent = theme.author;
+            author.firstElementChild.href = theme.website;
             fragment.appendChild(author);
-
+            
             var share = this.templates.shareFragment.cloneNode(true);
             share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
             fragment.appendChild(share);

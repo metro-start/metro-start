@@ -15,7 +15,7 @@ module.exports = function (grunt) {
                 output: {
                     filename: 'bundle.js',
                     path: './dist',
-                    sourceMapFileName: 'bundle.map'
+                    sourceMapFilename: 'bundle.map'
                 },
                 stats: {
                     // Configure the console output
