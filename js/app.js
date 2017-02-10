@@ -5,7 +5,9 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
     var app = {
       data: {},
 
-      elems: {},
+      elems: {
+        hideRule: document.getElementById('hideRule')
+      },
 
       showOptions: false,
 
@@ -21,8 +23,6 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
         wrench.addEventListener('click', function () {
           that.clickWrench();
         });
-
-        this.elems.hideRule = document.getElementById('hideRule');
       },
 
       clickWrench: function () {
@@ -36,7 +36,7 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
         }
 
         // If we're on the theme when wrench was clicked, navigate to the last page.
-        if (pages.page == 'themes') {
+        if (pages.page === 'themes') {
           pages.changePage(storage.get('page', 'links'));
         }
 
@@ -49,8 +49,8 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
       },
 
       setPageItemCount: function (pageItemCount) {
-        pages.pageItemCount = pageItemCount;
-        pages.setPageItemCount(pageItemCount);
+        // pages.pageItemCount = pageItemCount;
+        // pages.setPageItemCount(pageItemCount);
       }
     };
 

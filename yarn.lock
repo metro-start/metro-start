@@ -1747,9 +1747,9 @@ methods@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
-metro-select@*:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/metro-select/-/metro-select-1.0.11.tgz#416e09964ef586047dcdba15fd1e9bdba654921b"
+metro-select@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/metro-select/-/metro-select-1.0.12.tgz#fd8bf886d5835b7b052b888f1fce52e8af8f34c4"
   dependencies:
     grunt-contrib-jshint "^1.1.0"
     jquery "*"

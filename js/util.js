@@ -7,7 +7,6 @@ define([], function Util() {
         },
 
         getJSON: function getJSON(str) {
-            var res = {};
             try {
                 return JSON.parse(str);
             } catch(e) {

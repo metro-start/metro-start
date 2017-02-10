@@ -17,10 +17,8 @@ define(function() {
                 'title-color': '#4a4a4a',
                 'background-color': '#000000'
             },
-            'author': {
-              'name': 'metro-start',
-              'link': 'chumannaji.com'
-            }
+            'author': 'metro-start',
+            'website': 'chumannaji.com'
         },
 
         // The default sortnig for the app.

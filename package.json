@@ -18,7 +18,7 @@
     "jquery": "*",
     "jquery-ui": "*",
     "jss": "git+https://github.com/Box9/jss.git",
-    "metro-select": "*"
+    "metro-select": "^1.0.12"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",

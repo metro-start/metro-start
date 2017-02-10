@@ -7,32 +7,7 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
     handlers: [],
 
     init: function() {
-      var that = this;
-
       jquery('body').show();
-
-      jquery.each(defaults.defaultTheme.colors, function(key, value) {
-        // jquery('#' + key).farbtastic(function(color) {
-        //   var inputNode = document.getElementById('input-' + key);
-        //   inputNode.value = color;
-        //   // themes.updateColor(key, color);
-        //   that.handlers.forEach(function(handler) { handler(key, color)});
-        //   // that.updateStyle(false);
-        //   // console.log(inputNode.onchange);
-        //   // util.maybe(inputNode.change)(color);
-        //   // util.maybe(inputNode.maybe, )
-        //   // console.log(key);
-        //   // document.getElementById('input-' + key).value = color;
-        //   // console.log(document.getElementById('input-' + key).change);
-        //   // document.getElementById('input-' + key).onchange(color);
-        // });
-        // jquery.farbtastic('#' + key).setColor(value);
-        // // Add a listener to update farbtastic and style when a color is changed.
-        // // scope.$watch('theme.colors["' + key + '"]', function(newVal, oldVal) {
-        // //     jquery.farbtastic('#' + key).setColor(newVal);
-        // //     that.updateStyle(false);
-        // // });
-      });
     },
 
     addColorChangedHandler: function (handler) {
