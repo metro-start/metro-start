@@ -1,7 +1,6 @@
 /* jshint node: true */
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (grunt) {
     "use strict";

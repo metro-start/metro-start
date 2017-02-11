@@ -20,11 +20,13 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
     },
 
     init: function(document) {
-      this.forEachModule('init', document, this.getPageItemCount());
-
       this.showOptions = false;
       this.page = storage.get('page', 'links');
 
+      this.data.forEach(function(module) {
+          module.init(document);
+      });
+      
       jquery(this.elems.chooser).metroSelect({
         'initial': this.page,
         'onchange': this.changePage.bind(this)

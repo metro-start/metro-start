@@ -259,3 +259,6 @@ select.chooser {
 	flex-direction: column;
 	flex-wrap: wrap;
 }
+#external_selector_links {
+	height: calc(100% - 85px);
+}

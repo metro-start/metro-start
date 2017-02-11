@@ -13,7 +13,7 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         },
 
         // Initialize this module.
-        init: function(document, pageItemCount) {
+        init: function(document) {
             this.elems.rootDom = document.getElementById('internal_selector_links');
             this.elems.newUrl = document.getElementById('newUrl');
             this.elems.newUrlTitle = document.getElementById('newUrlTitle');
