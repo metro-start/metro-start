@@ -1,17 +1,17 @@
-define(['../utils/util', '../utils/storage', './pagebase'], function(util, storage, pagebase) {
+define(['../utils/util', '../utils/storage', './pagebase'], function (util, storage, pagebase) {
     var templates = {
-       group: util.createElement('<div class="group"></div>'),
-       column: util.createElement('<div class="page"></div>'),
-       item: util.createElement('<div class="item"></div>'),
-       heading: util.createElement('<div class="options-color"></div>')
+        group: util.createElement('<div class="group"></div>'),
+        column: util.createElement('<div class="page"></div>'),
+        item: util.createElement('<div class="item"></div>'),
+        heading: util.createElement('<div class="options-color"></div>')
     };
 
-    var pagebase_grouped = function pagebase_grouped() { };
+    var pagebase_grouped = function pagebase_grouped() {};
 
     pagebase_grouped.prototype = Object.create(pagebase.prototype);
 
     pagebase_grouped.prototype.rebuildDom = function () {
-      console.log("pagebase_grouped.rebuildDom was called.");
+        console.log("pagebase_grouped.rebuildDom was called.");
     };
 
     // Converts provided objects into HTML nodes, then adds them to the page.
@@ -23,7 +23,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
         group.nodes = [];
 
         if (!!rows && !!rows.themes) {
-                for (var i = 0; i < rows.themes.length; i++) {
+            for (var i = 0; i < rows.themes.length; i++) {
                 if (rows.themes[i] !== null) {
                     var item = templates.item.cloneNode(true);
                     item.id = this.name + '_' + i;
@@ -31,19 +31,19 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
                     item.firstElementChild.appendChild(this.templateFunc(rows.themes[i], this.currentPage));
                     group.nodes.push(item);
                 }
-                }
-                this.addAllNodes(group);
+            }
+            this.addAllNodes(group);
         }
     };
 
     // Adds all the given HTML nodes to the DOM as a series of groups.
     // nodes: Dictionary of nodes to be added.
     pagebase_grouped.prototype.addAllNodes = function addAllNodes(group) {
-      var nodes = group.nodes;
+        var nodes = group.nodes;
         if (this.sort) {
             nodes.sort(this.compareFunc);
         } else {
-            nodes.sort(function(a, b) {
+            nodes.sort(function (a, b) {
                 return a.id.toLocaleLowerCase() > b.id.toLocaleLowerCase();
             });
         }
@@ -78,13 +78,13 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
 
     // Gets how much space to reserve when displaying items.
     pagebase_grouped.prototype.getReservedItemCount = function getReservedItemCount() {
-      // If the options are showing, account for sort options.
-      if (this.showOptions) {
-        // If its links page, account for add link options.
-        return 1;
-      }
+        // If the options are showing, account for sort options.
+        if (this.showOptions) {
+            // If its links page, account for add link options.
+            return 1;
+        }
 
-      return 0;
+        return 0;
     };
 
     return pagebase_grouped;

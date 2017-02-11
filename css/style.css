@@ -257,7 +257,10 @@ select.chooser {
 	height: calc(100% - 32px);
 	display: flex;
 	flex-direction: column;
-	flex-wrap: wrap;
+	overflow-y: auto;
+}
+.group > .page > .options-color {
+	text-decoration: underline;
 }
 #external_selector_links {
 	height: calc(100% - 85px);
