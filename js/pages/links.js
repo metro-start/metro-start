@@ -2,9 +2,14 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
     var links = {
         name: 'links',
 
-        data: {},
+        data: [],
 
-        elems: {},
+        elems: {
+            rootDom: document.getElementById('internal_selector_links'),
+            newUrl: document.getElementById('newUrl'),
+            newUrlTitle: document.getElementById('newUrlTitle'),
+            addLink: document.getElementById('addLink')
+        },
 
         templates: {
             linkFragment: util.createElement('<a class="title"></a>'),
@@ -14,10 +19,6 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
         // Initialize this module.
         init: function(document) {
-            this.elems.rootDom = document.getElementById('internal_selector_links');
-            this.elems.newUrl = document.getElementById('newUrl');
-            this.elems.newUrlTitle = document.getElementById('newUrlTitle');
-            this.elems.addLink = document.getElementById('addLink');
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
             this.links = new pagebase_simple();
@@ -59,37 +60,30 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         // Adds a new link, or completes editing an exiting link.
         // event: Callback event data.
         addLink: function(event) {
-            var newUrl = this.elems.newUrl.value.trim();
-            var newUrlTitle = this.elems.newUrlTitle.value.trim();
-            if (newUrl !== '') {
-                var formatTitle = function(title) {
-                    return newUrlTitle ? newUrlTitle : newUrl.toLocaleLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
-                };
-
-                if (!newUrl.match(/https?\:\/\//)) {
-                    newUrl = 'http://' + newUrl;
-                }
-
-                // If a link is currently being edited.
-                if (this.linkToEdit) {
-                    this.linkToEdit.name = formatTitle(newUrlTitle);
-                    this.linkToEdit.url = newUrl;
-
-                    
-                } else {
-                    this.data.push({
-                        'name': formatTitle(newUrlTitle),
-                        'url': newUrl
-                    });
-
-                    
-                }
-                storage.save('links', this.data);
-                this.links.buildDom(this.data);
-                this.linkToEdit = null;
-                this.elems.addLink.reset();
-            }
             event.preventDefault();
+            var newUrl = this.elems.newUrl.value.trim();
+            var title = this.elems.newUrlTitle.value.trim();
+            title = title ? title : newUrl.toLocaleLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
+
+            if (!newUrl.match(/https?\:\/\//)) {
+                newUrl = 'http://' + newUrl;
+            }
+
+            // If a link is currently being edited.
+            if (this.linkToEdit) {
+                this.linkToEdit.name = title;
+                this.linkToEdit.url = newUrl;
+            } else {
+                this.data.push({
+                    'name': title,
+                    'url': newUrl
+                });
+            }
+            
+            storage.save('links', this.data);
+            this.links.buildDom(this.data);
+            this.linkToEdit = null;
+            this.elems.addLink.reset();
         },
 
         // Begins editing a link.

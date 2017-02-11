@@ -262,3 +262,12 @@ select.chooser {
 #external_selector_links {
 	height: calc(100% - 85px);
 }
+#internal_selector_links > .page {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+#internal_selector_links > .page > .item {
+	padding-right: 15px;
+}
