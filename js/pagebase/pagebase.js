@@ -90,7 +90,7 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     // pageNumber: The page to start removing data.
     pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
         var nodes = Array.prototype.slice.call(this.elems.internal_selector.children);
-        nodes.splice(0, parseInt(pageNumber) + 1);
+        nodes.splice(0, parseInt(pageNumber, 10) + 1);
         nodes.forEach(function(node) {
             node.remove();
         });

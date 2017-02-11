@@ -24,10 +24,13 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         loadApps: function() {
             var that = this;
             chrome.management.getAll(function(res) {
-                that.data = [{
-                    'name': 'Chrome Webstore',
-                    'appLaunchUrl': 'https://chrome.google.com/webstore'
-                }];
+                that.data = [];
+                for (var i = 0; i < 25; i++) {
+                    that.data.push({
+                        'name': 'Chrome Webstore',
+                        'appLaunchUrl': 'https://chrome.google.com/webstore'
+                    });
+                }
 
                 // Remove extensions and limit to installed apps.
                 that.data = that.data.concat(res.filter(function(item) { return item.isApp; }));
