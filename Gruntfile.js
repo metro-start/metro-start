@@ -32,7 +32,8 @@ module.exports = function (grunt) {
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },
                         { from: 'manifest.json' },
-                        { from: 'start.html' }
+                        { from: 'start.html' },
+			{ from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
                     ])]
             }
         },
