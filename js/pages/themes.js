@@ -63,12 +63,6 @@ function(jquery, pagebase_grouped, util, storage, defaults) {
 
         // Sets the new number of pages for the block.
         // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
-          this.themes.setPageItemCount(pageItemCount, this.data); //-1 to account for addLink
-        },
-
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
         setShowOptions: function setShowOptions(showOptions) {
             this.themes.setShowOptions(showOptions);
         },

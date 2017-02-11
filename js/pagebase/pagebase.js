@@ -96,15 +96,6 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
         });
     };
 
-    // Called when the number of items on a page changes.
-    // pageItemCount: New number of items per page.
-    pagebase.prototype.setPageItemCount = function setPageItemCount(pageItemCount) {
-        if (this.pageItemCount !== pageItemCount) {
-            this.pageItemCount = Math.max(pageItemCount, 1);
-            this.rebuildDom();
-        }
-    };
-
     // Called when the visibility of options changes.
     // showOptions: True if options are now visible; false otherwise.
     pagebase.prototype.setShowOptions = function setShowOptions(showOptions) {

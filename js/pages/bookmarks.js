@@ -32,14 +32,6 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             });
         },
 
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
-            jss.set('.bookmark-page', {
-                'height': (pageItemCount * 60) + 'px'
-            });
-        },
-
         // Sets whether options are currently showing.
         // showOptions: true, if options are now showing; false otherwise.
         setShowOptions: function setShowOptions(showOptions) {

@@ -38,14 +38,6 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             });
         },
 
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
-            if (this.apps) {
-                this.apps.setPageItemCount(pageItemCount);
-            }
-        },
-
         // Sets whether options are currently showing.
         // showOptions: true, if options are now showing; false otherwise.
         setShowOptions: function setShowOptions(showOptions) {

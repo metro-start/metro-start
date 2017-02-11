@@ -24,15 +24,11 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
 
       this.showOptions = false;
       this.page = storage.get('page', 'links');
-      // this.changePage(storage.get('page', 'links'));
 
       jquery(this.elems.chooser).metroSelect({
         'initial': this.page,
         'onchange': this.changePage.bind(this)
       });
-
-      // jquery(window).bind('resize', this.onWindowResized.bind(this));
-      // this.onWindowResized();
     },
 
     changePage: function changePage(page) {
@@ -44,37 +40,6 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
       jss.set('.external .internal', {
         'margin-left': (this.indexOfModule(page) * -100) + '%'
       });
-    },
-
-    // Compare document height to element height to fine the number of elements per page.
-    onWindowResized: function() {
-      // var height = this.getContentHeight();
-
-      // jss.set('.external', {
-      //   'height': '' + height
-      // });
-      // jss.set('.bookmark-page', {
-      //   'height': '' + height
-      // });
-
-      // var pageItemCount = this.getPageItemCount();
-      // this.forEachModule('setPageItemCount', pageItemCount);
-      // this.forEachModule('setHeight', height);
-    },
-
-    // Gets the current height of the content page.
-    getContentHeight: function() {
-      // var pageHeight = jquery('body').height();
-      // var headerHeight = jquery('h1').outerHeight(true);
-      // var navBarHeight = jquery('.' + this.name + '-chooser').outerHeight(true);
-      // var footerHeight = jquery('.footer').outerHeight(true);
-      // return pageHeight - (headerHeight + navBarHeight + footerHeight);
-    },
-
-    // Sets the new number of pages for the block.
-    // pageItemCount: The maximum number of pages able to be displayed.
-    getPageItemCount: function() {
-      // return Math.floor((this.getContentHeight()) / 60);
     },
 
     // Sets whether options are currently showing.

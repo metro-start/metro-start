@@ -94,17 +94,6 @@ define([], function Pages() {
         };
 
         /**
-            Set the number of items per page.
-            pageItemCount: The new number of items per page.
-        */
-        this.setPageItemCount = function(pageItemCount) {
-            this.pageItemCount = pageItemCount;
-            var list = this.flatten();
-            this.pages = [[]];
-            this.addAll(list);
-        };
-
-        /**
             Flatten the collection and turn it into a 1D array.
             returns: The array in 1D format.
         */

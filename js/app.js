@@ -45,12 +45,6 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
             module.showOptionsChanged(that.showOptions);
           }
         });
-
-      },
-
-      setPageItemCount: function (pageItemCount) {
-        // pages.pageItemCount = pageItemCount;
-        // pages.setPageItemCount(pageItemCount);
       }
     };
 

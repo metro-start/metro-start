@@ -22,19 +22,12 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
             this.links = new pagebase_simple();
             this.links.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
-            this.links.setPageItemCount(pageItemCount);
         },
 
         // Loads the links from storage into the DOM.
         loadLinks: function() {
           this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
           this.links.buildDom(this.data);
-        },
-
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
-            this.links.setPageItemCount(pageItemCount, this.data);
         },
 
         // Sets whether options are currently showing.
