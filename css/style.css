@@ -51,7 +51,6 @@ h1 {
     font-size: 24px;
 	display: inline-block;
 	margin-right: 20px;
-	padding-left: 8px;
 }
 .option {
 	display: inline-block;
@@ -116,12 +115,16 @@ select.chooser {
 	min-width: 0;
 	height: 55px;
 	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
 }
 .item:last-child {
 	margin-bottom: 5px;
 }
 .title {
 	display: block;
+	line-height: 100%;
+	white-space: nowrap;
 }
 
 /* Bookmarks section */
@@ -260,8 +263,6 @@ select.chooser {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
-}
-#internal_selector_apps > .page > .item {
 	padding-right: 15px;
 }
 
@@ -273,21 +274,14 @@ select.chooser {
 }
 .pagebase-grouped > .group {
 	margin-right: 28px;
+	display: inline-block;
+	height: 100%;
 }
 .pagebase-grouped > .group:last-child {
 	margin-right: 0;
 }
-/*.pagebase-grouped .group:last-child > .page {
-	margin-right: 0;
-}*/
-.group {
-	display: inline-block;
-	height: 100%;
-}
-.group > .page {
+.pagebase-grouped > .group > .page {
 	height: calc(100% - 32px);
-	display: flex;
-	flex-direction: column;
 	overflow-y: auto;
 }
 #external_selector_links {
