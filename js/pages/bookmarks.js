@@ -23,10 +23,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         },
 
         sortChanged: function (newSort) {
-            if (this.bookmarks.sortChanged)
-            {
-                this.bookmarks.sortChanged(newSort, false);
-            }
+            this.bookmarks.sortChanged(newSort);
         },
 
         // Loads the bookmarks from Chrome local synced storage.

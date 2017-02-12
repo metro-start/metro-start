@@ -12,6 +12,27 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
       console.log("pagebase_paneled.rebuildDom was called");
     };
 
+    // Adds all the given HTML nodes to the DOM in one single column.
+    // nodes: List of nodes to be added.
+    pagebase_paneled.prototype.addAllNodes = function addAllNodes(nodes) {
+        if (nodes.length) {
+            var pageIndex = this.elems.internal_selector.children.length;
+            var columnNode = templates.column.cloneNode(true);
+            columnNode.firstElementChild.id = this.name + '_' + pageIndex;
+
+            if (this.name === 'bookmarks') {
+                util.addClass(columnNode.firstElementChild, 'bookmark-page');
+            }
+            //Add each row to an column and create new ones on the pageItemCount boundary.
+            for (var i = 0; i < nodes.length; i++) {
+                columnNode.firstElementChild.appendChild(nodes[i]);
+            }
+            if ((i - 1) % this.pageItemCount !== 0 || this.pageItemCount === -1) { // - 1 to account for the for loop going one past last good index.
+                this.rootNode.appendChild(columnNode);
+            }
+        }
+    };
+
     pagebase_paneled.prototype.sortChanged = function sortChanged(newSort) {
         var currentSort = this.getSort();
         if (newSort === currentSort) {
@@ -39,27 +60,6 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
                 // if (rows[j] is selected) {
                 //     scroll to it.
                 // }
-            }
-        }
-    };
-
-    // Adds all the given HTML nodes to the DOM in one single column.
-    // nodes: List of nodes to be added.
-    pagebase_paneled.prototype.addAllNodes = function addAllNodes(nodes) {
-        if (nodes.length) {
-            var pageIndex = this.elems.internal_selector.children.length;
-            var columnNode = templates.column.cloneNode(true);
-            columnNode.firstElementChild.id = this.name + '_' + pageIndex;
-
-            if (this.name === 'bookmarks') {
-                util.addClass(columnNode.firstElementChild, 'bookmark-page');
-            }
-            //Add each row to an column and create new ones on the pageItemCount boundary.
-            for (var i = 0; i < nodes.length; i++) {
-                columnNode.firstElementChild.appendChild(nodes[i]);
-            }
-            if ((i - 1) % this.pageItemCount !== 0 || this.pageItemCount === -1) { // - 1 to account for the for loop going one past last good index.
-                this.rootNode.appendChild(columnNode);
             }
         }
     };

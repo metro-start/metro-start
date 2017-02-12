@@ -20,10 +20,7 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pa
         },
 
         sortChanged: function (newSort) {
-            if (this.bookmarks.sortChanged)
-            {
-                this.bookmarks.sortChanged(newSort, false);
-            }
+            this.bookmarks.sortChanged(newSort, false);
         },
 
         // Loads the apps from Chrome app API.

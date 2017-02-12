@@ -26,10 +26,7 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/defaults', '../util
         },
 
         sortChanged: function (newSort) {
-            if (this.links.sortChanged)
-            {
-                this.links.sortChanged(newSort, false);
-            }
+            this.links.sortChanged(newSort, false);
         },
 
         // Loads the links from storage into the DOM.
