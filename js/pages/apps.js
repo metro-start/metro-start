@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], function(pagebase_simple, storage, util) {
+define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pagebase, storage, util) {
     var apps = {
         name: 'apps',
 
@@ -14,16 +14,13 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         // Initialize this module.
         init: function(document) {
             this.elems.rootNode = document.getElementById('internal_selector_apps');
-            this.apps = new pagebase_simple();
+            this.apps = new pagebase();
             this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadApps();
         },
 
         sortChanged: function (newSort) {
-            if (this.bookmarks.sortChanged)
-            {
-                this.bookmarks.sortChanged(newSort, false);
-            }
+            this.bookmarks.sortChanged(newSort, false);
         },
 
         // Loads the apps from Chrome app API.
@@ -41,13 +38,8 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
                 // Remove extensions and limit to installed apps.
                 that.data = that.data.concat(res.filter(function(item) { return item.isApp; }));
                 that.apps.buildDom(that.data);
+                that.apps.buildDom(that.data);
             });
-        },
-
-        // Sets whether options are currently showing.
-        // showOptions: true, if options are now showing; false otherwise.
-        setShowOptions: function setShowOptions(showOptions) {
-            this.apps.setShowOptions(showOptions);
         },
 
         // Returns an HTML link node item.

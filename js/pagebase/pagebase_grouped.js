@@ -51,15 +51,8 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
             var columnNode = templates.column.cloneNode(true);
             columnNode.firstElementChild.id = this.name + '_' + pageIndex;
 
-            var pageItemCount = this.pageItemCount - this.getReservedItemCount();
-
             //Add each row to an column and create new ones on the pageItemCount boundary.
             for (var i = 0; i < nodes.length; i++) {
-                if (i !== 0 && i % pageItemCount === 0 && pageItemCount > 0) { //Skip the first row.
-                    groupNode.firstElementChild.appendChild(columnNode);
-                    columnNode = templates.column.cloneNode(true);
-                    columnNode.firstElementChild.id = this.name + '_' + pageIndex++;
-                }
                 columnNode.firstElementChild.appendChild(nodes[i]);
             }
             if ((i - 1) % this.pageItemCount !== 0 || this.pageItemCount === -1) { // - 1 to account for the for loop going one past last good index.
@@ -93,22 +86,8 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
 
             for (var j = 0; j < rows.length; j++) {
                 column.appendChild(rows[j]);
-                // if (rows[j] is selected) {
-                //     scroll to it.
-                // }
             }
         }
-    };
-
-    // Gets how much space to reserve when displaying items.
-    pagebase_grouped.prototype.getReservedItemCount = function getReservedItemCount() {
-        // If the options are showing, account for sort options.
-        if (this.showOptions) {
-            // If its links page, account for add link options.
-            return 1;
-        }
-
-        return 0;
     };
 
     return pagebase_grouped;

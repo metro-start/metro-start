@@ -11,9 +11,10 @@
 		<div class="pages-chooser">
 			<select class="chooser" id="pages-chooser">
 				<option class="clickable links-option">links</option>
+				<option class="clickable sessions-option">sessions</option>
 				<option class="clickable apps-option">apps</option>
 				<option class="clickable bookmarks-option">bookmarks</option>
-				<option class="clickable themes-option option">themes</option>
+				<option class="clickable themes-option">themes</option>
 			</select>
 		</div>
 		<div class="external">
@@ -37,7 +38,20 @@
 						</form>
 					</div>
 				</div>
-
+				<div class="sessions collection">
+					<div id="sessions">
+						<div class="options-color option sort">
+							<select class="chooser" id="sessions-sort-chooser">
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
+							</select>
+						</div>
+						<div class="external_selector" id="external_selector_sessions">
+							<div class="internal_selector" id="internal_selector_sessions">
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="apps collection">
 					<div id="apps">
 						<div class="options-color option sort">
@@ -81,7 +95,6 @@
 						</div>
 					</div>
 				</div>
-				<div style="clear: both">&nbsp;</div>
 			</div>
 		</div>
 		<div class="weather">

@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_simple','../utils/storage', '../utils/defaults', '../utils/util'], function(pagebase_simple, storage, defaults, util) {
+define(['../pagebase/pagebase','../utils/storage', '../utils/defaults', '../utils/util'], function(pagebase, storage, defaults, util) {
     var links = {
         name: 'links',
 
@@ -21,27 +21,19 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/defaults', '
         init: function(document) {
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
-            this.links = new pagebase_simple();
+            this.links = new pagebase();
             this.links.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
         },
 
         sortChanged: function (newSort) {
-            if (this.links.sortChanged)
-            {
-                this.links.sortChanged(newSort, false);
-            }
+            this.links.sortChanged(newSort, false);
         },
 
         // Loads the links from storage into the DOM.
         loadLinks: function() {
-          this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+        storage.save('links', defaults.defaultLinks);
+          this.data = storage.get('links', defaults.defaultLinks);
           this.links.buildDom(this.data);
-        },
-
-        // Sets whether options are currently showing.
-        // showOptions: true, if options are now showing; false otherwise.
-        setShowOptions: function setShowOptions(showOptions) {
-            this.links.setShowOptions(showOptions);
         },
 
         // Returns an HTML link node item.

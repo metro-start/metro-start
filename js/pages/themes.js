@@ -19,7 +19,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
             titleFragment: util.createElement('<span class="title clickable"></span>'),
             removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
-            shareFragment: util.createElement('<span class="options-color small-text clickable">share</span>'),
+            shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
             authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>')
         },
 
@@ -35,10 +35,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
         },
         
         sortChanged: function (newSort) {
-            if (this.themes.sortChanged)
-            {
-                this.themes.sortChanged(newSort, false);
-            }
+            this.themes.sortChanged(newSort, false);
         },
 
         // Loads the available themes from local and web storage
