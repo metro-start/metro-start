@@ -44,7 +44,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
 
             that.themes.addAll({
               'heading': 'my themes',
-              'themes': storage.get('localThemes', [defaults.defaultTheme])
+              'data': storage.get('localThemes', [defaults.defaultTheme])
             });
 
             // Load online themes.
@@ -61,7 +61,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
 
                 that.themes.addAll({
                   'heading': 'online themes',
-                  'themes': data
+                  'data': data
                 },
                 function(error)
                 {
