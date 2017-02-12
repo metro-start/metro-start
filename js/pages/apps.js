@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pagebase, storage, util) {
+define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], function(pagebase, storage, util) {
     var apps = {
         name: 'apps',
 
@@ -27,18 +27,17 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pa
         loadApps: function() {
             var that = this;
             chrome.management.getAll(function(res) {
-                that.data = [];
-                for (var i = 0; i < 25; i++) {
-                    that.data.push({
+                that.apps.addAll({
+                    'heading': 'apps',
+                    'data': [{
                         'name': 'Chrome Webstore',
                         'appLaunchUrl': 'https://chrome.google.com/webstore'
-                    });
-                }
-
-                // Remove extensions and limit to installed apps.
-                that.data = that.data.concat(res.filter(function(item) { return item.isApp; }));
-                that.apps.buildDom(that.data);
-                that.apps.buildDom(that.data);
+                    }].concat(res.filter(function(item) { return item.isApp; }))
+                });
+                that.apps.addAll({
+                    'heading': 'extensions',
+                    'data': res.filter(function(item) { return !item.isApp; })
+                });
             });
         },
 

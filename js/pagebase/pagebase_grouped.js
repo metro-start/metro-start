@@ -19,13 +19,13 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
         group.heading = rows.heading;
         group.nodes = [];
 
-        if (!!rows && !!rows.themes) {
-            for (var i = 0; i < rows.themes.length; i++) {
-                if (rows.themes[i] !== null) {
+        if (!!rows && !!rows.data) {
+            for (var i = 0; i < rows.data.length; i++) {
+                if (rows.data[i] !== null) {
                     var item = templates.item.cloneNode(true);
                     item.id = this.name + '_' + i;
                     item.firstElementChild.id = this.name + '_' + i;
-                    item.firstElementChild.appendChild(this.templateFunc(rows.themes[i], this.currentPage));
+                    item.firstElementChild.appendChild(this.templateFunc(rows.data[i], this.currentPage));
                     group.nodes.push(item);
                 }
             }

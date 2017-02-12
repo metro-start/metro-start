@@ -41,7 +41,7 @@ function(jquery, pagebase_grouped, util) {
                     }
                     that.sessions.addAll({
                         'heading': devices[i].deviceName,
-                        'themes': data
+                        'data': data
                     });
                 }
             });
