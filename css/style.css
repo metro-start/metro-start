@@ -51,6 +51,7 @@ h1 {
     font-size: 24px;
 	display: inline-block;
 	margin-right: 20px;
+	padding-left: 8px;
 }
 .option {
 	display: inline-block;
@@ -257,6 +258,12 @@ select.chooser {
 	flex-direction: row;
 	flex-grow: 0;
 	height: calc(100%  - 1px);
+}
+#internal_selector_themes > .group:last-child {
+	margin-right: 8px;
+}
+#internal_selector_themes > .group:last-child {
+	margin-right: 0;
 }
 .group {
 	height: 100%;
