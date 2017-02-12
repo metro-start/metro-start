@@ -19,7 +19,6 @@ define(['jquery', '../utils/util', '../utils/storage','../utils/defaults', 'metr
 
         if (jquery('#' + this.name + '-sort-chooser').length !== 0)
         {
-            console.log("Created for: " + this.name);
             jquery('#' + this.name + '-sort-chooser').metroSelect({
                 initial: this.getSort(),
                 onchange: this.sortChanged.bind(this)
