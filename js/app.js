@@ -35,11 +35,6 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
           document.body.appendChild(this.elems.hideRule);
         }
 
-        // If we're on the theme when wrench was clicked, navigate to the last page.
-        if (pages.page === 'themes') {
-          pages.changePage(storage.get('page', 'links'));
-        }
-
         this.modules.forEach(function (module) {
           if (module.showOptionsChanged) {
             module.showOptionsChanged(that.showOptions);

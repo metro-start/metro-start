@@ -54,9 +54,7 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
 
     changePage: function changePage(page) {
       this.page = page;
-      if (page !== 'themes') {
-        storage.save('page', page);
-      }
+      storage.save('page', page);
 
       jss.set('.external .internal', {
         'margin-left': (this.indexOfModule(page) * -100) + '%'
