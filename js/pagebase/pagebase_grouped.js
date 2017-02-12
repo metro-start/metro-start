@@ -9,10 +9,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
     var pagebase_grouped = function pagebase_grouped() {};
 
     pagebase_grouped.prototype = Object.create(pagebase.prototype);
-
-    pagebase_grouped.prototype.rebuildDom = function () {
-        console.log("pagebase_grouped.rebuildDom was called.");
-    };
+    pagebase_grouped.prototype.className = 'pagebase-grouped';
 
     // Converts provided objects into HTML nodes, then adds them to the page.
     // rows: Dictionary of rows to be added to the page.
@@ -47,17 +44,13 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
             heading.firstElementChild.textContent = group.heading;
             groupNode.firstElementChild.appendChild(heading);
 
-            var pageIndex = this.elems.internal_selector.children.length;
             var columnNode = templates.column.cloneNode(true);
-            columnNode.firstElementChild.id = this.name + '_' + pageIndex;
-
-            //Add each row to an column and create new ones on the pageItemCount boundary.
             for (var i = 0; i < nodes.length; i++) {
                 columnNode.firstElementChild.appendChild(nodes[i]);
             }
-            if ((i - 1) % this.pageItemCount !== 0 || this.pageItemCount === -1) { // - 1 to account for the for loop going one past last good index.
-                groupNode.firstElementChild.appendChild(columnNode);
-            }
+
+            groupNode.firstElementChild.appendChild(columnNode);
+
             this.rootNode.appendChild(groupNode);
         }
     };

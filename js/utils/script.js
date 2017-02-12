@@ -62,12 +62,12 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
       jss.set('.bookmark-active', {
         'background-color': options_color
       });
-      jss.set('#internal_selector_themes > .group > .page', {
+      jss.set('.pagebase-grouped > .group > .page', {
         'border-top-style': 'solid',
         'border-top-width': '1px',
         'border-top-color': options_color
       });
-      jss.set('#internal_selector_sessions > .group > .page', {
+      jss.set('.pagebase-grouped > .group > .page', {
         'border-top-style': 'solid',
         'border-top-width': '1px',
         'border-top-color': options_color

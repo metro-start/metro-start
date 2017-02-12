@@ -9,7 +9,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         bookmarks: {},
 
         templates: {
-            titleFragment: util.createElement('<span class="bookmark_item clickable"></span>'),
+            titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
             manageFragment: util.createElement('<span class="remove option options-color small-text clickable">manage</span>'),
             slashFragment: util.createElement('<span class="options-color clickable slash">/</span>'),
         },
@@ -95,14 +95,6 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             //   bookmarkNode.remove();
             // });
             
-        },
-
-        // Sets the height of the bookmark module. This tells when to begin scrolling.
-        // height: The new height of the bookmark page.
-        setHeight: function(height) {
-          jss.set('.bookmark-page', {
-              'height': height + 'px'
-          });
         }
     };
     return bookmarks;

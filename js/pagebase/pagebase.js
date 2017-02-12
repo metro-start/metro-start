@@ -6,9 +6,10 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     var pagebase = function pagebase() { };
 
+    pagebase.prototype.className = 'pagebase';
+
     // Initialize the module.
     pagebase.prototype.init = function (document, name, rootNode, templateFunc) {
-        this.elems = {};
         this.name = name;
         this.rootNode = rootNode;
         this.sort = storage.get(this.name + '_sort', false);
@@ -16,6 +17,7 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         this.templateFunc = templateFunc;
         this.page = 0;
 
+        util.addClass(this.rootNode, this.className);
 
         if (jquery('#' + this.name + '-sort-chooser').length !== 0) {
             jquery('#' + this.name + '-sort-chooser').metroSelect({
@@ -23,8 +25,6 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
                 onchange: this.sortChanged.bind(this)
             });
         }
-
-        this.elems.internal_selector = document.getElementById('internal_selector_' + this.name);
     };
 
     // Build the dom.
@@ -35,23 +35,6 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
             this.rootNode.firstElementChild.remove();
         }
         this.addAll(rows);
-    };
-
-    // Rebuild the dom by removing all nodes and re-adding them.
-    // This is useful for resetting state.
-    pagebase.prototype.rebuildDom = function () {
-        var nodes = [];
-        this.currentPage = 0;
-
-        while (this.rootNode.firstElementChild) {
-            var column = this.rootNode.firstElementChild;
-            while (column.firstElementChild) {
-                nodes.push(column.firstElementChild);
-                column.firstElementChild.remove();
-            }
-            column.remove();
-        }
-        this.addAllNodes(nodes);
     };
 
     // Add all rows to the page.
@@ -79,35 +62,16 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
     // nodes: List of nodes to be added.
     pagebase.prototype.addAllNodes = function addAllNodes(nodes) {
         if (nodes.length) {
-            var pageIndex = this.elems.internal_selector.children.length;
+            var pageIndex = this.rootNode.children.length;
             var columnNode = templates.column.cloneNode(true);
             columnNode.firstElementChild.id = this.name + '_' + pageIndex;
 
-            // Add each row to an column and create new ones on the pageItemCount boundary.
             for (var i = 0; i < nodes.length; i++) {
                 columnNode.firstElementChild.appendChild(nodes[i]);
             }
 
-            // i - 1 to account because the for-loop will go one past last good index.
-            if (i >= nodes.length) {
-                this.rootNode.appendChild(columnNode);
-            }
+            this.rootNode.appendChild(columnNode);
         }
-    };
-
-    // Returns the pages in the module.
-    pagebase.prototype.getPages = function getPages() {
-        return Array.prototype.slice.call(this.elems.internal_selector.children);
-    };
-
-    // Remove pages.
-    // pageNumber: The page to start removing data.
-    pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
-        var nodes = Array.prototype.slice.call(this.elems.internal_selector.children);
-        nodes.splice(0, parseInt(pageNumber, 10) + 1);
-        nodes.forEach(function (node) {
-            node.remove();
-        });
     };
 
     pagebase.prototype.sortChanged = function sortChanged(newSort, saveSort) {

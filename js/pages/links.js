@@ -31,11 +31,9 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/defaults', '../util
 
         // Loads the links from storage into the DOM.
         loadLinks: function() {
-        storage.save('links', defaults.defaultLinks);
           this.data = storage.get('links', defaults.defaultLinks);
           this.links.buildDom(this.data);
         },
-
         // Returns an HTML link node item.
         // item: The link item to be converted into a node.
         templateFunc: function(item) {
