@@ -111,9 +111,6 @@ select.chooser {
     margin-right: 30px;
     vertical-align: top;
 }
-.page:last-child {
-	margin-right: 5px;
-}
 .item {
 	height: 55px;
 	margin-bottom: 10px;
@@ -191,6 +188,7 @@ select.chooser {
     right: 0;
 	padding-top: 10px;
 	padding-left: 10px;
+	padding-bottom: 10px;
 }
 .picker > div {
     display: inline-block;
@@ -205,12 +203,21 @@ select.chooser {
 }
 .picker > p {
 	text-align: center;
+	display: flex;
+	flex-direction: row;
 }
 .picker-text {
     font-size: 24px;
     text-align: center;
     display: block;
 	position: relative;
+}
+#newThemeTitle {
+	flex-grow: 1;
+}
+#saveTheme {
+	padding-left: 12px;
+	padding-right: 12px;
 }
 .show {
 	display: block;
@@ -249,6 +256,7 @@ select.chooser {
 	display: flex;
 	flex-direction: row;
 	flex-grow: 0;
+	height: calc(100%  - 1px);
 }
 .group {
 	height: 100%;
@@ -272,4 +280,14 @@ select.chooser {
 }
 #internal_selector_links > .page > .item {
 	padding-right: 15px;
+}
+#internal_selector_bookmarks > .page > .item {
+	display: flex;
+	flex-direction: column;
+}
+#internal_selector_bookmarks > .page > .item > span:first-child {
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	padding-left: 8px;
 }

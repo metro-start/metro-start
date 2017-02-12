@@ -17,7 +17,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
 
         templates: {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
-            titleFragment: util.createElement('<span class="title"></span>'),
+            titleFragment: util.createElement('<span class="title clickable"></span>'),
             removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="options-color small-text clickable">share</span>'),
             authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>')
@@ -93,18 +93,21 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
             fragment.appendChild(title);
 
+            var options = util.createElement('<span></span>');
             var author = this.templates.authorFragment.cloneNode(true);
             author.firstElementChild.textContent = theme.author;
             author.firstElementChild.href = theme.website;
-            fragment.appendChild(author);
+            options.firstElementChild.appendChild(author);
             
             var share = this.templates.shareFragment.cloneNode(true);
             share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
-            fragment.appendChild(share);
+            options.firstElementChild.appendChild(share);
 
             var remove = this.templates.removeFragment.cloneNode(true);
             remove.firstElementChild.addEventListener('click', this.removeTheme.bind(this, theme));
-            fragment.appendChild(remove);
+            options.firstElementChild.appendChild(remove);
+
+            fragment.appendChild(options);
 
             return fragment;
         },

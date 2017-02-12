@@ -12,7 +12,7 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         },
 
         templates: {
-            linkFragment: util.createElement('<a class="title"></a>'),
+            linkFragment: util.createElement('<span class="title clickable"></span>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             editFragment: util.createElement('<span class="edit option options-color small-text clickable">edit</span>'),
         },
@@ -42,17 +42,20 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         templateFunc: function(item) {
             var fragment = util.createElement('');
             var link = this.templates.linkFragment.cloneNode(true);
-            link.firstElementChild.href = item.url;
+            // link.firstElementChild.href = item.url;
             link.firstElementChild.textContent = item.name;
             fragment.appendChild(link);
 
+            var options = util.createElement('<span></span>');
             var remove = this.templates.removeFragment.cloneNode(true);
             remove.firstElementChild.addEventListener('click', this.removeLink.bind(this, item));
-            fragment.appendChild(remove);
+            options.appendChild(remove);
 
             var edit = this.templates.editFragment.cloneNode(true);
             edit.firstElementChild.addEventListener('click', this.editLink.bind(this, item));
-            fragment.appendChild(edit);
+            options.appendChild(edit);
+
+            fragment.appendChild(options);
 
             return fragment;
         },

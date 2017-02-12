@@ -9,9 +9,9 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         bookmarks: {},
 
         templates: {
-            titleFragment: util.createElement('<a class="bookmark_item"></a>'),
-            removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
-            slashFragment: util.createElement('<span class="options-color">/</span>'),
+            titleFragment: util.createElement('<span class="bookmark_item clickable"></span>'),
+            manageFragment: util.createElement('<span class="remove option options-color small-text clickable">manage</span>'),
+            slashFragment: util.createElement('<span class="options-color clickable">/</span>'),
         },
 
         // Initialize this module.
@@ -43,18 +43,20 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         templateFunc: function(bookmark) {
             var fragment = util.createElement('');
             var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.href = bookmark.url;
+            // title.firstElementChild.href = bookmark.url;
             title.firstElementChild.textContent = bookmark.title;
             title.firstElementChild.id = 'bookmark_' + bookmark.id;
+
             if (bookmark.children && bookmark.children.length > 0) {
                 title.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
             }
+
             title.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, title.firstElementChild));
             fragment.appendChild(title);
 
-            var remove = this.templates.removeFragment.cloneNode(true);
-            remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark, fragment));
-            fragment.appendChild(remove);
+            var manage = this.templates.manageFragment.cloneNode(true);
+            manage.firstElementChild.addEventListener('click', this.manageBookmark.bind(this, bookmark, fragment));
+            fragment.appendChild(manage);
 
             return fragment;
         },
@@ -81,18 +83,18 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             var itemNode = bookmarkNode.parentNode;
             var siblings = itemNode.parentNode.children;
             Array.prototype.slice.call(siblings).forEach(function(item) {
-                util.removeClass(item.firstElementChild, 'bookmark-active');
+                util.removeClass(item, 'bookmark-active');
             });
-            util.addClass(itemNode.firstElementChild, 'bookmark-active');
+            util.addClass(itemNode, 'bookmark-active');
         },
 
         // Removes a bookmark from the DOM and the chrome bookmark storage.
         // bookmark: The bookmark to be removed.
         // bookmarkNode: The DOM node of the bookmark to be removed.
-        removeBookmark: function(bookmark, page, index) {
-            chrome.bookmarks.removeTree(bookmark.id, function() {
-              bookmarkNode.remove();
-            });
+        manageBookmark: function(bookmark, page, index) {
+            // chrome.bookmarks.removeTree(bookmark.id, function() {
+            //   bookmarkNode.remove();
+            // });
             
         },
 
