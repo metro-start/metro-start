@@ -1,40 +1,41 @@
-define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], function(pagebase_simple, storage, util) {
+define(['../pagebase/pagebase_simple','../utils/storage', '../utils/defaults', '../utils/util'], function(pagebase_simple, storage, defaults, util) {
     var links = {
         name: 'links',
 
-        data: {},
+        data: [],
 
-        elems: {},
+        elems: {
+            rootDom: document.getElementById('internal_selector_links'),
+            newUrl: document.getElementById('newUrl'),
+            newUrlTitle: document.getElementById('newUrlTitle'),
+            addLink: document.getElementById('addLink')
+        },
 
         templates: {
-            linkFragment: util.createElement('<a class="title"></a>'),
+            linkFragment: util.createElement('<span class="title clickable"></span>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             editFragment: util.createElement('<span class="edit option options-color small-text clickable">edit</span>'),
         },
 
         // Initialize this module.
-        init: function(document, pageItemCount) {
-            this.elems.rootDom = document.getElementById('internal_selector_links');
-            this.elems.newUrl = document.getElementById('newUrl');
-            this.elems.newUrlTitle = document.getElementById('newUrlTitle');
-            this.elems.addLink = document.getElementById('addLink');
+        init: function(document) {
             this.elems.addLink.addEventListener('submit', this.addLink.bind(this));
 
             this.links = new pagebase_simple();
             this.links.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
-            this.links.setPageItemCount(pageItemCount);
+        },
+
+        sortChanged: function (newSort) {
+            if (this.links.sortChanged)
+            {
+                this.links.sortChanged(newSort, false);
+            }
         },
 
         // Loads the links from storage into the DOM.
         loadLinks: function() {
           this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
           this.links.buildDom(this.data);
-        },
-
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
-            this.links.setPageItemCount(pageItemCount, this.data);
         },
 
         // Sets whether options are currently showing.
@@ -48,17 +49,20 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         templateFunc: function(item) {
             var fragment = util.createElement('');
             var link = this.templates.linkFragment.cloneNode(true);
-            link.firstElementChild.href = item.url;
+            // link.firstElementChild.href = item.url;
             link.firstElementChild.textContent = item.name;
             fragment.appendChild(link);
 
+            var options = util.createElement('<span></span>');
             var remove = this.templates.removeFragment.cloneNode(true);
             remove.firstElementChild.addEventListener('click', this.removeLink.bind(this, item));
-            fragment.appendChild(remove);
+            options.appendChild(remove);
 
             var edit = this.templates.editFragment.cloneNode(true);
             edit.firstElementChild.addEventListener('click', this.editLink.bind(this, item));
-            fragment.appendChild(edit);
+            options.appendChild(edit);
+
+            fragment.appendChild(options);
 
             return fragment;
         },
@@ -66,37 +70,30 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         // Adds a new link, or completes editing an exiting link.
         // event: Callback event data.
         addLink: function(event) {
-            var newUrl = this.elems.newUrl.value.trim();
-            var newUrlTitle = this.elems.newUrlTitle.value.trim();
-            if (newUrl !== '') {
-                var formatTitle = function(title) {
-                    return newUrlTitle ? newUrlTitle : newUrl.toLocaleLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
-                };
-
-                if (!newUrl.match(/https?\:\/\//)) {
-                    newUrl = 'http://' + newUrl;
-                }
-
-                // If a link is currently being edited.
-                if (this.linkToEdit) {
-                    this.linkToEdit.name = formatTitle(newUrlTitle);
-                    this.linkToEdit.url = newUrl;
-
-                    
-                } else {
-                    this.data.push({
-                        'name': formatTitle(newUrlTitle),
-                        'url': newUrl
-                    });
-
-                    
-                }
-                storage.save('links', this.data);
-                this.links.buildDom(this.data);
-                this.linkToEdit = null;
-                this.elems.addLink.reset();
-            }
             event.preventDefault();
+            var newUrl = this.elems.newUrl.value.trim();
+            var title = this.elems.newUrlTitle.value.trim();
+            title = title ? title : newUrl.toLocaleLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
+
+            if (!newUrl.match(/https?\:\/\//)) {
+                newUrl = 'http://' + newUrl;
+            }
+
+            // If a link is currently being edited.
+            if (this.linkToEdit) {
+                this.linkToEdit.name = title;
+                this.linkToEdit.url = newUrl;
+            } else {
+                this.data.push({
+                    'name': title,
+                    'url': newUrl
+                });
+            }
+            
+            storage.save('links', this.data);
+            this.links.buildDom(this.data);
+            this.linkToEdit = null;
+            this.elems.addLink.reset();
         },
 
         // Begins editing a link.

@@ -1,7 +1,6 @@
 /* jshint node: true */
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (grunt) {
     "use strict";
@@ -15,7 +14,7 @@ module.exports = function (grunt) {
                 output: {
                     filename: 'bundle.js',
                     path: './dist',
-                    sourceMapFileName: 'bundle.map'
+                    sourceMapFilename: 'bundle.map'
                 },
                 stats: {
                     // Configure the console output
@@ -33,7 +32,8 @@ module.exports = function (grunt) {
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },
                         { from: 'manifest.json' },
-                        { from: 'start.html' }
+                        { from: 'start.html' },
+			{ from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
                     ])]
             }
         },

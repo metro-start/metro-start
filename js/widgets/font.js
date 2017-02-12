@@ -4,7 +4,7 @@ define(['jquery', '../utils/script', '../utils/storage'], function(jquery, scrip
             var selector = jquery('#font-chooser');
             var currentFont = storage.get('currentFont');
 
-            if (isNaN(parseInt(currentFont)))
+            if (isNaN(parseInt(currentFont, 10)))
             {
                 currentFont = 0;
             }

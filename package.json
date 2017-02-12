@@ -1,6 +1,6 @@
 {
   "name": "metro-start",
-  "description": "A new start screen for Google Chrome, inspired by the Windows Phone Modern UI and its 'Glance and Go' philosophy",
+  "description": "A new tab page for Google Chrome inspired by Zune",
   "homepage": "http://www.metro-start.com/",
   "version": "1.0.1",
   "license": "MIT",
@@ -18,7 +18,8 @@
     "jquery": "*",
     "jquery-ui": "*",
     "jss": "git+https://github.com/Box9/jss.git",
-    "metro-select": "*"
+    "metro-select": "^1.0.16",
+    "spectrum-colorpicker": "^1.8.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",

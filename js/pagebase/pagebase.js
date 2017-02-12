@@ -1,4 +1,4 @@
-define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function(jquery, util, storage, metroSelect) {
+define(['jquery', '../utils/util', '../utils/storage','../utils/defaults', 'metro-select'], function(jquery, util, storage, defaults, metroSelect) {
     var templates = {
        column: util.createElement('<div class="page"></div>'),
        item: util.createElement('<div class="item"></div>')
@@ -16,23 +16,17 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
         this.templateFunc = templateFunc;
         this.page = 0;
 
-        var that = this;
-        var selector = jquery('#' + this.name + '-chooser');
-        selector.attr('selectedIndex', this.sort ? 1 : 0);
-        selector.metroSelect({
-            'onchange': this.sortChanged.bind(this)
-        });
+
+        if (jquery('#' + this.name + '-sort-chooser').length !== 0)
+        {
+            jquery('#' + this.name + '-sort-chooser').metroSelect({
+                initial: this.getSort(),
+                onchange: this.sortChanged.bind(this)
+            });
+        }
 
         this.elems.internal_selector = document.getElementById('internal_selector_' + this.name);
     };
-
-    // Ordering of elements on the page has changd.
-    // sort: New sort order.
-    pagebase.prototype.sortChanged = function sortChagned(sort) {
-        this.sort = !this.sort;
-        storage.save(this.name + '_sort', this.sort);
-    };
-
 
     // Build the dom.
     // rows: HTML rows to be added to the Dom.
@@ -72,6 +66,13 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
             item.firstElementChild.appendChild(this.templateFunc(rows[i], this.currentPage));
             nodes.push(item);
         }
+
+        if (this.getSort() === 'sorted') {
+            nodes.sort(this.sortFunc);
+        } else {
+            nodes.sort(this.unsortFunc);
+        }
+
         this.addAllNodes(nodes);
     };
 
@@ -90,19 +91,10 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
     // pageNumber: The page to start removing data.
     pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
         var nodes = Array.prototype.slice.call(this.elems.internal_selector.children);
-        nodes.splice(0, parseInt(pageNumber) + 1);
+        nodes.splice(0, parseInt(pageNumber, 10) + 1);
         nodes.forEach(function(node) {
             node.remove();
         });
-    };
-
-    // Called when the number of items on a page changes.
-    // pageItemCount: New number of items per page.
-    pagebase.prototype.setPageItemCount = function setPageItemCount(pageItemCount) {
-        if (this.pageItemCount !== pageItemCount) {
-            this.pageItemCount = Math.max(pageItemCount, 1);
-            this.rebuildDom();
-        }
     };
 
     // Called when the visibility of options changes.
@@ -114,11 +106,60 @@ define(['jquery', '../utils/util', '../utils/storage', 'metro-select'], function
         }
     };
 
-    // Compare two different HTML nodes.
-    // a: First node to compare.
-    // b: Second node to compare.
+    pagebase.prototype.sortChanged = function sortChanged(newSort, saveSort) {
+        var currentSort = this.getSort();
+        if (saveSort === currentSort) {
+            return;
+        }
+
+        this.updateSort(newSort);
+
+        if (!!this.rootNode && this.rootNode.childElementCount !== 0) {
+            var items = Array.prototype.slice.call(this.rootNode.children);
+            while (this.rootNode.lastChild) {
+                this.rootNode.removeChild(this.rootNode.lastChild);
+            }
+
+            if (newSort === 'sorted') {
+                items.sort(this.sortFunc.bind(this));
+            } else {
+                items.sort(this.unsortFunc.bind(this));
+            }
+
+            for (var i = 0; i < items.length; i++) {
+                this.rootNode.appendChild(items[i]);
+            }
+        }
+    };
+
+    pagebase.prototype.sortFunc = function sortFunc(a, b) {
+        return pagebase.prototype.compareFunc(a.textContent, b.textContent);
+    };
+
+    pagebase.prototype.unsortFunc = function unsortFunc(a, b) {
+        return pagebase.prototype.compareFunc(a.id, b.id);
+    };
+
     pagebase.prototype.compareFunc = function compareFunc(a, b) {
-        return a.firstElementChild.textContent > b.firstElementChild.textContent;
+        var nameA = a.toUpperCase();
+        var nameB = b.toUpperCase();
+        if (nameA < nameB) {
+            return -1;
+        } else if (nameA > nameB) {
+            return 1;
+        }
+    };
+
+    pagebase.prototype.getSort = function getSort() {
+        var sort = storage.get('sort', defaults.defaultSort);
+        return sort[this.name];
+    };
+
+
+    pagebase.prototype.updateSort = function updateSort(newSort) {
+        var sort = storage.get('sort', defaults.defaultSort);
+        sort[this.name] = newSort;
+        storage.save('sort', sort);
     };
 
     return pagebase;

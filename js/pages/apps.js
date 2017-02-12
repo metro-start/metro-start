@@ -7,9 +7,8 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
         elems: {},
 
         templates: {
-            titleFragment: util.createElement('<a class="title"></a>'),
-            uninstallFragment: util.createElement('<span class="option options-color small-text clickable">uninstall</span>'),
-            optionsFragment: util.createElement('<a class="option options-color small-text">options</a>'),
+            titleFragment: util.createElement('<span class="title clickable"></span>'),
+            uninstallFragment: util.createElement('<span class="option options-color small-text clickable">manage</span>')
         },
 
         // Initialize this module.
@@ -20,27 +19,29 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             this.loadApps();
         },
 
+        sortChanged: function (newSort) {
+            if (this.bookmarks.sortChanged)
+            {
+                this.bookmarks.sortChanged(newSort, false);
+            }
+        },
+
         // Loads the apps from Chrome app API.
         loadApps: function() {
             var that = this;
             chrome.management.getAll(function(res) {
-                that.data = [{
-                    'name': 'Chrome Webstore',
-                    'appLaunchUrl': 'https://chrome.google.com/webstore'
-                }];
+                that.data = [];
+                for (var i = 0; i < 25; i++) {
+                    that.data.push({
+                        'name': 'Chrome Webstore',
+                        'appLaunchUrl': 'https://chrome.google.com/webstore'
+                    });
+                }
 
                 // Remove extensions and limit to installed apps.
                 that.data = that.data.concat(res.filter(function(item) { return item.isApp; }));
                 that.apps.buildDom(that.data);
             });
-        },
-
-        // Sets the new number of pages for the block.
-        // pageItemCount: The maximum number of pages able to be displayed.
-        setPageItemCount: function(pageItemCount) {
-            if (this.apps) {
-                this.apps.setPageItemCount(pageItemCount);
-            }
         },
 
         // Sets whether options are currently showing.
@@ -58,24 +59,20 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             title.firstElementChild.textContent = app.name;
             fragment.appendChild(title);
 
-            var uninstall = this.templates.uninstallFragment.cloneNode(true);
-            uninstall.firstElementChild.addEventListener('click', this.uninstallApp.bind(this, app));
-            fragment.appendChild(uninstall);
-
-            var options = this.templates.optionsFragment.cloneNode(true);
-            options.firstElementChild.href = app.optionsUrl;
-            fragment.appendChild(options);
+            var manage = this.templates.uninstallFragment.cloneNode(true);
+            manage.firstElementChild.addEventListener('click', this.manageApp.bind(this, app));
+            fragment.appendChild(manage);
 
             return fragment;
         },
 
         // Uninistall an app from Chrome.
         // app: THe app to be uninstalled.
-        uninstallApp: function(app) {
+        manageApp: function(app) {
             var that = this;
-            chrome.management.uninstall(app.id, { showConfirmDialog: true}, function() {
-                that.loadApps();
-            });
+            // chrome.management.uninstall(app.id, { showConfirmDialog: true}, function() {
+            //     that.loadApps();
+            // });
             
         }
     };

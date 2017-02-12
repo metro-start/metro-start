@@ -2,7 +2,8 @@
 	<head>
 		<!-- css stylesheets -->
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
+	 	<link rel="stylesheet" type="text/css" href="css/style.css">
+		 <link rel="stylesheet" href="css/spectrum.css" />
 		<title>start</title>
 	</head>
 	<body class="background-color">
@@ -30,8 +31,8 @@
 							</div>
 						</div>
 						<form id="addLink" class="add">
-							<input type="text" name="newUrlTitle" id="newUrlTitle" placeholder="title" class="url option" size="10">
-							<input type="text" name="newUrl" id="newUrl" placeholder="http://" class="url option" size="16">
+							<input type="text" name="newUrlTitle" id="newUrlTitle" placeholder="title" class="url option" size="26">
+							<input type="text" name="newUrl" id="newUrl" placeholder="http://" class="url option" size="24">
 							<input type="submit" class="options-color option" value="save">
 						</form>
 					</div>
@@ -40,7 +41,7 @@
 				<div class="apps collection">
 					<div id="apps">
 						<div class="options-color option sort">
-							<select class="chooser" id="apps-chooser">
+							<select class="chooser" id="apps-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
@@ -55,7 +56,7 @@
 				<div class="bookmarks collection">
 					<div id="bookmarks">
 						<div class="options-color option sort">
-							<select class="chooser" id="bookmarks-chooser">
+							<select class="chooser" id="bookmarks-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
@@ -69,7 +70,7 @@
 				<div class="themes collection">
 					<div id="themes">
 						<div class="options-color option sort">
-							<select class="chooser" id="themes-chooser">
+							<select class="chooser" id="themes-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
@@ -116,15 +117,13 @@
 				</select>
 			</div>
 			<div class="theme-buttons option">
-				<p class="options-color wrench clickable" id="resetTheme">reset theme</p>
-				<p class="options-color wrench clickable" id="editTheme">edit theme</p>
-				<!-- <p class="options-color clickable" id="reset-theme" ng-click="resetTheme()" ng-bind="'reset theme'"></p>
-				<p class="options-color clickable" id="edit-theme" ng-click="clickEditTheme()" ng-bind="editThemeText"></p> -->
+				<p class="options-color clickable" id="editTheme">edit theme</p>
 			</div>
 		</div>
-		<div class="picker background-color" id="picker">
+		<div class="picker background-color hide" id="picker">
 			<p>
 				<input type="text" id="newThemeTitle" class="options-color" size="12" placeholder="untitled">
+				<span class="options-color clickable" id="saveTheme">save</span>
 			</p>
 			<div>
 				<span class="picker-text options-color">background 
@@ -156,6 +155,13 @@
 		<style type="text/css" id="hideRule">
 			.option, .picker {
 				display: none;
+			}
+			/* Remove extra space that was added for sorting. */
+			.external_selector {
+				height: 100%;
+			}
+			#external_selector_links {
+				height: 100%;
 			}
 		</style>
 		<script src="bundle.js"></script>

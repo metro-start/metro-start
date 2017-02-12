@@ -12,17 +12,40 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
       console.log("pagebase_paneled.rebuildDom was called");
     };
 
+    pagebase_paneled.prototype.sortChanged = function sortChanged(newSort) {
+        var currentSort = this.getSort();
+        if (newSort === currentSort) {
+            return;
+        }
+
+        this.updateSort(newSort);
+        var columns = this.rootNode.children;
+        for (var i = 0; i < columns.length; i++) {
+            var column = columns[i];
+            var rows = [];
+            while (column.lastChild) {
+                rows.push(column.lastChild);
+                column.removeChild(column.lastChild);
+            }
+
+            if (newSort === 'sorted') {
+                rows.sort(this.sortFunc);
+            } else {
+                rows.sort(this.unsortFunc);
+            }
+
+            for (var j = 0; j < rows.length; j++) {
+                column.appendChild(rows[j]);
+                // if (rows[j] is selected) {
+                //     scroll to it.
+                // }
+            }
+        }
+    };
+
     // Adds all the given HTML nodes to the DOM in one single column.
     // nodes: List of nodes to be added.
     pagebase_paneled.prototype.addAllNodes = function addAllNodes(nodes) {
-        if (this.sort) {
-            nodes.sort(this.compareFunc);
-        } else {
-            nodes.sort(function(a, b) {
-                return a.id.toLocaleLowerCase() > b.id.toLocaleLowerCase();
-            });
-        }
-
         if (nodes.length) {
             var pageIndex = this.elems.internal_selector.children.length;
             var columnNode = templates.column.cloneNode(true);
