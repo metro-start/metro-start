@@ -11,7 +11,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         templates: {
             titleFragment: util.createElement('<span class="bookmark_item clickable"></span>'),
             manageFragment: util.createElement('<span class="remove option options-color small-text clickable">manage</span>'),
-            slashFragment: util.createElement('<span class="options-color clickable">/</span>'),
+            slashFragment: util.createElement('<span class="options-color clickable slash">/</span>'),
         },
 
         // Initialize this module.
@@ -35,27 +35,23 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             });
         },
 
-        // Sets whether options are currently showing.
-        // showOptions: true, if options are now showing; false otherwise.
-        setShowOptions: function setShowOptions(showOptions) {
-            this.bookmarks.setShowOptions(showOptions);
-        },
-
         // Returns an HTML link node item.
         // item: The link item to be converted into a node.
         templateFunc: function(bookmark) {
             var fragment = util.createElement('');
+            var titleWrap = util.createElement('<div></div>');
             var title = this.templates.titleFragment.cloneNode(true);
             // title.firstElementChild.href = bookmark.url;
             title.firstElementChild.textContent = bookmark.title;
             title.firstElementChild.id = 'bookmark_' + bookmark.id;
+            titleWrap.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, titleWrap.firstElementChild));
+            titleWrap.firstElementChild.appendChild(title);
 
             if (bookmark.children && bookmark.children.length > 0) {
-                title.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
+                titleWrap.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
             }
-
-            title.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, title.firstElementChild));
-            fragment.appendChild(title);
+            
+            fragment.appendChild(titleWrap);
 
             var manage = this.templates.manageFragment.cloneNode(true);
             manage.firstElementChild.addEventListener('click', this.manageBookmark.bind(this, bookmark, fragment));

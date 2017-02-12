@@ -60,8 +60,7 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
         'color': options_color
       });
       jss.set('.bookmark-active', {
-        'color': options_color,
-        'border': '1px solid ' + options_color
+        'background-color': options_color
       });
       jss.set('#internal_selector_themes > .group > .page', {
         'border-top-style': 'solid',

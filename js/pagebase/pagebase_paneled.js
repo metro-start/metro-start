@@ -57,6 +57,11 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
 
             for (var j = 0; j < rows.length; j++) {
                 column.appendChild(rows[j]);
+
+                if (util.hasClass(rows[j], 'bookmark-active')) {
+                    console.log("Scrolling");
+                    column.scrollTop = rows[j].offsetTop;
+                }
                 // if (rows[j] is selected) {
                 //     scroll to it.
                 // }

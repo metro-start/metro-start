@@ -31,15 +31,9 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/defaults', '../util
 
         // Loads the links from storage into the DOM.
         loadLinks: function() {
-            storage.save('links', defaults.defaultLinks);
+        storage.save('links', defaults.defaultLinks);
           this.data = storage.get('links', defaults.defaultLinks);
           this.links.buildDom(this.data);
-        },
-
-        // Sets whether options are currently showing.
-        // showOptions: true, if options are now showing; false otherwise.
-        setShowOptions: function setShowOptions(showOptions) {
-            this.links.setShowOptions(showOptions);
         },
 
         // Returns an HTML link node item.

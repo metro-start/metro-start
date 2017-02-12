@@ -86,9 +86,6 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
 
             for (var j = 0; j < rows.length; j++) {
                 column.appendChild(rows[j]);
-                // if (rows[j] is selected) {
-                //     scroll to it.
-                // }
             }
         }
     };

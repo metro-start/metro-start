@@ -28,18 +28,11 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
       clickWrench: function () {
         this.showOptions = !this.showOptions;
 
-        var that = this;
         if (this.showOptions) {
           document.body.removeChild(this.elems.hideRule);
         } else {
           document.body.appendChild(this.elems.hideRule);
         }
-
-        this.modules.forEach(function (module) {
-          if (module.showOptionsChanged) {
-            module.showOptionsChanged(that.showOptions);
-          }
-        });
       }
     };
 

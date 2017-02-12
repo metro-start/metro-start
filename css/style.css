@@ -45,7 +45,7 @@ h1 {
     font-size: 132px;
     font-weight: normal;
     font-style: normal;
-    margin: 0 0 15px 15px;
+    margin: 0 0 15px 50px;
 }
 .small-text {
     font-size: 24px;
@@ -113,6 +113,7 @@ select.chooser {
     vertical-align: top;
 }
 .item {
+	min-width: 0;
 	height: 55px;
 	margin-bottom: 10px;
 }
@@ -126,17 +127,31 @@ select.chooser {
 /* Bookmarks section */
 .bookmark-page {
 	margin-right: 10px;
-	width: 375px; /* Can't use multi-column because its not one straight list */
-	overflow-x: auto;
 	overflow-y: auto;
 	height: 100%;
 }
+.bookmark-page > .item {
+	display: flex;
+	align-items: center;
+}
+.bookmark-page > .item > div {
+	display: flex;
+	flex-direction: row;
+}
 .bookmark_item {
-	width: 290px;
 	display: block;
-	white-space: nowrap;
+
+	padding-left: 8px;
+	line-height: 100%;
+
+	max-width: 375px;
 	overflow: hidden;
+	white-space: nowrap;
 	text-overflow: ellipsis;
+}
+.slash {
+	font-weight: bold;
+	padding-right: 4px;
 }
 
 /* Links section */
@@ -291,14 +306,6 @@ select.chooser {
 	padding-right: 15px;
 }
 #internal_selector_bookmarks > .page > .item {
-	display: flex;
-	flex-direction: column;
-}
-#internal_selector_bookmarks > .page > .item > span:first-child {
-	flex-grow: 1;
-	display: flex;
-	align-items: center;
-	padding-left: 8px;
 }
 #internal_selector_bookmarks > .group:last-child > .page {
 	margin-right: 0;

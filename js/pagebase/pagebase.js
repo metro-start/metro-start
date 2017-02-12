@@ -110,15 +110,6 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         });
     };
 
-    // Called when the visibility of options changes.
-    // showOptions: True if options are now visible; false otherwise.
-    pagebase.prototype.setShowOptions = function setShowOptions(showOptions) {
-        if (this.showOptions !== showOptions) {
-            this.showOptions = showOptions;
-            this.rebuildDom();
-        }
-    };
-
     pagebase.prototype.sortChanged = function sortChanged(newSort, saveSort) {
         var currentSort = this.getSort();
         if (saveSort === currentSort) {

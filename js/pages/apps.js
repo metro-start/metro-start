@@ -42,12 +42,6 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/util'], function(pa
             });
         },
 
-        // Sets whether options are currently showing.
-        // showOptions: true, if options are now showing; false otherwise.
-        setShowOptions: function setShowOptions(showOptions) {
-            this.apps.setShowOptions(showOptions);
-        },
-
         // Returns an HTML link node item.
         // item: The link item to be converted into a node.
         templateFunc: function(app) {
