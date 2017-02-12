@@ -259,8 +259,7 @@ select.chooser {
 	flex-direction: column;
 	overflow-y: auto;
 }
-.group > .page > .options-color {
-	text-decoration: underline;
+.group > .options-color {
 }
 #external_selector_links {
 	height: calc(100% - 85px);

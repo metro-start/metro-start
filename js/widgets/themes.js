@@ -5,13 +5,8 @@ define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '
     elems: {
       picker: document.getElementById('picker'),
       newThemeTitle: document.getElementById('newThemeTitle'),
-      resetTheme: document.getElementById('resetTheme'),
-      editTheme: document.getElementById('editTheme')
-
-      // backgroundColor: document.getElementById('input-background-color'),
-      // titleColor: document.getElementById('input-title-color'),
-      // mainColor: document.getElementById('input-main-color'),
-      // optionsColor: document.getElementById('input-options-color')
+      editTheme: document.getElementById('editTheme'),
+      saveTheme: document.getElementById('saveTheme')
     },
 
     themeAdded: function () {},
@@ -22,39 +17,10 @@ define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '
     init: function () {
       this.currentTheme = storage.get('currentTheme', defaults.defaultTheme);
       script.updateStyle(this.currentTheme, false);
-      this.bindSpectrum();
-      // this.elems.picker = document.getElementById('picker');
-      // util.addClass(this.elems.picker, 'hide');
-
-      // this.elems.newThemeTitle = document.getElementById('newThemeTitle');
-
-      // this.elems.resetTheme = document.getElementById('resetTheme');
-      this.elems.resetTheme.addEventListener('click', this.resetTheme.bind(this));
-
-      // this.elems.editTheme = document.getElementById('editTheme');
       this.elems.editTheme.addEventListener('click', this.editTheme.bind(this));
-
-      // this.elems.backgroundColor = document.getElementById('input-background-color');
-      // this.elems.backgroundColor.value = this.currentTheme.colors['background-color'];
-      // this.elems.backgroundColor.onkeyup();
-      // this.elems.backgroundColor.addEventListener('change', this.updateColor.bind(this, 'background-color'));
-
-      // this.elems.titleColor = document.getElementById('input-title-color');
-      // this.elems.titleColor.value = this.currentTheme.colors['title-color'];
-      // this.elems.titleColor.keyup();
-      // this.elems.titleColor.addEventListener('change', this.updateColor.bind(this, 'title-color'));
-
-      // this.elems.mainColor = document.getElementById('input-main-color');
-      // this.elems.mainColor.value = this.currentTheme.colors['main-color'];
-      // this.elems.mainColor.keyup();
-      // this.elems.mainColor.addEventListener('change', this.updateColor.bind(this, 'main-color'));
-
-      // this.elems.optionsColor = document.getElementById('input-options-color');
-      // this.elems.optionsColor.value = this.currentTheme.colors['options-color'];
-      // this.elems.optionsColor.keyup();
-
-      // script.addColorChangedHandler(this.colorChangedHandler.bind(this));
-      // this.elems.optionsColor.addEventListener('change', this.updateColor.bind(this, 'options-color'));
+      this.elems.saveTheme.addEventListener('click', this.saveTheme.bind(this));
+      
+      this.bindSpectrum();
     },
 
     bindSpectrum: function () {
@@ -82,7 +48,7 @@ define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '
       script.updateStyle(this.currentTheme, false);
     },
 
-    resetTheme: function () {
+    undoChanges: function () {
       this.currentTheme = storage.get('currentTheme', defaults.defaultTheme);
       script.updateStyle(this.currentTheme, true);
 
@@ -94,30 +60,29 @@ define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '
 
     editTheme: function () {
       if (this.isVisible()) {
-        // Save the theme then hide the picker.
-        this.saveTheme();
-        this.themeAdded();
-
         util.removeClass(this.elems.picker, 'show');
         util.addClass(this.elems.picker, 'hide');
         this.elems.editTheme.textContent = 'edit theme';
       } else {
-        // Show the picker.
         util.removeClass(this.elems.picker, 'hide');
         util.addClass(this.elems.picker, 'show');
-        this.elems.editTheme.textContent = 'save theme';
+        this.elems.editTheme.textContent = 'close';
       }
     },
 
     saveTheme: function () {
-      var title = "verdant sunset" + (Math.random() * 500);
-      // https://github.com/kylestetz/Sentencer ?
+      var title = this.elems.newThemeTitle.value.trim();
+      if (title === "") {
+        // https://github.com/kylestetz/Sentencer ?
+        title = "verdant sunset" + (Math.random() * 500);
+      }
 
       this.currentTheme.title = title;
       var localThemes = storage.get('localThemes', [defaults.defaultTheme]);
       localThemes.push(this.currentTheme);
       storage.save('localThemes', localThemes);
       storage.save('currentTheme', this.currentTheme);
+      this.themeAdded();
     },
 
     applyTheme: function (theme) {
