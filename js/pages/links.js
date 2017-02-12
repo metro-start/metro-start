@@ -31,7 +31,8 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/defaults', '../util
 
         // Loads the links from storage into the DOM.
         loadLinks: function() {
-          this.data = storage.get('links', [{'name': 'use the wrench to get started. . . ', 'url': ''}]);
+            storage.save('links', defaults.defaultLinks);
+          this.data = storage.get('links', defaults.defaultLinks);
           this.links.buildDom(this.data);
         },
 

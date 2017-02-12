@@ -1,5 +1,5 @@
-define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './links', './apps', './bookmarks', './themes'],
-function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
+define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './links', './sessions', './apps', './bookmarks', './themes'],
+function Pages(jquery, jss, storage, defaults, links, sessions, apps, bookmarks, themes) {
   var pages = {
 
     name: 'pages',
@@ -8,23 +8,13 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
       chooser: document.getElementById('pages-chooser')
     },
 
-    data: [links, apps, bookmarks, themes],
-
-    forEachModule: function(func) {
-      var thatArgs = arguments;
-      this.data.forEach(function(module) {
-        if (module[func]) {
-          module[func].apply(module, Array.prototype.slice.call(thatArgs, 1));
-        }
-      });
-    },
+    modules: [links, sessions, apps, bookmarks, themes],
 
     init: function(document) {
       this.showOptions = false;
       this.page = storage.get('page', 'links');
 
-      var that = this;
-      this.data.forEach(function(module) {
+      this.modules.forEach(function(module) {
           module.init(document);
       });
       
@@ -38,23 +28,11 @@ function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
       this.page = page;
       storage.save('page', page);
 
+      var moduleIndex = this.modules.map(function(m) { return m.name; }).indexOf(page);
+
       jss.set('.external .internal', {
-        'margin-left': (this.indexOfModule(page) * -100) + '%'
+        'margin-left': (moduleIndex * -100) + '%'
       });
-    },
-
-    // Sets whether options are currently showing.
-    // showOptions: true, if options are now showing; false otherwise.
-    showOptionsChanged: function(showOptions) {
-      this.showOptions = showOptions;
-      // this.onWindowResized();
-      this.forEachModule('setShowOptions', showOptions);
-    },
-
-    // Returns the index of a provided module.
-    // module: The module to find the index of.
-    indexOfModule: function indexOfModule(moduleName) {
-      return this.data.map(function(m) { return m.name; }).indexOf(moduleName);
     }
   };
 

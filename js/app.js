@@ -11,7 +11,7 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
 
       showOptions: false,
 
-      modules: Array.prototype.slice.call(arguments, 1),
+      modules: [pages, widgets, storage, script],
 
       init: function () {
         this.modules.forEach(function (module) {

@@ -3,10 +3,11 @@ The default theme for metro start.
 */
 define(function() {
     return {
-        // Initializes the defalt settings and theme for the app.
-        init: function() {
+        init: {},
 
-        },
+        defaultLinks: [
+            {'name': 'use the wrench to get started. . . ', 'url': ''}
+        ],
 
         // The default theme for the app.
         defaultTheme: {

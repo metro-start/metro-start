@@ -1,36 +1,6 @@
 define(['./defaults', './storage'], function Utils(defaults, storage) {
     var utils = {
-      // Initialize this module.
-        init: function(document) { },
-
-        // Return a function that calls the function if it exists, otherwise does nothing.
-        // func: The function to be maybeied.
-        maybe: function maybe(func) {
-            return function() {
-                if(func) return func(this.arguments);
-            };
-        },
-
-        // Convert a function to a curried version.
-        // arg: The argument to apply.
-        // func: The function be curried.
-        // TOOD: Convert this function to take multiple arguments.
-        curry: function(arg, func) {
-            return function() {
-                func(arg);
-            };
-        },
-
-        // Safely converts a JSON sring to an object.
-        // str: The strig to be converted.
-        getJSON: function getJSON(str) {
-            var res = {};
-            try {
-                return JSON.parse(str);
-            } catch(e) {
-                return str;
-            }
-        },
+        init: function() { },
 
         // Converts an HTML string to a DOM fragment.
         // htmlStr: The string to convert.
