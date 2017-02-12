@@ -1,13 +1,13 @@
-define(['jquery', '../utils/util', '../utils/storage','../utils/defaults', 'metro-select'], function(jquery, util, storage, defaults, metroSelect) {
+define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'metro-select'], function (jquery, util, storage, defaults, metroSelect) {
     var templates = {
-       column: util.createElement('<div class="page"></div>'),
-       item: util.createElement('<div class="item"></div>')
+        column: util.createElement('<div class="page"></div>'),
+        item: util.createElement('<div class="item"></div>')
     };
 
     var pagebase = function pagebase() { };
 
     // Initialize the module.
-    pagebase.prototype.init = function(document, name, rootNode, templateFunc) {
+    pagebase.prototype.init = function (document, name, rootNode, templateFunc) {
         this.elems = {};
         this.name = name;
         this.rootNode = rootNode;
@@ -17,8 +17,7 @@ define(['jquery', '../utils/util', '../utils/storage','../utils/defaults', 'metr
         this.page = 0;
 
 
-        if (jquery('#' + this.name + '-sort-chooser').length !== 0)
-        {
+        if (jquery('#' + this.name + '-sort-chooser').length !== 0) {
             jquery('#' + this.name + '-sort-chooser').metroSelect({
                 initial: this.getSort(),
                 onchange: this.sortChanged.bind(this)
@@ -40,7 +39,7 @@ define(['jquery', '../utils/util', '../utils/storage','../utils/defaults', 'metr
 
     // Rebuild the dom by removing all nodes and re-adding them.
     // This is useful for resetting state.
-    pagebase.prototype.rebuildDom = function() {
+    pagebase.prototype.rebuildDom = function () {
         var nodes = [];
         this.currentPage = 0;
 
@@ -76,10 +75,24 @@ define(['jquery', '../utils/util', '../utils/storage','../utils/defaults', 'metr
         this.addAllNodes(nodes);
     };
 
-    // Adds all provided HTML nodes to the page.
-    // nodes: The nodes to be added.
+    // Adds all the given HTML nodes to the DOM, in a naive way (top to bottom, left to right).
+    // nodes: List of nodes to be added.
     pagebase.prototype.addAllNodes = function addAllNodes(nodes) {
-      throw "#notmyjob";
+        if (nodes.length) {
+            var pageIndex = this.elems.internal_selector.children.length;
+            var columnNode = templates.column.cloneNode(true);
+            columnNode.firstElementChild.id = this.name + '_' + pageIndex;
+
+            // Add each row to an column and create new ones on the pageItemCount boundary.
+            for (var i = 0; i < nodes.length; i++) {
+                columnNode.firstElementChild.appendChild(nodes[i]);
+            }
+
+            // i - 1 to account because the for-loop will go one past last good index.
+            if (i >= nodes.length) {
+                this.rootNode.appendChild(columnNode);
+            }
+        }
     };
 
     // Returns the pages in the module.
@@ -92,7 +105,7 @@ define(['jquery', '../utils/util', '../utils/storage','../utils/defaults', 'metr
     pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
         var nodes = Array.prototype.slice.call(this.elems.internal_selector.children);
         nodes.splice(0, parseInt(pageNumber, 10) + 1);
-        nodes.forEach(function(node) {
+        nodes.forEach(function (node) {
             node.remove();
         });
     };
