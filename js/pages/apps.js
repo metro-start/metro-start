@@ -14,6 +14,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
         // Initialize this module.
         init: function(document) {
             this.elems.rootNode = document.getElementById('internal_selector_apps');
+
             this.apps = new pagebase();
             this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadApps();
