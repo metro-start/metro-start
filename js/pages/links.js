@@ -23,6 +23,7 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/defaults', '../util
 
             this.links = new pagebase();
             this.links.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
+            this.loadLinks();
         },
 
         sortChanged: function (newSort) {
