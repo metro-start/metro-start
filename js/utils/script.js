@@ -63,7 +63,12 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
         'color': options_color,
         'border': '1px solid ' + options_color
       });
-      jss.set('#internal_selector_themes, #internal_selector_sessions > .group > .page', {
+      jss.set('#internal_selector_themes > .group > .page', {
+        'border-top-style': 'solid',
+        'border-top-width': '1px',
+        'border-top-color': options_color
+      });
+      jss.set('#internal_selector_sessions > .group > .page', {
         'border-top-style': 'solid',
         'border-top-width': '1px',
         'border-top-color': options_color

@@ -256,10 +256,16 @@ select.chooser {
 	flex-grow: 0;
 	height: calc(100%  - 1px);
 }
-#internal_selector_themes, #internal_selector_sessions > .group {
+#internal_selector_themes > .group {
 	margin-right: 28px;
 }
-#internal_selector_themes, #internal_selector_sessions > .group:last-child {
+#internal_selector_sessions > .group {
+	margin-right: 28px;
+}
+#internal_selector_sessions > .group:last-child {
+	margin-right: 0;
+}
+#internal_selector_themes > .group:last-child {
 	margin-right: 0;
 }
 .group {
