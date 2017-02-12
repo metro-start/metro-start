@@ -1,5 +1,5 @@
-define(['jquery', 'jss', '../utils/storage', './links', './apps', './bookmarks', './themes'],
-function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
+define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './links', './apps', './bookmarks', './themes'],
+function Pages(jquery, jss, storage, defaults, links, apps, bookmarks, themes) {
   var pages = {
 
     name: 'pages',
@@ -8,7 +8,7 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
       chooser: document.getElementById('pages-chooser')
     },
 
-    data: Array.prototype.slice.call(arguments, 3),
+    data: [links, apps, bookmarks, themes],
 
     forEachModule: function(func) {
       var thatArgs = arguments;
@@ -23,14 +23,33 @@ function Pages(jquery, jss, storage, links, apps, bookmarks, themes) {
       this.showOptions = false;
       this.page = storage.get('page', 'links');
 
+      var that = this;
       this.data.forEach(function(module) {
           module.init(document);
+
+          // jquery('#' + module.name + '-sort-chooser').metroSelect({
+          //     initial: that.getSort(module),
+          //     onchange: that.updateSort.bind(that, module)
+          // });
       });
       
       jquery(this.elems.chooser).metroSelect({
         'initial': this.page,
         'onchange': this.changePage.bind(this)
       });
+    },
+
+    getSort: function(module) {
+        var sort = storage.get('sort', defaults.defaultSort);
+        return sort[module.name];
+    },
+
+    updateSort: function (module, newSort) {
+        var sort = storage.get('sort', defaults.defaultSort);
+        sort[module.name] = newSort;
+        storage.save('sort', sort);
+
+        module.sortChanged();
     },
 
     changePage: function changePage(page) {

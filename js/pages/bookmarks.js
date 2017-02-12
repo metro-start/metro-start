@@ -19,8 +19,14 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             this.elems.rootNode = document.getElementById('internal_selector_bookmarks');
             this.bookmarks = new pagebase_paneled();
             this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
-            this.bookmarks.pageItemCount = -1;
             this.loadBookmarks();
+        },
+
+        sortChanged: function (newSort) {
+            if (this.bookmarks.sortChanged)
+            {
+                this.bookmarks.sortChanged(newSort, false);
+            }
         },
 
         // Loads the bookmarks from Chrome local synced storage.

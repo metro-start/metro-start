@@ -40,13 +40,6 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
     // nodes: Dictionary of nodes to be added.
     pagebase_grouped.prototype.addAllNodes = function addAllNodes(group) {
         var nodes = group.nodes;
-        if (this.sort) {
-            nodes.sort(this.compareFunc);
-        } else {
-            nodes.sort(function (a, b) {
-                return a.id.toLocaleLowerCase() > b.id.toLocaleLowerCase();
-            });
-        }
         if (nodes.length) {
             var groupNode = templates.group.cloneNode(true);
 
@@ -73,6 +66,37 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
                 groupNode.firstElementChild.appendChild(columnNode);
             }
             this.rootNode.appendChild(groupNode);
+        }
+    };
+
+    pagebase_grouped.prototype.sortChanged = function sortChanged(newSort) {
+        var currentSort = this.getSort();
+        if (newSort === currentSort) {
+            return;
+        }
+
+        this.updateSort(newSort);
+        var groups = this.rootNode.children;
+        for (var i = 0; i < groups.length; i++) {
+            var column = groups[i].children[1];
+            var rows = [];
+            while (column.lastChild) {
+                rows.push(column.lastChild);
+                column.removeChild(column.lastChild);
+            }
+
+            if (newSort === 'sorted') {
+                rows.sort(this.sortFunc);
+            } else {
+                rows.sort(this.unsortFunc);
+            }
+
+            for (var j = 0; j < rows.length; j++) {
+                column.appendChild(rows[j]);
+                // if (rows[j] is selected) {
+                //     scroll to it.
+                // }
+            }
         }
     };
 

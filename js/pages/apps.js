@@ -19,6 +19,13 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
             this.loadApps();
         },
 
+        sortChanged: function (newSort) {
+            if (this.bookmarks.sortChanged)
+            {
+                this.bookmarks.sortChanged(newSort, false);
+            }
+        },
+
         // Loads the apps from Chrome app API.
         loadApps: function() {
             var that = this;

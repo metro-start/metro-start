@@ -32,22 +32,13 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
 
             this.themesWidget.themeAdded = this.themeAdded.bind(this);
             this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
- 
-            jquery('#' + this.name + '-sort-chooser').metroSelect({
-                initial: this.getSort(),
-                onchange: this.sortChanged.bind(this)
-            });
         },
         
-        getSort: function() {
-            var sort = storage.get('sort', defaults.defaultSort);
-            return sort[this.name];
-        },
-
-        updateSort: function (newSort) {
-            var sort = storage.get('sort', defaults.defaultSort);
-            sort[this.name] = newSort;
-            storage.save('sort', sort);
+        sortChanged: function (newSort) {
+            if (this.themes.sortChanged)
+            {
+                this.themes.sortChanged(newSort, false);
+            }
         },
 
         // Loads the available themes from local and web storage
@@ -110,19 +101,6 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             fragment.appendChild(options);
 
             return fragment;
-        },
-
-        sortChanged: function (newSort) {
-            this.updateSort(newSort);
-
-            if (this.localThemes.sortChanged)
-            {
-                this.localThemes.sortChanged(newSort, false);
-            }
-            if (this.onlineThemes.sortChanged)
-            {
-                this.onlineThemes.sortChanged(newSort, false);
-            }
         },
 
         applyTheme: function(theme) {

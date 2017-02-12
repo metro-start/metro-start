@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], function(pagebase_simple, storage, util) {
+define(['../pagebase/pagebase_simple','../utils/storage', '../utils/defaults', '../utils/util'], function(pagebase_simple, storage, defaults, util) {
     var links = {
         name: 'links',
 
@@ -23,6 +23,13 @@ define(['../pagebase/pagebase_simple','../utils/storage', '../utils/util'], func
 
             this.links = new pagebase_simple();
             this.links.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
+        },
+
+        sortChanged: function (newSort) {
+            if (this.links.sortChanged)
+            {
+                this.links.sortChanged(newSort, false);
+            }
         },
 
         // Loads the links from storage into the DOM.
