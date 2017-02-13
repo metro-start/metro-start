@@ -148,22 +148,6 @@ select.chooser {
 	padding-right: 4px;
 }
 
-/* Links section */
-.add {
-	margin-left: 50px;
-}
-
-/* Themes section */
-.column {
-	float: left;
-}
-.column:first-child {
-	margin-right: 30px;
-}
-.gallery-bio {
-	font-style: italic;
-}
-
 /* Footer and bottom menu */
 .footer {
 	position: relative;
@@ -252,14 +236,6 @@ select.chooser {
 	font-size: 2vw;
 	display: inline-block;
 }
-#internal_selector_apps > .page {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	padding-right: 15px;
-}
-
 .pagebase-grouped {
 	display: flex;
 	flex-direction: row;
@@ -278,14 +254,11 @@ select.chooser {
 #external_selector_links {
 	height: calc(100% - 85px);
 }
-#internal_selector_links > .page {
+#internal_selector_links > .group {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
-}
-#internal_selector_links > .page > .item {
-	padding-right: 15px;
 }
 .disabled {
 	opacity: 0.5;

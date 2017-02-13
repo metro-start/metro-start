@@ -39,16 +39,17 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.textContent = bookmark.title;
             title.firstElementChild.id = 'bookmark_' + bookmark.id;
-
-            if (bookmark.children && bookmark.children.length > 0) {
-                titleWrap.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, titleWrap.firstElementChild));
-                titleWrap.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
-            } else {
+                
+            if (!!bookmark.url) {
                 title.firstElementChild.href = bookmark.url;
             }
-
-            titleWrap.firstElementChild.insertBefore(title, titleWrap.firstElementChild.firstElementChild);
             
+            titleWrap.firstElementChild.appendChild(title);
+
+            if (bookmark.children && bookmark.children.length > 0 && !bookmark.url) {
+                titleWrap.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, titleWrap.firstElementChild));
+                titleWrap.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
+            } 
 
             var remove = this.templates.removeFragment.cloneNode(true);
             remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark, titleWrap.firstElementChild));
