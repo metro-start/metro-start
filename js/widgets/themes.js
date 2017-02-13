@@ -78,10 +78,11 @@ define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '
       }
 
       this.currentTheme.title = title;
+      storage.save('currentTheme', this.currentTheme);
+
       var localThemes = storage.get('localThemes', [defaults.defaultTheme]);
       localThemes.push(this.currentTheme);
       storage.save('localThemes', localThemes);
-      storage.save('currentTheme', this.currentTheme);
       this.themeAdded();
     },
 
@@ -103,9 +104,13 @@ define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '
 
     removeTheme: function (theme) {
       var localThemes = storage.get('localThemes', [defaults.defaultTheme]);
-      localThemes = localThemes.filter(function (themeToRemove) {
-        return theme.title !== themeToRemove.title;
-      });
+
+      for(var i = 0; i < localThemes.length; i++) {
+        if (theme.title === localThemes[i].title) {
+          localThemes.splice(i, 1);
+          break;
+        }
+      }
 
       storage.save('localThemes', localThemes);
       this.themeRemoved();

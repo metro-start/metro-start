@@ -18,9 +18,10 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
         templates: {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
             titleFragment: util.createElement('<span class="title clickable"></span>'),
-            removeFragment: util.createElement('<span class="remove option options-color small-text clickable">remove</span>'),
+            removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
-            authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>')
+            authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>'),
+            infoFragment: util.createElement('<span class="info"></span>')
         },
 
         // Initialize this module.
@@ -42,6 +43,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
         loadThemes: function() {
             var that = this;
 
+            that.themes.clear();
             that.themes.addAll({
               'heading': 'my themes',
               'data': storage.get('localThemes', [defaults.defaultTheme])
@@ -51,6 +53,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
                 data = JSON.parse(data);
                 for (var i in data) {
+                    data[i].online = true;
                     data[i].colors = {
                         'options-color': data[i].options_color,
                         'main-color': data[i].main_color,
@@ -81,19 +84,21 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
             fragment.appendChild(title);
 
-            var options = util.createElement('<span></span>');
+            var options = this.templates.infoFragment.cloneNode(true);
             var author = this.templates.authorFragment.cloneNode(true);
             author.firstElementChild.textContent = theme.author;
             author.firstElementChild.href = theme.website;
             options.firstElementChild.appendChild(author);
             
-            var share = this.templates.shareFragment.cloneNode(true);
-            share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
-            options.firstElementChild.appendChild(share);
+            if (!theme.online) {
+                var share = this.templates.shareFragment.cloneNode(true);
+                share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
+                options.firstElementChild.appendChild(share);
 
-            var remove = this.templates.removeFragment.cloneNode(true);
-            remove.firstElementChild.addEventListener('click', this.removeTheme.bind(this, theme));
-            options.firstElementChild.appendChild(remove);
+                var remove = this.templates.removeFragment.cloneNode(true);
+                remove.firstElementChild.addEventListener('click', this.removeTheme.bind(this, theme));
+                options.firstElementChild.appendChild(remove);
+            }
 
             fragment.appendChild(options);
 

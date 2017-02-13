@@ -10,7 +10,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
 
         templates: {
             titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
-            manageFragment: util.createElement('<span class="remove option options-color small-text clickable">manage</span>'),
+            manageFragment: util.createElement('<span class="option options-color small-text clickable">manage</span>'),
             slashFragment: util.createElement('<span class="options-color clickable slash">/</span>'),
         },
 

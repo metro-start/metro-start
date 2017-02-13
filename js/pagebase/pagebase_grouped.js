@@ -55,6 +55,12 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
         }
     };
 
+    pagebase_grouped.prototype.clear = function clear() {
+        while (this.rootNode.lastChild) {
+            this.rootNode.removeChild(this.rootNode.lastChild);
+        }
+    };
+
     pagebase_grouped.prototype.sortChanged = function sortChanged(newSort) {
         var currentSort = this.getSort();
         if (newSort === currentSort) {
