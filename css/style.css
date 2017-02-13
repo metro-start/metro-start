@@ -47,13 +47,13 @@ h1 {
     font-style: normal;
     margin: 0 0 15px 50px;
 }
+.option {
+	display: inline-block;
+}
 .small-text {
     font-size: 24px;
 	display: inline-block;
 	margin-right: 20px;
-}
-.option {
-	display: inline-block;
 }
 
 select.chooser {
@@ -101,25 +101,21 @@ select.chooser {
 	height: calc(100% - 42px);
 }
 .internal_selector {
-    /*display: inline-block;*/
 	height: 100%;
     white-space: nowrap;
 	margin-left: 50px;
 }
 .page {
     display: inline-block;
-    /*margin-right: 20px;*/
     vertical-align: top;
 }
 .item {
 	min-width: 0;
-	height: 55px;
 	margin-bottom: 10px;
-	display: flex;
 	align-items: center;
 }
 .item:last-child {
-	margin-bottom: 5px;
+	margin-bottom: 0px;
 }
 .title {
 	display: block;
@@ -133,10 +129,6 @@ select.chooser {
 	overflow-y: auto;
 	height: 100%;
 }
-.panel-page > .item {
-	display: flex;
-	align-items: center;
-}
 .panel-page > .item > div {
 	display: flex;
 	flex-direction: row;
@@ -144,7 +136,6 @@ select.chooser {
 .panel-item {
 	display: block;
 
-	padding-left: 8px;
 	line-height: 100%;
 
 	max-width: 375px;
