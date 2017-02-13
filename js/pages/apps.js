@@ -8,7 +8,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
 
         templates: {
             titleFragment: util.createElement('<span class="title clickable"></span>'),
-            uninstallFragment: util.createElement('<span class="option options-color small-text clickable">manage</span>')
+            manageFragment: util.createElement('<span class="option options-color small-text clickable">manage</span>')
         },
 
         // Initialize this module.
@@ -46,16 +46,20 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
         // item: The link item to be converted into a node.
         templateFunc: function(app) {
             var fragment = util.createElement('');
+            
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.href = app.launchUrl;
             title.firstElementChild.textContent = app.name;
+            if (!app.enabled) {
+                util.addClass(title.firstElementChild, 'disabled');
+            }
             fragment.appendChild(title);
 
-            var manage = this.templates.uninstallFragment.cloneNode(true);
+            var manage = this.templates.manageFragment.cloneNode(true);
             manage.firstElementChild.addEventListener('click', this.manageApp.bind(this, app));
             fragment.appendChild(manage);
 
-            return fragment;
+           return fragment;
         },
 
         // Uninistall an app from Chrome.
