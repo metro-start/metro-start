@@ -287,3 +287,6 @@ select.chooser {
 #internal_selector_links > .page > .item {
 	padding-right: 15px;
 }
+.disabled {
+	opacity: 0.5;
+}

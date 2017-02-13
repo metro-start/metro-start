@@ -66,6 +66,10 @@ define(['../pagebase/pagebase','../utils/storage', '../utils/defaults', '../util
             var title = this.elems.newUrlTitle.value.trim();
             title = title ? title : newUrl.toLocaleLowerCase().replace(/^https?\:\/\//i, '').replace(/^www\./i, '');
 
+            if (title === '') {
+                return;
+            }
+
             if (!newUrl.match(/https?\:\/\//)) {
                 newUrl = 'http://' + newUrl;
             }
