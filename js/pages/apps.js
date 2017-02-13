@@ -32,7 +32,8 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
                     'heading': 'apps',
                     'data': [{
                         'name': 'Chrome Webstore',
-                        'appLaunchUrl': 'https://chrome.google.com/webstore'
+                        'appLaunchUrl': 'https://chrome.google.com/webstore',
+                        'enabled': true
                     }].concat(res.filter(function(item) { return item.isApp; }))
                 });
                 that.apps.addAll({
