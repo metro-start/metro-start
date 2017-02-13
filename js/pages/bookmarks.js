@@ -71,6 +71,8 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
                 this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
                 this.bookmarks.addAll(bookmark.children);
                 event.preventDefault();
+            } else {
+                window.location.href = bookmark.url;
             }
         },
 
