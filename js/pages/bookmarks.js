@@ -10,11 +10,10 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
 
         templates: {
             titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
-            manageFragment: util.createElement('<span class="option options-color small-text clickable">manage</span>'),
             slashFragment: util.createElement('<span class="options-color clickable slash">/</span>'),
+            removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
         },
 
-        // Initialize this module.
         init: function() {
             this.elems.rootNode = document.getElementById('internal_selector_bookmarks');
             this.bookmarks = new pagebase_paneled();
@@ -26,7 +25,6 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             this.bookmarks.sortChanged(newSort);
         },
 
-        // Loads the bookmarks from Chrome local synced storage.
         loadBookmarks: function() {
             var that = this;
             chrome.bookmarks.getTree(function(data) {
@@ -35,13 +33,10 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             });
         },
 
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
         templateFunc: function(bookmark) {
             var fragment = util.createElement('');
             var titleWrap = util.createElement('<div></div>');
             var title = this.templates.titleFragment.cloneNode(true);
-            // title.firstElementChild.href = bookmark.url;
             title.firstElementChild.textContent = bookmark.title;
             title.firstElementChild.id = 'bookmark_' + bookmark.id;
             titleWrap.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, titleWrap.firstElementChild));
@@ -51,50 +46,44 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
                 titleWrap.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
             }
             
-            fragment.appendChild(titleWrap);
 
-            var manage = this.templates.manageFragment.cloneNode(true);
-            manage.firstElementChild.addEventListener('click', this.manageBookmark.bind(this, bookmark, fragment));
-            fragment.appendChild(manage);
+            var remove = this.templates.removeFragment.cloneNode(true);
+            remove.firstElementChild.addEventListener('click', this.removeBookmark.bind(this, bookmark, titleWrap.firstElementChild));
+            
+            fragment.appendChild(titleWrap);
+            fragment.appendChild(remove);
 
             return fragment;
         },
 
-        // Called when a bookmark has been clicked.
-        // bookmark: The bookamrk that was clicked.
-        // bookmarkNode: The DOM node of the clicked bookmark.
-        // event: The JS event that triggered this function.
-        clickBookmark: function(bookmark, bookmarkNode, event) {
-            if (bookmark.children && bookmark.children.length > 0) {
-                var currentPage = bookmarkNode.parentNode.parentNode.id;
-                this.activateBookmark(bookmarkNode);
-                this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
-                this.bookmarks.addAll(bookmark.children);
-                event.preventDefault();
+        clickBookmark: function(bookmark, bookmarkNode) {
+            if (!!bookmark.children && bookmark.children.length > 0) {
+                this.activateBookmark(bookmark, bookmarkNode);
             } else {
                 window.location.href = bookmark.url;
             }
         },
 
-        // Activiates a clicked bookmark folder.
-        // bookmarkNode: The DOM node of the clicked bookmark.
-        activateBookmark: function activateBookmark(bookmarkNode) {
+        activateBookmark: function activateBookmark(bookmark, bookmarkNode) {
+            var currentPage = bookmarkNode.parentNode.parentNode.id;
             var itemNode = bookmarkNode.parentNode;
             var siblings = itemNode.parentNode.children;
             Array.prototype.slice.call(siblings).forEach(function(item) {
                 util.removeClass(item.firstElementChild, 'bookmark-active');
             });
             util.addClass(itemNode.firstElementChild, 'bookmark-active');
+                
+            var that = this;
+            this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
+            chrome.bookmarks.getChildren(bookmark.id, function(data) {
+                that.bookmarks.addAll(data);
+            });
         },
 
-        // Removes a bookmark from the DOM and the chrome bookmark storage.
-        // bookmark: The bookmark to be removed.
-        // bookmarkNode: The DOM node of the bookmark to be removed.
-        manageBookmark: function(bookmark, page, index) {
-            // chrome.bookmarks.removeTree(bookmark.id, function() {
-            //   bookmarkNode.remove();
-            // });
-            
+        removeBookmark: function(bookmark, bookmarkNode) {
+            chrome.bookmarks.removeTree(bookmark.id, function() {
+              bookmarkNode.parentNode.remove();
+            });
         }
     };
     return bookmarks;

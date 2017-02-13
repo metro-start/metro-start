@@ -8,7 +8,6 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     pagebase.prototype.className = 'pagebase';
 
-    // Initialize the module.
     pagebase.prototype.init = function (document, name, rootNode, templateFunc) {
         this.name = name;
         this.rootNode = rootNode;

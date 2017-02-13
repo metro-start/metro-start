@@ -268,9 +268,6 @@ select.chooser {
 	display: inline-block;
 	height: 100%;
 }
-.pagebase-grouped > .group:last-child {
-	margin-right: 0;
-}
 .pagebase-grouped > .group > .page {
 	height: calc(100% - 32px);
 	overflow-y: auto;

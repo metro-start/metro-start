@@ -8,10 +8,13 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
 
         templates: {
             titleFragment: util.createElement('<span class="title clickable"></span>'),
-            manageFragment: util.createElement('<span class="option options-color small-text clickable">manage</span>')
+            homepageFragment: util.createElement('<span class="option options-color small-text clickable">homepage</span>'),
+            removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
+            disableFragment: util.createElement('<span class="option options-color small-text clickable">disable</span>'),
+            enableFragment: util.createElement('<span class="option options-color small-text clickable">enable</span>'),
+            optionsFragment: util.createElement('<span class="option options-color small-text clickable">options</span>')
         },
 
-        // Initialize this module.
         init: function(document) {
             this.elems.rootNode = document.getElementById('internal_selector_apps');
 
@@ -24,7 +27,6 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
             this.bookmarks.sortChanged(newSort, false);
         },
 
-        // Loads the apps from Chrome app API.
         loadApps: function() {
             var that = this;
             chrome.management.getAll(function(res) {
@@ -34,43 +36,84 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
                         'name': 'Chrome Webstore',
                         'appLaunchUrl': 'https://chrome.google.com/webstore',
                         'enabled': true
-                    }].concat(res.filter(function(item) { return item.isApp; }))
+                    }].concat(res.filter(function(item) { return item.type !== 'extension' && item.type !== 'theme'; }))
                 });
                 that.apps.addAll({
                     'heading': 'extensions',
-                    'data': res.filter(function(item) { return !item.isApp; })
+                    'data': res.filter(function(item) { return item.type === 'extension'; })
+                });
+                that.apps.addAll({
+                    'heading': 'themes',
+                    'data': res.filter(function(item) { return item.type === 'theme'; })
                 });
             });
         },
 
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
         templateFunc: function(app) {
             var fragment = util.createElement('');
             
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.href = app.launchUrl;
             title.firstElementChild.textContent = app.name;
+
             if (!app.enabled) {
                 util.addClass(title.firstElementChild, 'disabled');
-            }
+            } 
+
             fragment.appendChild(title);
 
-            var manage = this.templates.manageFragment.cloneNode(true);
-            manage.firstElementChild.addEventListener('click', this.manageApp.bind(this, app));
-            fragment.appendChild(manage);
+            if (app.homepageUrl !== '') {
+                var homepage = this.templates.homepageFragment.cloneNode(true);
+                homepage.firstElementChild.addEventListener('click', this.openHomepageUrl.bind(this, app));
+                fragment.appendChild(homepage);
+            }
+            
+            if (!!app.optionsUrl) {
+                var options = this.templates.optionsFragment.cloneNode(true);
+                options.firstElementChild.addEventListener('click', this.openOptionsUrl.bind(this, app));
+                fragment.appendChild(options);
+            }
+            
+            if (!!app.type) {
+                var toggle = null;
+                if (app.enabled) {
+                    toggle = this.templates.disableFragment.cloneNode(true);
+                } else if (!app.enabled) {
+                    toggle = this.templates.enableFragment.cloneNode(true);
+                }
+                toggle.firstElementChild.addEventListener('click', this.toggleEnabled.bind(this, app));
+                fragment.appendChild(toggle);
+            }
 
-           return fragment;
+            if (!!app.type) {
+                var remove = this.templates.removeFragment.cloneNode(true);
+                remove.firstElementChild.addEventListener('click', this.removeApp.bind(this, app));
+                fragment.appendChild(remove);
+            }
+
+            return fragment;
         },
 
-        // Uninistall an app from Chrome.
-        // app: THe app to be uninstalled.
-        manageApp: function(app) {
+        openHomepageUrl: function(app) {
+            window.location.href = app.homepageUrl;
+        },
+
+        openOptionsUrl: function(app) {
+            window.location.href = app.optionsUrl;
+        },
+
+        toggleEnabled: function(app) {
             var that = this;
-            // chrome.management.uninstall(app.id, { showConfirmDialog: true}, function() {
-            //     that.loadApps();
-            // });
-            
+            chrome.management.setEnabled(app.id, !app.enabled, function() {
+                that.loadApps();
+            });
+        },
+
+        removeApp: function(app) {
+            var that = this;
+            chrome.management.uninstall(app.id, { showConfirmDialog: true }, function() {
+                that.loadApps();
+            });
         }
     };
 
