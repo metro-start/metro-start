@@ -59,7 +59,9 @@ function(jquery, pagebase_grouped, util) {
             return fragment;
         },
 
-        openTab: function(session) {
+        openTab: function(tab) {
+            console.log(tab);
+            window.location.href = tab.url;
         }
     };
 
