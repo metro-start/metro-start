@@ -15,7 +15,7 @@
   		"bundle.map"
 	],
 	"permissions": [
-		"http://metro-start.appspot.com/*",
+		"http://*.appspot.com/*",
 		"http://query.yahooapis.com/*",
 		"management",
 		"bookmarks",

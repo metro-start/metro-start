@@ -9,7 +9,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         bookmarks: {},
 
         templates: {
-            titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
+            titleFragment: util.createElement('<a class="panel-item clickable"></a>'),
             slashFragment: util.createElement('<span class="options-color clickable slash">/</span>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
         },
@@ -39,12 +39,15 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.textContent = bookmark.title;
             title.firstElementChild.id = 'bookmark_' + bookmark.id;
-            titleWrap.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, titleWrap.firstElementChild));
-            titleWrap.firstElementChild.appendChild(title);
 
             if (bookmark.children && bookmark.children.length > 0) {
+                titleWrap.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, titleWrap.firstElementChild));
                 titleWrap.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
+            } else {
+                title.firstElementChild.href = bookmark.url;
             }
+
+            titleWrap.firstElementChild.insertBefore(title, titleWrap.firstElementChild.firstElementChild);
             
 
             var remove = this.templates.removeFragment.cloneNode(true);
@@ -59,9 +62,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         clickBookmark: function(bookmark, bookmarkNode) {
             if (!!bookmark.children && bookmark.children.length > 0) {
                 this.activateBookmark(bookmark, bookmarkNode);
-            } else {
-                window.location.href = bookmark.url;
-            }
+            } 
         },
 
         activateBookmark: function activateBookmark(bookmark, bookmarkNode) {

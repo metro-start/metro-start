@@ -50,7 +50,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             });
 
             // Load online themes.
-            jquery.get('http://metro-start.appspot.com/themes.json', function(data) {
+            jquery.get(defaults.defaultWebservice + '/themes.json', function(data) {
                 data = JSON.parse(data);
                 for (var i in data) {
                     data[i].online = true;
@@ -111,6 +111,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
 
         shareTheme: function(theme) {
             this.themesWidget.shareTheme(theme);
+            this.loadThemes();
         },
 
         removeTheme: function(theme) {

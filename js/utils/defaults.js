@@ -4,6 +4,7 @@ The default theme for metro start.
 define(function() {
     return {
         init: {},
+        defaultWebservice: 'http://metro-start.appspot.com',
 
         defaultLinks: [
             {'name': 'use the wrench to get started. . . ', 'url': ''}

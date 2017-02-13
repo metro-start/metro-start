@@ -101,19 +101,17 @@ function (domready, jquery, spectrum, util, storage, defaults, script) {
     },
 
     shareTheme: function (theme) {
-      var url = 'https://20170213t001516-dot-metro-start.appspot.com/newtheme?' +
+      var url = defaults.defaultWebservice + '/newtheme?' +
         'title=' + encodeURIComponent(theme.title) +
         '&author=' + encodeURIComponent(theme.author) +
         '&maincolor=' + encodeURIComponent(theme.colors['main-color']) +
         '&optionscolor=' + encodeURIComponent(theme.colors['options-color']) +
         '&titlecolor=' + encodeURIComponent(theme.colors['title-color']) +
         '&backgroundcolor=' + encodeURIComponent(theme.colors['background-color']);
+      console.log(url);
 
       jquery.get(url, function (data) {
-        console.log(data);
-      },
-        function (error) {
-          console.log(error);
+          console.log(data);
         });
     },
 

@@ -11,7 +11,7 @@ function(jquery, pagebase_grouped, util) {
 
         templates: {
             itemFragment: util.createElement('<div class="session_item"></div>'),
-            titleFragment: util.createElement('<span class="title clickable"></span>'),
+            titleFragment: util.createElement('<a class="title clickable"></a>'),
         },
 
         // Initialize this module.
@@ -52,17 +52,18 @@ function(jquery, pagebase_grouped, util) {
 
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.id = 'session_' + tab.id;
+            title.firstElementChild.href = tab.url;
             title.firstElementChild.textContent = tab.title;
-            title.firstElementChild.addEventListener('click', this.openTab.bind(this, tab));
+            // title.firstElementChild.addEventListener('click', this.openTab.bind(this, tab));
             fragment.appendChild(title);
 
             return fragment;
-        },
-
-        openTab: function(tab) {
-            console.log(tab);
-            window.location.href = tab.url;
         }
+
+        // openTab: function(tab) {
+        //     console.log(tab);
+        //     window.location.href = tab.url;
+        // }
     };
 
     return sessions;
