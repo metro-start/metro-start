@@ -1,10 +1,12 @@
-define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'], function (domready, jquery, spectrum, util, storage, defaults, script) {
+define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'], 
+function (domready, jquery, spectrum, util, storage, defaults, script) {
   var themes = {
     data: {},
 
     elems: {
       picker: document.getElementById('picker'),
       newThemeTitle: document.getElementById('newThemeTitle'),
+      newThemeAuthor: document.getElementById('newThemeAuthor'),
       editTheme: document.getElementById('editTheme'),
       saveTheme: document.getElementById('saveTheme')
     },
@@ -72,12 +74,18 @@ define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '
 
     saveTheme: function () {
       var title = this.elems.newThemeTitle.value.trim();
+      // https://github.com/kylestetz/Sentencer ?
       if (title === "") {
-        // https://github.com/kylestetz/Sentencer ?
         title = "verdant sunset" + (Math.random() * 500);
       }
+      var author = this.elems.newThemeAuthor.value.trim();
+      if (author === '') {
+        author = 'poet ' + (Math.random() * 500);
+      }
 
+      this.currentTheme.online = false;
       this.currentTheme.title = title;
+      this.currentTheme.author = author;
       storage.save('currentTheme', this.currentTheme);
 
       var localThemes = storage.get('localThemes', [defaults.defaultTheme]);
@@ -93,13 +101,20 @@ define(['detect-dom-ready', 'jquery', 'spectrum-colorpicker', '../utils/util', '
     },
 
     shareTheme: function (theme) {
-      var url = 'http://metro-start.appspot.com/newtheme?' +
+      var url = 'https://20170213t001516-dot-metro-start.appspot.com/newtheme?' +
         'title=' + encodeURIComponent(theme.title) +
+        '&author=' + encodeURIComponent(theme.author) +
         '&maincolor=' + encodeURIComponent(theme.colors['main-color']) +
         '&optionscolor=' + encodeURIComponent(theme.colors['options-color']) +
         '&titlecolor=' + encodeURIComponent(theme.colors['title-color']) +
         '&backgroundcolor=' + encodeURIComponent(theme.colors['background-color']);
-      window.open(url);
+
+      jquery.get(url, function (data) {
+        console.log(data);
+      },
+        function (error) {
+          console.log(error);
+        });
     },
 
     removeTheme: function (theme) {
