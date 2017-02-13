@@ -80,9 +80,9 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             var itemNode = bookmarkNode.parentNode;
             var siblings = itemNode.parentNode.children;
             Array.prototype.slice.call(siblings).forEach(function(item) {
-                util.removeClass(item, 'bookmark-active');
+                util.removeClass(item.firstElementChild, 'bookmark-active');
             });
-            util.addClass(itemNode, 'bookmark-active');
+            util.addClass(itemNode.firstElementChild, 'bookmark-active');
         },
 
         // Removes a bookmark from the DOM and the chrome bookmark storage.
