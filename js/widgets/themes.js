@@ -19,6 +19,7 @@ function (domready, jquery, spectrum, util, storage, defaults, script) {
     init: function () {
       this.currentTheme = storage.get('currentTheme', defaults.defaultTheme);
       script.updateStyle(this.currentTheme, false);
+
       this.elems.editTheme.addEventListener('click', this.editTheme.bind(this));
       this.elems.saveTheme.addEventListener('click', this.saveTheme.bind(this));
       
@@ -96,8 +97,8 @@ function (domready, jquery, spectrum, util, storage, defaults, script) {
 
     applyTheme: function (theme) {
       this.currentTheme = theme;
-      script.updateStyle(this.currentTheme, true);
       storage.save('currentTheme', this.currentTheme);
+      script.updateStyle(this.currentTheme, true);
     },
 
     shareTheme: function (theme) {

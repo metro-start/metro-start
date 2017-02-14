@@ -87,7 +87,6 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             var options = this.templates.infoFragment.cloneNode(true);
             var author = this.templates.authorFragment.cloneNode(true);
             author.firstElementChild.textContent = theme.author;
-            author.firstElementChild.href = theme.website;
             options.firstElementChild.appendChild(author);
             
             if (!theme.online) {
