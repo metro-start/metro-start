@@ -46,7 +46,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             
             titleWrap.firstElementChild.appendChild(title);
 
-            if (bookmark.children && bookmark.children.length > 0 && !bookmark.url) {
+            if (!bookmark.url) {
                 titleWrap.firstElementChild.addEventListener('click', this.clickBookmark.bind(this, bookmark, titleWrap.firstElementChild));
                 titleWrap.firstElementChild.appendChild(this.templates.slashFragment.cloneNode(true));
             } 
@@ -61,12 +61,6 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         },
 
         clickBookmark: function(bookmark, bookmarkNode) {
-            if (!!bookmark.children && bookmark.children.length > 0) {
-                this.activateBookmark(bookmark, bookmarkNode);
-            } 
-        },
-
-        activateBookmark: function activateBookmark(bookmark, bookmarkNode) {
             var currentPage = bookmarkNode.parentNode.parentNode.id;
             var itemNode = bookmarkNode.parentNode;
             var siblings = itemNode.parentNode.children;
@@ -78,7 +72,9 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
             var that = this;
             this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
             chrome.bookmarks.getChildren(bookmark.id, function(data) {
-                that.bookmarks.addAll(data);
+                if (data.length !== 0) {
+                    that.bookmarks.addAll(data);
+                } 
             });
         },
 

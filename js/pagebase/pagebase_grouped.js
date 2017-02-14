@@ -32,22 +32,22 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
 
     pagebase_grouped.prototype.addAllNodes = function addAllNodes(group) {
         var nodes = group.nodes;
+        var groupNode = templates.group.cloneNode(true);
+
+        var heading = templates.heading.cloneNode(true);
+        heading.firstElementChild.textContent = group.heading;
+        groupNode.firstElementChild.appendChild(heading);
+
+        var columnNode = templates.column.cloneNode(true);
+
         if (nodes.length) {
-            var groupNode = templates.group.cloneNode(true);
-
-            var heading = templates.heading.cloneNode(true);
-            heading.firstElementChild.textContent = group.heading;
-            groupNode.firstElementChild.appendChild(heading);
-
-            var columnNode = templates.column.cloneNode(true);
             for (var i = 0; i < nodes.length; i++) {
                 columnNode.firstElementChild.appendChild(nodes[i]);
             }
-
-            groupNode.firstElementChild.appendChild(columnNode);
-
-            this.rootNode.appendChild(groupNode);
         }
+
+        groupNode.firstElementChild.appendChild(columnNode);
+        this.rootNode.appendChild(groupNode);
     };
 
     pagebase_grouped.prototype.clear = function clear() {
