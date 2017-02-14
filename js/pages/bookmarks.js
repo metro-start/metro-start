@@ -4,18 +4,20 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
 
         data: {},
 
-        elems: {},
+        elems: {
+            rootNode: document.getElementById('internal_selector_bookmarks')
+        },
 
         bookmarks: {},
 
         templates: {
             titleFragment: util.createElement('<a class="panel-item clickable"></a>'),
+            titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
             slashFragment: util.createElement('<span class="options-color clickable slash">/</span>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
         },
 
         init: function() {
-            this.elems.rootNode = document.getElementById('internal_selector_bookmarks');
             this.bookmarks = new pagebase_paneled();
             this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadBookmarks();
@@ -35,7 +37,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
 
         templateFunc: function(bookmark) {
             var fragment = util.createElement('');
-            var titleWrap = util.createElement('<div></div>');
+            var titleWrap = this.templates.titleWrapFragment.cloneNode(true);
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.textContent = bookmark.title;
             title.firstElementChild.id = 'bookmark_' + bookmark.id;
