@@ -18,7 +18,6 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
         
         init: function(document) {
             this.data = storage.get('weather');
-
             if (!!this.data) {
                 this.elems.city.innerText = this.data.city;
                 this.elems.currentTemp.innerText = this.data.currentTemp;
@@ -33,7 +32,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
                 var chooser = jquery('#weather-unit-chooser');
 
                 chooser.metroSelect({
-                    'initial': this.data.unit === 'f' ? '0' : '1',
+                    'initial': this.data.unit === 'c' ? 'celsius' : 'fahrenheit',
                     'onchange': this.setWeatherUnitDelegate.bind(this)
                 });
             }
@@ -98,7 +97,6 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
                 this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
                 var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit + '"');
                 var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
-
                 var that = this;
                 jquery.ajax(url).done(function(data) {
                     if (data.query.count) {
@@ -112,7 +110,8 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
                         that.data.unit = result.units.temperature.toLowerCase();
 
                         storage.save('weather', that.data);
-                        that.rebuildDom();
+                        that.update();
+                        // that.rebuildDom();
                     }
                 });
             }
@@ -128,8 +127,11 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
         },
 
         update: function(key, value) {
-            this.data[key] = value;
+            if (!!key && !!value) {
+                this.data[key] = value;
+            }
             storage.save('weather', this.data);
+            this.rebuildDom();
         }
     };
     return weather;
