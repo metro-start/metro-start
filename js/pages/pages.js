@@ -1,5 +1,5 @@
-define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './links', './sessions', './apps', './bookmarks', './themes'],
-function Pages(jquery, jss, storage, defaults, links, sessions, apps, bookmarks, themes) {
+define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './todos', './sessions', './apps', './bookmarks', './themes'],
+function Pages(jquery, jss, storage, defaults, todos, sessions, apps, bookmarks, themes) {
   var pages = {
 
     name: 'pages',
@@ -8,11 +8,11 @@ function Pages(jquery, jss, storage, defaults, links, sessions, apps, bookmarks,
       chooser: document.getElementById('pages-chooser')
     },
 
-    modules: [links, sessions, apps, bookmarks, themes],
+    modules: [todos, sessions, apps, bookmarks, themes],
 
     init: function(document) {
       this.showOptions = false;
-      this.page = storage.get('page', 'links');
+      this.page = storage.get('page', 'todos');
 
       this.modules.forEach(function(module) {
           module.init(document);

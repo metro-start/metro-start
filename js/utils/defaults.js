@@ -6,8 +6,8 @@ define(function() {
         init: {},
         defaultWebservice: 'http://metro-start.appspot.com',
 
-        defaultLinks: [
-            {'name': 'use the wrench to get started. . . ', 'url': ''}
+        defaultTodos: [
+            {'name': 'use the wrench to get started. . . ', 'done': false}
         ],
 
         // The default theme for the app.
@@ -25,7 +25,7 @@ define(function() {
 
         // The default sortnig for the app.
         defaultSort: {
-            'links': false,
+            'todos': false,
             'apps': false,
             'bookmarks': false,
             'themes': false

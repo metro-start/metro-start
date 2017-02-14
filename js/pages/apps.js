@@ -76,9 +76,9 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
             
             if (!!app.type) {
                 var toggle = null;
-                if (app.enabled) {
+                if (!!app.enabled) {
                     toggle = this.templates.disableFragment.cloneNode(true);
-                } else if (!app.enabled) {
+                } else {
                     toggle = this.templates.enableFragment.cloneNode(true);
                 }
                 toggle.firstElementChild.addEventListener('click', this.toggleEnabled.bind(this, app));

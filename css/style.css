@@ -108,6 +108,8 @@ select.chooser {
 .page {
     display: inline-block;
     vertical-align: top;
+	min-width: 375px;
+	flex-basis: auto;
 }
 .item {
 	min-width: 0;
@@ -123,6 +125,11 @@ select.chooser {
 	white-space: nowrap;
 }
 
+/* Links section */
+.add {
+	margin-left: 50px;
+}
+
 /* Bookmarks section */
 .panel-page {
 	margin-right: 10px;
@@ -135,9 +142,7 @@ select.chooser {
 }
 .panel-item {
 	display: block;
-
 	line-height: 100%;
-
 	max-width: 375px;
 	overflow: hidden;
 	white-space: nowrap;
@@ -251,7 +256,7 @@ select.chooser {
 	height: calc(100% - 32px);
 	overflow-y: auto;
 }
-#external_selector_links {
+#external_selector_todos {
 	height: calc(100% - 85px);
 }
 #internal_selector_links > .group {
@@ -260,6 +265,7 @@ select.chooser {
 	flex-direction: column;
 	flex-wrap: wrap;
 }
-.disabled {
+.done, .disabled {
+	text-decoration: line-through;
 	opacity: 0.5;
 }

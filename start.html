@@ -10,7 +10,7 @@
 		<h1 class="title-color">start here . . .</h1>
 		<div class="pages-chooser">
 			<select class="chooser" id="pages-chooser">
-				<option class="clickable links-option">links</option>
+				<option class="clickable todos-option">todos</option>
 				<option class="clickable sessions-option">sessions</option>
 				<option class="clickable apps-option">apps</option>
 				<option class="clickable bookmarks-option">bookmarks</option>
@@ -19,21 +19,20 @@
 		</div>
 		<div class="external">
 			<div class="internal">
-				<div class="links collection">
-					<div id="links">
+				<div class="todos collection">
+					<div id="todos">
 						<div class="options-color option sort">
-							<select class="chooser" id="links-sort-chooser">
+							<select class="chooser" id="todos-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
 						</div>
-						<div class="external_selector" id="external_selector_links">
-							<div class="internal_selector" id="internal_selector_links">
+						<div class="external_selector" id="external_selector_todos">
+							<div class="internal_selector" id="internal_selector_todos">
 							</div>
 						</div>
-						<form id="addLink" class="add">
-							<input type="text" name="newUrlTitle" id="newUrlTitle" placeholder="title" class="url option" size="26">
-							<input type="text" name="newUrl" id="newUrl" placeholder="http://" class="url option" size="24">
+						<form id="addTodo" class="add option">
+							<input type="text" name="newTodo" id="newTodo" placeholder="new todo" class="option" size="26">
 							<input type="submit" class="options-color option" value="save">
 						</form>
 					</div>
@@ -174,7 +173,7 @@
 			.external_selector {
 				height: 100%;
 			}
-			#external_selector_links {
+			#external_selector_todos {
 				height: 100%;
 			}
 		</style>

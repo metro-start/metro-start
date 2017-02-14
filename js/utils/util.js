@@ -18,10 +18,12 @@ define(['./defaults', './storage'], function Utils(defaults, storage) {
         // elem: The DOM element to be mondified.
         // newClass: The class to be applied to the node.
         addClass: function addClass(elem, newClass) {
-            var oldClass = !!elem.className ? elem.className.split(' ') : [];
-            if (oldClass.indexOf(newClass) === -1) {
-                oldClass.unshift(newClass);
-                elem.className = oldClass.join(' ');
+            if (!!newClass) {
+                var oldClasses = !!elem.className ? elem.className.split(' ') : [];
+                if (oldClasses.indexOf(newClass) === -1) {
+                    oldClasses.unshift(newClass);
+                    elem.className = oldClasses.join(' ');
+                }
             }
         },
 
