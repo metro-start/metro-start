@@ -1,23 +1,26 @@
 {
 	"name": "Metro Start",
-	"version": "5.7",
+	"version": "10.0",
 	"manifest_version": 2,
-	"description": "A start screen based on the Windows Metro UI",
+	"description": "A new tab page for Google Chrome inspired by Zune",
 	"chrome_url_overrides": {
 		"newtab": "start.html"
 	},
 	"icons": {
-		"16": "icon16.png",
-		"32": "icon32.png",
-		"128": "icon128.png"
+		"16": "icons/icon16.png",
+		"32": "icons/icon32.png",
+		"128": "icons/icon128.png"
 	},
+	"web_accessible_resources": [
+  		"bundle.map"
+	],
 	"permissions": [
-		"http://metro-start.appspot.com/*",
+		"http://*.appspot.com/*",
 		"http://query.yahooapis.com/*",
-		"http://google-analytics.com/ga.js",
 		"management",
 		"bookmarks",
-		"storage"
-	],
-	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com 'unsafe-eval'; object-src 'self'"
+		"storage",
+		"sessions",
+		"tabs"
+	]
 }
