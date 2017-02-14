@@ -19,7 +19,7 @@
     "jquery": "*",
     "jquery-ui": "*",
     "jss": "git+https://github.com/Box9/jss.git",
-    "metro-select": "^1.0.16",
+    "metro-select": "^1.0.17",
     "spectrum-colorpicker": "^1.8.0"
   },
   "devDependencies": {
