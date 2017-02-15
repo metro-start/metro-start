@@ -36,11 +36,11 @@ define(['jquery', 'jss', './util', './storage', './defaults'], function(jquery, 
 
       // Animate the color transition.
       if (transition) {
-        jquery('.background-color').animate({'backgroundColor': background_color}, {duration: 800, queue: false});
-        jquery('.title-color').animate({'color': title_color}, {duration: 400, queue: false});
-        jquery('body').animate({'color': main_color}, {duration: 400, queue: false});
-        jquery('input').animate({'color': main_color}, {duration: 400, queue: false});
-        jquery('.options-color').animate({'color': options_color}, {duration: 400, queue: false});
+        jquery('.background-color').animate({'backgroundColor': background_color}, {duration: 2000, queue: false});
+        jquery('.title-color').animate({'color': title_color}, {duration: 2000, queue: false});
+        jquery('body').animate({'color': main_color}, {duration: 2000, queue: false});
+        jquery('input').animate({'color': main_color}, {duration: 2000, queue: false});
+        jquery('.options-color').animate({'color': options_color}, {duration: 2000, queue: false});
       }
 
       // ...but then we still need to add it to the DOM.
