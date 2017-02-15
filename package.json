@@ -20,7 +20,9 @@
     "jquery-ui": "*",
     "jss": "git+https://github.com/Box9/jss.git",
     "metro-select": "^1.0.17",
-    "spectrum-colorpicker": "^1.8.0"
+    "optimize-js-plugin": "^0.0.4",
+    "spectrum-colorpicker": "^1.8.0",
+    "webpack-uglify-js-plugin": "^1.1.9"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",

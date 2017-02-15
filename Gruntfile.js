@@ -1,20 +1,20 @@
 /* jshint node: true */
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
+var OptimizeJsPlugin = require('optimize-js-plugin');
 
 module.exports = function (grunt) {
-    "use strict";
+    'use strict';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         webpack: {
             all: {
                 entry: './js/app.js',
-                devtool: 'sourcemap',
                 output: {
-                    filename: 'bundle.js',
-                    path: './dist',
-                    sourceMapFilename: 'bundle.map'
+                    filename: 'metro-start.min.js',
+                    path: './dist'
                 },
                 stats: {
                     // Configure the console output
@@ -28,6 +28,14 @@ module.exports = function (grunt) {
                     }
                 },
                 plugins: [
+                    new OptimizeJsPlugin({
+                        sourceMap: false
+                    }),
+                    new WebpackUglifyJsPlugin({
+                        cacheFolder: './cached_uglify/',
+                        debug: true,
+                        minimize: true,
+                    }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },
@@ -39,7 +47,7 @@ module.exports = function (grunt) {
         },
         jshint: {
             all: [
-                "js/**/*.js"
+                'js/**/*.js'
             ]
         },
         watch: {
