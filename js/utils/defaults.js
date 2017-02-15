@@ -1,8 +1,16 @@
 /**
 The default theme for metro start.
 */
-define([], function() {
+define(function() {
     return {
+        init: {},
+        defaultWebservice: 'http://metro-start.appspot.com',
+
+        defaultTodos: [
+            {'name': 'use the wrench to get started. . . ', 'done': false}
+        ],
+
+        // The default theme for the app.
         defaultTheme: {
             'title': 'metro start',
             'colors': {
@@ -10,10 +18,13 @@ define([], function() {
                 'main-color': '#ffffff',
                 'title-color': '#4a4a4a',
                 'background-color': '#000000'
-            }
+            },
+            'author': 'metro start'
         },
+
+        // The default sortnig for the app.
         defaultSort: {
-            'links': false,
+            'todos': false,
             'apps': false,
             'bookmarks': false,
             'themes': false

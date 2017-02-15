@@ -1,2 +1,5 @@
+.grunt/*
+.vscode/*
+dist/*
 node_modules/*
-lib/*
+cached_uglify/*
