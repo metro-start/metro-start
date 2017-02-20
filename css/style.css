@@ -244,3 +244,6 @@ h1 {
 	padding-left: 12px;
 	padding-right: 12px;
 }
+.theme-button {
+	display: inline-block;
+}
