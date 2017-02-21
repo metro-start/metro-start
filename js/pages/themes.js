@@ -49,6 +49,11 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
               'data': storage.get('localThemes', [defaults.defaultTheme])
             });
 
+            that.themes.addAll({
+                'heading': 'system themes',
+                'data': defaults.systemThemes
+            });
+
             // Load online themes.
             jquery.get(defaults.defaultWebservice + '/themes.json', function(data) {
                 data = JSON.parse(data);

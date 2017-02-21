@@ -2,7 +2,7 @@
   "name": "metro-start",
   "description": "A new tab page for Google Chrome inspired by Zune",
   "homepage": "http://www.metro-start.com/",
-  "version": "1.0.1",
+  "version": "10.2",
   "license": "MIT",
   "scripts": {
     "build": "grunt build",

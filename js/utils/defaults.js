@@ -28,6 +28,17 @@ define(function() {
             'apps': false,
             'bookmarks': false,
             'themes': false
-        }
+        },
+
+        systemThemes: [{
+            'title': 'random theme',
+            'colors': {
+                'options-color': '#ff0000',
+                'main-color': '#ffffff',
+                'title-color': '#4a4a4a',
+                'background-color': '#000000'
+            },
+            'author': 'metro start'
+        }]
     };
 });
