@@ -14,10 +14,9 @@
   },
   "dependencies": {
     "detect-dom-ready": "*",
-    "handlebars": "^4.0.6",
     "html-webpack-plugin": "^2.24.1",
     "jquery": "*",
-    "jquery-ui": "*",
+    "jquery-color": "git+https://github.com/jquery/jquery-color.git",
     "jss": "git+https://github.com/Box9/jss.git",
     "metro-select": "^1.0.17",
     "optimize-js-plugin": "^0.0.4",
