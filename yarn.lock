@@ -405,10 +405,6 @@ chokidar@^1.4.3, chokidar@^1.6.0:
   optionalDependencies:
     fsevents "^1.0.0"
 
-chroma-js@^1.1.1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.2.2.tgz#4171ae7c468dae7380853239fa109cbbe266d5ee"
-
 cipher-base@^1.0.0, cipher-base@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/cipher-base/-/cipher-base-1.0.3.tgz#eeabf194419ce900da3018c207d212f2a6df0a07"
@@ -680,13 +676,6 @@ diffie-hellman@^5.0.0:
     bn.js "^4.1.0"
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
-
-distinct-colors@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/distinct-colors/-/distinct-colors-1.0.4.tgz#67dfca5794bca950c01d251a52aa33586e5af7b4"
-  dependencies:
-    chroma-js "^1.1.1"
-    mout "^0.11.0"
 
 dom-converter@~0.1:
   version "0.1.4"
@@ -1575,13 +1564,7 @@ jodid25519@^1.0.0:
   version "3.0.0-pre"
   resolved "git+https://github.com/jquery/jquery-color.git#f5c2e6ebef8bee6248f8c8fd6e4762bb74041d1e"
 
-"jquery-ui@https://github.com/edwinm/Color-animation-jQuery-plugin.git":
-  version "1.5.1"
-  resolved "https://github.com/edwinm/Color-animation-jQuery-plugin.git#3708c770c4f9f347b77757579e60f10ea7efd947"
-  dependencies:
-    jquery ">=1.8"
-
-jquery@*, jquery@>=1.8:
+jquery@*:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.1.1.tgz#347c1c21c7e004115e0a4da32cece041fad3c8a3"
 
@@ -1864,10 +1847,6 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@~0.5.0, mkdirp@~0.5.1:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
-
-mout@^0.11.0:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/mout/-/mout-0.11.1.tgz#ba3611df5f0e5b1ffbfd01166b8f02d1f5fa2b99"
 
 ms@0.7.1:
   version "0.7.1"

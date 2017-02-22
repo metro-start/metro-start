@@ -46,7 +46,7 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             that.themes.clear();
             that.themes.addAll({
               'heading': 'my themes',
-              'data': storage.get('localThemes', [defaults.defaultTheme])
+              'data': storage.get('localThemes', [])
             });
 
             that.themes.addAll({
@@ -87,6 +87,11 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             title.firstElementChild.id = 'theme_' + theme.id;
             title.firstElementChild.textContent = theme.title;
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
+
+            if (this.themesWidget.currentTheme.title === theme.title) {
+                util.addClass(title.firstElementChild, 'bookmark-active');
+            }
+
             fragment.appendChild(title);
 
             var options = this.templates.infoFragment.cloneNode(true);
