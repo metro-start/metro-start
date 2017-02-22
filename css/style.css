@@ -256,9 +256,6 @@ h1 {
 	width: 100vw;
 	height: 100vh;
 }
-.overlay {
-	opacity: 0.7;
-}
 .message-box {
   position: fixed;
   left: 0;
@@ -268,7 +265,6 @@ h1 {
   margin: auto;
 
   height: 150px;
-  width: 350px;
   border: solid 2px;
 
   display: flex;
@@ -276,9 +272,6 @@ h1 {
   justify-content: center;
   flex-direction: column;
 }
-.message-box > *, .message-box > * > * {
-	opacity: 1;
-}
-.message {
-	margin-bottom: 8px;
+#message {
+	margin-bottom: 12px;
 }

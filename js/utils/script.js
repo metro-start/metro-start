@@ -61,7 +61,7 @@ function (jquery, jqueryColor, jss, util, storage) {
       jss.set('.bookmark-active', {
         'background-color': options_color
       });
-      jss.set('.overlay', {
+      jss.set('.message-box', {
         'background-color': options_color
       });
       jss.set('.pagebase-grouped > .group > .page', {
