@@ -2,6 +2,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
     var overlay = {
 
         overlay: document.getElementById('overlay'),
+        message: document.getElementById('message'),
         confirm: document.getElementById('confirm-button'),
         cancel: document.getElementById('cancel-button'),
 
@@ -11,11 +12,13 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
         },
 
         alert: function(message, callback) {
+            this.message.textContent = message;
             util.removeClass(this.overlay, 'hide');
             this.alertCallback = callback;
         },
 
         alertClosed: function(res) {
+            this.message.textContent = '';
             if (res && this.alertCallback) {
                 this.alertCallback();
             } 
