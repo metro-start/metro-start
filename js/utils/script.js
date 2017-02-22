@@ -35,13 +35,12 @@ function (jquery, jqueryColor, jss, util, storage) {
       });
 
       // Animate the color transition.
-      if (transition) {
-        jquery('.background-color').animate({ 'backgroundColor': background_color }, { duration: 800, queue: false });
-        jquery('.titles-color').animate({ 'color': title_color }, { duration: 800, queue: false });
-        jquery('body').animate({ 'color': main_color }, { duration: 1200, queue: false });
-        jquery('input').animate({ 'color': main_color }, { duration: 1600, queue: false });
-        jquery('.options-color').animate({ 'color': options_color }, { duration: 1200, queue: false });
-      }
+      var duration = transition === true ? 800 : 0;
+      jquery('.background-color').animate({ 'backgroundColor': background_color }, { duration: duration, queue: false });
+      jquery('.titles-color').animate({ 'color': title_color }, { duration: duration, queue: false });
+      jquery('body').animate({ 'color': main_color }, { duration: duration, queue: false });
+      jquery('input').animate({ 'color': main_color }, { duration: duration, queue: false });
+      jquery('.options-color').animate({ 'color': options_color }, { duration: duration, queue: false });
 
       // ...but then we still need to add it to the DOM.
       jss.set('.background-color', {
