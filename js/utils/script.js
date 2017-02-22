@@ -64,6 +64,9 @@ function (jquery, jqueryColor, jss, util, storage, defaults) {
       jss.set('.bookmark-active', {
         'background-color': options_color
       });
+      jss.set('.overlay', {
+        'background-color': options_color
+      });
       jss.set('.pagebase-grouped > .group > .page', {
         'border-top-style': 'solid',
         'border-top-width': '1px',

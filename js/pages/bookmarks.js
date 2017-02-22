@@ -1,4 +1,5 @@
-define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, pagebase_paneled, util) {
+define(['jss', '../pagebase/pagebase_paneled', '../widgets/confirm', '../utils/util'], 
+function(jss, pagebase_paneled, confirmWidget, util) {
     var bookmarks = {
         name: 'bookmarks',
 
@@ -81,8 +82,10 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/util'], function(jss, p
         },
 
         removeBookmark: function(bookmark, bookmarkNode) {
-            chrome.bookmarks.removeTree(bookmark.id, function() {
-              bookmarkNode.parentNode.remove();
+            confirmWidget.alert(bookmark.title + ' will be removed.', function () {
+                chrome.bookmarks.removeTree(bookmark.id, function () {
+                    bookmarkNode.parentNode.remove();
+                });
             });
         }
     };
