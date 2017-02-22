@@ -49,6 +49,7 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
               'data': storage.get('localThemes', [])
             });
 
+            console.log(this.themesWidget.currentTheme);
             that.themes.addAll({
                 'heading': 'system themes',
                 'data': defaults.systemThemes
@@ -119,6 +120,7 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
                 theme = jquery.extend({}, theme);
             }
             this.themesWidget.applyTheme(theme);
+            console.log(theme);
         },
 
         shareTheme: function(theme) {

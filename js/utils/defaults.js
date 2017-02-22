@@ -3,7 +3,7 @@ The default theme for metro start.
 */
 define(function() {
     return {
-        init: {},
+        init: function() {},
         defaultWebservice: 'http://metro-start.appspot.com',
 
         defaultTodos: [

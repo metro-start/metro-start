@@ -1,11 +1,9 @@
-define(['jquery', 'jquery-color', 'jss', './util', './storage', './defaults'], 
-function (jquery, jqueryColor, jss, util, storage, defaults) {
+define(['jquery', 'jquery-color', 'jss', './util', './storage'], 
+function (jquery, jqueryColor, jss, util, storage) {
   var fonts = ['"Segoe UI", Helvetica, Arial, sans-serif', 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif'];
 
   var script = {
-    init: function () {
-      jquery('body').show();
-    },
+    init: function () { },
 
     /**
     Changes the style to whatever is in the scope.

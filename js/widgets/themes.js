@@ -19,6 +19,7 @@ define(['jquery', 'spectrum-colorpicker', '../widgets/confirm', '../utils/util',
 
       init: function () {
         this.currentTheme = storage.get('currentTheme', defaults.defaultTheme);
+        console.log(this.currentTheme);
         if (this.currentTheme.title === 'random theme') {
           this.randomTheme();
         } else {
