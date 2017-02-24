@@ -1,8 +1,8 @@
 /* jshint node: true */
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-// var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
-// var OptimizeJsPlugin = require('optimize-js-plugin');
+var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
+var OptimizeJsPlugin = require('optimize-js-plugin');
 
 module.exports = function (grunt) {
     'use strict';
@@ -29,15 +29,15 @@ module.exports = function (grunt) {
                     }
                 },
                 plugins: [
-                    // new OptimizeJsPlugin({
-                    //     sourceMap: true
-                    // }),
-                    // new WebpackUglifyJsPlugin({
-                    //     cacheFolder: './cached_uglify/',
-                    //     debug: true,
-                    //     minimize: true,
-                    //     sourceMap: true
-                    // }),
+                    new OptimizeJsPlugin({
+                        sourceMap: true
+                    }),
+                    new WebpackUglifyJsPlugin({
+                        cacheFolder: './cached_uglify/',
+                        debug: true,
+                        minimize: true,
+                        sourceMap: true
+                    }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },

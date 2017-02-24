@@ -32,6 +32,7 @@ define(function() {
 
         systemThemes: [{
             'title': 'random theme',
+            'online': true,
             'colors': {
                 'options-color': '#ff0000',
                 'main-color': '#ffffff',
@@ -42,6 +43,7 @@ define(function() {
         },
         {
             'title': 'metro start',
+            'online': true,
             'colors': {
                 'options-color': '#ff0000',
                 'main-color': '#ffffff',
