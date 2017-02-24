@@ -1,5 +1,5 @@
-define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defaults', './utils/script', './utils/storage'],
-  function (domready, pages, widgets, defaults, script, storage) {
+define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages'],
+  function (domready, utils, widgets, pages) {
     'use strict';
 
     var app = {
@@ -11,7 +11,9 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
 
       showOptions: false,
 
-      modules: [pages, widgets, storage, script],
+      utils: utils,
+
+      modules: [utils, widgets, pages],
 
       init: function () {
         this.modules.forEach(function (module) {
@@ -36,7 +38,7 @@ define(['detect-dom-ready', './pages/pages', './widgets/widgets', './utils/defau
       }
     };
 
-    storage.init().done(function () {
+    utils.storage.init().done(function () {
       if (!!document) {
         app.init();
       } else {

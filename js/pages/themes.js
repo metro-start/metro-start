@@ -1,5 +1,5 @@
-define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils/util', '../utils/storage', '../utils/defaults'],
-function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
+define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../widgets/confirm', '../utils/util', '../utils/storage', '../utils/defaults'],
+function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, defaults) {
     var themes = {
         name: 'themes',
 
@@ -46,7 +46,13 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             that.themes.clear();
             that.themes.addAll({
               'heading': 'my themes',
-              'data': storage.get('localThemes', [defaults.defaultTheme])
+              'data': storage.get('localThemes', [])
+            });
+
+            console.log(this.themesWidget.currentTheme);
+            that.themes.addAll({
+                'heading': 'system themes',
+                'data': defaults.systemThemes
             });
 
             // Load online themes.
@@ -82,6 +88,11 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
             title.firstElementChild.id = 'theme_' + theme.id;
             title.firstElementChild.textContent = theme.title;
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
+
+            if (this.themesWidget.currentTheme.title === theme.title) {
+                util.addClass(title.firstElementChild, 'bookmark-active');
+            }
+
             fragment.appendChild(title);
 
             var options = this.templates.infoFragment.cloneNode(true);
@@ -105,16 +116,26 @@ function(jquery, pagebase_grouped, themesWidget, util, storage, defaults) {
         },
 
         applyTheme: function(theme) {
+            if (theme.title === 'random theme') {
+                theme = jquery.extend({}, theme);
+            }
             this.themesWidget.applyTheme(theme);
+            console.log(theme);
         },
 
         shareTheme: function(theme) {
-            this.themesWidget.shareTheme(theme);
-            this.loadThemes();
+            var that = this;
+            confirmWidget.alert(theme.title + ' will be shared to the theme gallery.', function() {
+                that.themesWidget.shareTheme(theme);
+                that.loadThemes();
+            });
         },
 
         removeTheme: function(theme) {
-            this.themesWidget.removeTheme(theme);
+            var that = this;
+            confirmWidget.alert(theme.title + ' will be removed.', function() {
+                that.themesWidget.removeTheme(theme);
+            });
         },
 
         updateTheme: function(theme) {
