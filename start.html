@@ -128,10 +128,8 @@
 					<option class="clickable" value="1">thin fonts</option>
 				</select>
 			</div>
-			<div class="option">
-				<p class="options-color clickable theme-button" id="randomTheme">randomize</p>
-				<p class="options-color clickable theme-button" id="editTheme">edit theme</p>
-			</div>
+			<p class="option options-color clickable theme-button" id="randomTheme">randomize</p>
+			<p class="option options-color clickable theme-button" id="editTheme">edit theme</p>
 		</div>
 		<div class="picker background-color hide" id="picker">
 			<p>
@@ -164,6 +162,16 @@
 				<div id="options-color"></div>
 			</div>
 		</div>
+		<div id="overlay" class="overlay-wrap hide">
+		<div class="overlay" id="overlayCover"></div>
+			<div class="message-box">
+				<div id="message"></div>
+				<div class="info">
+					<span id="confirm-button" class="main-color clickable small-text">[ okay ]</span>
+					<span id="cancel-button" class="main-color clickable small-text">[ cancel ]</span>
+				</div>
+			</div>
+		</div>
 		<!-- Rule to hide all options when page first loads.
 			 Removes option elements added after the calls to hide .option were made. -->
 		<style type="text/css" id="hideRule">
@@ -178,6 +186,6 @@
 				height: 100%;
 			}
 		</style>
-		<script src="metro-start.min.js"></script>
+		<script src="metro-start.js"></script>
 	</body>
 </html>

@@ -1,5 +1,5 @@
-define(['jquery', 'spectrum-colorpicker', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
-  function (jquery, spectrum, util, storage, defaults, script) {
+define(['jquery', 'spectrum-colorpicker', '../widgets/confirm', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
+  function (jquery, spectrum, confirmWidget, util, storage, defaults, script) {
     var themes = {
       data: {},
 
@@ -19,7 +19,12 @@ define(['jquery', 'spectrum-colorpicker', '../utils/util', '../utils/storage', '
 
       init: function () {
         this.currentTheme = storage.get('currentTheme', defaults.defaultTheme);
-        script.updateStyle(this.currentTheme, false);
+        console.log(this.currentTheme);
+        if (this.currentTheme.title === 'random theme') {
+          this.randomTheme();
+        } else {
+          script.updateStyle(this.currentTheme, false);
+        }
 
         this.elems.editTheme.addEventListener('click', this.editTheme.bind(this));
         this.elems.randomTheme.addEventListener('click', this.randomTheme.bind(this));
@@ -96,11 +101,20 @@ define(['jquery', 'spectrum-colorpicker', '../utils/util', '../utils/storage', '
         var title = this.elems.newThemeTitle.value.trim();
         // https://github.com/kylestetz/Sentencer ?
         if (title === "") {
-          title = "none";
+          confirmWidget.alert('please specify a name for this theme');
+          return;
         }
+
         var author = this.elems.newThemeAuthor.value.trim();
         if (author === '') {
-          author = 'none';
+          author = 'unknown';
+        }
+        
+        var localThemes = storage.get('localThemes', []);
+        if (localThemes.contains(function(t) {
+          return t.title === title;
+        })) {
+          confirmWidget.alert('you already have a theme named ' + title);
         }
 
         this.currentTheme.online = false;
@@ -108,7 +122,6 @@ define(['jquery', 'spectrum-colorpicker', '../utils/util', '../utils/storage', '
         this.currentTheme.author = author;
         storage.save('currentTheme', this.currentTheme);
 
-        var localThemes = storage.get('localThemes', [defaults.defaultTheme]);
         localThemes.push(this.currentTheme);
         storage.save('localThemes', localThemes);
         this.themeAdded();
@@ -117,7 +130,12 @@ define(['jquery', 'spectrum-colorpicker', '../utils/util', '../utils/storage', '
       applyTheme: function (theme) {
         this.currentTheme = theme;
         storage.save('currentTheme', this.currentTheme);
-        script.updateStyle(this.currentTheme, true);
+
+        if (theme.title === 'random theme') {
+          this.randomTheme();
+        } else {
+          script.updateStyle(this.currentTheme, true);
+        }
       },
 
       shareTheme: function (theme) {

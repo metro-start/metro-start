@@ -1,8 +1,8 @@
-define(['./defaults', './storage'], function Utils(defaults, storage) {
+define([], function Util() {
     // Speed up calls to hasOwnProperty
     var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-    var utils = {
+    var util = {
         init: function () { },
 
         // Converts an HTML string to a DOM fragment.
@@ -81,5 +81,5 @@ define(['./defaults', './storage'], function Utils(defaults, storage) {
         }
     };
 
-    return utils;
+    return util;
 });

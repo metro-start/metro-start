@@ -3,7 +3,7 @@ The default theme for metro start.
 */
 define(function() {
     return {
-        init: {},
+        init: function() {},
         defaultWebservice: 'http://metro-start.appspot.com',
 
         defaultTodos: [
@@ -28,6 +28,29 @@ define(function() {
             'apps': false,
             'bookmarks': false,
             'themes': false
-        }
+        },
+
+        systemThemes: [{
+            'title': 'random theme',
+            'online': true,
+            'colors': {
+                'options-color': '#ff0000',
+                'main-color': '#ffffff',
+                'title-color': '#4a4a4a',
+                'background-color': '#000000'
+            },
+            'author': 'metro start'
+        },
+        {
+            'title': 'metro start',
+            'online': true,
+            'colors': {
+                'options-color': '#ff0000',
+                'main-color': '#ffffff',
+                'title-color': '#4a4a4a',
+                'background-color': '#000000'
+            },
+            'author': 'metro start'
+        }]
     };
 });

@@ -247,3 +247,31 @@ h1 {
 .theme-button {
 	display: inline-block;
 }
+
+/* Overlays */
+.overlay, .overlay-wrap {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+}
+.message-box {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+
+  height: 150px;
+  border: solid 2px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#message {
+	margin-bottom: 12px;
+}

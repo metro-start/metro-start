@@ -12,9 +12,10 @@ module.exports = function (grunt) {
         webpack: {
             all: {
                 entry: './js/app.js',
+                devtool: 'source-map',
                 output: {
-                    filename: 'metro-start.min.js',
-                    path: './dist'
+                    filename: 'metro-start.js',
+                    path: './dist',
                 },
                 stats: {
                     // Configure the console output
@@ -29,12 +30,13 @@ module.exports = function (grunt) {
                 },
                 plugins: [
                     new OptimizeJsPlugin({
-                        sourceMap: false
+                        sourceMap: true
                     }),
                     new WebpackUglifyJsPlugin({
                         cacheFolder: './cached_uglify/',
                         debug: true,
                         minimize: true,
+                        sourceMap: true
                     }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
