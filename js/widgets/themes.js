@@ -111,11 +111,6 @@ define(['jquery', 'spectrum-colorpicker', '../widgets/confirm', '../utils/util',
         }
         
         var localThemes = storage.get('localThemes', []);
-        if (localThemes && localThemes.contains(function(t) {
-          return t.title === title;
-        })) {
-          confirmWidget.alert('you already have a theme named ' + title);
-        }
 
         this.currentTheme.online = false;
         this.currentTheme.title = title;
