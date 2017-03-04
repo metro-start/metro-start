@@ -84,10 +84,10 @@ define(['jquery', 'spectrum-colorpicker', '../widgets/confirm', '../utils/util',
       },
 
       randomTheme: function () {
-        this.currentTheme.colors['options-color'] = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
-        this.currentTheme.colors['background-color'] = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
-        this.currentTheme.colors['main-color'] = '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
-        this.currentTheme.colors['title-color'] = '#' + Math.floor(Math.random() * 0xFFFFF).toString(16);
+        this.currentTheme.colors['options-color'] = '#' + util.randomColor();
+        this.currentTheme.colors['background-color'] = '#' + util.randomColor();
+        this.currentTheme.colors['main-color'] = '#' + util.randomColor();
+        this.currentTheme.colors['title-color'] = '#' + util.randomColor();
 
         jquery('#input-background-color').spectrum('set', this.currentTheme.colors['background-color']);
         jquery('#input-options-color').spectrum('set', this.currentTheme.colors['options-color']);
@@ -111,7 +111,7 @@ define(['jquery', 'spectrum-colorpicker', '../widgets/confirm', '../utils/util',
         }
         
         var localThemes = storage.get('localThemes', []);
-        if (localThemes.contains(function(t) {
+        if (localThemes && localThemes.contains(function(t) {
           return t.title === title;
         })) {
           confirmWidget.alert('you already have a theme named ' + title);
