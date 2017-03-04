@@ -47,6 +47,17 @@ module.exports = function (grunt) {
                     ])]
             }
         },
+        compress: {
+            all: {
+                options: {
+                    archive: './metro-start.zip',
+                    mode: 'zip'
+                },
+                files: [
+                    { src: './dist/**', dest: '/' }
+                ]
+            }
+        },
         jshint: {
             all: [
                 'js/**/*.js'
@@ -71,8 +82,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     grunt.registerTask('build', ['webpack']);
     grunt.registerTask('test', ['webpack', 'jshint']);
     grunt.registerTask('default', ['webpack', 'test']);
+    grunt.registerTask('publish', ['webpack', 'jshint', 'compress']);
 };
