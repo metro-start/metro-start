@@ -83,6 +83,11 @@ function (jquery, jqueryColor, jss, util, storage) {
       jss.set('body', {
         'font-family': fonts[storage.get('currentFont', 0)],
       });
+    },
+
+    // https://stackoverflow.com/a/35970186/24391
+    invertColor: function() {
+
     }
   };
 
