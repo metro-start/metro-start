@@ -2,7 +2,7 @@
   "name": "metro-start",
   "description": "A new tab page for Google Chrome inspired by Zune",
   "homepage": "http://www.metro-start.com/",
-  "version": "10.2.0",
+  "version": "10.3.2",
   "license": "MIT",
   "scripts": {
     "build": "grunt build",
@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "detect-dom-ready": "*",
+    "grunt-contrib-compress": "^1.4.1",
+    "grunt-release": "^0.14.0",
     "html-webpack-plugin": "^2.24.1",
     "jquery": "*",
     "jquery-color": "git+https://github.com/jquery/jquery-color.git",
@@ -31,6 +33,7 @@
     "grunt-contrib-watch": "*",
     "grunt-notify": "*",
     "grunt-webpack": "*",
+    "grunt-zip-directories": "^0.1.3",
     "requirejs": "^2.3.2",
     "transfer-webpack-plugin": "^0.1.4",
     "webpack": "*",

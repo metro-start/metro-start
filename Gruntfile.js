@@ -1,5 +1,4 @@
 /* jshint node: true */
-
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
 var OptimizeJsPlugin = require('optimize-js-plugin');
@@ -40,11 +39,23 @@ module.exports = function (grunt) {
                     }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
+                        { from: 'fonts', to: 'fonts' },
                         { from: 'icons', to: 'icons' },
                         { from: 'manifest.json' },
                         { from: 'start.html' },
                         { from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
                     ])]
+            }
+        },
+        compress: {
+            all: {
+                options: {
+                    archive: './metro-start.zip',
+                    mode: 'zip'
+                },
+                files: [
+                    { cwd: 'dist/', src: '**', expand: true }
+                ]
             }
         },
         jshint: {
@@ -55,11 +66,11 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: [
-                    'js/**/*.js',
+					'js/**/*.js',
+					'css/*.css',
                     'start.html',
-                    'css/*.css'
                 ],
-                tasks: ['test'],
+                tasks: ['default'],
                 options: {
                     spawn: false,
                 },
@@ -71,8 +82,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     grunt.registerTask('build', ['webpack']);
-    grunt.registerTask('test', ['webpack', 'jshint']);
-    grunt.registerTask('default', ['webpack', 'test']);
+    grunt.registerTask('test', ['build', 'jshint']);
+    
+    grunt.registerTask('publish', ['test', 'compress']);
+    grunt.registerTask('default', ['test']);
 };
