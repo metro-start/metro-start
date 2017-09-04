@@ -15,7 +15,7 @@ module.exports = function (grunt) {
                 devtool: 'source-map',
                 output: {
                     filename: 'metro-start.js',
-                    path: './dist',
+                    path: __dirname + '/dist',
                 },
                 stats: {
                     // Configure the console output

@@ -1,5 +1,5 @@
-define(['jquery', 'jquery-color', 'jss', './util', './storage'], 
-function (jquery, jqueryColor, jss, util, storage) {
+define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage'],
+function (jquery, jqueryColor, jss, trianglify, util, storage) {
   var fonts = ['"Segoe UI", Helvetica, Arial, sans-serif', 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif'];
 
   var script = {
@@ -13,6 +13,7 @@ function (jquery, jqueryColor, jss, util, storage) {
     updateStyle: function (theme, transition) {
       this.updateFont();
 
+      var isTriangled = true || theme.isTriangled;
       var options_color = theme.colors['options-color'];
       var background_color = theme.colors['background-color'];
       var main_color = theme.colors['main-color'];
@@ -35,17 +36,29 @@ function (jquery, jqueryColor, jss, util, storage) {
       });
 
       // Animate the color transition.
-      var duration = 0;//transition === true ? 800 : 0;
-      jquery('body').animate({ 'color': main_color }, { duration: duration, queue: false });
+      var duration = (transition === true ? 800 : 0);
+
+      if (isTriangled) {
+        var b = jquery('body');
+        console.log(b);
+        console.log(b.scrollWidth);
+        var pat = trianglify({width: b.prop('scrollWidth'), height: b.prop('scrollHeight') });
+        console.log(pat);
+        jss.set('body', {
+          'background': 'url(' + pat.png() + ')'
+        });
+      } else {
+        jquery('body').animate({ 'color': main_color }, { duration: duration, queue: false });
+        jss.set('.background-color', {
+          'background-color': background_color
+        });
+      }
       jquery('input').animate({ 'color': main_color }, { duration: duration, queue: false });
       jquery('.background-color').animate({ 'backgroundColor': background_color }, { duration: duration, queue: false });
       jquery('.titles-color').animate({ 'color': title_color }, { duration: duration, queue: false });
       jquery('.options-color').animate({ 'color': options_color }, { duration: duration, queue: false });
 
       // ...but then we still need to add it to the DOM.
-      jss.set('.background-color', {
-        'background-color': background_color
-      });
       jss.set('.titles-color', {
         'color': title_color
       });

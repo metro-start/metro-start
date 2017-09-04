@@ -23,6 +23,7 @@
     "metro-select": "^1.0.17",
     "optimize-js-plugin": "^0.0.4",
     "spectrum-colorpicker": "^1.8.0",
+    "trianglify": "^1.1.0",
     "webpack-uglify-js-plugin": "^1.1.9"
   },
   "devDependencies": {
