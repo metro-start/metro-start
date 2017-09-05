@@ -1,5 +1,5 @@
-define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage'],
-function (jquery, jqueryColor, jss, trianglify, util, storage) {
+define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', './defaults'],
+function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
   var fonts = ['"Segoe UI", Helvetica, Arial, sans-serif', 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif'];
 
   var script = {
@@ -12,8 +12,8 @@ function (jquery, jqueryColor, jss, trianglify, util, storage) {
     */
     updateStyle: function (theme, transition) {
       this.updateFont();
+      this.updateBackground();
 
-      var isTriangled = true || theme.isTriangled;
       var options_color = theme.colors['options-color'];
       var background_color = theme.colors['background-color'];
       var main_color = theme.colors['main-color'];
@@ -38,16 +38,8 @@ function (jquery, jqueryColor, jss, trianglify, util, storage) {
       // Animate the color transition.
       var duration = (transition === true ? 800 : 0);
 
-      if (isTriangled) {
-        var b = jquery('body');
-        console.log(b);
-        console.log(b.scrollWidth);
-        var pat = trianglify({width: b.prop('scrollWidth'), height: b.prop('scrollHeight') });
-        console.log(pat);
-        jss.set('body', {
-          'background': 'url(' + pat.png() + ')'
-        });
-      } else {
+      var isTriangled = storage.get('isTriangled', true);
+      if (!isTriangled) {
         jquery('body').animate({ 'color': main_color }, { duration: duration, queue: false });
         jss.set('.background-color', {
           'background-color': background_color
@@ -74,7 +66,7 @@ function (jquery, jqueryColor, jss, trianglify, util, storage) {
       jss.set('.bookmark-active', {
         'background-color': options_color
       });
-      jss.set('.message-box', {
+      jss.set('.modal-content', {
         'background-color': options_color
       });
       jss.set('.pagebase-grouped > .group > .page', {
@@ -89,6 +81,22 @@ function (jquery, jqueryColor, jss, trianglify, util, storage) {
       });
       jss.set('#picker', {
         'border': '1px solid ' + options_color
+      });
+    },
+
+    updateBackground: function () {
+      var currentTrianglifer = storage.get('currentTrianglifer', defaults.defaultTrianglifier);
+      var b = jquery('body');
+      
+      var pat = trianglify({
+        width: b.prop('scrollWidth'), 
+        height: b.prop('scrollHeight'),
+        x_colors: currentTrianglifer.color
+      });
+      
+      console.log(pat);
+      jss.set('body', {
+        'background': 'url(' + pat.png() + ')'
       });
     },
 

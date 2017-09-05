@@ -7,6 +7,7 @@ A new tab page for Google Chrome inspired by Zune.
 [Available on the Google Chrome Store](https://chrome.google.com/webstore/detail/bbhdfpmfdplolnnkpdepnelcfdmikjfd)
 
 Powered by ⚡:
+* [Trianglify](http://qrohlf.com/trianglify/)
 * [Grunt](http://gruntjs.com/)
 * [Yarn](https://yarnpkg.com/en/)
 * [Webpack](https://webpack.js.org/)

@@ -16,7 +16,7 @@ define([], function Util() {
             }
             return fragment;
         },
-
+        
         // Add a CSS class to a DOM element.
         // elem: The DOM element to be mondified.
         // newClass: The class to be applied to the node.

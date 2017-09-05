@@ -22,6 +22,10 @@ define(function() {
             'author': 'metro start'
         },
 
+        defaultTrianglifier: {
+            'color': 'Greys'
+        },
+
         // The default sortnig for the app.
         defaultSort: {
             'todos': false,

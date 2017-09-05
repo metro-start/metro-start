@@ -29,9 +29,6 @@ module.exports = function (grunt) {
                     }
                 },
                 plugins: [
-                    new OptimizeJsPlugin({
-                        sourceMap: true
-                    }),
                     new WebpackUglifyJsPlugin({
                         cacheFolder: './cached_uglify/',
                         debug: true,
