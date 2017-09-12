@@ -1,188 +1,206 @@
 <html ng-csp>
-	<head>
-		<!-- css stylesheets -->
-		<link rel="stylesheet" type="text/css" href="css/reset.css">
-	 	<link rel="stylesheet" type="text/css" href="css/style.css">
-		 <link rel="stylesheet" href="css/spectrum.css" />
-		<title>start</title>
-	</head>
-	<body class="background-color">
-		<h1 class="titles-color">start here . . .</h1>
-		<div class="pages-chooser">
-			<select class="chooser" id="pages-chooser">
+
+<head>
+	<!-- css stylesheets -->
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" href="css/spectrum.css" />
+	<title>start</title>
+</head>
+
+<body class="background-color">
+	<h1 class="titles-color">start here . . .</h1>
+	<div class="pages-chooser">
+		<select class="chooser" id="pages-chooser">
 				<option class="clickable todos-option">todos</option>
 				<option class="clickable sessions-option">sessions</option>
 				<option class="clickable apps-option">apps</option>
 				<option class="clickable bookmarks-option">bookmarks</option>
 				<option class="clickable themes-option">themes</option>
 			</select>
-		</div>
-		<div class="external">
-			<div class="internal">
-				<div class="todos collection">
-					<div id="todos">
-						<div class="options-color option sort">
-							<select class="chooser" id="todos-sort-chooser">
+	</div>
+	<div class="external">
+		<div class="internal">
+			<div class="todos collection">
+				<div id="todos">
+					<div class="options-color option sort">
+						<select class="chooser" id="todos-sort-chooser">
 								<option class="clickable">unsorted</unsorted>
 								<option class="clickable">sorted</unsorted>
 							</select>
-						</div>
-						<div class="external_selector" id="external_selector_todos">
-							<div class="internal_selector" id="internal_selector_todos">
-							</div>
-						</div>
-						<form id="addTodo" class="add option">
-							<input type="text" name="newTodo" id="newTodo" placeholder="new todo" class="option" size="26">
-							<input type="submit" class="options-color option" value="save">
-						</form>
 					</div>
-				</div>
-				<div class="sessions collection">
-					<div id="sessions">
-						<div class="options-color option sort">
-							<select class="chooser" id="sessions-sort-chooser">
-								<option class="clickable">unsorted</unsorted>
-								<option class="clickable">sorted</unsorted>
-							</select>
-						</div>
-						<div class="external_selector" id="external_selector_sessions">
-							<div class="internal_selector" id="internal_selector_sessions">
-							</div>
+					<div class="external_selector" id="external_selector_todos">
+						<div class="internal_selector" id="internal_selector_todos">
 						</div>
 					</div>
-				</div>
-				<div class="apps collection">
-					<div id="apps">
-						<div class="options-color option sort">
-							<select class="chooser" id="apps-sort-chooser">
-								<option class="clickable">unsorted</unsorted>
-								<option class="clickable">sorted</unsorted>
-							</select>
-						</div>
-						<div class="external_selector" id="external_selector_apps">
-							<div class="internal_selector" id="internal_selector_apps">
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="bookmarks collection">
-					<div id="bookmarks">
-						<div class="options-color option sort">
-							<select class="chooser" id="bookmarks-sort-chooser">
-								<option class="clickable">unsorted</unsorted>
-								<option class="clickable">sorted</unsorted>
-							</select>
-						</div>
-						<div class="external_selector" id="external_selector_bookmarks">
-							<div class="internal_selector" id="internal_selector_bookmarks">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="themes collection">
-					<div id="themes">
-						<div class="options-color option sort">
-							<select class="chooser" id="themes-sort-chooser">
-								<option class="clickable">unsorted</unsorted>
-								<option class="clickable">sorted</unsorted>
-							</select>
-						</div>
-						<div class="external_selector" id="external_selector_themes">
-							<div class="internal_selector" id="internal_selector_themes">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="weather">
-			<div id="toggleWeather" class="options-color option clickable"></div>
-			<div id="weather" class="hide">
-				<div id="city"></div>
-				<div>
-					<form id="saveLocation">
-						<input type="text" id="newLocation" class="option" size="14" placeholder="vancouver, bc">
+					<form id="addTodo" class="add option">
+						<input type="text" name="newTodo" id="newTodo" placeholder="new todo" class="option" size="26">
 						<input type="submit" class="options-color option" value="save">
 					</form>
 				</div>
-				<div class="options-color option chooser">
-					<select class="chooser" id="weather-unit-chooser">
+			</div>
+			<div class="sessions collection">
+				<div id="sessions">
+					<div class="options-color option sort">
+						<select class="chooser" id="sessions-sort-chooser">
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
+							</select>
+					</div>
+					<div class="external_selector" id="external_selector_sessions">
+						<div class="internal_selector" id="internal_selector_sessions">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="apps collection">
+				<div id="apps">
+					<div class="options-color option sort">
+						<select class="chooser" id="apps-sort-chooser">
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
+							</select>
+					</div>
+					<div class="external_selector" id="external_selector_apps">
+						<div class="internal_selector" id="internal_selector_apps">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="bookmarks collection">
+				<div id="bookmarks">
+					<div class="options-color option sort">
+						<select class="chooser" id="bookmarks-sort-chooser">
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
+							</select>
+					</div>
+					<div class="external_selector" id="external_selector_bookmarks">
+						<div class="internal_selector" id="internal_selector_bookmarks">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="themes collection">
+				<div id="themes">
+					<div class="options-color option sort">
+						<select class="chooser" id="themes-sort-chooser">
+								<option class="clickable">unsorted</unsorted>
+								<option class="clickable">sorted</unsorted>
+							</select>
+					</div>
+					<div class="external_selector" id="external_selector_themes">
+						<div class="internal_selector" id="internal_selector_themes">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="weather">
+		<div id="toggleWeather" class="options-color option clickable"></div>
+		<div id="weather" class="hide">
+			<div id="city"></div>
+			<div>
+				<form id="saveLocation">
+					<input type="text" id="newLocation" class="option" size="14" placeholder="vancouver, bc">
+					<input type="submit" class="options-color option" value="save">
+				</form>
+			</div>
+			<div class="options-color option chooser">
+				<select class="chooser" id="weather-unit-chooser">
 						<option class="clickable">fahrenheit</option>
 						<option class="clickable">celsius</option>
 					</select>
-				</div>
-				<p id="temp">
-					<span id="currentTemp"></span>&deg;<span class="options-color" id="unit"></span> /
-					<span id="highTemp"></span><span class="options-color"> hi</span> /
-					<span id="lowTemp"></span><span class="options-color"> lo</span>
-				</p>
-				<p id="condition"></p>
 			</div>
+			<p id="temp">
+				<span id="currentTemp"></span>&deg;<span class="options-color" id="unit"></span> /
+				<span id="highTemp"></span><span class="options-color"> hi</span> /
+				<span id="lowTemp"></span><span class="options-color"> lo</span>
+			</p>
+			<p id="condition"></p>
 		</div>
-		<div class="footer">
-			<p class="options-color wrench clickable" id="wrench">wrench</p>
-			<div class="options-color option font">
-				<select class="chooser font-chooser" id="font-chooser">
+	</div>
+	<div class="footer">
+		<p class="options-color wrench clickable" id="wrench">wrench</p>
+		<div class="options-color option font">
+			<select class="chooser font-chooser" id="font-chooser">
 					<option class="clickable" value="0">normal fonts</option>
 					<option class="clickable" value="1">thin fonts</option>
 				</select>
-			</div>
-			<p class="option options-color clickable theme-button" id="randomTheme">randomize</p>
-			<p class="option options-color clickable trianglify-button" id="trianglify">trianglify</p>
-			<p class="option options-color clickable theme-button" id="editTheme">edit theme</p>
 		</div>
-		<div class="picker background-color hide" id="picker">
-			<p>
+		<p class="option options-color clickable theme-button" id="randomTheme">randomize</p>
+		<p class="option options-color clickable trianglify-button" id="trianglifyButton">trianglify</p>
+		<p class="option options-color clickable theme-button" id="editTheme">edit theme</p>
+	</div>
+	<div class="metro-modal">
+		<div class="picker">
+			<div class="color-picker">
+			<div>
+				<span class="color-picker-text options-color">x colors</span>
+				<input type="text" id="trianglifierXColor" size="9">
+			</div> 
+			<div>
+				<span class="color-picker-text options-color">y colors</span>
+				<input type="text" id="trianglifierYColor" size="9">
+			</div>
+		</div>
+			<div class="input-picker">
+				<input type="text" id="trianglifierSize" class="options-color" size="12" placeholder="size">
+				<input type="text" id="trianglifierColorSpace" class="options-color" size="12" placeholder="color space">
+				<input type="text" id="trianglifierStrokeWidth" class="options-color" size="12" placeholder="stroke width">
+				<input type="text" id="trianglifierCellSize" class="options-color" size="12" placeholder="cell size">
+				<input type="text" id="trianglifierWidth" class="options-color" size="12" placeholder="width">
+				<input type="text" id="trianglifierHeight" class="options-color" size="12" placeholder="height">
+				<input type="text" id="trianglifierVariance" class="options-color" size="12" placeholder="variance">
+				<input type="text" id="trianglifierSeed" class="options-color" size="12" placeholder="seed">
+			</div>
+		</div>
+	</div>
+	<div class="metro-modal">
+		<div class="picker">
+			<div class="input-picker">
 				<input type="text" id="newThemeTitle" class="options-color" size="12" placeholder="title">
 				<input type="text" id="newThemeAuthor" class="options-color" size="12" placeholder="author">
-				<span class="options-color clickable" id="saveTheme">save</span>
-			</p>
-			<div>
-				<span class="palette-text options-color">palette 
-					<input type="text" id="input-background-palette" size="9">
-				</span>
-				<div id="background-palette"></div>
 			</div>
-			<div>
-				<span class="picker-text options-color">background 
+			<div class="color-picker">
+				<div>
+					<span class="picker-text options-color">background</span>
 					<input type="text" id="input-background-color" size="9">
-				</span>
-				<div id="background-color"></div>
-			</div>
-			<div>
-				<span class="picker-text options-color">title
+				</div> 
+				<div>
+					<span class="picker-text options-color">title</span>
 					<input type="text" id="input-title-color" size="9">
-				</span>
-				<div id="title-color"></div>
-			</div>
-			<div>
-				<span class="picker-text options-color">main
+				</div> 
+				<div>
+					<span class="picker-text options-color">main</span>
 					<input type="text" id="input-main-color" size="9">
-				</span>
-				<div id="main-color"></div>
-			</div>
-			<div>
-				<span class="picker-text options-color">options
+				</div> 
+				<div>
+					<span class="picker-text options-color">options</span>
 					<input type="text" id="input-options-color" size="9">
-				</span>
-				<div id="options-color"></div>
+				</div>
 			</div>
 		</div>
-		<!-- Rule to hide all options when page first loads.
+	</div>
+	<!-- Rule to hide all options when page first loads.
 			 Removes option elements added after the calls to hide .option were made. -->
-		<style type="text/css" id="hideRule">
-			.option {
-				display: none;
-			}
-			/* Remove extra space that was added for sorting. */
-			.external_selector {
-				height: 100%;
-			}
-			#external_selector_todos {
-				height: 100%;
-			}
-		</style>
-		<script src="metro-start.js"></script>
-	</body>
+	<style type="text/css" id="hideRule">
+		.option {
+			display: none;
+		}
+		/* Remove extra space that was added for sorting. */
+
+		.external_selector {
+			height: 100%;
+		}
+
+		#external_selector_todos {
+			height: 100%;
+		}
+	</style>
+	<script src="metro-start.js"></script>
+</body>
+
 </html>

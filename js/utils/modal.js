@@ -30,9 +30,9 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
                 cancel.firstElementChild.textContent = cancelText;
             }
 
-            confirm.firstElementChild.addEventListener('click', this.modalClosed.bind(this, modalElement, true));
-            cancel.firstElementChild.addEventListener('click', this.modalClosed.bind(this, modalElement, false));
-            overlayCover.firstElementChild.addEventListener('click', this.modalClosed.bind(this, modalElement, false));
+            confirm.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, true));
+            cancel.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
+            overlayCover.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
 
             info.firstElementChild.appendChild(confirm);
             info.firstElementChild.appendChild(cancel);
@@ -48,12 +48,13 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             body.append(modalElement);
         },
 
-        modalClosed: function(res, modalElement) {
+        modalClosed: function(overlayId, res) {
             if (res && !!this.modalCallback) {
                 this.modalCallback();
             }
 
-            modalElement.parentNode.removeChild(modalElement);
+            var overlayElement = document.getElementById(overlayId);
+            overlayElement.parentNode.removeChild(overlayElement);
         }
     };
 

@@ -4,56 +4,76 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       data: {},
 
       elems: {
-        trianglify: document.getElementById('trianglify')
+        trianglify: document.getElementById('trianglifyButton'),
       },
+
+      textInputs: [
+        document.getElementById('trianglifierSize'),
+        document.getElementById('trianglifierColorSpace'),
+        document.getElementById('trianglifierStrokeWidth'),
+        document.getElementById('trianglifierCellSize'),
+        document.getElementById('trianglifierVariance'),
+        document.getElementById('trianglifierSeed')
+      ],
+
+      colorPickers: [
+        document.getElementById('trianglifierXColor'),
+        document.getElementById('trianglifierYColor')
+      ],
 
       currentTrianglifer: {},
 
       init: function () {
         this.currentTrianglifer = storage.get('currentTrianglifer', defaults.defaultTrianglifier);
-        script.updateBackground(this.currentTrianglifer);        
-        
+        // script.updateBackground(this.currentTrianglifer);        
+
         this.elems.trianglify.addEventListener('click', this.trianglify.bind(this));
 
-        this.bindSpectrum();
-
-        var that = this;
-        setTimeout(function() { 
-          that.elems.trianglify.click();
-        }, 2000);
+        // DEBUG
+        this.showOptions();
       },
 
-      bindSpectrum: function () {
-        this.spectrumBound = true;
-        var that = this;
-        var bindOptions = function (inputName) {
-          return {
-            chooseText: 'save color',
-            appendTo: jquery('#input-' + inputName).parent(),
-            background: 'black',
-            showButtons: false,
-            color: that.currentTrianglifer.color,
-            move: that.colorChangedDelegate.bind(that, inputName)
-          };
-        };
+      showOptions: function() {
+        this.bindSpectrum();
 
-        jquery('#input-triangle-color').spectrum(bindOptions('triangle-color'));
+        for (var i = 0; i < this.textInputs.length; i++) {
+          console.log(this.textInputs[i]);
+          this.bindInput(this.textInputs[i]);
+        }
+        
+        for (var j = 0; j < this.colorPickers.length; j++) {
+          console.log(this.colorPickers[j]);
+          this.bindSpectrum(this.colorPickers[j].id);
+        }
+      },
+
+      bindInput: function(inputElement) {
+        console.log(inputElement);
+        inputElement.addEventListener('input', this.updateTrianglifier.bind(this, inputElement.id));
+      },
+
+      updateTrianglifier: function(inputId, val) {
+        console.log(val);
+        this.data[inputId] = val;
+
+        console.log(inputId);
+      },
+
+      bindSpectrum: function (colorPickerId) {
+        jquery('#' + colorPickerId).spectrum({
+            chooseText: 'save color',
+            replacerClassName: 'spectrum-replacer',
+            appendTo: jquery(colorPickerId).parent(),
+            showButtons: false,
+            color: this.data[colorPickerId],
+            move: this.colorChangedDelegate.bind(this, colorPickerId)
+          });
       },
 
       trianglify: function () {
-        var picker = jquery('<div class="picker" id="trianglifierPicker">' +
-          '<p>' +
-            '<input type="text" id="trianglifierSize" class="options-color" size="12" placeholder="size">' +
-            '<input type="text" id="trianglifierVertexes" class="options-color" size="12" placeholder="vertexes">' +
-          '</p>' +
-          '<div>' +
-            '<span class="picker-text options-color">triangle <input type="text" id="input-triangle-color" size="9">' +
-            '</span>' +
-            '<div id="triangle-color"></div>' +
-          '</div>' +
-        '</div>');
+        // var picker = jquery('#trianglifierPicker');
 
-        this.modalWindow = modal.createModal('trianglify', picker[0], this.modalClosed.bind(this), 'save', 'cancel');
+//        this.modalWindow = modal.createModal('trianglify', picker[0], this.modalClosed.bind(this), 'save', 'cancel');
         this.bindSpectrum();
       },
 

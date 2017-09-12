@@ -12,6 +12,7 @@ define(['jquery', './util'], function Storage(jquery, util) {
                     that.deferred.resolve(that);
                 });
             }
+            
             return this.deferred.promise();
         },
 

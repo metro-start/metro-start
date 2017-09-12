@@ -1,7 +1,11 @@
-define(['jquery', 'spectrum-colorpicker', '../widgets/confirm', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
-  function (jquery, spectrum, confirmWidget, util, storage, defaults, script) {
+define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
+  function (jquery, spectrum, modal, util, storage, defaults, script) {
     var themes = {
       data: {},
+
+      templates: {
+
+      },
 
       elems: {
         picker: document.getElementById('picker'),
@@ -28,7 +32,7 @@ define(['jquery', 'spectrum-colorpicker', '../widgets/confirm', '../utils/util',
 
         this.elems.editTheme.addEventListener('click', this.editTheme.bind(this));
         this.elems.randomTheme.addEventListener('click', this.randomTheme.bind(this));
-        this.elems.saveTheme.addEventListener('click', this.saveTheme.bind(this));
+        // this.elems.saveTheme.addEventListener('click', this.saveTheme.bind(this));
 
         this.bindSpectrum();
       },
@@ -39,6 +43,7 @@ define(['jquery', 'spectrum-colorpicker', '../widgets/confirm', '../utils/util',
         var bindOptions = function (inputName) {
           return {
             chooseText: 'save color',
+            replacerClassName: 'spectrum-replacer',
             appendTo: jquery('#input-' + inputName).parent(),
             background: 'black',
             showButtons: false,
