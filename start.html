@@ -132,21 +132,41 @@
 		</div>
 		<p class="option options-color clickable theme-button" id="randomTheme">randomize</p>
 		<p class="option options-color clickable trianglify-button" id="trianglifyButton">trianglify</p>
-		<p class="option options-color clickable theme-button" id="editTheme">edit theme</p>
+		<p class="option options-color clickable theme-button" id="editThemeButton">edit theme</p>
 	</div>
-	<div class="metro-modal">
+	<div id="themeEditor">
 		<div class="picker">
-			<div class="color-picker">
-			<div>
-				<span class="color-picker-text options-color">x colors</span>
-				<input type="text" id="trianglifierXColor" size="9">
-			</div> 
-			<div>
-				<span class="color-picker-text options-color">y colors</span>
-				<input type="text" id="trianglifierYColor" size="9">
+			<div class="theme-section">color options</div>
+			<div class="theme-editor-section color-picker">
+				<div>
+					<span class="picker-text">background</span>
+					<input type="text" id="input-background-color" size="9">
+				</div> 
+				<div>
+					<span class="picker-text">title</span>
+					<input type="text" id="input-title-color" size="9">
+				</div> 
+				<div>
+					<span class="picker-text">main</span>
+					<input type="text" id="input-main-color" size="9">
+				</div> 
+				<div>
+					<span class="picker-text">options</span>
+					<input type="text" id="input-options-color" size="9">
+				</div>
 			</div>
-		</div>
-			<div class="input-picker">
+			<div class="theme-section">background options</div>
+			<div class="theme-editor-section color-picker">
+				<div>
+					<span class="color-picker-text">x colors</span>
+					<input type="text" id="trianglifierXColor" size="9">
+				</div> 
+				<div>
+					<span class="color-picker-text">y colors</span>
+					<input type="text" id="trianglifierYColor" size="9">
+				</div>
+			</div>
+			<div class="theme-editor-section input-picker">
 				<input type="text" id="trianglifierSize" class="options-color" size="12" placeholder="size">
 				<input type="text" id="trianglifierColorSpace" class="options-color" size="12" placeholder="color space">
 				<input type="text" id="trianglifierStrokeWidth" class="options-color" size="12" placeholder="stroke width">
@@ -156,31 +176,10 @@
 				<input type="text" id="trianglifierVariance" class="options-color" size="12" placeholder="variance">
 				<input type="text" id="trianglifierSeed" class="options-color" size="12" placeholder="seed">
 			</div>
-		</div>
-	</div>
-	<div class="metro-modal">
-		<div class="picker">
-			<div class="input-picker">
-				<input type="text" id="newThemeTitle" class="options-color" size="12" placeholder="title">
-				<input type="text" id="newThemeAuthor" class="options-color" size="12" placeholder="author">
-			</div>
-			<div class="color-picker">
-				<div>
-					<span class="picker-text options-color">background</span>
-					<input type="text" id="input-background-color" size="9">
-				</div> 
-				<div>
-					<span class="picker-text options-color">title</span>
-					<input type="text" id="input-title-color" size="9">
-				</div> 
-				<div>
-					<span class="picker-text options-color">main</span>
-					<input type="text" id="input-main-color" size="9">
-				</div> 
-				<div>
-					<span class="picker-text options-color">options</span>
-					<input type="text" id="input-options-color" size="9">
-				</div>
+			<div class="theme-section">author info</div>
+			<div class="theme-editor-section input-picker">
+				<input type="text" id="newThemeTitle" class="options-color" size="20" placeholder="title">
+				<input type="text" id="newThemeAuthor" class="options-color" size="20" placeholder="author">
 			</div>
 		</div>
 	</div>

@@ -324,7 +324,12 @@ h1 {
 	top: 0;
 	left: 0;
 	width: 100vw;
-	height: 100vh;
+	height: 100%;
+	backdrop-filter: blur(10px);
+}
+
+/* Metro Modal */
+.metro-modal {
 }
 
 .modal-content {
@@ -334,7 +339,7 @@ h1 {
 	top: 0;
 	bottom: 0;
 	margin: auto;
-	height: 150px;
+	height: 400px;
 	border: solid 2px;
 	display: flex;
 	align-items: center;
@@ -342,6 +347,6 @@ h1 {
 	flex-direction: column;
 }
 
-.modal-custom {
-	margin-bottom: 12px;
+.theme-section {
+	text-decoration: underline;
 }

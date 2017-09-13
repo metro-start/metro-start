@@ -10,47 +10,46 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             cancel: util.createElement('<span id="cancel-button" class="main-color clickable small-text"></span>')
         },
 
+        modalCallbacks: { },
+
         init: function() { },
 
         createModal: function (id, content, callback, confirmText, cancelText) {
-            this.modalCallback = callback;
+            this.modalCallbacks[id] = callback;
 
             var modalElement = this.templates.overlay.cloneNode(true);
             var modalContent = this.templates.modalContent.cloneNode(true);
             var info = this.templates.info.cloneNode(true);
-            var confirm = this.templates.confirm.cloneNode(true);
-            var cancel = this.templates.cancel.cloneNode(true);
             var overlayCover = this.templates.overlayCover.cloneNode(true);
-
-            if (!!confirmText) {
-                confirm.firstElementChild.textContent = confirmText;
-            }
-
-            if (!!cancelText) {
-                cancel.firstElementChild.textContent = cancelText;
-            }
-
-            confirm.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, true));
-            cancel.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
             overlayCover.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
 
-            info.firstElementChild.appendChild(confirm);
-            info.firstElementChild.appendChild(cancel);
+            if (confirmText !== '') {
+                var confirm = this.templates.confirm.cloneNode(true);
+                confirm.firstElementChild.textContent = confirmText;
+                confirm.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, true));
+            }
 
-            util.addClass(content, 'modal-custom');
+            if(cancelText !== '') {
+                var cancel = this.templates.cancel.cloneNode(true);
+                cancel.firstElementChild.textContent = cancelText;
+                cancel.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
+                info.firstElementChild.appendChild(cancel);
+            }
+
             modalContent.firstElementChild.appendChild(content);
             modalContent.firstElementChild.appendChild(info);
 
-            modalElement.firstElementChild.id = id;
-            modalElement.firstElementChild.appendChild(modalContent);
+            // modalElement.firstElementChild.id = id;
+            // modalElement.firstElementChild.appendChild(modalContent);
 
             var body = jquery('body');
             body.append(modalElement);
+            body.append(modalContent);
         },
 
-        modalClosed: function(overlayId, res) {
+        modalClosed: function(id, res) {
             if (res && !!this.modalCallback) {
-                this.modalCallback();
+                this.modalCallbacks[id](res);
             }
 
             var overlayElement = document.getElementById(overlayId);

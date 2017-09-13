@@ -30,8 +30,12 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
           script.updateStyle(this.currentTheme, false);
         }
 
-        this.elems.editTheme.addEventListener('click', this.editTheme.bind(this));
-        this.elems.randomTheme.addEventListener('click', this.randomTheme.bind(this));
+        // this.elems.editTheme.addEventListener('click', this.editTheme.bind(this));
+
+        // setTimeout(200, function() { 
+        //   this.elems.editTheme.click();
+        // });
+//        this.elems.randomTheme.addEventListener('click', this.randomTheme.bind(this));
         // this.elems.saveTheme.addEventListener('click', this.saveTheme.bind(this));
 
         this.bindSpectrum();

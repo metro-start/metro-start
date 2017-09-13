@@ -1,10 +1,15 @@
 define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
   function (jquery, spectrum, modal, util, storage, defaults, script) {
     var trianglifier = {
+
+      isInit: false,
+
       data: {},
 
       elems: {
+        themeEditor: document.getElementById('themeEditor'),
         trianglify: document.getElementById('trianglifyButton'),
+        editThemeButton: document.getElementById('editThemeButton'),
       },
 
       textInputs: [
@@ -24,27 +29,34 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       currentTrianglifer: {},
 
       init: function () {
-        this.currentTrianglifer = storage.get('currentTrianglifer', defaults.defaultTrianglifier);
-        // script.updateBackground(this.currentTrianglifer);        
+        this.theme = storage.get('theme', defaults.defaultTheme);
+        this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
 
-        this.elems.trianglify.addEventListener('click', this.trianglify.bind(this));
-
+        this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
         // DEBUG
-        this.showOptions();
+        var that = this;
+        setTimeout(function() { that.elems.editThemeButton.click(); }, 500);
+        // this.showOptions();
       },
 
-      showOptions: function() {
-        this.bindSpectrum();
+      openThemeEditor: function() {
+        if (!this.isInit) {
+          for (var i = 0; i < this.textInputs.length; i++) {
+            this.bindInput(this.textInputs[i]);
+          }
+          
+          for (var j = 0; j < this.colorPickers.length; j++) {
+            this.bindSpectrum(this.colorPickers[j]);
+          }
 
-        for (var i = 0; i < this.textInputs.length; i++) {
-          console.log(this.textInputs[i]);
-          this.bindInput(this.textInputs[i]);
+          this.isInit = true;
         }
-        
-        for (var j = 0; j < this.colorPickers.length; j++) {
-          console.log(this.colorPickers[j]);
-          this.bindSpectrum(this.colorPickers[j].id);
-        }
+          
+        modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this));
+      },
+
+      themeEditorClosed: function(result) {
+        console.log("THEME CLOSED WITH: " + result);
       },
 
       bindInput: function(inputElement) {
@@ -59,14 +71,15 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         console.log(inputId);
       },
 
-      bindSpectrum: function (colorPickerId) {
-        jquery('#' + colorPickerId).spectrum({
+      bindSpectrum: function (colorPickerElem) {
+        var colorPicker = jquery(colorPickerElem);
+        colorPicker.spectrum({
             chooseText: 'save color',
             replacerClassName: 'spectrum-replacer',
-            appendTo: jquery(colorPickerId).parent(),
+            appendTo: colorPicker.parent(),
             showButtons: false,
-            color: this.data[colorPickerId],
-            move: this.colorChangedDelegate.bind(this, colorPickerId)
+            color: this.data[colorPicker.id],
+            move: this.colorChangedDelegate.bind(this, colorPicker.id)
           });
       },
 
@@ -74,7 +87,6 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         // var picker = jquery('#trianglifierPicker');
 
 //        this.modalWindow = modal.createModal('trianglify', picker[0], this.modalClosed.bind(this), 'save', 'cancel');
-        this.bindSpectrum();
       },
 
       modalClosed: function() {
