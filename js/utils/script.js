@@ -69,6 +69,9 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
       jss.set('.modal-content', {
         'background-color': options_color
       });
+      jss.set('.overlay-wrap', {
+        'background-color': main_color
+      });
       jss.set('.pagebase-grouped > .group > .page', {
         'border-top-style': 'solid',
         'border-top-width': '1px',

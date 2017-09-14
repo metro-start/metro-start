@@ -1,9 +1,8 @@
 define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
     var modal = {
         templates: {
-            overlay: util.createElement('<div id="overlay" class="overlay-wrap"></div>'),
-            overlayCover: util.createElement('<div class="overlay" id="overlayCover"></div>'),
-            modalContent: util.createElement('<div class="modal-content"></div>'),
+            overlay: util.createElement('<div id="overlay" class="metro-modal overlay-wrap options-color"></div>'),
+            modalContent: util.createElement('<div class="metro-modal modal-content"></div>'),
 
             info: util.createElement('<div class="info">'),
             confirm: util.createElement('<span id="confirm-button" class="main-color clickable small-text"></span>'),
@@ -18,10 +17,10 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             this.modalCallbacks[id] = callback;
 
             var modalElement = this.templates.overlay.cloneNode(true);
+            modalElement.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
+
             var modalContent = this.templates.modalContent.cloneNode(true);
             var info = this.templates.info.cloneNode(true);
-            var overlayCover = this.templates.overlayCover.cloneNode(true);
-            overlayCover.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
 
             if (confirmText !== '') {
                 var confirm = this.templates.confirm.cloneNode(true);
@@ -39,21 +38,19 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             modalContent.firstElementChild.appendChild(content);
             modalContent.firstElementChild.appendChild(info);
 
-            // modalElement.firstElementChild.id = id;
-            // modalElement.firstElementChild.appendChild(modalContent);
-
             var body = jquery('body');
             body.append(modalElement);
             body.append(modalContent);
         },
 
         modalClosed: function(id, res) {
+            var modalElements = document.getElementsByClassName('metro-modal');
+            while (modalElements.length > 0) { modalElements[0].remove(); }
+            
             if (res && !!this.modalCallback) {
                 this.modalCallbacks[id](res);
             }
 
-            var overlayElement = document.getElementById(overlayId);
-            overlayElement.parentNode.removeChild(overlayElement);
         }
     };
 

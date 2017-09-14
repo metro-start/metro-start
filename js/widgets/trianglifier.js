@@ -33,10 +33,10 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
 
         this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
+
         // DEBUG
         var that = this;
         setTimeout(function() { that.elems.editThemeButton.click(); }, 500);
-        // this.showOptions();
       },
 
       openThemeEditor: function() {
@@ -60,15 +60,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       },
 
       bindInput: function(inputElement) {
-        console.log(inputElement);
         inputElement.addEventListener('input', this.updateTrianglifier.bind(this, inputElement.id));
-      },
-
-      updateTrianglifier: function(inputId, val) {
-        console.log(val);
-        this.data[inputId] = val;
-
-        console.log(inputId);
       },
 
       bindSpectrum: function (colorPickerElem) {
@@ -79,22 +71,24 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
             appendTo: colorPicker.parent(),
             showButtons: false,
             color: this.data[colorPicker.id],
-            move: this.colorChangedDelegate.bind(this, colorPicker.id)
+            move: this.updateColor.bind(this, colorPicker.id)
           });
       },
 
-      trianglify: function () {
-        // var picker = jquery('#trianglifierPicker');
+      updateTrianglifier: function(inputId, val) {
+        console.log(val);
+        this.data[inputId] = val;
 
-//        this.modalWindow = modal.createModal('trianglify', picker[0], this.modalClosed.bind(this), 'save', 'cancel');
+        console.log(inputId);
       },
 
-      modalClosed: function() {
+      updateColor: function (themeColor, newColor) {
+         console.log(themeColor);
+        console.log(newColor);
 
-      },
-
-      colorChangedDelegate: function () {
+        this.data.colors[themeColor] = newColor.toHexString();
       }
     };
+
     return trianglifier;
 });
