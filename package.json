@@ -38,6 +38,7 @@
     "grunt-notify": "*",
     "grunt-webpack": "*",
     "grunt-zip-directories": "^0.1.3",
+    "jshint-stylish": "^2.2.1",
     "requirejs": "^2.3.2",
     "transfer-webpack-plugin": "^0.1.4",
     "webpack": "^3.6.0",

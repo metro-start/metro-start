@@ -18,12 +18,18 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         document.getElementById('trianglifierStrokeWidth'),
         document.getElementById('trianglifierCellSize'),
         document.getElementById('trianglifierVariance'),
-        document.getElementById('trianglifierSeed')
+        document.getElementById('trianglifierSeed'),
+        document.getElementById('newThemeTitle'),
+        document.getElementById('newThemeAuthor')
       ],
 
       colorInputs: [
         document.getElementById('trianglifierXColor'),
-        document.getElementById('trianglifierYColor')
+        document.getElementById('trianglifierYColor'),
+        document.getElementById('backgroundColor'),
+        document.getElementById('titleColor'),
+        document.getElementById('mainColor'),
+        document.getElementById('optionsColor')
       ],
 
       selectInputs: [
@@ -63,10 +69,6 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this));
       },
 
-      themeEditorClosed: function(res) {
-        util.log(`theme editor closed with result: ${res}`);
-      },
-
       bindTextInput: function(inputElement) {
         inputElement.addEventListener('input', this.updateText.bind(this, inputElement.id));
       },
@@ -102,7 +104,34 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       updateColor: function (inputId, color) {
         util.logChange(inputId, color);
         this.data.colors[inputId] = color.toHexString();
-      }
+      },
+      
+      randomTheme: function () {
+        for (var i = 0; i < this.colorInputs.length; i++) {
+          let color = util.randomColor();
+
+          jquery(`#${this.colorInputs[i].id}`).spectrum('set', color);
+          this.data[this.colorInputs[i].id] = color;
+        }
+
+        script.updateStyle(this.currentTheme, true);
+      },
+
+      themeEditorClosed: function(res) {
+        util.log(`theme editor closed with result: ${res}`);
+      },
+      
+      undoChanges: function () {
+        this.currentTheme = storage.get('currentTheme', defaults.defaultTheme);
+        script.updateStyle(this.currentTheme, true);
+
+        for (var i = 0; i < this.colorInputs.length; i++) {
+          let color = this.currentTheme[this.colorInputs[i].id];
+
+          jquery(`#${this.colorInputs[i].id}`).spectrum('set', color);
+          this.data[this.colorInputs[i].id] = color;
+        }
+      },
     };
 
     return trianglifier;

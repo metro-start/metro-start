@@ -1,5 +1,5 @@
-define(['jss', '../pagebase/pagebase_paneled', '../widgets/confirm', '../utils/util'], 
-function(jss, pagebase_paneled, confirmWidget, util) {
+define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'], 
+function(jss, pagebase_paneled, modal, util) {
     var bookmarks = {
         name: 'bookmarks',
 
@@ -82,12 +82,20 @@ function(jss, pagebase_paneled, confirmWidget, util) {
         },
 
         removeBookmark: function(bookmark, bookmarkNode) {
-            confirmWidget.alert(bookmark.title + ' will be removed.', function () {
-                chrome.bookmarks.removeTree(bookmark.id, function () {
-                    bookmarkNode.parentNode.remove();
-                });
-            });
+            modal.createModal(
+                `bookmark-${bookmark.id}`, 
+                `${bookmark.title} will be removed.`, 
+                function (res) {
+                    if (res)
+                    {
+                        chrome.bookmarks.removeTree(bookmark.id, function () {
+                            bookmarkNode.parentNode.remove();
+                        });
+                    }
+                },
+            'okay', 'cancel');
         }
     };
+
     return bookmarks;
 });

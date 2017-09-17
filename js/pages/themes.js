@@ -1,5 +1,5 @@
-define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../widgets/confirm', '../utils/util', '../utils/storage', '../utils/defaults'],
-function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, defaults) {
+define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults'],
+function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults) {
     var themes = {
         name: 'themes',
 
@@ -9,7 +9,7 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
 
         themes: {},
 
-        localThemes: {},
+        themesLocal: {},
 
         onlineThemes: {},
 
@@ -46,10 +46,9 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
             that.themes.clear();
             that.themes.addAll({
               'heading': 'my themes',
-              'data': storage.get('localThemes', [])
+              'data': storage.get('themesLocal', [])
             });
 
-            console.log(this.themesWidget.currentTheme);
             that.themes.addAll({
                 'heading': 'system themes',
                 'data': defaults.systemThemes
@@ -125,17 +124,24 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
 
         shareTheme: function(theme) {
             var that = this;
-            confirmWidget.alert(theme.title + ' will be shared to the theme gallery.', function() {
-                that.themesWidget.shareTheme(theme);
-                that.loadThemes();
-            });
+            modal.createModal('shareThemeAlert', `${theme.title} will be shared to the theme gallery.`, 
+                function() {
+                    that.themesWidget.shareTheme(theme);
+                    that.loadThemes();
+                },
+                'okay',
+                'cancel');
         },
 
         removeTheme: function(theme) {
             var that = this;
-            confirmWidget.alert(theme.title + ' will be removed.', function() {
-                that.themesWidget.removeTheme(theme);
-            });
+            modal.createModal('shareThemeAlert', `${theme.title} will be removed.`, 
+                function() {
+                    that.themesWidget.removeTheme(theme);
+                    that.loadThemes();
+                },
+                'okay',
+                'cancel');
         },
 
         updateTheme: function(theme) {

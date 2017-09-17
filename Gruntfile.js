@@ -76,6 +76,7 @@ module.exports = function (grunt) {
                 'js/**/*.js',
             ],
             options: {
+                reporter: require('jshint-stylish'),
                 'esversion': 6,
             }
         },
