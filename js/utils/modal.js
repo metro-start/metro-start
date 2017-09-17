@@ -16,38 +16,40 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
         createModal: function (id, content, callback, confirmText, cancelText) {
             this.modalCallbacks[id] = callback;
 
-            var modalElement = this.templates.overlay.cloneNode(true);
-            modalElement.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
+            var overlay = this.templates.overlay.cloneNode(true);
+            overlay.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
+            util.addClass(overlay.firstElementChild, id);
 
             var modalContent = this.templates.modalContent.cloneNode(true);
             var info = this.templates.info.cloneNode(true);
 
-            if (confirmText !== '') {
+            if (!!confirmText) {
                 var confirm = this.templates.confirm.cloneNode(true);
                 confirm.firstElementChild.textContent = confirmText;
                 confirm.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, true));
             }
 
-            if(cancelText !== '') {
+            if(!!cancelText) {
                 var cancel = this.templates.cancel.cloneNode(true);
                 cancel.firstElementChild.textContent = cancelText;
                 cancel.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, false));
                 info.firstElementChild.appendChild(cancel);
             }
 
+            util.addClass(modalContent.firstElementChild, id);
             modalContent.firstElementChild.appendChild(content);
             modalContent.firstElementChild.appendChild(info);
 
             var body = jquery('body');
-            body.append(modalElement);
+            body.append(overlay);
             body.append(modalContent);
         },
 
         modalClosed: function(id, res) {
-            var modalElements = document.getElementsByClassName('metro-modal');
-            while (modalElements.length > 0) { modalElements[0].remove(); }
+            var elems = document.getElementsByClassName(id);
+            while (elems.length > 0) { elems[0].remove(); }
             
-            if (res && !!this.modalCallback) {
+            if (!!this.modalCallbacks && !!this.modalCallbacks[id]) {
                 this.modalCallbacks[id](res);
             }
 

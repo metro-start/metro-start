@@ -3,7 +3,20 @@ define([], function Util() {
     var hasOwnProperty = Object.prototype.hasOwnProperty;
 
     var util = {
-        init: function () { },
+        init: function () { 
+            this.lastLogTime = Date.now();
+        },
+
+        log: function(msg) {
+            var time = Date.now();
+            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
+        },
+
+        logChange: function(key, val) {
+            this.log(`setting [${key}] to ${val}`);
+        },
 
         // Converts an HTML string to a DOM fragment.
         // htmlStr: The string to convert.

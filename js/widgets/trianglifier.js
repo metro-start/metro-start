@@ -63,8 +63,8 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this));
       },
 
-      themeEditorClosed: function(result) {
-        console.log("THEME CLOSED WITH: " + result);
+      themeEditorClosed: function(res) {
+        util.log(`theme editor closed with result: ${res}`);
       },
 
       bindTextInput: function(inputElement) {
@@ -90,20 +90,17 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       },
         
       changeSelect: function(inputId, val) {
-        console.log(`Setting ${inputId} to ${val}`);
+        util.logChange(inputId, val);
         this.data[inputId] = val;
       },
 
       updateText: function(inputId, val) {
-        console.log(`Setting ${inputId} to ${val}`);
+        util.logChange(inputId, val);
         this.data[inputId] = val;
-
-        console.log(inputId);
       },
 
       updateColor: function (inputId, color) {
-        console.log(`Setting ${inputId} to ${color}`);
-
+        util.logChange(inputId, color);
         this.data.colors[inputId] = color.toHexString();
       }
     };
