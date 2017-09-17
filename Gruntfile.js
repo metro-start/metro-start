@@ -1,5 +1,6 @@
 /* jshint node: true */
 
+var BelTranformPlugin = require('babel-plugin-transform-object-rest-spread');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
 var OptimizeJsPlugin = require('optimize-js-plugin');
@@ -28,13 +29,28 @@ module.exports = function (grunt) {
                         jss: '../../node_modules/jss/jss.js'
                     }
                 },
+                module: 
+                {
+                    rules: [
+                        {
+                        test: /\.js$/,
+                        exclude: /(node_modules|dist)/,
+                        use: {
+                            loader: 'babel-loader',
+                            options: {
+                            presets: ['env'],
+                            plugins: [BelTranformPlugin]
+                            }
+                        }
+                        }]
+                },
                 plugins: [
-                    new WebpackUglifyJsPlugin({
-                        cacheFolder: './cached_uglify/',
-                        debug: true,
-                        minimize: true,
-                        sourceMap: true
-                    }),
+                    // new WebpackUglifyJsPlugin({
+                    //     cacheFolder: './cached_uglify/',
+                    //     debug: true,
+                    //     minimize: true,
+                    //     sourceMap: true
+                    // }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },
@@ -57,8 +73,11 @@ module.exports = function (grunt) {
         },
         jshint: {
             all: [
-                'js/**/*.js'
-            ]
+                'js/**/*.js',
+            ],
+            options: {
+                'esversion': 6,
+            }
         },
         watch: {
             scripts: {
@@ -81,8 +100,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-compress');
 
+    grunt.registerTask('default', ['webpack']);
+
     grunt.registerTask('build', ['webpack']);
     grunt.registerTask('test', ['webpack', 'jshint']);
-    grunt.registerTask('default', ['webpack', 'test']);
     grunt.registerTask('publish', ['webpack', 'jshint', 'compress']);
 };

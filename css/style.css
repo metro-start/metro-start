@@ -1,4 +1,7 @@
-	html {
+* {
+	box-sizing: border-box;
+}
+html {
 	height: 100%;
 }
 
@@ -329,9 +332,6 @@ h1 {
 }
 
 /* Metro Modal */
-.metro-modal {
-}
-
 .modal-content {
 	position: fixed;
 	left: 0;
@@ -339,14 +339,18 @@ h1 {
 	top: 0;
 	bottom: 0;
 	margin: auto;
-	height: 400px;
+	height: 500px;
+	width: 75%;
 	border: solid 2px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+	overflow-y: auto;
+	max-height: 100%;
 }
 
 .theme-section {
 	text-decoration: underline;
+	font-style: italic;
 }

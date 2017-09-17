@@ -21,9 +21,13 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         document.getElementById('trianglifierSeed')
       ],
 
-      colorPickers: [
+      colorInputs: [
         document.getElementById('trianglifierXColor'),
         document.getElementById('trianglifierYColor')
+      ],
+
+      selectInputs: [
+        document.getElementById('font-chooser'),
       ],
 
       currentTrianglifer: {},
@@ -42,11 +46,15 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       openThemeEditor: function() {
         if (!this.isInit) {
           for (var i = 0; i < this.textInputs.length; i++) {
-            this.bindInput(this.textInputs[i]);
+            this.bindTextInput(this.textInputs[i]);
           }
-          
-          for (var j = 0; j < this.colorPickers.length; j++) {
-            this.bindSpectrum(this.colorPickers[j]);
+
+          for (var j = 0; j < this.colorInputs.length; j++) {
+            this.bindColorInput(this.colorInputs[j]);
+          }
+
+          for (var k = 0; k < this.selectInputs.length; k++) {
+            this.bindSelectInput(this.selectInputs[k]);
           }
 
           this.isInit = true;
@@ -59,34 +67,44 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         console.log("THEME CLOSED WITH: " + result);
       },
 
-      bindInput: function(inputElement) {
-        inputElement.addEventListener('input', this.updateTrianglifier.bind(this, inputElement.id));
+      bindTextInput: function(inputElement) {
+        inputElement.addEventListener('input', this.updateText.bind(this, inputElement.id));
       },
 
-      bindSpectrum: function (colorPickerElem) {
-        var colorPicker = jquery(colorPickerElem);
-        colorPicker.spectrum({
+      bindSelectInput: function(inputElement) {
+        inputElement.selectedIndex = this.theme[inputElement.id];
+        jquery(inputElement).metroSelect({
+            'onchange': this.changeSelect.bind(this, inputElement.id)
+        });
+      },
+
+      bindColorInput: function (inputElement) {
+        jquery(inputElement).spectrum({
             chooseText: 'save color',
             replacerClassName: 'spectrum-replacer',
-            appendTo: colorPicker.parent(),
+            appendTo: inputElement.parentNode,
             showButtons: false,
-            color: this.data[colorPicker.id],
-            move: this.updateColor.bind(this, colorPicker.id)
+            color: this.data[inputElement.id],
+            move: this.updateColor.bind(this, inputElement.id)
           });
       },
+        
+      changeSelect: function(inputId, val) {
+        console.log(`Setting ${inputId} to ${val}`);
+        this.data[inputId] = val;
+      },
 
-      updateTrianglifier: function(inputId, val) {
-        console.log(val);
+      updateText: function(inputId, val) {
+        console.log(`Setting ${inputId} to ${val}`);
         this.data[inputId] = val;
 
         console.log(inputId);
       },
 
-      updateColor: function (themeColor, newColor) {
-         console.log(themeColor);
-        console.log(newColor);
+      updateColor: function (inputId, color) {
+        console.log(`Setting ${inputId} to ${color}`);
 
-        this.data.colors[themeColor] = newColor.toHexString();
+        this.data.colors[inputId] = color.toHexString();
       }
     };
 
