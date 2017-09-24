@@ -13,13 +13,12 @@ define(function() {
         // The default theme for the app.
         defaultTheme: {
             'title': 'metro start',
-            'colors': {
-                'options-color': '#ff0000',
-                'main-color': '#ffffff',
-                'title-color': '#4a4a4a',
-                'background-color': '#000000'
-            },
-            'author': 'metro start'
+            'author': 'metro start',
+            'font': 'normal fonts',
+            'optionsColor': '#ff0000',
+            'mainColor': '#ffffff',
+            'titleColor': '#4a4a4a',
+            'backgroundColor': '#000000'
         },
 
         defaultTrianglifier: {

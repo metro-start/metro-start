@@ -283,15 +283,12 @@ h1 {
 /* Color picker */
 
 .picker {
-	width: 75%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	margin: auto;
 }
 
 .picker > div {
-	padding: 8px;
+	padding: 4px;
 }
 
 .color-picker {
@@ -301,9 +298,9 @@ h1 {
 	justify-content: center;
 }
 
-.color-picker>div {
-	margin-left: 4px;
-	margin-right: 4px;
+.color-picker > div {
+	margin-left: 8px;
+	margin-right: 8px;
 }
 
 .input-picker {
@@ -318,10 +315,7 @@ h1 {
 	margin-right: 4px;
 }
 
-
 /* Overlays */
-
-.overlay,
 .overlay-wrap {
 	position: fixed;
 	top: 0;
@@ -339,7 +333,6 @@ h1 {
 	top: 0;
 	bottom: 0;
 	margin: auto;
-	height: 500px;
 	width: 75%;
 	border: solid 2px;
 	display: flex;
@@ -351,6 +344,15 @@ h1 {
 }
 
 .theme-section {
-	text-decoration: underline;
 	font-style: italic;
+	border-bottom: 3px solid;
+	align-content: left;	
+	font-size: 0.7em;
+}
+.theme-editor-section {
+	margin-bottom: 16px;
+}
+
+#none {
+	display: none;
 }

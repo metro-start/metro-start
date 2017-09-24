@@ -60,10 +60,10 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
                 for (var i in data) {
                     data[i].online = true;
                     data[i].colors = {
-                        'options-color': data[i].options_color,
-                        'main-color': data[i].main_color,
-                        'title-color': data[i].title_color,
-                        'background-color': data[i].background_color,
+                        'options-color': data[i].optionsColor,
+                        'main-color': data[i].mainColor,
+                        'title-color': data[i].titleColor,
+                        'background-color': data[i].backgroundColor,
                     };
                 }
 

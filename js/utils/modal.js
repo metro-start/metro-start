@@ -1,7 +1,7 @@
 define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
     var modal = {
         templates: {
-            overlay: util.createElement('<div id="overlay" class="metro-modal overlay-wrap options-color"></div>'),
+            overlay: util.createElement('<div class="metro-modal overlay-wrap options-color"></div>'),
             modalContent: util.createElement('<div class="metro-modal modal-content"></div>'),
 
             info: util.createElement('<div class="info">'),
@@ -36,6 +36,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
                 info.firstElementChild.appendChild(cancel);
             }
 
+            modalContent.firstElementChild.id = id;
             util.addClass(modalContent.firstElementChild, id);
             modalContent.firstElementChild.appendChild(content);
             modalContent.firstElementChild.appendChild(info);
@@ -43,6 +44,14 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             var body = jquery('body');
             body.append(overlay);
             body.append(modalContent);
+
+            var realModalContent = document.getElementById(id);
+            var scrollHeight = 0;
+            for (var i = 0; i < realModalContent.children.length; i++) {
+                scrollHeight += realModalContent.children[i].scrollHeight;
+            }
+
+            realModalContent.style.height = scrollHeight;
         },
 
         modalClosed: function(id, res) {

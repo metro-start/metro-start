@@ -10,6 +10,9 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         themeEditor: document.getElementById('themeEditor'),
         trianglify: document.getElementById('trianglifyButton'),
         editThemeButton: document.getElementById('editThemeButton'),
+        solidSection: document.getElementById('solid'),
+        trianglifySection: document.getElementById('trianglify'),
+        randomizeSection: document.getElementById('randomize')
       },
 
       textInputs: [
@@ -24,8 +27,6 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       ],
 
       colorInputs: [
-        document.getElementById('trianglifierXColor'),
-        document.getElementById('trianglifierYColor'),
         document.getElementById('backgroundColor'),
         document.getElementById('titleColor'),
         document.getElementById('mainColor'),
@@ -34,6 +35,8 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
 
       selectInputs: [
         document.getElementById('font-chooser'),
+        document.getElementById('color-chooser'),
+        document.getElementById('background-chooser'),
       ],
 
       currentTrianglifer: {},
@@ -66,7 +69,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
           this.isInit = true;
         }
           
-        modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this));
+        modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
       },
 
       bindTextInput: function(inputElement) {
@@ -94,11 +97,32 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       changeSelect: function(inputId, val) {
         util.logChange(inputId, val);
         this.data[inputId] = val;
+
+        if (inputId === 'background-chooser')
+        {
+          var elems = document.getElementsByClassName('background-section');
+          for (var i = 0; i < elems.length; i++) { 
+            if (!util.hasClass(elems[i], 'hide')) {
+              util.addClass(elems[i], 'hide');
+            }
+          }
+
+          var backgroundElement = document.getElementById(val);
+          if (!!backgroundElement) {
+            if (util.hasClass(backgroundElement, 'hide')) {
+              util.removeClass(backgroundElement, 'hide');
+            } else {
+              util.addClass(backgroundElement, 'hide');
+            }
+        }
+        }
       },
 
       updateText: function(inputId, val) {
         util.logChange(inputId, val);
         this.data[inputId] = val;
+
+        script.updateTheme(this.data);
       },
 
       updateColor: function (inputId, color) {
@@ -114,7 +138,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
           this.data[this.colorInputs[i].id] = color;
         }
 
-        script.updateStyle(this.currentTheme, true);
+        script.updateTheme(this.currentTheme, true);
       },
 
       themeEditorClosed: function(res) {
@@ -123,7 +147,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       
       undoChanges: function () {
         this.currentTheme = storage.get('currentTheme', defaults.defaultTheme);
-        script.updateStyle(this.currentTheme, true);
+        script.updateTheme(this.currentTheme, true);
 
         for (var i = 0; i < this.colorInputs.length; i++) {
           let color = this.currentTheme[this.colorInputs[i].id];

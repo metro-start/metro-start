@@ -13,7 +13,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         newThemeAuthor: document.getElementById('newThemeAuthor'),
         editTheme: document.getElementById('editTheme'),
         randomTheme: document.getElementById('randomTheme'),
-        saveTheme: document.getElementById('saveTheme')
+        saveTheme: document.getElementById('saveTheme'),
       },
 
       themeAdded: function () { },
@@ -23,11 +23,10 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
 
       init: function () {
         this.currentTheme = storage.get('currentTheme', defaults.defaultTheme);
-        console.log(this.currentTheme);
         if (this.currentTheme.title === 'random theme') {
           this.randomTheme();
         } else {
-          script.updateStyle(this.currentTheme, false);
+          script.updateTheme(this.currentTheme, false);
         }
 
         // this.elems.editTheme.addEventListener('click', this.editTheme.bind(this));
@@ -126,7 +125,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         if (theme.title === 'random theme') {
           this.randomTheme();
         } else {
-          script.updateStyle(this.currentTheme, true);
+          script.updateTheme(this.currentTheme, true);
         }
       },
 
