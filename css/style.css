@@ -55,7 +55,7 @@ body {
 }
 
 .hide {
-	display: none;
+	display: none !important;
 }
 
 .done,
@@ -107,6 +107,13 @@ h1 {
 	font-weight: normal;
 	font-style: normal;
 	margin: 0 0 15px 50px;
+}
+
+h2 {
+	font-size: 72px;
+	font-weight: normal;
+	font-style: normal;
+	margin: 12px auto;
 }
 
 .option {
@@ -333,6 +340,7 @@ h1 {
 	top: 0;
 	bottom: 0;
 	margin: auto;
+	height: 85%;
 	width: 75%;
 	border: solid 2px;
 	display: flex;
@@ -340,9 +348,12 @@ h1 {
 	justify-content: center;
 	flex-direction: column;
 	overflow-y: auto;
-	max-height: 100%;
 }
-
+#themeEditor {
+	width: 75%;
+	margin: auto;
+	margin-top: 0;
+}
 .theme-section {
 	font-style: italic;
 	border-bottom: 3px solid;

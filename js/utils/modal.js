@@ -45,13 +45,13 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             body.append(overlay);
             body.append(modalContent);
 
-            var realModalContent = document.getElementById(id);
-            var scrollHeight = 0;
-            for (var i = 0; i < realModalContent.children.length; i++) {
-                scrollHeight += realModalContent.children[i].scrollHeight;
-            }
+            // var realModalContent = document.getElementById(id);
+            // var scrollHeight = 0;
+            // for (var i = 0; i < realModalContent.children.length; i++) {
+            //     scrollHeight += realModalContent.children[i].scrollHeight;
+            // }
 
-            realModalContent.style.height = scrollHeight;
+            // realModalContent.style.height = scrollHeight;
         },
 
         modalClosed: function(id, res) {

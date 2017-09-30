@@ -18,7 +18,10 @@ define(function() {
             'optionsColor': '#ff0000',
             'mainColor': '#ffffff',
             'titleColor': '#4a4a4a',
-            'backgroundColor': '#000000'
+            'backgroundColor': '#000000',
+            'strokeWidth': 1.51,
+            'cellSize': 75,
+            'trianglify-chooser': 'random'
         },
 
         defaultTrianglifier: {

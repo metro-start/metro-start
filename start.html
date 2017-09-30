@@ -127,6 +127,7 @@
 		<p class="option options-color clickable theme-button" id="editThemeButton">edit theme</p>
 	</div>
 	<div id="themeEditor">
+		<h2 class="titles-color">theme editor</h2>
 		<div class="picker">
 			<div class="theme-section">font options</div>
 			<div class="font theme-editor-section">
@@ -139,10 +140,10 @@
 			<div class="colors">
 				<select class="chooser" id="color-chooser">
 					<option class="clickable" value="0">custom</option>
-					<option class="clickable" value="1">randomize</option>
+					<option class="clickable" value="1">random</option>
 				</select>
 			</div>
-			<div class="theme-editor-section color-picker">
+			<div id="custom" class="theme-editor-section color-picker color-section">
 				<div>
 					<span class="picker-text">background</span>
 					<input type="text" id="backgroundColor" size="9">
@@ -160,6 +161,11 @@
 					<input type="text" id="optionsColor" size="9">
 				</div>
 			</div>
+			<div id="random" class="theme-editor-section color-section hide">
+				<div>
+					<button class="clickable theme-button">randomize!</button>
+				</div> 
+			</div>
 			<div class="theme-section">background options</div>
 			<div class="background">
 				<select class="chooser" id="background-chooser">
@@ -171,20 +177,50 @@
 				<div id="none" class="background-section">
 				</div>
 				<div id="trianglify" class="background-section hide">
-					<div class="input-picker">
-						<input type="text" id="trianglifierSize" size="12" placeholder="size">
-						<input type="text" id="trianglifierColorSpace" size="12" placeholder="color space">
-						<input type="text" id="trianglifierStrokeWidth" size="12" placeholder="stroke width">
-						<input type="text" id="trianglifierCellSize" size="12" placeholder="cell size">
-						<input type="text" id="trianglifierVariance" size="12" placeholder="variance">
-						<input type="text" id="trianglifierSeed" size="12" placeholder="seed">
-					</div>
-				</div>
-				<div id="randomize" class="background-section hide">
 					<div>
-						<span class="picker-text">background</span>
-						<input type="text" id="backgroundColor" size="9">
-					</div> 
+						<select class="chooser" id="trianglify-chooser">
+							<option class="clickable">YlGn</option>
+							<option class="clickable">YlGnBu</option>
+							<option class="clickable">GnBu</option>
+							<option class="clickable">BuGn</option>
+							<option class="clickable">PuBuGn</option>
+							<option class="clickable">PuBu</option>
+							<option class="clickable">BuPu</option>
+							<option class="clickable">RdPu</option>
+							<option class="clickable">PuRd</option>
+							<option class="clickable">OrRd</option>
+							<option class="clickable">YlOrRd</option>
+							<option class="clickable">YlOrBr</option>
+							<option class="clickable">Purples</option>
+							<option class="clickable">Blues</option>
+							<option class="clickable">Greens</option>
+							<option class="clickable">Oranges</option>
+							<option class="clickable">Reds</option>
+							<option class="clickable">Greys</option>
+							<option class="clickable">PuOr</option>
+							<option class="clickable">BrBG</option>
+							<option class="clickable">PRGn</option>
+							<option class="clickable">PiYG</option>
+							<option class="clickable">RdBu</option>
+							<option class="clickable">RdGy</option>
+							<option class="clickable">RdYlBu</option>
+							<option class="clickable">Spectral</option>
+							<option class="clickable">RdYlGn</option>
+							<option class="clickable">Accent</option>
+							<option class="clickable">Dark2</option>
+							<option class="clickable">Paired</option>
+							<option class="clickable">Pastel1</option>
+							<option class="clickable">Pastel2</option>
+							<option class="clickable">Set1</option>
+							<option class="clickable">Set2</option>
+								<option class="clickable">Set3</option>
+						</select>
+					</div>
+					<div class="input-picker">
+						<input type="text" id="trianglifierVariance" size="15" placeholder="0&lt;variance&lt;1">
+						<input type="text" id="trianglifierCellSize" size="15" placeholder="25&lt;cell size&lt;100">
+						<input type="text" id="trianglifierSeed" size="15" placeholder="uniquestamp">
+					</div>
 				</div>
 			</div>
 			<div class="theme-section">author info</div>

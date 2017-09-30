@@ -14,13 +14,12 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
     transition: A bool indicating whether to slowly transition or immediately change.
     */
     updateTheme: function (data, transition) {
-      var theme = storage.get('currentTheme', defaults.defaultTheme);
       jss.set('body', {
-        'font-family': fonts[theme.font],
+        'font-family': fonts[data.font],
       });
       
-        this.updateFont();
-        this.updateBackground();
+        this.updateFont(data);
+        this.updateBackground(data);
   
         var optionsColor = data.optionsColor;
         var backgroundColor = data.backgroundColor;
@@ -104,8 +103,8 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
     transition: A bool indicating whether to slowly transition or immediately change.
     */
     updateStyle: function (theme, transition) {
-      this.updateFont();
-      this.updateBackground();
+      this.updateFont(theme);
+      this.updateBackground(theme);
 
       var optionsColor = theme.colors['options-color'];
       var backgroundColor = theme.colors['background-color'];
@@ -180,23 +179,32 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
       });
     },
 
-    updateBackground: function () {
-      var currentTrianglifer = storage.get('currentTrianglifer', defaults.defaultTrianglifier);
+    updateBackground: function (data) {
       var b = jquery('body');
       
+      var cellSize = Number.parseInt(data.trianglifierCellSize);
+      var variance = Number.parseFloat(data.trianglifierVariance);
+      
+      // 25 < cellSize < 100
+      cellSize = cellSize < 25 ? 25 : (cellSize < 100 ? cellSize : 100);
       var pat = trianglify({
         width: b.prop('scrollWidth'), 
         height: b.prop('scrollHeight'),
-        x_colors: currentTrianglifer.color
+        variance: variance,
+        x_colors: data['trianglify-chooser'],
+        cell_size: cellSize
       });
       
-      console.log(pat);
       jss.set('body', {
+        'background': 'url(' + pat.png() + ')'
+      });
+
+      jss.set('#themeEditorModal', {
         'background': 'url(' + pat.png() + ')'
       });
     },
 
-    updateFont: function () {
+    updateFont:  function() {
     }
   };
 

@@ -1,5 +1,5 @@
-define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
-  function (jquery, spectrum, modal, util, storage, defaults, script) {
+define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
+  function (jquery, spectrum, throttle_debounce, modal, util, storage, defaults, script) {
     var trianglifier = {
 
       isInit: false,
@@ -16,11 +16,8 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
       },
 
       textInputs: [
-        document.getElementById('trianglifierSize'),
-        document.getElementById('trianglifierColorSpace'),
-        document.getElementById('trianglifierStrokeWidth'),
-        document.getElementById('trianglifierCellSize'),
         document.getElementById('trianglifierVariance'),
+        document.getElementById('trianglifierCellSize'),
         document.getElementById('trianglifierSeed'),
         document.getElementById('newThemeTitle'),
         document.getElementById('newThemeAuthor')
@@ -37,12 +34,12 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         document.getElementById('font-chooser'),
         document.getElementById('color-chooser'),
         document.getElementById('background-chooser'),
+        document.getElementById('trianglify-chooser'),
       ],
-
-      currentTrianglifer: {},
 
       init: function () {
         this.theme = storage.get('theme', defaults.defaultTheme);
+        this.data = this.theme;
         this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
 
         this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
@@ -90,7 +87,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
             appendTo: inputElement.parentNode,
             showButtons: false,
             color: this.data[inputElement.id],
-            move: this.updateColor.bind(this, inputElement.id)
+            move: throttle_debounce.throttle(250, this.updateColor.bind(this, inputElement.id), true)
           });
       },
         
@@ -98,9 +95,9 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         util.logChange(inputId, val);
         this.data[inputId] = val;
 
-        if (inputId === 'background-chooser')
+        if (inputId === 'background-chooser' || inputId === 'color-chooser')
         {
-          var elems = document.getElementsByClassName('background-section');
+          var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
           for (var i = 0; i < elems.length; i++) { 
             if (!util.hasClass(elems[i], 'hide')) {
               util.addClass(elems[i], 'hide');
@@ -114,20 +111,24 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
             } else {
               util.addClass(backgroundElement, 'hide');
             }
-        }
+          }
+        } else {
+          script.updateTheme(this.data);
         }
       },
 
-      updateText: function(inputId, val) {
-        util.logChange(inputId, val);
-        this.data[inputId] = val;
+      updateText: function(inputId, event) {
+        util.logChange(inputId, event.target.value);
+        this.data[inputId] = event.target.value;
 
         script.updateTheme(this.data);
       },
 
       updateColor: function (inputId, color) {
-        util.logChange(inputId, color);
-        this.data.colors[inputId] = color.toHexString();
+        // util.logChange(inputId, color);
+        this.data[inputId] = color.toHexString();
+
+        script.updateTheme(this.data);
       },
       
       randomTheme: function () {
