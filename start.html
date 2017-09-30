@@ -177,45 +177,38 @@
 				<div id="none" class="background-section">
 				</div>
 				<div id="trianglify" class="background-section hide">
-					<div>
-						<select class="chooser" id="trianglify-chooser">
-							<option class="clickable">YlGn</option>
-							<option class="clickable">YlGnBu</option>
-							<option class="clickable">GnBu</option>
-							<option class="clickable">BuGn</option>
-							<option class="clickable">PuBuGn</option>
-							<option class="clickable">PuBu</option>
-							<option class="clickable">BuPu</option>
-							<option class="clickable">RdPu</option>
-							<option class="clickable">PuRd</option>
-							<option class="clickable">OrRd</option>
-							<option class="clickable">YlOrRd</option>
-							<option class="clickable">YlOrBr</option>
-							<option class="clickable">Purples</option>
-							<option class="clickable">Blues</option>
-							<option class="clickable">Greens</option>
-							<option class="clickable">Oranges</option>
-							<option class="clickable">Reds</option>
-							<option class="clickable">Greys</option>
-							<option class="clickable">PuOr</option>
-							<option class="clickable">BrBG</option>
-							<option class="clickable">PRGn</option>
-							<option class="clickable">PiYG</option>
-							<option class="clickable">RdBu</option>
-							<option class="clickable">RdGy</option>
-							<option class="clickable">RdYlBu</option>
-							<option class="clickable">Spectral</option>
-							<option class="clickable">RdYlGn</option>
-							<option class="clickable">Accent</option>
-							<option class="clickable">Dark2</option>
-							<option class="clickable">Paired</option>
-							<option class="clickable">Pastel1</option>
-							<option class="clickable">Pastel2</option>
-							<option class="clickable">Set1</option>
-							<option class="clickable">Set2</option>
-								<option class="clickable">Set3</option>
-						</select>
+					<div id="xColors" class="theme-editor-section color-picker color-section">
+							<div class="theme-section">x colors</div>
+							<div>
+							<span class="picker-text">first color</span>
+							<input type="text" id="x_1_Color" size="9">
+						</div> 
+						<div>
+							<span class="picker-text">second color</span>
+							<input type="text" id="x_2_Color" size="9">
+						</div> 
+						<div>
+							<span class="picker-text">third color</span>
+							<input type="text" id="x_3_Color" size="9">
+						</div> 
 					</div>
+
+					<div id="yColors" class="theme-editor-section color-picker color-section">
+							<div class="theme-section">y colors</div>
+							<div>
+							<span class="picker-text">first color</span>
+							<input type="text" id="y_1_Color" size="9">
+						</div> 
+						<div>
+							<span class="picker-text">second color</span>
+							<input type="text" id="y_2_Color" size="9">
+						</div> 
+						<div>
+							<span class="picker-text">third color</span>
+							<input type="text" id="y_3_Color" size="9">
+						</div> 
+					</div>
+
 					<div class="input-picker">
 						<input type="text" id="trianglifierVariance" size="15" placeholder="0&lt;variance&lt;1">
 						<input type="text" id="trianglifierCellSize" size="15" placeholder="25&lt;cell size&lt;100">

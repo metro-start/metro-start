@@ -184,15 +184,19 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
       
       var cellSize = Number.parseInt(data.trianglifierCellSize);
       var variance = Number.parseFloat(data.trianglifierVariance);
-      
+
+      // 0.0 < variance < 1.0
+      variance = variance < 0 ? 0 : (variance < 1 ? variance : 1);
       // 25 < cellSize < 100
       cellSize = cellSize < 25 ? 25 : (cellSize < 100 ? cellSize : 100);
+
       var pat = trianglify({
         width: b.prop('scrollWidth'), 
         height: b.prop('scrollHeight'),
         variance: variance,
-        x_colors: data['trianglify-chooser'],
-        cell_size: cellSize
+        cell_size: cellSize,
+        x_colors: [data.x_1_Color, data.x_2_Color, data.x_3_Color],
+        y_colors: [data.y_1_Color, data.y_2_Color, data.y_3_Color]
       });
       
       jss.set('body', {

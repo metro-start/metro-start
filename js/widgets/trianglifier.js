@@ -27,14 +27,19 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
         document.getElementById('backgroundColor'),
         document.getElementById('titleColor'),
         document.getElementById('mainColor'),
-        document.getElementById('optionsColor')
+        document.getElementById('optionsColor'),
+        document.getElementById('x_1_Color'),
+        document.getElementById('x_2_Color'),
+        document.getElementById('x_3_Color'),
+        document.getElementById('y_1_Color'),
+        document.getElementById('y_2_Color'),
+        document.getElementById('y_3_Color')
       ],
 
       selectInputs: [
         document.getElementById('font-chooser'),
         document.getElementById('color-chooser'),
         document.getElementById('background-chooser'),
-        document.getElementById('trianglify-chooser'),
       ],
 
       init: function () {
