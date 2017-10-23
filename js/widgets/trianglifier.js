@@ -79,7 +79,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
       },
 
       bindSelectInput: function(inputElement) {
-        inputElement.selectedIndex = this.theme[inputElement.id];
+        inputElement.selectedIndex = this.data[inputElement.id];
         jquery(inputElement).metroSelect({
             'onchange': this.changeSelect.bind(this, inputElement.id)
         });
