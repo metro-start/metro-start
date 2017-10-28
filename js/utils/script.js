@@ -195,8 +195,7 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
         height: b.prop('scrollHeight'),
         variance: variance,
         cell_size: cellSize,
-        x_colors: [data.x_1_Color, data.x_2_Color, data.x_3_Color],
-        y_colors: [data.y_1_Color, data.y_2_Color, data.y_3_Color]
+        x_colors: [data.x_1_Color, data.x_2_Color, data.x_3_Color]
       });
       
       jss.set('body', {

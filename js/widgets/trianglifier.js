@@ -31,9 +31,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
         document.getElementById('x_1_Color'),
         document.getElementById('x_2_Color'),
         document.getElementById('x_3_Color'),
-        document.getElementById('y_1_Color'),
-        document.getElementById('y_2_Color'),
-        document.getElementById('y_3_Color')
       ],
 
       selectInputs: [
@@ -43,8 +40,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
       ],
 
       init: function () {
-        this.theme = storage.get('theme', defaults.defaultTheme);
-        this.data = this.theme;
+        this.data = storage.get('currentTheme', defaults.defaultTheme);
         this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
 
         this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
@@ -55,6 +51,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
       },
 
       openThemeEditor: function() {
+        modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
+
         if (!this.isInit) {
           for (var i = 0; i < this.textInputs.length; i++) {
             this.bindTextInput(this.textInputs[i]);
@@ -70,21 +68,38 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
           this.isInit = true;
         }
-          
-        modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
       },
 
+      themeEditorClosed: function(res) {
+        util.log(`theme editor closed with result: ${res}`);
+      },
+
+      /**
+       * Attaches event handlers to the given text field.
+       * 
+       * @param {any} inputElement The name of the text field.
+       */
       bindTextInput: function(inputElement) {
         inputElement.addEventListener('input', this.updateText.bind(this, inputElement.id));
       },
 
+      /**
+       * Create new metro-select for the given inputElement.
+       * 
+       * @param {any} inputElement The name of the field to turn into a metro-select.
+       */
       bindSelectInput: function(inputElement) {
-        inputElement.selectedIndex = this.data[inputElement.id];
         jquery(inputElement).metroSelect({
-            'onchange': this.changeSelect.bind(this, inputElement.id)
+          'initial': this.data[inputElement.id],
+          'onchange': this.updateSelect.bind(this, inputElement.id)
         });
       },
 
+      /**
+       * Create new color picker element for the given inputElement.
+       * 
+       * @param {any} inputElement The name of the field to turn into a spectrum.
+       */
       bindColorInput: function (inputElement) {
         jquery(inputElement).spectrum({
             chooseText: 'save color',
@@ -96,46 +111,53 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
           });
       },
         
-      changeSelect: function(inputId, val) {
-        util.logChange(inputId, val);
-        this.data[inputId] = val;
-
+      /**
+       * Handles changes to metro-select elements.
+       * 
+       * @param {any} inputElement The name of the metro-select that's changing.
+       * @param {any} val The new value.
+       */
+      updateSelect: function(inputId, val) {
+        this.updateCurrentTheme(inputId, val);
+        
         if (inputId === 'background-chooser' || inputId === 'color-chooser')
         {
           var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
           for (var i = 0; i < elems.length; i++) { 
-            if (!util.hasClass(elems[i], 'hide')) {
-              util.addClass(elems[i], 'hide');
+            // If this element has the same id as our new select value, make it visible.
+            if (elems[i].id === val) {
+              util.removeClass(elems[i], 'hide');
+            // Otherwise ensure its hidden.
+            } else if (!util.hasClass(elems[i], 'hide')) {
+                util.addClass(elems[i], 'hide');
             }
           }
-
-          var backgroundElement = document.getElementById(val);
-          if (!!backgroundElement) {
-            if (util.hasClass(backgroundElement, 'hide')) {
-              util.removeClass(backgroundElement, 'hide');
-            } else {
-              util.addClass(backgroundElement, 'hide');
-            }
-          }
-        } else {
-          script.updateTheme(this.data);
-        }
+        } 
       },
 
+      /**
+       * Handles changes to text elements.
+       * 
+       * @param {any} inputElement The name of the text that's changing.
+       * @param {any} event The event that contains the new value.
+       */
       updateText: function(inputId, event) {
-        util.logChange(inputId, event.target.value);
-        this.data[inputId] = event.target.value;
-
-        script.updateTheme(this.data);
+        this.updateCurrentTheme(inputId, event.target.value);
       },
 
+      /**
+       * Handles changes to color elements.
+       * 
+       * @param {any} inputElement The name of the color field that's changing.
+       * @param {any} event The new color.
+       */
       updateColor: function (inputId, color) {
-        // util.logChange(inputId, color);
-        this.data[inputId] = color.toHexString();
-
-        script.updateTheme(this.data);
+        this.updateCurrentTheme(inputId, color.toHexString());
       },
       
+      /**
+       * Randomizes the current thmee.
+       */
       randomTheme: function () {
         for (var i = 0; i < this.colorInputs.length; i++) {
           let color = util.randomColor();
@@ -147,8 +169,12 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
         script.updateTheme(this.currentTheme, true);
       },
 
-      themeEditorClosed: function(res) {
-        util.log(`theme editor closed with result: ${res}`);
+      updateCurrentTheme: function (inputId, val) {
+        util.logChange(inputId, val);
+        this.data[inputId] = val;
+        storage.save('currentTheme', this.data);
+
+        script.updateTheme(this.data);
       },
       
       undoChanges: function () {
