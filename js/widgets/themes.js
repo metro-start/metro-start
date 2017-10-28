@@ -53,7 +53,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         jquery('#input-main-color').spectrum('set', this.currentTheme.colors['main-color']);
         jquery('#input-title-color').spectrum('set', this.currentTheme.colors['title-color']);
 
-        script.updateStyle(this.currentTheme, true);
+        script.updateTheme(this.data, true);
       },
 
       saveTheme: function (data) {
