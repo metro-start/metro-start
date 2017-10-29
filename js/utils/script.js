@@ -70,9 +70,6 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
         jss.set('.bookmark-active', {
           'background-color': optionsColor
         });
-        jss.set('.modal-content', {
-          'background-color': optionsColor
-        });
         jss.set('.overlay-wrap', {
           'background-color': mainColor
         });
@@ -114,11 +111,14 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
           'background': 'url(' + pat.png() + ')'
         });
 
-        jss.set('#themeEditorModal', {
+        jss.set('.modal-content', {
           'background': 'url(' + pat.png() + ')'
         });
       } else {
         jss.set('body', {
+          'background': data.backgroundColor
+        });
+        jss.set('.modal-content', {
           'background': data.backgroundColor
         });
         jss.set('.background-color', {

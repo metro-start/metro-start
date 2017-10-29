@@ -116,6 +116,13 @@ h2 {
 	margin: 12px auto;
 }
 
+h3 {
+	font-size: 58px;
+	font-weight: normal;
+	font-style: normal;
+	margin: 12px auto;
+}
+
 .option {
 	display: inline-block;
 }
@@ -303,6 +310,7 @@ h2 {
 	flex-wrap: wrap;
 	flex-direction: row;
 	justify-content: center;
+	align-items: center;
 }
 
 .color-picker > div {
@@ -343,7 +351,6 @@ h2 {
 	height: 85%;
 	width: 75%;
 	border: solid 2px;
-	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;

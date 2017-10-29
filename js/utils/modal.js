@@ -1,7 +1,7 @@
 define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
     var modal = {
         templates: {
-            overlay: util.createElement('<div class="metro-modal overlay-wrap options-color"></div>'),
+            overlay: util.createElement('<div class="metro-modal overlay-wrap"></div>'),
             modalContent: util.createElement('<div class="metro-modal modal-content"></div>'),
 
             info: util.createElement('<div class="info">'),

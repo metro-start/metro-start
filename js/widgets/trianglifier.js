@@ -18,7 +18,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
       textInputs: [
         document.getElementById('trianglifierVariance'),
         document.getElementById('trianglifierCellSize'),
-        document.getElementById('trianglifierSeed'),
         document.getElementById('newThemeTitle'),
         document.getElementById('newThemeAuthor')
       ],
