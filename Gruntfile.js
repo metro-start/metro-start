@@ -1,6 +1,5 @@
 /* jshint node: true */
 
-var BelTranformPlugin = require('babel-plugin-transform-object-rest-spread');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
 var OptimizeJsPlugin = require('optimize-js-plugin');
@@ -28,21 +27,6 @@ module.exports = function (grunt) {
                     alias: {
                         jss: '../../node_modules/jss/jss.js'
                     }
-                },
-                module: 
-                {
-                    rules: [
-                        {
-                        test: /\.js$/,
-                        exclude: /(node_modules|dist)/,
-                        use: {
-                            loader: 'babel-loader',
-                            options: {
-                            presets: ['env'],
-                            plugins: [BelTranformPlugin]
-                            }
-                        }
-                        }]
                 },
                 plugins: [
                     // new WebpackUglifyJsPlugin({

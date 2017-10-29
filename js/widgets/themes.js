@@ -28,47 +28,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         } else {
           script.updateTheme(this.currentTheme, false);
         }
-
-        // this.elems.editTheme.addEventListener('click', this.editTheme.bind(this));
-
-        // setTimeout(200, function() { 
-        //   this.elems.editTheme.click();
-        // });
-//        this.elems.randomTheme.addEventListener('click', this.randomTheme.bind(this));
-        // this.elems.saveTheme.addEventListener('click', this.saveTheme.bind(this));
-
-        // this.bindSpectrum();
       },
-
-      // bindSpectrum: function () {
-      //   this.spectrumBound = true;
-      //   var that = this;
-      //   var bindOptions = function (inputName) {
-      //     return {
-      //       chooseText: 'save color',
-      //       replacerClassName: 'spectrum-replacer',
-      //       appendTo: jquery('#input-' + inputName).parent(),
-      //       background: 'black',
-      //       showButtons: false,
-      //       color: that.currentTheme.colors[inputName],
-      //       move: that.colorChangedDelegate.bind(that, inputName)
-      //     };
-      //   };
-
-      //   jquery('#input-background-color').spectrum(bindOptions('background-color'));
-      //   jquery('#input-title-color').spectrum(bindOptions('title-color'));
-      //   jquery('#input-main-color').spectrum(bindOptions('main-color'));
-      //   jquery('#input-options-color').spectrum(bindOptions('options-color'));
-      // },
-
-      // colorChangedDelegate: function (themeColor, newColor) {
-      //    console.log(themeColor);
-      //   console.log(newColor);
-
-      //   this.currentTheme.colors[themeColor] = newColor.toHexString();
-      //   script.updateStyle(this.currentTheme, false);
-      // },
-
 
       editTheme: function () {
         if (this.isVisible()) {
@@ -93,7 +53,7 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         jquery('#input-main-color').spectrum('set', this.currentTheme.colors['main-color']);
         jquery('#input-title-color').spectrum('set', this.currentTheme.colors['title-color']);
 
-        script.updateStyle(this.currentTheme, true);
+        script.updateTheme(this.data, true);
       },
 
       saveTheme: function (data) {
