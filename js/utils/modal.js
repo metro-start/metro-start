@@ -4,7 +4,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             overlay: util.createElement('<div class="metro-modal overlay-wrap"></div>'),
             modalContent: util.createElement('<div class="metro-modal modal-content"></div>'),
 
-            info: util.createElement('<div class="info">'),
+            info: util.createElement('<div class="modal-info">'),
             confirm: util.createElement('<span id="confirm-button" class="main-color clickable small-text"></span>'),
             cancel: util.createElement('<span id="cancel-button" class="main-color clickable small-text"></span>')
         },
@@ -27,6 +27,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
                 var confirm = this.templates.confirm.cloneNode(true);
                 confirm.firstElementChild.textContent = confirmText;
                 confirm.firstElementChild.addEventListener('click', this.modalClosed.bind(this, id, true));
+                info.firstElementChild.appendChild(confirm);
             }
 
             if(!!cancelText) {

@@ -318,7 +318,7 @@ h3 {
 	margin-right: 8px;
 }
 
-.input-picker {
+.input-picker, .modal-info {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;

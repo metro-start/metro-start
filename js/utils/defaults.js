@@ -19,6 +19,7 @@ define(function() {
             'mainColor': '#ffffff',
             'titleColor': '#4a4a4a',
             'backgroundColor': '#000000',
+            'background-chooser': 'none',
             'variance': 1.51,
             'cellSize': 75,
             'x_1_Color': '#001133',

@@ -14,18 +14,21 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
     transition: A bool indicating whether to slowly transition or immediately change.
     */
     updateTheme: function (data, transition) {
+      var theme = util.upgradeTheme(data, defaults.defaultTheme);
+      console.log(theme);
+
       jss.set('body', {
-        'font-family': fonts[data.font],
+        'font-family': fonts[theme.font],
       });
         
-        var optionsColor = data.optionsColor;
-        var backgroundColor = data.backgroundColor;
-        var mainColor = data.mainColor;
-        var titleColor = data.titleColor;
+        var optionsColor = theme.optionsColor;
+        var backgroundColor = theme.backgroundColor;
+        var mainColor = theme.mainColor;
+        var titleColor = theme.titleColor;
   
       
-        this.updateFont(data);
-        this.updateBackground(data);
+        this.updateFont(theme);
+        this.updateBackground(theme);
   
         jss.set('*', {
           'border-color': optionsColor
@@ -128,7 +131,7 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
     },
 
     updateFont:  function() {
-    }
+    },
   };
 
   return script;

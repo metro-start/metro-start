@@ -39,7 +39,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
       ],
 
       init: function () {
-        this.data = storage.get('currentTheme', defaults.defaultTheme);
+        this.data = util.upgradeTheme(storage.get('currentTheme', defaults.defaultTheme), defaults.deafultTheme);
         this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
 
         this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
@@ -79,6 +79,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
        * @param {any} inputElement The name of the text field.
        */
       bindTextInput: function(inputElement) {
+        inputElement.value = this.data[inputElement.id];
         inputElement.addEventListener('input', this.updateText.bind(this, inputElement.id));
       },
 

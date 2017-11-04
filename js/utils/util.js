@@ -125,6 +125,31 @@ define([], function Util() {
             };
 
             return '#' + toHex(r) + toHex(g) + toHex(b);
+        },
+
+        upgradeTheme: function(data, defaultTheme) {
+            var theme = Object.assign({}, defaultTheme, data);
+      
+            if (!!data.author) {
+              theme.author = data.author;
+            }
+            if (!!data.title) {
+              theme.title = data.title;
+            }
+            if (!!data.options_color) {
+              theme.optionsColor = data.options_color;
+            }
+            if (!!data.main_color) {
+              theme.mainColor = data.main_color;
+            }
+            if (!!data.background_color) {
+              theme.backgroundColor = data.background_color;
+            }
+            if (!!data.title_color) {
+              theme.titleColor = data.title_color;
+            }
+      
+            return theme;
         }
     };
 
