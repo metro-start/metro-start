@@ -140,7 +140,6 @@
 			<div class="colors">
 				<select class="chooser" id="color-chooser">
 					<option class="clickable" value="0">custom</option>
-					<option class="clickable" value="1">random</option>
 				</select>
 			</div>
 			<div id="custom" class="theme-editor-section color-picker color-section">
@@ -176,27 +175,27 @@
 			<div class="theme-editor-section">
 				<div id="none" class="background-section">
 				</div>
-				<div id="trianglify" class="background-section hide">
-					<div id="xColors" class="theme-editor-section color-picker">
-						<div class="theme-section">x colors</div>
-						<div>
-						<span class="picker-text">first</span>
-						<input type="text" id="x_1_Color" size="9">
-						</div> 
-						<div>
-							<span class="picker-text">second</span>
-							<input type="text" id="x_2_Color" size="9">
-						</div> 
-						<div>
-							<span class="picker-text">third</span>
-							<input type="text" id="x_3_Color" size="9">
-						</div> 
-					</div>
-
-					<div class="input-picker">
-						<input type="text" id="trianglifierVariance" size="15" placeholder="0&lt;variance&lt;1">
-						<input type="text" id="trianglifierCellSize" size="15" placeholder="25&lt;cell size&lt;100">
-					</div>
+				<div class="tirangli">
+					<select class="chooser" id="trisize-chooser">
+						<option class="clickable">small</option>
+						<option class="clickable">medium</option>
+						<option class="clickable">large</option>
+					</select>
+				</div>
+				<div class="colors">
+					<select class="chooser" id="trivariance-chooser">
+						<option class="clickable">uniform</option>
+						<option class="clickable">freeform</option>
+					</select>
+				</div>
+				<div class="colors">
+					<select class="chooser" id="tristyle-chooser">
+						<option class="clickable">Triad</option>
+						<option class="clickable">Tetrad</option>
+						<option class="clickable">Monochromatic</option>
+						<option class="clickable">Analogous</option>
+						<option class="clickable">Split Complements</option>
+					</select>
 				</div>
 			</div>
 			<div class="theme-section">author info</div>

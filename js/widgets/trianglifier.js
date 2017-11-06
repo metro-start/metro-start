@@ -12,12 +12,9 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
         editThemeButton: document.getElementById('editThemeButton'),
         solidSection: document.getElementById('solid'),
         trianglifySection: document.getElementById('trianglify'),
-        randomizeSection: document.getElementById('randomize')
       },
 
       textInputs: [
-        document.getElementById('trianglifierVariance'),
-        document.getElementById('trianglifierCellSize'),
         document.getElementById('newThemeTitle'),
         document.getElementById('newThemeAuthor')
       ],
@@ -27,15 +24,14 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
         document.getElementById('titleColor'),
         document.getElementById('mainColor'),
         document.getElementById('optionsColor'),
-        document.getElementById('x_1_Color'),
-        document.getElementById('x_2_Color'),
-        document.getElementById('x_3_Color'),
       ],
 
       selectInputs: [
         document.getElementById('font-chooser'),
-        document.getElementById('color-chooser'),
         document.getElementById('background-chooser'),
+        document.getElementById('trivariance-chooser'),
+        document.getElementById('trisize-chooser'),
+        document.getElementById('tristyle-chooser'),
       ],
 
       init: function () {
@@ -118,10 +114,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
        * @param {any} val The new value.
        */
       updateSelect: function(inputId, val) {
-        this.updateCurrentTheme(inputId, val);
         
-        if (inputId === 'background-chooser' || inputId === 'color-chooser')
-        {
+        if (inputId === 'background-chooser' || inputId === 'color-chooser') {
           var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
           for (var i = 0; i < elems.length; i++) { 
             // If this element has the same id as our new select value, make it visible.
@@ -133,6 +127,54 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             }
           }
         } 
+
+        if (inputId === 'trivariance-chooser') {
+          var triVariance = 0.75;
+          switch (val) {
+            case 'uniform':
+            triVariance = 0;
+            break;
+
+            case 'freeform':
+            triVariance = 0.75;
+            break;
+
+            default:
+            console.error("Could not recognize trivariance: " + val);
+            break;
+          }
+          this.updateCurrentTheme('triVariance', triVariance);
+
+        } else if (inputId === 'trisize-chooser') {
+          var triSize = 70;
+          switch (val.toLowerCase()) {
+            case 'small':
+            triSize = 10;
+            break;
+            
+            case 'medium':
+            triSize = 70;
+            break;
+
+            case 'large':
+            triSize = 125;
+            break;
+
+            default:
+            console.error("Could not recognize trisize: " + val);
+            break;
+          }
+          this.updateCurrentTheme('triSize', triSize);
+
+        } else if (inputId === 'tristyle-chooser') {
+          // Same as a general case select.
+          // Just keeping it separete to be consistent with other tri*.
+          this.updateCurrentTheme('triStyle', val);
+
+        } else {
+          this.updateCurrentTheme(inputId, val);
+        }
+
       },
 
       /**

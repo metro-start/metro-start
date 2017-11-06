@@ -136,16 +136,16 @@ define([], function Util() {
             if (!!data.title) {
               theme.title = data.title;
             }
-            if (!!data.options_color) {
+            if (!!data.options_color && !data.optionsColor) {
               theme.optionsColor = data.options_color;
             }
-            if (!!data.main_color) {
+            if (!!data.main_color && !data.mainColor) {
               theme.mainColor = data.main_color;
             }
-            if (!!data.background_color) {
+            if (!!data.background_color && !data.backgroundColor) {
               theme.backgroundColor = data.background_color;
             }
-            if (!!data.title_color) {
+            if (!!data.title_color && !data.titleColor) {
               theme.titleColor = data.title_color;
             }
       

@@ -99,18 +99,40 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
       if (data['background-chooser'] === 'trianglify') {
         var cellSize = Number.parseInt(data.trianglifierCellSize);
         var variance = Number.parseFloat(data.trianglifierVariance);
+        var xColors = [data.backgroundColor];
 
-        // 0.0 < variance < 1.0
-        variance = variance < 0 ? 0 : (variance < 1 ? variance : 1);
-        // 25 < cellSize < 100
-        cellSize = cellSize < 25 ? 25 : (cellSize < 100 ? cellSize : 100);
+        variance = data.triVariance;
+        cellSize = data.triSize;
 
+        switch (data.triStyle.toLowerCase()) {
+          case 'triad':
+            xColors = tinycolor(data.backgroundColor).triad().map(v => v.toHexString());
+            break;
+          case 'tetrad':
+            xColors = tinycolor(data.backgroundColor).tetrad().map(v => v.toHexString());
+            break;
+          case 'monochromatic':
+            xColors = tinycolor(data.backgroundColor).monochromatic().map(v => v.toHexString());
+            break;
+          case 'analogous':
+            xColors = tinycolor(data.backgroundColor).analogous().map(v => v.toHexString());
+            break;
+          case 'split complements':
+            xColors = tinycolor(data.backgroundColor).splitcomplement().map(v => v.toHexString());
+            break;
+          default:
+            console.error("Could not recognize tristyle: " + val);
+            break;
+        }
+
+        console.log(data.backgroundColor);
+        console.log(xColors);
         var pat = trianglify({
           width: jBody.prop('scrollWidth'), 
           height: jBody.prop('scrollHeight'),
           variance: variance,
           cell_size: cellSize,
-          x_colors: [data.x_1_Color, data.x_2_Color, data.x_3_Color]
+          x_colors: xColors
         });
         
         jss.set('body', {

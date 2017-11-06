@@ -42,20 +42,6 @@ define(['jquery', 'spectrum-colorpicker', '../utils/modal', '../utils/util', '..
         }
       },
 
-      randomTheme: function () {
-        this.currentTheme.colors['options-color'] = '#' + util.randomColor();
-        this.currentTheme.colors['background-color'] = '#' + util.randomColor();
-        this.currentTheme.colors['main-color'] = '#' + util.randomColor();
-        this.currentTheme.colors['title-color'] = '#' + util.randomColor();
-
-        jquery('#input-background-color').spectrum('set', this.currentTheme.colors['background-color']);
-        jquery('#input-options-color').spectrum('set', this.currentTheme.colors['options-color']);
-        jquery('#input-main-color').spectrum('set', this.currentTheme.colors['main-color']);
-        jquery('#input-title-color').spectrum('set', this.currentTheme.colors['title-color']);
-
-        script.updateTheme(this.currentTheme, true);
-      },
-
       saveTheme: function (data) {
         if (!data.newThemeTitle)
         {
