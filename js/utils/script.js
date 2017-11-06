@@ -70,6 +70,9 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
         jss.set('.options-color', {
           'color': optionsColor
         });
+        jss.set('.theme-active', {
+          'background-color': optionsColor
+        });
         jss.set('.bookmark-active', {
           'background-color': optionsColor
         });

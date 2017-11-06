@@ -86,10 +86,10 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.id = 'theme_' + theme.id;
             title.firstElementChild.textContent = theme.title;
-            title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
+            title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
             if (this.themesWidget.currentTheme.title === theme.title) {
-                util.addClass(title.firstElementChild, 'bookmark-active');
+                util.addClass(title.firstElementChild, 'theme-active');
             }
 
             fragment.appendChild(title);
@@ -114,12 +114,20 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             return fragment;
         },
 
-        applyTheme: function(theme) {
+        applyTheme: function(themeNode, theme) {
             if (theme.title === 'random theme') {
                 theme = jquery.extend({}, theme);
             }
+
             this.themesWidget.applyTheme(theme);
             console.log(theme);
+
+            var itemNode = themeNode.parentNode;
+            var siblings = themeNode.parentNode.parentNode.children;
+            Array.prototype.slice.call(siblings).forEach(function(item) {
+                util.removeClass(item.firstElementChild, 'theme-active');
+            });
+            util.addClass(itemNode.firstElementChild, 'theme-active');
         },
 
         shareTheme: function(theme) {
