@@ -15,7 +15,6 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
     */
     updateTheme: function (data, transition) {
       var theme = util.upgradeTheme(data, defaults.defaultTheme);
-      console.log(theme);
 
       jss.set('body', {
         'font-family': fonts[theme.font],
@@ -125,8 +124,6 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
             break;
         }
 
-        console.log(data.backgroundColor);
-        console.log(xColors);
         var pat = trianglify({
           width: jBody.prop('scrollWidth'), 
           height: jBody.prop('scrollHeight'),

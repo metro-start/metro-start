@@ -114,9 +114,9 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
        * @param {any} val The new value.
        */
       updateSelect: function(inputId, val) {
-        
-        if (inputId === 'background-chooser' || inputId === 'color-chooser') {
+        if (inputId === 'background-chooser') {
           var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
+          
           for (var i = 0; i < elems.length; i++) { 
             // If this element has the same id as our new select value, make it visible.
             if (elems[i].id === val) {
@@ -126,9 +126,9 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 util.addClass(elems[i], 'hide');
             }
           }
-        } 
+          this.updateCurrentTheme(inputId, val);
 
-        if (inputId === 'trivariance-chooser') {
+        } else if (inputId === 'trivariance-chooser') {
           var triVariance = 0.75;
           switch (val) {
             case 'uniform':
