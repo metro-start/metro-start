@@ -58,6 +58,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             jquery.get(defaults.defaultWebservice + '/themes.json', function(data) {
                 data = JSON.parse(data);
                 for (var i in data) {
+                    data[i] = util.upgradeTheme(data[i], defaults.defaultTheme);
                     data[i].online = true;
                 }
 
@@ -82,7 +83,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             title.firstElementChild.textContent = theme.title;
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
-            if (this.themesWidget.currentTheme.title === theme.title) {
+            if (this.themesWidget.data.title === theme.title) {
                 util.addClass(title.firstElementChild, 'theme-active');
             }
 
@@ -110,11 +111,11 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
         applyTheme: function(themeNode, theme) {
             if (theme.title === 'random theme') {
-                theme = jquery.extend({}, theme);
+                this.themesWidget.randomTheme();
+            } else {
+                this.themesWidget.updateCurrentTheme('currentTheme', theme);
+                console.log(theme);
             }
-
-            this.themesWidget.applyTheme(theme);
-            console.log(theme);
 
             var itemNode = themeNode.parentNode;
             var siblings = themeNode.parentNode.parentNode.children;

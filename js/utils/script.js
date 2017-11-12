@@ -71,9 +71,6 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
         jss.set('.bookmark-active', {
           'background-color': optionsColor
         });
-        jss.set('.overlay-wrap', {
-          'background-color': mainColor
-        });
         jss.set('.pagebase-grouped > .group > .page', {
           'border-top-style': 'solid',
           'border-top-width': '1px',

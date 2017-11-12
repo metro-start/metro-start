@@ -1,12 +1,10 @@
-define(['./weather', './themes', './trianglifier', './font'], function(weather, themes, trianglifier, font) {
+define(['./weather', './themes', './font'], function(weather, themes, font) {
     var widgets = {
         weather: weather,
         themes: themes,
-        trianglifer: trianglifier,
         font: font,
-        confirm: confirm,
 
-        data: [weather, themes, trianglifier, font],
+        data: [weather, themes, font],
 
         init: function(document) {
             this.data.forEach(function(module) {
