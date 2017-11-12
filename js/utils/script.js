@@ -15,10 +15,6 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
     */
     updateTheme: function (data, transition) {
       var theme = util.upgradeTheme(data, defaults.defaultTheme);
-
-      jss.set('body', {
-        'font-family': fonts[theme.font],
-      });
         
         var optionsColor = theme.optionsColor;
         var backgroundColor = theme.backgroundColor;
@@ -50,11 +46,11 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
         jquery('body').animate({ 'color': mainColor }, { duration: duration, queue: false });
         jquery('input').animate({ 'color': mainColor }, { duration: duration, queue: false });
         jquery('.background-color').animate({ 'backgroundColor': backgroundColor }, { duration: duration, queue: false });
-        jquery('.titles-color').animate({ 'color': titleColor }, { duration: duration, queue: false });
+        jquery('.title-color').animate({ 'color': titleColor }, { duration: duration, queue: false });
         jquery('.options-color').animate({ 'color': optionsColor }, { duration: duration, queue: false });
   
         // ...but then we still need to add it to the DOM.
-        jss.set('.titles-color', {
+        jss.set('.title-color', {
           'color': titleColor
         });
         jss.set('body', {
@@ -124,7 +120,7 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
             break;
         }
 
-        var pat = trianglify({
+        var bodyPattern = trianglify({
           width: jBody.prop('scrollWidth'), 
           height: jBody.prop('scrollHeight'),
           variance: variance,
@@ -132,12 +128,20 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
           x_colors: xColors
         });
         
+        var modalPattern = trianglify({
+          width: jBody.prop('scrollWidth') * 0.75, 
+          height: jBody.prop('scrollHeight') * 0.85,
+          variance: variance,
+          cell_size: cellSize,
+          x_colors: xColors
+        });
+        
         jss.set('body', {
-          'background': 'url(' + pat.png() + ')'
+          'background': 'url(' + bodyPattern.png() + ')'
         });
 
         jss.set('.modal-content', {
-          'background': 'url(' + pat.png() + ')'
+          'background': 'url(' + modalPattern.png() + ')'
         });
       } else {
         jss.set('body', {
@@ -152,7 +156,10 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
       }
     },
 
-    updateFont:  function() {
+    updateFont:  function(theme) {
+      jss.set('body', {
+        'font-family': fonts[theme.font],
+      });
     },
   };
 

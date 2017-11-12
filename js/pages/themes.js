@@ -59,12 +59,6 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
                 data = JSON.parse(data);
                 for (var i in data) {
                     data[i].online = true;
-                    data[i].colors = {
-                        'options-color': data[i].optionsColor,
-                        'main-color': data[i].mainColor,
-                        'title-color': data[i].titleColor,
-                        'background-color': data[i].backgroundColor,
-                    };
                 }
 
                 that.themes.addAll({
