@@ -97,6 +97,16 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
         cellSize = data.triSize;
 
         switch (data.triStyle.toLowerCase()) {
+          case 'neighbors':
+            var hsl = tinycolor(data.backgroundColor).toHsl();
+            xColors = [
+              data.backgroundColor,
+              tinycolor({h: hsl.h + 90 % 360, s: hsl.s,l: hsl.l}).toHexString(),
+              tinycolor({h: hsl.h + 180 % 360, s: hsl.s,l: hsl.l}).toHexString(),
+              tinycolor({h: hsl.h + 270 % 360, s: hsl.s,l: hsl.l}).toHexString()
+            ];
+            break;
+
           case 'triad':
             xColors = tinycolor(data.backgroundColor).triad().map(v => v.toHexString());
             break;
@@ -116,6 +126,8 @@ function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
             console.error("Could not recognize tristyle: " + val);
             break;
         }
+
+        console.log(xColors);
 
         var bodyPattern = trianglify({
           width: jBody.prop('scrollWidth'), 
