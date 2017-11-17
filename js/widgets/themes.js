@@ -170,73 +170,20 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * @param {any} val The new value.
              */
             updateSelect: function (inputId, val) {
-                switch (inputId) {
-                    case 'background-chooser':
-                        var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
-                        for (var i = 0; i < elems.length; i++) {
-                            // If this element has the same id as our new select value, make it visible.
-                            if (elems[i].id === val) {
-                                util.removeClass(elems[i], 'hide');
-                                // Otherwise ensure its hidden.
-                            } else if (!util.hasClass(elems[i], 'hide')) {
-                                util.addClass(elems[i], 'hide');
-                            }
+                if (inputId === 'background-chooser') {
+                    var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
+                    for (var i = 0; i < elems.length; i++) {
+                        // If this element has the same id as our new select value, make it visible.
+                        if (elems[i].id === val) {
+                            util.removeClass(elems[i], 'hide');
+                            // Otherwise ensure its hidden.
+                        } else if (!util.hasClass(elems[i], 'hide')) {
+                            util.addClass(elems[i], 'hide');
                         }
-                        this.updateCurrentTheme(inputId, val);
-                        break;
-
-                    case 'trivariance-chooser':
-                        var triVariance = 0.75;
-                        switch (val) {
-                            case 'uniform':
-                                triVariance = 0;
-                                break;
-
-                            case 'freeform':
-                                triVariance = 0.75;
-                                break;
-
-                            default:
-                                console.error("Could not recognize trivariance: " + val);
-                                break;
-                        }
-                        this.updateCurrentTheme('triVariance', triVariance);
-                        break;
-
-                    case 'trisize-chooser':
-                        var triSize = 70;
-                        switch (val.toLowerCase()) {
-                            case 'small':
-                                triSize = 10;
-                                break;
-
-                            case 'medium':
-                                triSize = 70;
-                                break;
-
-                            case 'large':
-                                triSize = 125;
-                                break;
-
-                            default:
-                                console.error("Could not recognize trisize: " + val);
-                                break;
-                        }
-                        this.updateCurrentTheme('triSize', triSize);
-                        break;
-
-                    case 'tristyle-chooser':
-                        this.updateCurrentTheme('triStyle', val);
-                        break;
-
-                    case 'font-chooser':
-                        this.updateCurrentTheme('font', val);
-                        break;
-
-                    default:
-                        this.updateCurrentTheme(inputId, val);
-                        break;
+                    }
                 }
+
+                this.updateCurrentTheme(inputId, val);
             },
 
             /**
@@ -263,10 +210,10 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 var url = defaults.defaultWebservice + '/newtheme?' +
                     'title=' + encodeURIComponent(theme.title) +
                     '&author=' + encodeURIComponent(theme.author) +
-                    '&maincolor=' + encodeURIComponent(theme.colors['main-color']) +
-                    '&optionscolor=' + encodeURIComponent(theme.colors['options-color']) +
-                    '&titlecolor=' + encodeURIComponent(theme.colors['title-color']) +
-                    '&backgroundcolor=' + encodeURIComponent(theme.colors['background-color']);
+                    '&maincolor=' + encodeURIComponent(theme.mainColor) +
+                    '&optionscolor=' + encodeURIComponent(theme.optionsColor) +
+                    '&titlecolor=' + encodeURIComponent(theme.titleColor) +
+                    '&backgroundcolor=' + encodeURIComponent(themebackgroundColor);
                 console.log(url);
 
                 jquery.get(url, function (data) {

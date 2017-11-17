@@ -14,15 +14,15 @@ define(function() {
         defaultTheme: {
             'title': 'metro start',
             'author': 'metro start',
-            'font': 'normal fonts',
+            'font-chooser': 'normal fonts',
             'optionsColor': '#ff0000',
             'mainColor': '#ffffff',
             'titleColor': '#4a4a4a',
             'backgroundColor': '#000000',
             'background-chooser': 'none',
-            'triVariance': 0.75,
-            'triSize': 75,
-            'triStyle': 'tetrad',
+            'trivariance-choooser': 'freeform',
+            'trisize-chooser': 'medium',
+            'tristyle-chooser': 'tetrad',
             'trianglifierVariance': 1.51,
             'trianglifierCellSize': 75
         },
@@ -52,9 +52,9 @@ define(function() {
             titleColor: '#4a4a4a',
             backgroundColor: '#000000',
             author: 'metro start',
-            triVariance: 0.75,
-            triSize: 75,
-            triStyle: 'tetrad',
+            'trivariance-choooser': 0.75,
+            'trisize-chooser': 75,
+            'tristyle-chooser': 'tetrad',
             trianglifierVariance: 1.51,
             trianglifierCellSize: 75
         }]
