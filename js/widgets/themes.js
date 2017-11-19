@@ -97,7 +97,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             },
 
             themeEditorClosed: function (res) {
-                util.log(`theme editor closed with result: ${res}`);
+                util.log('theme editor closed with result: ' + res);
 
                 if (!res) {
                     // If the theme edior was canceled, reset the theme.
@@ -106,9 +106,12 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 }
 
                 if (!this.data.title) {
-                    // https://github.com/kylestetz/Sentencer ?
-                    modal.createModal('themeManagerError', 'please specify a name for this theme', null, 'okay');
-                    return;
+                    this.data.title = this.data['trisize-chooser'][0];
+                    this.data.title += this.data['tristyle-chooser'][0];
+                    this.data.title += this.data['trivariance-chooser'][0];
+                    this.data.title = this.data.title.toUpperCase() + ' ';
+
+                    this.data.title += tinycolor(this.data.backgroundColor).toString();
                 }
 
                 if (!this.data.author) {
