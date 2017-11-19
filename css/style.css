@@ -385,4 +385,6 @@ h3 {
 }
 .modal-content > p {
 	text-align: center;
+	height: 10%;
+	margin: 10% 0;
 }
