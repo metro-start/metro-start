@@ -349,7 +349,7 @@ h3 {
 	top: 0;
 	bottom: 0;
 	margin: auto;
-	height: 85%;
+	max-height: 85%;
 	width: 75%;
 	border: solid 2px;
 	align-items: center;
@@ -374,4 +374,15 @@ h3 {
 
 #none {
 	display: none;
+}
+.modal-info .clickable {
+	padding: 6px;
+	margin-bottom: 8px;
+	margin-right: 4px;
+}
+.modal-info .clickable:first {
+	margin-right: 4px;
+}
+.modal-content > p {
+	text-align: center;
 }

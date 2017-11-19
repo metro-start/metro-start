@@ -15,8 +15,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             },
 
             textInputs: [
-                document.getElementById('newThemeTitle'),
-                document.getElementById('newThemeAuthor')
+                document.getElementById('title'),
+                document.getElementById('author')
             ],
 
             colorInputs: [
@@ -105,20 +105,20 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     return;
                 }
 
-                if (!this.data.newThemeTitle) {
+                if (!this.data.title) {
                     // https://github.com/kylestetz/Sentencer ?
                     modal.createModal('themeManagerError', 'please specify a name for this theme', null, 'okay');
                     return;
                 }
 
-                if (!this.data.newThemeAuthor) {
+                if (!this.data.author) {
                     this.data.newThemeAuthor = 'unknown';
                 }
 
                 this.data.online = false;
 
                 var themesLocal = storage.get('themesLocal', []);
-                themesLocal.push(data);
+                themesLocal.push(this.data);
                 storage.save('themesLocal', themesLocal);
                 storage.save('currentTheme', this.data);
 

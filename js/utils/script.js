@@ -83,6 +83,9 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
         jss.set('#picker', {
           'border': '1px solid ' + optionsColor
         });
+        jss.set('.modal-info .clickable', {
+          'border': '1px solid ' + optionsColor
+        });
       },
 
       updateBackground: function (data) {

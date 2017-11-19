@@ -113,8 +113,9 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             if (theme.title === 'random theme') {
                 this.themesWidget.randomTheme();
             } else {
+                theme.title = '';
+                theme.author = '';
                 this.themesWidget.updateCurrentTheme('currentTheme', theme);
-                console.log(theme);
             }
 
             var itemNode = themeNode.parentNode;
@@ -128,9 +129,11 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
         shareTheme: function(theme) {
             var that = this;
             modal.createModal('shareThemeAlert', `${theme.title} will be shared to the theme gallery.`, 
-                function() {
-                    that.themesWidget.shareTheme(theme);
-                    that.loadThemes();
+                function(result) {
+                    if (result) {
+                        that.themesWidget.shareTheme(theme);
+                        that.loadThemes();
+                    }
                 },
                 'okay',
                 'cancel');
@@ -139,9 +142,11 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
         removeTheme: function(theme) {
             var that = this;
             modal.createModal('shareThemeAlert', `${theme.title} will be removed.`, 
-                function() {
-                    that.themesWidget.removeTheme(theme);
-                    that.loadThemes();
+                function(result) {
+                    if (result) {
+                        that.themesWidget.removeTheme(theme);
+                        that.loadThemes();
+                    }
                 },
                 'okay',
                 'cancel');

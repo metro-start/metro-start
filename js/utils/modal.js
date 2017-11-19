@@ -5,8 +5,8 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             modalContent: util.createElement('<div class="metro-modal modal-content"></div>'),
 
             info: util.createElement('<div class="modal-info">'),
-            confirm: util.createElement('<span id="confirm-button" class="main-color clickable small-text"></span>'),
-            cancel: util.createElement('<span id="cancel-button" class="main-color clickable small-text"></span>')
+            confirm: util.createElement('<span id="confirm-button" class="main-color clickable"></span>'),
+            cancel: util.createElement('<span id="cancel-button" class="main-color clickable"></span>')
         },
 
         modalCallbacks: { },
@@ -39,7 +39,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
 
             modalContent.firstElementChild.id = id;
             util.addClass(modalContent.firstElementChild, id);
-            modalContent.firstElementChild.appendChild(content);
+            modalContent.firstElementChild.appendChild(typeof content === 'string' ? util.createElement('<p>' + content + '</p>') : content);
             modalContent.firstElementChild.appendChild(info);
 
             var body = jquery('body');
