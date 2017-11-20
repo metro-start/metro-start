@@ -56,7 +56,7 @@ define([], function Util() {
         isEmpty: function isEmpty(obj) {
             // null and undefined are "empty"
             if (obj === null || obj === undefined) return true;
-
+            
             // numbers are not empty.
             if (typeof obj === 'number') return false;
 
@@ -78,40 +78,6 @@ define([], function Util() {
             }
 
             return true;
-        },
-
-        // http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
-        randomColor: function () {
-            var golden_ratio_conjugate = 0.618033988749895; // use golden ratio
-            var h = Math.random(); // use random start value
-            var s = 0.74;
-            var v = 0.95;
-
-            // HSV values in [0..1]
-            h += golden_ratio_conjugate;
-            h %= 1;
-
-            // returns [r, g, b] values from 0 to 255
-            var h_i = Math.floor(h * 6);
-            var f = h * 6 - h_i;
-            var p = v * (1 - s);
-            var q = v * (1 - f * s);
-            var t = v * (1 - (1 - f) * s);
-            var r = 0, g = 0, b = 0;
-
-            if (h_i === 0) { r = v; g = t; b = p; }
-            if (h_i === 1) { r = q; g = v; b = p; }
-            if (h_i === 2) { r = p; g = v; b = t; }
-            if (h_i === 3) { r = p; g = q; b = v; }
-            if (h_i === 4) { r = t; g = p; b = v; }
-            if (h_i === 5) { r = v; g = p; b = q; }
-
-            var toHex = function (c) {
-                var hex = Math.floor(c * 256).toString(16);
-                return hex.length == 1 ? "0" + hex : hex;
-            };
-
-            return '#' + toHex(r) + toHex(g) + toHex(b);
         }
     };
 
