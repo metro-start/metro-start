@@ -1,11 +1,10 @@
-define(['./weather', './themes', './font', './confirm'], function(weather, themes, font, confirm) {
+define(['./weather', './themes', './font'], function(weather, themes, font) {
     var widgets = {
         weather: weather,
         themes: themes,
         font: font,
-        confirm: confirm,
 
-        data: [weather, themes, font, confirm],
+        data: [weather, themes, font],
 
         init: function(document) {
             this.data.forEach(function(module) {

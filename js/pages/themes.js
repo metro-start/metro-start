@@ -1,5 +1,5 @@
-define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../widgets/confirm', '../utils/util', '../utils/storage', '../utils/defaults'],
-function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, defaults) {
+define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults'],
+function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults) {
     var themes = {
         name: 'themes',
 
@@ -9,7 +9,7 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
 
         themes: {},
 
-        localThemes: {},
+        themesLocal: {},
 
         onlineThemes: {},
 
@@ -46,10 +46,9 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
             that.themes.clear();
             that.themes.addAll({
               'heading': 'my themes',
-              'data': storage.get('localThemes', [])
+              'data': storage.get('themesLocal', [])
             });
 
-            console.log(this.themesWidget.currentTheme);
             that.themes.addAll({
                 'heading': 'system themes',
                 'data': defaults.systemThemes
@@ -59,13 +58,8 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
             jquery.get(defaults.defaultWebservice + '/themes.json', function(data) {
                 data = JSON.parse(data);
                 for (var i in data) {
+                    data[i] = util.upgradeTheme(data[i], defaults.defaultTheme);
                     data[i].online = true;
-                    data[i].colors = {
-                        'options-color': data[i].options_color,
-                        'main-color': data[i].main_color,
-                        'title-color': data[i].title_color,
-                        'background-color': data[i].background_color,
-                    };
                 }
 
                 that.themes.addAll({
@@ -87,10 +81,10 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.id = 'theme_' + theme.id;
             title.firstElementChild.textContent = theme.title;
-            title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
+            title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
-            if (this.themesWidget.currentTheme.title === theme.title) {
-                util.addClass(title.firstElementChild, 'bookmark-active');
+            if (this.themesWidget.data.title === theme.title) {
+                util.addClass(title.firstElementChild, 'theme-active');
             }
 
             fragment.appendChild(title);
@@ -115,27 +109,47 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
             return fragment;
         },
 
-        applyTheme: function(theme) {
+        applyTheme: function(themeNode, theme) {
             if (theme.title === 'random theme') {
-                theme = jquery.extend({}, theme);
+                this.themesWidget.randomTheme();
+            } else {
+                theme.title = '';
+                theme.author = '';
+                this.themesWidget.updateCurrentTheme('currentTheme', theme);
             }
-            this.themesWidget.applyTheme(theme);
-            console.log(theme);
+
+            var itemNode = themeNode.parentNode;
+            var siblings = themeNode.parentNode.parentNode.children;
+            Array.prototype.slice.call(siblings).forEach(function(item) {
+                util.removeClass(item.firstElementChild, 'theme-active');
+            });
+            util.addClass(itemNode.firstElementChild, 'theme-active');
         },
 
         shareTheme: function(theme) {
             var that = this;
-            confirmWidget.alert(theme.title + ' will be shared to the theme gallery.', function() {
-                that.themesWidget.shareTheme(theme);
-                that.loadThemes();
-            });
+            modal.createModal('shareThemeAlert', `${theme.title} will be shared to the theme gallery.`, 
+                function(result) {
+                    if (result) {
+                        that.themesWidget.shareTheme(theme);
+                        that.loadThemes();
+                    }
+                },
+                'okay',
+                'cancel');
         },
 
         removeTheme: function(theme) {
             var that = this;
-            confirmWidget.alert(theme.title + ' will be removed.', function() {
-                that.themesWidget.removeTheme(theme);
-            });
+            modal.createModal('shareThemeAlert', `${theme.title} will be removed.`, 
+                function(result) {
+                    if (result) {
+                        that.themesWidget.removeTheme(theme);
+                        that.loadThemes();
+                    }
+                },
+                'okay',
+                'cancel');
         },
 
         updateTheme: function(theme) {

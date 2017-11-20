@@ -3,7 +3,20 @@ define([], function Util() {
     var hasOwnProperty = Object.prototype.hasOwnProperty;
 
     var util = {
-        init: function () { },
+        init: function () { 
+            this.lastLogTime = Date.now();
+        },
+
+        log: function(msg) {
+            var time = Date.now();
+            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
+        },
+
+        logChange: function(key, val) {
+            this.log(`setting [${key}] to ${val}`);
+        },
 
         // Converts an HTML string to a DOM fragment.
         // htmlStr: The string to convert.
@@ -16,7 +29,7 @@ define([], function Util() {
             }
             return fragment;
         },
-
+        
         // Add a CSS class to a DOM element.
         // elem: The DOM element to be mondified.
         // newClass: The class to be applied to the node.
@@ -56,7 +69,7 @@ define([], function Util() {
         isEmpty: function isEmpty(obj) {
             // null and undefined are "empty"
             if (obj === null || obj === undefined) return true;
-            
+
             // numbers are not empty.
             if (typeof obj === 'number') return false;
 
@@ -78,6 +91,65 @@ define([], function Util() {
             }
 
             return true;
+        },
+
+        // http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+        randomColor: function () {
+            var golden_ratio_conjugate = 0.618033988749895; // use golden ratio
+            var h = Math.random(); // use random start value
+            var s = 0.74;
+            var v = 0.95;
+
+            // HSV values in [0..1]
+            h += golden_ratio_conjugate;
+            h %= 1;
+
+            // returns [r, g, b] values from 0 to 255
+            var h_i = Math.floor(h * 6);
+            var f = h * 6 - h_i;
+            var p = v * (1 - s);
+            var q = v * (1 - f * s);
+            var t = v * (1 - (1 - f) * s);
+            var r = 0, g = 0, b = 0;
+
+            if (h_i === 0) { r = v; g = t; b = p; }
+            if (h_i === 1) { r = q; g = v; b = p; }
+            if (h_i === 2) { r = p; g = v; b = t; }
+            if (h_i === 3) { r = p; g = q; b = v; }
+            if (h_i === 4) { r = t; g = p; b = v; }
+            if (h_i === 5) { r = v; g = p; b = q; }
+
+            var toHex = function (c) {
+                var hex = Math.floor(c * 256).toString(16);
+                return hex.length == 1 ? "0" + hex : hex;
+            };
+
+            return '#' + toHex(r) + toHex(g) + toHex(b);
+        },
+
+        upgradeTheme: function(data, defaultTheme) {
+            var theme = Object.assign({}, defaultTheme, data);
+      
+            if (!!data.author) {
+              theme.author = data.author;
+            }
+            if (!!data.title) {
+              theme.title = data.title;
+            }
+            if (!!data.options_color && !data.optionsColor) {
+              theme.optionsColor = data.options_color;
+            }
+            if (!!data.main_color && !data.mainColor) {
+              theme.mainColor = data.main_color;
+            }
+            if (!!data.background_color && !data.backgroundColor) {
+              theme.backgroundColor = data.background_color;
+            }
+            if (!!data.title_color && !data.titleColor) {
+              theme.titleColor = data.title_color;
+            }
+      
+            return theme;
         }
     };
 

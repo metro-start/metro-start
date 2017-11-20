@@ -15,7 +15,7 @@ module.exports = function (grunt) {
                 devtool: 'source-map',
                 output: {
                     filename: 'metro-start.js',
-                    path: './dist',
+                    path: __dirname + '/dist',
                 },
                 stats: {
                     // Configure the console output
@@ -29,15 +29,12 @@ module.exports = function (grunt) {
                     }
                 },
                 plugins: [
-                    new OptimizeJsPlugin({
-                        sourceMap: true
-                    }),
-                    new WebpackUglifyJsPlugin({
-                        cacheFolder: './cached_uglify/',
-                        debug: true,
-                        minimize: true,
-                        sourceMap: true
-                    }),
+                    // new WebpackUglifyJsPlugin({
+                    //     cacheFolder: './cached_uglify/',
+                    //     debug: true,
+                    //     minimize: true,
+                    //     sourceMap: true
+                    // }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },
@@ -47,10 +44,25 @@ module.exports = function (grunt) {
                     ])]
             }
         },
+        compress: {
+            all: {
+                options: {
+                    archive: './metro-start.zip',
+                    mode: 'zip'
+                },
+                files: [
+                    { cwd: 'dist/', src: '**', expand: true }
+                ]
+            }
+        },
         jshint: {
             all: [
-                'js/**/*.js'
-            ]
+                'js/**/*.js',
+            ],
+            options: {
+                reporter: require('jshint-stylish'),
+                'esversion': 6,
+            }
         },
         watch: {
             scripts: {
@@ -71,8 +83,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-compress');
+
+    grunt.registerTask('default', ['webpack']);
 
     grunt.registerTask('build', ['webpack']);
     grunt.registerTask('test', ['webpack', 'jshint']);
-    grunt.registerTask('default', ['webpack', 'test']);
+    grunt.registerTask('publish', ['webpack', 'jshint', 'compress']);
 };

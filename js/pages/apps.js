@@ -30,6 +30,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
         loadApps: function() {
             var that = this;
             chrome.management.getAll(function(res) {
+                that.apps.clear();
                 that.apps.addAll({
                     'heading': 'apps',
                     'data': [{

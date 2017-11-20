@@ -29,10 +29,7 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
     // Build the dom.
     // rows: HTML rows to be added to the Dom.
     pagebase.prototype.buildDom = function buildDom(rows) {
-        this.currentPage = 0;
-        while (this.rootNode.firstElementChild) {
-            this.rootNode.firstElementChild.remove();
-        }
+        this.clear();
         this.addAll(rows);
     };
 
@@ -70,6 +67,13 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
             }
 
             this.rootNode.appendChild(columnNode);
+        }
+    };
+
+    pagebase.prototype.clear = function clear() {
+        this.currentPage = 0;
+        while (this.rootNode.firstElementChild) {
+            this.rootNode.firstElementChild.remove();
         }
     };
 
