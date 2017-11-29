@@ -38,8 +38,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             themeRemoved: function () { },
 
             init: function () {
-                this.data = storage.get('currentTheme', defaults.deafultTheme);
-                this.data = util.upgradeTheme(this.data, defaults.deafultTheme);
+                this.data = storage.get('currentTheme', defaults.defaultTheme);
+                this.data = util.upgradeTheme(this.data, defaults.defaultTheme);
 
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
                 this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
@@ -69,8 +69,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     }
 
                     for (var k = 0; k < this.selectInputs.length; k++) {
-                        // TOOD: Oops, triggers an infinite loop.
-                        // jquery('#' + this.selectInputs[k].id).metroSelect().select_child(this.data[this.selectInputs[k]], true);
+                        var text = this.data[this.selectInputs[k].id];
+                        jquery('#' + this.selectInputs[k].id).metroSelect().set_active(text);
                     }
 
                 }
@@ -243,7 +243,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              */
             randomTheme: function () {
                 for (var i = 0; i < this.colorInputs.length; i++) {
-                    let color = util.randomColor();
+                    var color = util.randomColor();
 
                     jquery(`#${this.colorInputs[i].id}`).spectrum('set', color);
                     this.data[this.colorInputs[i].id] = color;
