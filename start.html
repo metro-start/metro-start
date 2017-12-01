@@ -129,13 +129,15 @@
 	<div id="themeEditor">
 		<h3 class="title-color">theme editor</h3>
 		<div class="picker">
+
 			<div class="theme-section">font options</div>
-			<div class="font theme-editor-section">
+			<div class="theme-editor-section">
 				<select class="chooser font-chooser" id="font-chooser">
 					<option class="clickable" value="0">normal fonts</option>
 					<option class="clickable" value="1">thin fonts</option>
 				</select>
 			</div>
+
 			<div class="theme-section">color options</div>
 			<div class="palette">
 				<select class="chooser" id="palette-chooser">
@@ -180,40 +182,68 @@
 				</select>
 			</div>
 			<div class="theme-editor-section">
-				<div id="none" class="background-section">
+				<div id="none" class="section background-section">
 				</div>
-				<div id="trianglify" class="background-section">
-					<div class="theme-section">trianglify options</div>
-					<div class="tristyle-section">
-						<select class="chooser" id="tristyle-chooser">
-							<option class="clickable">Neighbors</option>
-							<option class="clickable">Triad</option>
-							<option class="clickable">Tetrad</option>
-							<option class="clickable">Monochromatic</option>
-							<option class="clickable">Analogous</option>
-							<option class="clickable">Split Complements</option>
-						</select>
-					</div>
-					<div class="trisizes-section">
-						<select class="chooser" id="trisize-chooser">
-							<option class="clickable" value="10">small</option>
-							<option class="clickable" value="70">medium</option>
-							<option class="clickable" value="125">large</option>
-						</select>
-					</div>
-					<div class="trivariances-section">
-						<select class="chooser" id="trivariance-chooser">
-							<option class="clickable" value="0">uniform</option>
-							<option class="clickable" value="0.75">freeform</option>
-						</select>
-					</div>
+				<div id="trianglify" class="section background-section">
+					<div class="theme-section">trianglify background options</div>
+
+					<table class="tritable">
+						<tbody>
+							<tr>
+								<td>
+									<span class="tri-small-text">style</span>
+								</td>
+								<td>
+									<div class="tristyle-section">
+										<select class="chooser" id="tristyle-chooser">
+											<option class="clickable">Neighbors</option>
+											<option class="clickable">Triad</option>
+											<option class="clickable">Tetrad</option>
+											<option class="clickable">Monochromatic</option>
+											<option class="clickable">Analogous</option>
+											<option class="clickable">Split Complements</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="tri-small-text">size</span>
+								</td>
+								<td>
+									<div class="trisize-section">
+										<select class="chooser" id="trisize-chooser">
+											<option class="clickable" value="10">small</option>
+											<option class="clickable" value="70">medium</option>
+											<option class="clickable" value="125">large</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="tri-small-text">variance</span>
+								</td>
+								<td>
+									<div class="trivariance-section">
+										<select class="chooser" id="trivariance-chooser">
+											<option class="clickable" value="0">uniform</option>
+											<option class="clickable" value="0.75">freeform</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
+
 			<div class="theme-section">author info</div>
-			<div class="theme-editor-section input-picker">
+			<div class="theme-editor-section">
 				<input type="text" id="title" size="20" placeholder="title">
 				<input type="text" id="author" size="20" placeholder="author">
 			</div>
+
 		</div>
 	</div>
 	<!-- Rule to hide all options when page first loads.

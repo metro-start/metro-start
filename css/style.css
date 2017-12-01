@@ -388,6 +388,13 @@ h3 {
 	height: 10%;
 	margin: 10% 0;
 }
-.align-left {
-	
+.tristyle-section, .trisize-section, .trivariance-section {
+	display: flex;
+	align-items: center;
+}
+.section {
+	margin-left: 12.5%;
+}
+.tritable td {
+	vertical-align: middle;
 }
