@@ -20,6 +20,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             ],
 
             colorInputs: [
+                document.getElementById('baseColor'),
                 document.getElementById('backgroundColor'),
                 document.getElementById('titleColor'),
                 document.getElementById('mainColor'),
@@ -28,6 +29,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
             selectInputs: [
                 document.getElementById('font-chooser'),
+                document.getElementById('palette-chooser'),
                 document.getElementById('background-chooser'),
                 document.getElementById('trivariance-chooser'),
                 document.getElementById('trisize-chooser'),
@@ -148,6 +150,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     'initial': this.data[inputElement.id],
                     'onchange': this.updateSelect.bind(this, inputElement.id)
                 });
+
+                this.updateSelect(inputElement.id, this.data[inputElement.id]);
             },
 
             /**
@@ -173,7 +177,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * @param {any} val The new value.
              */
             updateSelect: function (inputId, val) {
-                if (inputId === 'background-chooser') {
+                if (inputId === 'background-chooser' || inputId === 'palette-chooser') {
                     var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
                     for (var i = 0; i < elems.length; i++) {
                         // If this element has the same id as our new select value, make it visible.
