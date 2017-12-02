@@ -40,6 +40,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             themeRemoved: function () { },
 
             init: function () {
+                // this.data = defaults.defaultTheme;
                 this.data = storage.get('currentTheme', defaults.defaultTheme);
                 this.data = util.upgradeTheme(this.data, defaults.defaultTheme);
 
@@ -256,6 +257,16 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 script.updateTheme(this.data, true);
             },
 
+            automaticPalette: function () {
+                if (this.data['palette-chooser'] === 'automatic') {
+                    var baseColor = tinycolor(this.data.baseColor);
+                    this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor).spin(15));
+                    this.data.backgroundColor = this.getReadable(tinycolor(this.data.baseColor).spin(22));
+                    this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor).spin(-15));
+                    this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor).spin(-22));
+                }
+            },
+
             /**
              * Updates the values provided in storage and then updates the theme.
              * 
@@ -271,6 +282,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     this.data[inputId] = val;
                 }
 
+                this.automaticPalette();
+
                 storage.save('currentTheme', this.data);
                 script.updateTheme(this.data);
                 this.resetInputs();
@@ -281,6 +294,18 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 var previousTheme = storage.get('previousTheme', this.data);
                 script.updateTheme(previousTheme, true);
             },
+
+            getReadable: function (color) {
+                var x = tinycolor(color.toHexString()).spin(32).brighten(10).toHexString();
+                return tinycolor.mostReadable(color, 
+                [
+                    tinycolor(color.toHexString()).spin(32).brighten(10).toHexString(),
+                    tinycolor(color.toHexString()).spin(64).brighten(10).toHexString(),
+                    tinycolor(color.toHexString()).spin(128).brighten(10).toHexString(),
+                    tinycolor(color.toHexString()).spin(256).brighten(10).toHexString(),
+                ],
+                { includeFallbackColors: false }).toHexString();
+            }
         };
 
         return themes;

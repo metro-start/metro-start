@@ -401,21 +401,21 @@ h3 {
 	padding-bottom: 8px;
 	margin-left: 12.5%;
 }
-.tritable {
+.metro-table {
 	border-spacing: 8px;
 }
-.tritable tr {
+.metro-table tr {
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 }
-.tritable tr:last-child {
+.metro-table tr:last-child {
 	border-bottom-style: hidden;
 }
-.tritable td {
+.metro-table td {
 	vertical-align: middle;
 	padding: 4px;
 	padding-bottom: 8px;
 }
-.tritable td:last-child {
+.metro-table td:last-child {
 	padding-bottom: 4px;
 }

@@ -16,6 +16,7 @@ define(function() {
             'author': 'metro start',
             'font-chooser': 'normal fonts',
             'optionsColor': '#ff0000',
+            'baseColor': '#aaffaa',
             'mainColor': '#ffffff',
             'titleColor': '#4a4a4a',
             'backgroundColor': '#000000',
