@@ -250,7 +250,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 for (var i = 0; i < this.colorInputs.length; i++) {
                     var color = util.randomColor();
 
-                    jquery(`#${this.colorInputs[i].id}`).spectrum('set', color);
+                    jquery("#" + this.colorInputs[i].id).spectrum('set', color);
                     this.data[this.colorInputs[i].id] = color;
                 }
 
@@ -260,10 +260,10 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             automaticPalette: function () {
                 if (this.data['palette-chooser'] === 'automatic') {
                     var baseColor = tinycolor(this.data.baseColor);
-                    this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor).spin(15));
-                    this.data.backgroundColor = this.getReadable(tinycolor(this.data.baseColor).spin(22));
-                    this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor).spin(-15));
-                    this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor).spin(-22));
+                    this.data.backgroundColor = baseColor.toHexString();
+                    this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor));
+                    this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor).spin(45));
+                    this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor).spin(120));
                 }
             },
 
@@ -296,13 +296,24 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             },
 
             getReadable: function (color) {
-                var x = tinycolor(color.toHexString()).spin(32).brighten(10).toHexString();
                 return tinycolor.mostReadable(color, 
                 [
-                    tinycolor(color.toHexString()).spin(32).brighten(10).toHexString(),
-                    tinycolor(color.toHexString()).spin(64).brighten(10).toHexString(),
-                    tinycolor(color.toHexString()).spin(128).brighten(10).toHexString(),
-                    tinycolor(color.toHexString()).spin(256).brighten(10).toHexString(),
+                    // My reckons for good color stops :shrug:
+                    tinycolor(color.toHexString()).spin(38),
+                    tinycolor(color.toHexString()).spin(100),
+                    tinycolor(color.toHexString()).spin(190),
+                    tinycolor(color.toHexString()).spin(242),
+                    tinycolor(color.toHexString()).spin(303),
+                    tinycolor(color.toHexString()).spin(38).darken(25),
+                    tinycolor(color.toHexString()).spin(100).darken(25),
+                    tinycolor(color.toHexString()).spin(190).darken(25),
+                    tinycolor(color.toHexString()).spin(242).darken(25),
+                    tinycolor(color.toHexString()).spin(303).darken(25),
+                    tinycolor(color.toHexString()).spin(38).brighten(25),
+                    tinycolor(color.toHexString()).spin(100).brighten(25),
+                    tinycolor(color.toHexString()).spin(190).brighten(25),
+                    tinycolor(color.toHexString()).spin(242).brighten(25),
+                    tinycolor(color.toHexString()).spin(303).brighten(25),
                 ],
                 { includeFallbackColors: false }).toHexString();
             }

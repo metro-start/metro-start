@@ -84,7 +84,8 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
           'border': '1px solid ' + optionsColor
         });
         jss.set('.modal-info .clickable', {
-          'border': '1px solid ' + optionsColor
+          'border': '2px solid ' + optionsColor,
+          'background-color': optionsColor
         });
       },
 

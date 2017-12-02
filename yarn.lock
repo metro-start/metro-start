@@ -57,8 +57,8 @@ ajv@^4.9.1:
     json-stable-stringify "^1.0.1"
 
 ajv@^5.1.0, ajv@^5.1.5:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.0.tgz#eb2840746e9dc48bd5e063a36e3fd400c5eab5a9"
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.1.tgz#b38bb8876d9e86bee994956a04e721e88b248eb2"
   dependencies:
     co "^4.6.0"
     fast-deep-equal "^1.0.0"
@@ -194,8 +194,8 @@ array-includes@^3.0.3:
     es-abstract "^1.7.0"
 
 array-slice@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/array-slice/-/array-slice-1.0.0.tgz#e73034f00dcc1f40876008fd20feae77bd4b7c2f"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/array-slice/-/array-slice-1.1.0.tgz#e368ea15f89bc7069f7ffb89aec3a6c7d4ac22d4"
 
 array-union@^1.0.1:
   version "1.0.2"
@@ -999,8 +999,8 @@ camelcase@^4.1.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
 
 caniuse-lite@^1.0.30000770:
-  version "1.0.30000774"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000774.tgz#60f4ecf5d45980e7ac5901f03ce67f1ae08df59f"
+  version "1.0.30000777"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000777.tgz#31c18a4a8cd49782ebb305c8e8a93e6b3b3e4f13"
 
 canvas@^1.3.0:
   version "1.6.7"
@@ -1929,9 +1929,13 @@ extglob@^0.3.1:
   dependencies:
     is-extglob "^1.0.0"
 
-extsprintf@1.3.0, extsprintf@^1.2.0:
+extsprintf@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.3.0.tgz#96918440e3041a7a414f8c52e3c574eb3c3e1e05"
+
+extsprintf@^1.2.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
 fancy-log@^1.1.0:
   version "1.3.0"
@@ -3000,8 +3004,8 @@ is-path-in-cwd@^1.0.0:
     is-path-inside "^1.0.0"
 
 is-path-inside@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/is-path-inside/-/is-path-inside-1.0.0.tgz#fc06e5a1683fbda13de667aff717bbc10a48f37f"
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/is-path-inside/-/is-path-inside-1.0.1.tgz#8ef5b7de50437a3fdca6b4e865ef7aa55cb48036"
   dependencies:
     path-is-inside "^1.0.1"
 
@@ -3633,8 +3637,8 @@ miller-rabin@^4.0.0:
     brorand "^1.0.1"
 
 "mime-db@>= 1.30.0 < 2":
-  version "1.31.0"
-  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.31.0.tgz#a49cd8f3ebf3ed1a482b60561d9105ad40ca74cb"
+  version "1.32.0"
+  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.32.0.tgz#485b3848b01a3cda5f968b4882c0771e58e09414"
 
 mime-db@~1.30.0:
   version "1.30.0"
@@ -5620,8 +5624,8 @@ webpack-uglify-js-plugin@^1.1.9:
     webpack-core "^0.6.8"
 
 webpack@^3.6.0:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.8.1.tgz#b16968a81100abe61608b0153c9159ef8bb2bd83"
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.9.1.tgz#9a60aa544ed5d4d454c069e3f521aa007e02643c"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
