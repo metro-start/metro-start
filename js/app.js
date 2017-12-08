@@ -27,6 +27,9 @@ define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages
         });
       },
 
+      /**
+       * Shows the options on the page when the wrench is clicked.
+       */
       clickWrench: function () {
         this.showOptions = !this.showOptions;
 
@@ -38,6 +41,8 @@ define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages
       }
     };
 
+    // Initialize the app after the storage is done initializing.
+    // This ensures we can retrieve our data before rendering the page.
     utils.storage.init().done(function () {
       if (!!document) {
         app.init();

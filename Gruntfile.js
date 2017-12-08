@@ -9,6 +9,13 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        haml: {                              // Task 
+            dist: {                            // Target 
+                files: {                         // Dictionary of files 
+                    'dist/start.html': 'haml/start.haml'       // 'destination': 'source' 
+                }
+            },
+        },
         webpack: {
             all: {
                 entry: './js/app.js',
@@ -39,7 +46,6 @@ module.exports = function (grunt) {
                         { from: 'css', to: 'css' },
                         { from: 'icons', to: 'icons' },
                         { from: 'manifest.json' },
-                        { from: 'start.html' },
                         { from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
                     ])]
             }
@@ -67,9 +73,9 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: [
-                    'js/**/*.js',
-                    'start.html',
-                    'css/*.css'
+					'js/**/*.js',
+					'css/*.css',
+                    'haml/start.haml',
                 ],
                 tasks: ['test'],
                 options: {
@@ -81,13 +87,14 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-notify');
     grunt.loadNpmTasks('grunt-webpack');
+    grunt.loadNpmTasks('grunt-contrib-haml');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-compress');
 
-    grunt.registerTask('default', ['webpack']);
-
-    grunt.registerTask('build', ['webpack']);
-    grunt.registerTask('test', ['webpack', 'jshint']);
-    grunt.registerTask('publish', ['webpack', 'jshint', 'compress']);
+    grunt.registerTask('build', ['webpack', 'haml']);
+    grunt.registerTask('test', ['build', 'jshint']);
+    
+    grunt.registerTask('publish', ['test', 'compress']);
+    grunt.registerTask('default', ['test']);
 };

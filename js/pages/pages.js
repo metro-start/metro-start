@@ -22,8 +22,16 @@ function Pages(jquery, jss, storage, defaults, todos, sessions, apps, bookmarks,
         'initial': this.page,
         'onchange': this.changePage.bind(this)
       });
+
+      // Set the initial page.
+      this.changePage(this.page);
     },
 
+    /**
+     * Change the currently selected page.
+     * 
+     * @param {any} page The new page.
+     */
     changePage: function changePage(page) {
       this.page = page;
       storage.save('page', page);

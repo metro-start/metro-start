@@ -24,7 +24,6 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             infoFragment: util.createElement('<span class="info"></span>')
         },
 
-        // Initialize this module.
         init: function() {
             this.elems.rootNode = document.getElementById('internal_selector_themes');
             this.themes = new pagebase_grouped();
@@ -35,11 +34,18 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
         },
         
+        /**
+         * Called when the sort order has been changed.
+         * 
+         * @param {any} newSort The new sort order.
+         */
         sortChanged: function (newSort) {
             this.themes.sortChanged(newSort, false);
         },
 
-        // Loads the available themes from local and web storage
+        /**
+         * Loads the available themes from local and web storage
+         */
         loadThemes: function() {
             var that = this;
 
@@ -73,8 +79,13 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             });
         },
 
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
+
+        /**
+         * Templates a provided theme into an HTML element.
+         * 
+         * @param {any} theme The theme that should be turned into an element.
+         * @returns The HTML element.
+         */
         templateFunc: function(theme) {
             var fragment = util.createElement('');
 

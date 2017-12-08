@@ -16,9 +16,12 @@ define(['jquery', './util'], function Storage(jquery, util) {
             return this.deferred.promise();
         },
 
-        // Savs the provded data to both lcoal and shared stoarge.
-        // key: The name of the property to save.
-        // value: The value to be saved.
+        /**
+         * Saves the provided data to both local and shared stoarge.
+         * 
+         * @param {any} key The name of the property to save.
+         * @param {any} value The value to be saved.
+         */
         save: function save(key, value) {
             if (this.cache) this.cache[key] = value;
 
@@ -27,9 +30,13 @@ define(['jquery', './util'], function Storage(jquery, util) {
             chrome.storage.sync.set(obj);
         },
 
-        // Gets a value from the cache; note that chrome.storage.sync always wins.
-        // key: The key to be retrieved.
-        // defaultValue: The value to initialize all storages if the key does not exist.
+        /**
+         * Gets a value from the cache; note that chrome.storage.sync always wins.
+         * 
+         * @param {any} key The key to be retrieved.
+         * @param {any} defaultValue The value to initialize all storages if the key does not exist.
+         * @returns 
+         */
         get: function get(key, defaultValue) {
             return util.isEmpty(this.cache[key]) ? defaultValue : this.cache[key];
         }

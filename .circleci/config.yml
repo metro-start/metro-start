@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:4.8.2
+      - image: circleci/ruby:2.4.1
     steps:
       - checkout
       - run:
@@ -10,6 +11,9 @@ jobs:
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install haml
+          command: gem install haml
       - run:
           name: Install packages
           command: npm install

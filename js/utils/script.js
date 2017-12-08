@@ -1,17 +1,13 @@
-define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', './defaults'],
-  function (jquery, jqueryColor, jss, trianglify, util, storage, defaults) {
-    var fonts = {
-      'normal fonts': '"Segoe UI", Helvetica, Arial, sans-serif',
-      'thin fonts': 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif'
-    };
-
+define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './defaults'],
+  function (jquery, tinycolor, jss, trianglify, util, storage, defaults) {
     var script = {
       init: function () { },
 
       /**
-      Changes the style to whatever is in the scope.
-      theme: The new theme to change to.
-      transition: A bool indicating whether to slowly transition or immediately change.
+      * Changes the style to whatever is in the scope.
+      *
+      * @param {any} data: The new theme to change to.
+      * @param {any} transition: A bool indicating whether to slowly transition or immediately change.
       */
       updateTheme: function (data, transition) {
         var theme = util.upgradeTheme(data, defaults.defaultTheme);
@@ -37,7 +33,7 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
         });
 
         jss.set('::-webkit-input-placeholder', {
-          'background': mainColor
+          'background': optionsColor
         });
 
         // Animate the color transition.
@@ -58,7 +54,7 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
         jss.set('input', {
           'color': mainColor,
         });
-        jss.set('.theme-section', {
+        jss.set('.theme-section-title', {
           'border-bottom-color': mainColor
         });
         jss.set('.options-color', {
@@ -89,15 +85,26 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
         });
       },
 
+      /**
+       * Updates the current background.
+       * 
+       * @param {any} data Theme object with the new background settings.
+       */
       updateBackground: function (data) {
         var jBody = jquery('body');
         if (data['background-chooser'] === 'trianglify') {
           var xColors = [data.backgroundColor];
+          var yColors = null;
 
+          // Convert variance from my option to actual values.
           var triVariance = 0.75;
           switch (data['trivariance-chooser'].toLowerCase()) {
             case 'uniform':
               triVariance = 0;
+              break;
+            
+            case 'bent':
+              triVariance = 0.375;
               break;
 
             case 'freeform':
@@ -129,16 +136,15 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
           }
 
           switch (data['tristyle-chooser'].toLowerCase()) {
-            case 'neighbors':
-              var hsl = tinycolor(data.backgroundColor).toHsl();
+            case 'engulfed in flames':
               xColors = [
-                data.backgroundColor,
-                tinycolor({ h: hsl.h + 90 % 360, s: hsl.s, l: hsl.l }).toHexString(),
-                tinycolor({ h: hsl.h + 180 % 360, s: hsl.s, l: hsl.l }).toHexString(),
-                tinycolor({ h: hsl.h + 270 % 360, s: hsl.s, l: hsl.l }).toHexString()
+                tinycolor.mix(data.backgroundColor, 'red', 100).toHexString(),
+                tinycolor.mix(data.backgroundColor, 'red', 64).toHexString(),
+                tinycolor.mix(data.backgroundColor, 'red', 8).toHexString(),
+                tinycolor.mix(data.backgroundColor, 'red', 64).toHexString(),
+                tinycolor.mix(data.backgroundColor, 'red', 100).toHexString()
               ];
               break;
-
             case 'triad':
               xColors = tinycolor(data.backgroundColor).triad().map(v => v.toHexString());
               break;
@@ -148,9 +154,6 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
             case 'monochromatic':
               xColors = tinycolor(data.backgroundColor).monochromatic().map(v => v.toHexString());
               break;
-            case 'analogous':
-              xColors = tinycolor(data.backgroundColor).analogous().map(v => v.toHexString());
-              break;
             case 'split complements':
               xColors = tinycolor(data.backgroundColor).splitcomplement().map(v => v.toHexString());
               break;
@@ -159,7 +162,9 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
               break;
           }
 
-          console.log(xColors);
+          if (!yColors) {
+            yColors = xColors;
+          }
 
           var bodyPattern = trianglify({
             width: jBody.prop('scrollWidth'),
@@ -197,9 +202,26 @@ define(['jquery', 'jquery-color', 'jss', 'trianglify', './util', './storage', '.
         }
       },
 
-      updateFont: function (theme) {
+      /**
+       * Upates the currently selected font.
+       * 
+       * @param {any} data The theme object with the new font settings.
+       */
+      updateFont: function (data) {
+        var currentFont = 'sans-serif';
+
+        switch (data['font-chooser'].toLowerCase()) {
+          case 'normal fonts':
+          currentFont = '"Segoe UI", Helvetica, Arial, sans-serif';
+          break;
+
+          case 'thin fonts':
+          currentFont = 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif';
+          break;
+        }
+
         jss.set('body', {
-          'font-family': fonts[theme['font-chooser']],
+          'font-family': currentFont,
         });
       },
     };

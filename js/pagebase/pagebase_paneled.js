@@ -9,8 +9,11 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
     pagebase_paneled.prototype = Object.create(pagebase.prototype);
     pagebase_paneled.prototype.className = 'pagebase-grouped';
 
-    // Adds all the given HTML nodes to the DOM in one single column.
-    // nodes: List of nodes to be added.
+    /**
+     * Adds all the given HTML nodes to the DOM in one single column.
+     * 
+     * @param {any} nodes List of nodes to be added.
+     */
     pagebase_paneled.prototype.addAllNodes = function addAllNodes(nodes) {
         if (nodes.length) {
             var pageIndex = this.rootNode.children.length;
@@ -24,6 +27,11 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
         }
     };
 
+    /**
+     * Called when the sort order has been changed.
+     * 
+     * @param {any} newSort The new sort order.
+     */
     pagebase_paneled.prototype.sortChanged = function sortChanged(newSort) {
         var currentSort = this.getSort();
         if (newSort === currentSort) {
@@ -31,6 +39,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
         }
 
         this.updateSort(newSort);
+
         var columns = this.rootNode.children;
         for (var i = 0; i < columns.length; i++) {
             var column = columns[i];
@@ -57,6 +66,11 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
         }
     };
 
+    /**
+     * Remove some set of panels.
+     * 
+     * @param {any} pageNumber The panel number to start removing.
+     */
     pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
         var nodes = Array.prototype.slice.call(this.rootNode.children);
         nodes.splice(0, parseInt(pageNumber, 10) + 1);

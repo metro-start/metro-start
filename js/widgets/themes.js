@@ -2,7 +2,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
     function (jquery, spectrum, throttle_debounce, modal, util, storage, defaults, script) {
         var themes = {
 
-            isInit: false,
+            isBound: false,
 
             data: {},
 
@@ -58,8 +58,12 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 setTimeout(function () { that.elems.editThemeButton.click(); }, 500);
             },
 
+            /**
+             * Reset the input elements to match this.data.
+             */
             resetInputs: function () {
-                if (this.isInit) {
+                // Do not try to reset inputs if they haven't been bound.
+                if (this.isBound) {
                     for (var i = 0; i < this.textInputs.length; i++) {
                         var inputElement = this.textInputs[i];
                         inputElement.value = !!this.data[inputElement.id] ? this.data[inputElement.id] : '';
@@ -79,11 +83,14 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 }
             },
 
+            /**
+             * Shows the theme editor modal window.
+             */
             openThemeEditor: function () {
                 storage.save('previousTheme', this.data);
                 modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
 
-                if (!this.isInit) {
+                if (!this.isBound) {
                     for (var i = 0; i < this.textInputs.length; i++) {
                         this.bindTextInput(this.textInputs[i]);
                     }
@@ -95,10 +102,15 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     for (var k = 0; k < this.selectInputs.length; k++) {
                         this.bindSelectInput(this.selectInputs[k]);
                     }
-                    this.isInit = true;
+                    this.isBound = true;
                 }
             },
 
+            /**
+             * Handles whwhen the theme editor modal is closed.
+             * 
+             * @param {any} res How the modal was closed. True if the 'okay' option was selected.
+             */
             themeEditorClosed: function (res) {
                 util.log('theme editor closed with result: ' + res);
 
@@ -114,6 +126,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     this.data.title += this.data['trivariance-chooser'][0];
                     this.data.title = this.data.title.toUpperCase() + ' ';
 
+                    // Generate a title if none was provided.
                     this.data.title += tinycolor(this.data.backgroundColor).toString();
                 }
 
@@ -214,6 +227,11 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 this.updateCurrentTheme(inputId, color.toHexString());
             },
 
+            /**
+             * Share a locally saved theme to the community.
+             * 
+             * @param {any} theme The theme to be shared.
+             */
             shareTheme: function (theme) {
                 var url = defaults.defaultWebservice + '/newtheme?' +
                     'title=' + encodeURIComponent(theme.title) +
@@ -222,13 +240,18 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     '&optionscolor=' + encodeURIComponent(theme.optionsColor) +
                     '&titlecolor=' + encodeURIComponent(theme.titleColor) +
                     '&backgroundcolor=' + encodeURIComponent(themebackgroundColor);
-                console.log(url);
+                console.log('Shared theme with URL: ' + url);
 
                 jquery.get(url, function (data) {
                     console.log(data);
                 });
             },
 
+            /**
+             * Removes the provided theme from the local storage.
+             * 
+             * @param {any} theme The theme to be removed. Only checks by name.
+             */
             removeTheme: function (theme) {
                 var themesLocal = storage.get('themesLocal', [defaults.defaultTheme]);
 
@@ -257,16 +280,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 script.updateTheme(this.data, true);
             },
 
-            automaticPalette: function () {
-                if (this.data['palette-chooser'] === 'automatic') {
-                    var baseColor = tinycolor(this.data.baseColor);
-                    this.data.backgroundColor = baseColor.toHexString();
-                    this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor));
-                    this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor).spin(45));
-                    this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor).spin(120));
-                }
-            },
-
             /**
              * Updates the values provided in storage and then updates the theme.
              * 
@@ -289,31 +302,54 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 this.resetInputs();
             },
 
+            automaticPalette: function () {
+                if (this.data['palette-chooser'] === 'automatic') {
+                    var baseColor = tinycolor(this.data.baseColor);
+                    this.data.backgroundColor = baseColor.toHexString();
+                    this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor), -1.6);
+                    this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor), 1.8);
+                    this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor), 1.25);
+                }
+            },
+
             // TODO: Does undo still make sense?
             undoChanges: function () {
                 var previousTheme = storage.get('previousTheme', this.data);
                 script.updateTheme(previousTheme, true);
             },
 
-            getReadable: function (color) {
+            generateTitle: function () {
+                var title = '';
+                title += this.data['font-chooser'][0];
+                title += this.data['palette-chooser'] === 'automatic' ? 'A' : 'C';
+            },
+
+            /**
+             * Generates a palette of colors and then returns the most readable.
+             * 
+             * @param {any} color The color to base the palette on.
+             * @param {any} multiplier A value to scale the spin by to add some variance.
+             * @returns The most readable color.
+             */
+            getReadable: function (color, multiplier) {
                 return tinycolor.mostReadable(color, 
                 [
                     // My reckons for good color stops :shrug:
-                    tinycolor(color.toHexString()).spin(38),
-                    tinycolor(color.toHexString()).spin(100),
-                    tinycolor(color.toHexString()).spin(190),
-                    tinycolor(color.toHexString()).spin(242),
-                    tinycolor(color.toHexString()).spin(303),
-                    tinycolor(color.toHexString()).spin(38).darken(25),
-                    tinycolor(color.toHexString()).spin(100).darken(25),
-                    tinycolor(color.toHexString()).spin(190).darken(25),
-                    tinycolor(color.toHexString()).spin(242).darken(25),
-                    tinycolor(color.toHexString()).spin(303).darken(25),
-                    tinycolor(color.toHexString()).spin(38).brighten(25),
-                    tinycolor(color.toHexString()).spin(100).brighten(25),
-                    tinycolor(color.toHexString()).spin(190).brighten(25),
-                    tinycolor(color.toHexString()).spin(242).brighten(25),
-                    tinycolor(color.toHexString()).spin(303).brighten(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 38),
+                    tinycolor(color.toHexString()).spin(multiplier * 100),
+                    tinycolor(color.toHexString()).spin(multiplier * 190),
+                    tinycolor(color.toHexString()).spin(multiplier * 242),
+                    tinycolor(color.toHexString()).spin(multiplier * 303),
+                    tinycolor(color.toHexString()).spin(multiplier * 38).darken(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 100).darken(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 190).darken(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 242).darken(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 303).darken(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 38).brighten(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 100).brighten(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 190).brighten(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 242).brighten(25),
+                    tinycolor(color.toHexString()).spin(multiplier * 303).brighten(25),
                 ],
                 { includeFallbackColors: false }).toHexString();
             }
