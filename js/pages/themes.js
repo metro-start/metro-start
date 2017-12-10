@@ -17,7 +17,8 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
         templates: {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
-            titleFragment: util.createElement('<span class="title clickable"></span>'),
+            titleFragment: util.createElement('<span class="panel-item"></span>'),
+            titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
             authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>'),
@@ -88,17 +89,20 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
          */
         templateFunc: function(theme) {
             var fragment = util.createElement('');
-
+            
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.id = 'theme_' + theme.id;
             title.firstElementChild.textContent = theme.title;
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
-            if (this.themesWidget.data.title === theme.title) {
-                util.addClass(title.firstElementChild, 'theme-active');
-            }
+            var titleWrap = this.templates.titleWrapFragment.cloneNode(true);
+            titleWrap.firstElementChild.appendChild(title);
 
-            fragment.appendChild(title);
+            if (this.themesWidget.data.title === theme.title) {
+                util.addClass(titleWrap.firstElementChild, 'theme-active');
+            }
+            
+            fragment.appendChild(titleWrap);
 
             var options = this.templates.infoFragment.cloneNode(true);
             var author = this.templates.authorFragment.cloneNode(true);
