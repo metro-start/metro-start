@@ -29,6 +29,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
             selectInputs: [
                 document.getElementById('font-chooser'),
+                document.getElementById('fontreadability-chooser'),
                 document.getElementById('fontfamily-chooser'),
                 document.getElementById('fontsize-chooser'),
                 document.getElementById('fontweight-chooser'),

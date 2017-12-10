@@ -48,8 +48,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
         jss.set('.title-color', {
           'color': titleColor
         });
+
         jss.set('body', {
-          'color': mainColor
+          'color': mainColor,
         });
         jss.set('input', {
           'color': mainColor,
@@ -223,6 +224,16 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
         jss.set('body', {
           'font-family': currentFont,
         });
+
+        if (data['fontreadability-chooser'] === 'on') {
+          jss.set('body', {
+            'text-shadow': tinycolor.mostReadable(data.mainColor, [data.optionsColor, data.backgroundColor], {includeFallbackColors: true}).toHexString() + ' 0px 0px 5px'
+          });
+        } else {
+          jss.set('body', {
+            'text-shadow': 'inherit',
+          });
+        }
       },
     };
 

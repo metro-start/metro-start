@@ -132,9 +132,9 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             }
 
             var itemNode = themeNode.parentNode;
-            var siblings = themeNode.parentNode.parentNode.children;
+            var siblings = themeNode.parentNode.parentNode.parentNode.children;
             Array.prototype.slice.call(siblings).forEach(function(item) {
-                util.removeClass(item, 'theme-active');
+                util.removeClass(item.firstElementChild, 'theme-active');
             });
             util.addClass(itemNode, 'theme-active');
         },
