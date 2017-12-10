@@ -80,8 +80,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
           'border': '1px solid ' + optionsColor
         });
         jss.set('.modal-info .clickable', {
-          'border': '2px solid ' + optionsColor,
-          'background-color': optionsColor
+          'border': '2px solid ' + optionsColor
         });
       },
 
@@ -211,13 +210,17 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
         var currentFont = 'sans-serif';
 
         switch (data['font-chooser'].toLowerCase()) {
-          case 'normal fonts':
-          currentFont = '"Segoe UI", Helvetica, Arial, sans-serif';
-          break;
+          case 'system':
+            currentFont = '"Segoe UI", Helvetica, Arial, sans-serif';
+            break;
 
-          case 'thin fonts':
-          currentFont = 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif';
-          break;
+          case 'raleway':
+            currentFont = 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif';
+            break;
+
+          case 'serif':
+            currentFont = 'serif';
+            break;
         }
 
         jss.set('body', {

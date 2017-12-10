@@ -111,8 +111,57 @@
         .theme-section-title font options
         .theme-editor-section.options-color
           %select#font-chooser.chooser
-            %option.clickable{:value => "0"} normal fonts
-            %option.clickable{:value => "1"} thin fonts
+            %option.clickable default
+            %option.clickable raleway
+            %option.clickable serif
+            %option.clickable custom
+
+        .theme-editor-section
+          #default.font-section.hide
+          #raleway.font-section.hide
+          #serif.font-section.hide
+          #custom.theme-editor-border.font-section.hide
+            .theme-section-title font style options
+            %table.metro-table
+              %tbody
+                %tr
+                  %td
+                    %span.small-text family
+                  %td
+                    .fontfamily-section.options-color
+                      %select#fontfamily-chooser.chooser
+                        %option.clickable system
+                        %option.clickable raleway
+                        %option.clickable serif
+
+                %tr
+                  %td
+                    %span.small-text size
+                  %td
+                    .fontsize-section.options-color
+                      %select#fontsize-chooser.chooser
+                        %option.clickable normal
+                        %option.clickable lighter
+                        %option.clickable heavier
+
+                %tr
+                  %td
+                    %span.small-text weight
+                  %td
+                    .fontweight-section.options-color
+                      %select#fontweight-chooser.chooser
+                        %option.clickable medium
+                        %option.clickable thin
+                        %option.clickable bold
+
+                %tr
+                  %td
+                    %span.small-text variant
+                  %td
+                    .fontvariant-section.options-color
+                      %select#fontvariant-chooser.chooser
+                        %option.clickable normal
+                        %option.clickable smallcaps
 
         .theme-section-title color palette options
         .theme-editor-section.options-color
@@ -145,11 +194,11 @@
         .theme-section-title background options
         .theme-editor-section.options-color
           %select#background-chooser.chooser.theme-editor-section
-            %option.clickable{:value => "0"} trianglify
-            %option.clickable{:value => "1"} none
+            %option.clickable trianglify
+            %option.clickable none
 
         .theme-editor-section
-          #none.theme-editor-border.background-section.hide
+          #none.background-section.hide
           #trianglify.theme-editor-border.background-section
             .theme-section-title trianglify options
             %table.metro-table
@@ -172,9 +221,9 @@
                   %td
                     .trisize-section.options-color
                       %select#trisize-chooser.chooser
-                        %option.clickable{:value => "10"} small
-                        %option.clickable{:value => "70"} medium
-                        %option.clickable{:value => "125"} large
+                        %option.clickable small
+                        %option.clickable medium
+                        %option.clickable large
 
                 %tr
                   %td
@@ -182,9 +231,9 @@
                   %td
                     .trivariance-section.options-color
                       %select#trivariance-chooser.chooser
-                        %option.clickable{:value => "0"} uniform
-                        %option.clickable{:value => "0.375"} bent
-                        %option.clickable{:value => "0.75"} freeform
+                        %option.clickable uniform
+                        %option.clickable bent
+                        %option.clickable freeform
 
         .theme-section-title author info
         .theme-editor-section
@@ -195,12 +244,12 @@
                   %td
                     %span.small-text title
                   %td
-                    %input#title{:placeholder => "title", :size => "20", :type => "text"}/
+                    %input#title{:size => "20", :type => "text"}/
                 %tr
                   %td
                     %span.small-text author
                   %td
-                    %input#author{:placeholder => "author", :size => "20", :type => "text"}/
+                    %input#author{:size => "20", :type => "text"}/
 
     // Rule to hide all options when page first loads.
     // Removes option elements added after the calls to hide .option were made.

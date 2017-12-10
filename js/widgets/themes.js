@@ -29,6 +29,11 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
             selectInputs: [
                 document.getElementById('font-chooser'),
+                document.getElementById('fontfamily-chooser'),
+                document.getElementById('fontsize-chooser'),
+                document.getElementById('fontweight-chooser'),
+                document.getElementById('fontvariant-chooser'),
+
                 document.getElementById('palette-chooser'),
                 document.getElementById('background-chooser'),
                 document.getElementById('trivariance-chooser'),
@@ -191,17 +196,21 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * @param {any} val The new value.
              */
             updateSelect: function (inputId, val) {
-                if (inputId === 'background-chooser' || inputId === 'palette-chooser') {
-                    var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
-                    for (var i = 0; i < elems.length; i++) {
-                        // If this element has the same id as our new select value, make it visible.
-                        if (elems[i].id === val) {
-                            util.removeClass(elems[i], 'hide');
-                            // Otherwise ensure its hidden.
-                        } else if (!util.hasClass(elems[i], 'hide')) {
-                            util.addClass(elems[i], 'hide');
+                switch (inputId.toLowerCase()) {
+                    case 'background-chooser':
+                    case 'palette-chooser':
+                    case 'font-chooser':
+                        var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
+                        for (var i = 0; i < elems.length; i++) {
+                            // If this element has the same id as our new select value, make it visible.
+                            if (elems[i].id === val) {
+                                util.removeClass(elems[i], 'hide');
+                                // Otherwise ensure its hidden.
+                            } else if (!util.hasClass(elems[i], 'hide')) {
+                                util.addClass(elems[i], 'hide');
+                            }
                         }
-                    }
+                        break;
                 }
 
                 this.updateCurrentTheme(inputId, val);

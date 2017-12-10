@@ -328,13 +328,6 @@ h3 {
 .metro-table {
 	border-spacing: 8px;
 }
-.metro-table tr {
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-}
-.metro-table tr:last-child {
-	border-bottom-style: hidden;
-}
 .metro-table td {
 	vertical-align: middle;
 	padding: 4px;
