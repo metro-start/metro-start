@@ -300,6 +300,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
                 if (inputId === 'currentTheme') {
                     this.data = val;
+                    this.data.id = this.data.title + this.data.author + new Date().getUTCSeconds;
                 } else {
                     this.data[inputId] = val;
                 }

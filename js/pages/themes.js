@@ -17,7 +17,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
         templates: {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
-            titleFragment: util.createElement('<span class="panel-item"></span>'),
+            titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
             titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
@@ -128,8 +128,6 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             if (theme.title === 'random theme') {
                 this.themesWidget.randomTheme();
             } else {
-                theme.title = '';
-                theme.author = '';
                 this.themesWidget.updateCurrentTheme('currentTheme', theme);
             }
 
