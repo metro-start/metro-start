@@ -1,7 +1,6 @@
 define(['../utils/util', '../utils/storage', './pagebase'], function(util, storage, pagebase) {
     var templates = {
        column: util.createElement('<div class="page panel-page"></div>'),
-       item: util.createElement('<div class="item"></div>')
     };
 
     var pagebase_paneled = function pagebase_paneled() { };

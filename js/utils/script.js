@@ -76,9 +76,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
           'border-top-width': '1px',
           'border-top-color': optionsColor
         });
-        jss.set('#picker', {
-          'border': '1px solid ' + optionsColor
-        });
         jss.set('.modal-info .clickable', {
           'border': '2px solid ' + optionsColor
         });

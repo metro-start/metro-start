@@ -21,7 +21,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
-            authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>'),
+            authorFragment: util.createElement('<a class="options-color gallery-bio small-text" title="author"></a>'),
             infoFragment: util.createElement('<span class="info"></span>')
         },
 
@@ -136,9 +136,9 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             var itemNode = themeNode.parentNode;
             var siblings = themeNode.parentNode.parentNode.children;
             Array.prototype.slice.call(siblings).forEach(function(item) {
-                util.removeClass(item.firstElementChild, 'theme-active');
+                util.removeClass(item, 'theme-active');
             });
-            util.addClass(itemNode.firstElementChild, 'theme-active');
+            util.addClass(itemNode, 'theme-active');
         },
 
         shareTheme: function(theme) {
