@@ -145,7 +145,6 @@ h3 {
 }
 .item {
 	min-width: 0;
-	margin: 0 10px 10px 0;
 	align-items: center;
 }
 .item:last-child {
@@ -154,8 +153,13 @@ h3 {
 .title {
 	display: block;
 	line-height: 100%;
-	white-space: nowrap;
 	padding: 5px;
+	white-space: nowrap;
+}
+#internal_selector_sessions .title {
+	max-width: 375px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* Grouped Pagebase */
@@ -189,8 +193,6 @@ h3 {
 	padding: 10px;
 }
 .panel-item {
-	display: block;
-	line-height: 100%;
 	max-width: 375px;
 	overflow: hidden;
 	white-space: nowrap;
