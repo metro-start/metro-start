@@ -16,7 +16,6 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
             editFragment: util.createElement('<span class="edit option options-color small-text clickable">edit</span>'),
         },
 
-        // Initialize this module.
         init: function(document) {
             this.elems.addTodo.addEventListener('submit', this.addTodo.bind(this));
 
@@ -25,11 +24,18 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
             this.loadTodos();
         },
 
+        /**
+         * Called when the sort order has been changed.
+         * 
+         * @param {any} newSort The new sort order.
+         */
         sortChanged: function (newSort) {
             this.todos.sortChanged(newSort, false);
         },
 
-        // Loads the todos from storage into the DOM.
+        /**
+         * Loads the todos from storage into the DOM.
+         */
         loadTodos: function() {
           this.data = storage.get('todos', defaults.defaultTodos);
 
@@ -44,7 +50,12 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
           });
         },
 
-
+        /**
+         * Templates a provided todo into an HTML element.
+         * 
+         * @param {any} todo The todo that should be turned into an element.
+         * @returns The HTML element.
+         */
         templateFunc: function(todo) {
             var fragment = util.createElement('');
             
@@ -65,8 +76,12 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
             return fragment;
         },
 
-        // Adds a new todo, or completes editing an exiting todo.
-        // event: Callback event data.
+        /**
+         * Adds a new todo, or completes editing an exiting todo.
+         * 
+         * @param {any} event 
+         * @returns Callback event data.
+         */
         addTodo: function(event) {
             event.preventDefault();
             var title = this.elems.newTodo.value.trim();
@@ -90,23 +105,32 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
             this.elems.addTodo.reset();
         },
 
-        // Begins editing a todo.
-        // todo: The todo to be edited.
+        /**
+         * Begins editing a todo.
+         * 
+         * @param {any} todo The todo to be edited.
+         */
         todoToggle: function(todo) {
             todo.done = !todo.done;
             storage.save('todos', this.data);
             this.loadTodos();
         },
 
-        // Begins editing a todo.
-        // todo: The todo to be edited.
+        /**
+         * Begins editing a todo.
+         * The todo to be edited.
+         * @param {any} todo 
+         */
         editTodo: function(todo) {
             this.todoToEdit = todo;
             this.elems.newTodo.value = todo.name;
         },
 
-        // Removes a todo from the app.
-        // todo: The todo to be removed.
+        /**
+         * Removes a todo from the app.
+         * 
+         * @param {any} todo The todo to be removed.
+         */
         removeTodo: function(todo){
             for(var i = 0; i < this.data.length; i++) {
                 if (this.data[i] === todo) {

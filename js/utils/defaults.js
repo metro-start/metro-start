@@ -12,19 +12,25 @@ define(function() {
 
         // The default theme for the app.
         defaultTheme: {
-            'title': 'metro start',
-            'author': 'metro start',
-            'font-chooser': 'normal fonts',
-            'optionsColor': '#ff0000',
+            'font-chooser': 'default',
+            'fontfamily-chooser': 'system',
+            'fontsize-chooser': 'normal',
+            'fontweight-chooser': 'default',
+            'fontvariant-chooser': 'normal',
+
+            'palette-chooser': 'automatic',
+            'baseColor': '#aaffaa',
             'mainColor': '#ffffff',
             'titleColor': '#4a4a4a',
+            'optionsColor': '#ff0000',
             'backgroundColor': '#000000',
             'background-chooser': 'none',
-            'trivariance-choooser': 'freeform',
+            'trivariance-chooser': 'freeform',
             'trisize-chooser': 'medium',
             'tristyle-chooser': 'tetrad',
-            'trianglifierVariance': 1.51,
-            'trianglifierCellSize': 75
+
+            'title': 'metro start',
+            'author': 'metro start',
         },
 
         // The default sortnig for the app.
@@ -36,27 +42,24 @@ define(function() {
         },
 
         systemThemes: [{
-            title: 'random theme',
-            online: true,
-            optionsColor: '#ff0000',
-            mainColor: '#ffffff',
-            titleColor: '#4a4a4a',
-            backgroundColor: '#000000',
-            author: 'metro start',
+            'title': 'random theme',
+            'author': 'metro start',
+
+            'optionsColor': '#ff0000',
+            'mainColor': '#ffffff',
+            'titleColor': '#4a4a4a',
+            'backgroundColor': '#000000',
+
+            'online': true,
         },
         {
-            title: 'metro start',
-            online: true,
-            optionsColor: '#ff0000',
-            mainColor: '#ffffff',
-            titleColor: '#4a4a4a',
-            backgroundColor: '#000000',
-            author: 'metro start',
-            'trivariance-choooser': 0.75,
-            'trisize-chooser': 75,
-            'tristyle-chooser': 'tetrad',
-            trianglifierVariance: 1.51,
-            trianglifierCellSize: 75
+            'title': 'metro start',
+            'author': 'metro start',
+
+            'optionsColor': '#ff0000',
+            'mainColor': '#ffffff',
+            'titleColor': '#4a4a4a',
+            'backgroundColor': '#000000',
         }]
     };
 });

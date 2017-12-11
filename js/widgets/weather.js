@@ -18,6 +18,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
         
         init: function(document) {
             this.data = storage.get('weather');
+
             if (!!this.data) {
                 this.elems.city.innerText = this.data.city;
                 this.elems.currentTemp.innerText = this.data.currentTemp;
@@ -58,6 +59,8 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
 
         /**
          * Updates the current weather units.
+         * 
+         * @param {any} newWeatherUnit The new weather unit.
          */
         setWeatherUnitDelegate: function(newWeatherUnit) {
             this.update('unit', newWeatherUnit[0]);
@@ -66,9 +69,11 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
 
         /**
          * Updates the current weather location when the weather form is submitted.
+         * @param {any} event: The from handle event.
          */
         saveLocationDelegate: function(event) {
             event.preventDefault();
+            
             if (this.elems.newLocation.value.trim() !== this.data.city) {
                 this.updateWeather(this.elems.newLocation.value.trim(), this.data.unit, true);
             }
@@ -78,19 +83,27 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
         
         /**
          * Sets the visibility of the weather panel.
+         * 
+         * @param {any} visible: True is the weather element should be visible.
          */
         setWeatherVisibility: function(visible) {
-            util.removeClass(this.elems.weather, visible ? 'hide' : 'show');
-            util.addClass(this.elems.weather, visible ? 'show' : 'hide');
+            if (visible) {
+                util.removeClass(this.elems.weather, 'hide');
+            } else {
+                util.addClass(this.elems.weather, 'hide');
+            }
 
             this.elems.toggleWeather.innerText = visible ? 'hide weather' : 'show weather';
             this.update('visible', visible);
         },
 
         /**
-            Update the weather data being displayed.
-            force: Bypass the 1 hour wait requirement.
-        */
+         * Update the weather data being displayed.
+         * 
+         * @param {any} city The new city to use.
+         * @param {any} unit The new weather unit to use.
+         * @param {any} force Skip timeout check.
+         */
         updateWeather: function(city, unit, force) {
             // If it has been more than an hour since last check.
             if(force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
@@ -111,27 +124,24 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
 
                         storage.save('weather', that.data);
                         that.update();
-                        // that.rebuildDom();
                     }
                 });
             }
         },
 
-        rebuildDom: function() {
+        update: function(key, value) {
+            if (!!key) {
+                this.data[key] = value;
+            }
+
+            storage.save('weather', this.data);
+
             this.elems.city.innerText = this.data.city;
             this.elems.currentTemp.innerText = this.data.currentTemp;
             this.elems.highTemp.innerText = this.data.highTemp;
             this.elems.lowTemp.innerText = this.data.lowTemp;
             this.elems.condition.innerText = this.data.condition;
             this.elems.unit.innerText = this.data.unit;
-        },
-
-        update: function(key, value) {
-            if (!!key && !!value) {
-                this.data[key] = value;
-            }
-            storage.save('weather', this.data);
-            this.rebuildDom();
         }
     };
     return weather;

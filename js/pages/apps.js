@@ -23,6 +23,11 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
             this.loadApps();
         },
 
+        /**
+         * Called when the sort order has been changed.
+         * 
+         * @param {any} newSort The new sort order.
+         */
         sortChanged: function (newSort) {
             this.bookmarks.sortChanged(newSort, false);
         },
@@ -50,6 +55,12 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
             });
         },
 
+        /**
+         * Templates a provided app into an HTML element.
+         * 
+         * @param {any} app The app that should be turned into an element.
+         * @returns The HTML element.
+         */
         templateFunc: function(app) {
             var fragment = util.createElement('');
             
@@ -95,14 +106,29 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
             return fragment;
         },
 
+        /**
+         * Open an app's homepage.
+         * 
+         * @param {any} app The app to open its homepage.
+         */
         openHomepageUrl: function(app) {
             window.location.href = app.homepageUrl;
         },
 
+        /**
+         * Open an app's options page.
+         * 
+         * @param {any} app The app to open its options.
+         */
         openOptionsUrl: function(app) {
             window.location.href = app.optionsUrl;
         },
 
+        /**
+         * Enables/disables the selected app.
+         * 
+         * @param {any} app The app to disable.
+         */
         toggleEnabled: function(app) {
             var that = this;
             chrome.management.setEnabled(app.id, !app.enabled, function() {
@@ -110,8 +136,14 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
             });
         },
 
+        /**
+         * Uninstall an app.
+         * 
+         * @param {any} app The app to be uninstalled.
+         */
         removeApp: function(app) {
             var that = this;
+
             chrome.management.uninstall(app.id, { showConfirmDialog: true }, function() {
                 that.loadApps();
             });

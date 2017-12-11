@@ -26,15 +26,21 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         }
     };
 
-    // Build the dom.
-    // rows: HTML rows to be added to the Dom.
+    /**
+     * Build the dom.
+     * 
+     * @param {any} rows HTML rows to be added to the Dom.
+     */
     pagebase.prototype.buildDom = function buildDom(rows) {
         this.clear();
         this.addAll(rows);
     };
 
-    // Add all rows to the page.
-    // rows: The new ros to be added to the page.
+    /**
+     * Add all rows to the page.
+     * 
+     * @param {any} rows The new ros to be added to the page.
+     */
     pagebase.prototype.addAll = function addAll(rows) {
         var nodes = [];
         for (var i = 0; i < rows.length; i++) {
@@ -54,8 +60,11 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         this.addAllNodes(nodes);
     };
 
-    // Adds all the given HTML nodes to the DOM, in a naive way (top to bottom, left to right).
-    // nodes: List of nodes to be added.
+    /**
+     * Adds all the given HTML nodes to the DOM, in a naive way (top to bottom, left to right).
+     * 
+     * @param {any} nodes List of nodes to be added.
+     */
     pagebase.prototype.addAllNodes = function addAllNodes(nodes) {
         if (nodes.length) {
             var pageIndex = this.rootNode.children.length;
@@ -70,6 +79,9 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         }
     };
 
+    /**
+     * Clear the list of elements in the page.
+     */
     pagebase.prototype.clear = function clear() {
         this.currentPage = 0;
         while (this.rootNode.firstElementChild) {
@@ -77,6 +89,12 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         }
     };
 
+    /**
+     * Called when the sort options on the page chagnes.
+     * 
+     * @param {any} newSort The new sort order.
+     * @param {any} saveSort Whether the new sort should be saved.
+     */
     pagebase.prototype.sortChanged = function sortChanged(newSort, saveSort) {
         var currentSort = this.getSort();
         if (saveSort === currentSort) {
@@ -103,14 +121,35 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         }
     };
 
+    /**
+     * Sort the provided elements in order.
+     * 
+     * @param {any} a The first element being compared.
+     * @param {any} b The second element being compared.
+     * @returns True if the first element is larger, false otherwise.
+     */
     pagebase.prototype.sortFunc = function sortFunc(a, b) {
         return pagebase.prototype.compareFunc(a.textContent, b.textContent);
     };
 
+    /**
+     * Revert the sorting on the elements.
+     * 
+     * @param {any} a The first element being compared.
+     * @param {any} b The second element being compared.
+     * @returns True if the first element was naturally first.
+     */
     pagebase.prototype.unsortFunc = function unsortFunc(a, b) {
         return pagebase.prototype.compareFunc(a.id, b.id);
     };
 
+    /**
+     * Compare the two fields for sorting.
+     * 
+     * @param {any} a The first element being compared.
+     * @param {any} b The second element being compared.
+     * @returns True if the first element is larger, false otherwise.
+     */
     pagebase.prototype.compareFunc = function compareFunc(a, b) {
         var nameA = a.toUpperCase();
         var nameB = b.toUpperCase();
@@ -121,12 +160,21 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         }
     };
 
+    /**
+     * Gets the sort order for the current page.
+     * 
+     * @returns True if the page should be sorted, false otherwise.
+     */
     pagebase.prototype.getSort = function getSort() {
         var sort = storage.get('sort', defaults.defaultSort);
         return sort[this.name];
     };
 
-
+    /**
+     * Updates the current sort options.
+     * 
+     * @param {any} newSort The new sort order.
+     */
     pagebase.prototype.updateSort = function updateSort(newSort) {
         var sort = storage.get('sort', defaults.defaultSort);
         sort[this.name] = newSort;

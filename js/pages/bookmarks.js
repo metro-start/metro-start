@@ -24,10 +24,18 @@ function(jss, pagebase_paneled, modal, util) {
             this.loadBookmarks();
         },
 
+        /**
+         * Called when the sort order has been changed.
+         * 
+         * @param {any} newSort The new sort order.
+         */
         sortChanged: function (newSort) {
             this.bookmarks.sortChanged(newSort);
         },
 
+        /**
+         * Load the current set of bookmarks.
+         */
         loadBookmarks: function() {
             var that = this;
             chrome.bookmarks.getTree(function(data) {
@@ -36,6 +44,12 @@ function(jss, pagebase_paneled, modal, util) {
             });
         },
 
+        /**
+         * Templates a provided bookmark into an HTML element.
+         * 
+         * @param {any} bookmark The bookmark that should be turned into an element.
+         * @returns The HTML element.
+         */
         templateFunc: function(bookmark) {
             var fragment = util.createElement('');
             var titleWrap = this.templates.titleWrapFragment.cloneNode(true);
@@ -63,6 +77,12 @@ function(jss, pagebase_paneled, modal, util) {
             return fragment;
         },
 
+        /**
+         * Handle clicks on bookmarks.
+         * 
+         * @param {any} bookmark The bookmark that was clicked.
+         * @param {any} bookmarkNode The bookmark node has the data to be activated.
+         */
         clickBookmark: function(bookmark, bookmarkNode) {
             var currentPage = bookmarkNode.parentNode.parentNode.id;
             var itemNode = bookmarkNode.parentNode;
@@ -81,6 +101,12 @@ function(jss, pagebase_paneled, modal, util) {
             });
         },
 
+        /**
+         * Removes a bookmark.
+         * 
+         * @param {any} bookmark The bookmark element that will be removed.
+         * @param {any} bookmarkNode The bookmark node that has the data to be removed.
+         */
         removeBookmark: function(bookmark, bookmarkNode) {
             modal.createModal(
                 `bookmark-${bookmark.id}`, 

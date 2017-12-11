@@ -7,15 +7,26 @@ define([], function Util() {
             this.lastLogTime = Date.now();
         },
 
+        /**
+         * Log a message with a marker for how long since an event was logged.
+         * 
+         * @param {any} msg The message to log.
+         */
         log: function(msg) {
             var time = Date.now();
-            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+            console.log('[+' + Math.floor((time - this.lastLogTime) / 1000) + 's] ' + msg);
 
             this.lastLogTime = time;
         },
 
+        /**
+         * Log a message that a field has changed.
+         * 
+         * @param {any} key The field that has been changed.
+         * @param {any} val The value that was changed to.
+         */
         logChange: function(key, val) {
-            this.log(`setting [${key}] to ${val}`);
+            this.log('setting [' + key + '] to ' + val);
         },
 
         // Converts an HTML string to a DOM fragment.
@@ -30,9 +41,12 @@ define([], function Util() {
             return fragment;
         },
         
-        // Add a CSS class to a DOM element.
-        // elem: The DOM element to be mondified.
-        // newClass: The class to be applied to the node.
+        /**
+         * Add a CSS class to a DOM element.
+         * 
+         * @param {any} elem The DOM element to be mondified.
+         * @param {any} newClass The class to be applied to the node.
+         */
         addClass: function addClass(elem, newClass) {
             if (!!newClass) {
                 var oldClasses = !!elem.className ? elem.className.split(' ') : [];
@@ -43,17 +57,24 @@ define([], function Util() {
             }
         },
 
-        // Checks is a DOM element has a CSS class.
-        // elem: The DOM element to be checked.
-        // testlass: The class to be checked for.
+        /**
+         * Checks is a DOM element has a CSS class.
+         * 
+         * @param {any} elem The DOM element to be checked.
+         * @param {any} testClass The class to be checked for.
+         * @returns 
+         */
         hasClass: function hasClass(elem, testClass) {
             var oldClass = elem.className.split(' ');
             return oldClass.indexOf(testClass) !== -1;
         },
 
-        // Removes a CSS class from a DOM element.
-        // elem: The DOM element to be modified.
-        // className: The class to be addded to the node.
+        /**
+         * Removes a CSS class from a DOM element.
+         * 
+         * @param {any} elem The DOM element to be modified.
+         * @param {any} className The class to be addded to the node.
+         */
         removeClass: function removeClass(elem, className) {
             var oldClass = elem.className.split(' ');
             var index = oldClass.indexOf(className);
@@ -63,9 +84,13 @@ define([], function Util() {
             }
         },
 
-        // Checks if the provided object is empty.
-        // obj: The obj to test.
-        // http://stackoverflow.com/questions/4994201/is-object-empty
+        /**
+         * Checks if the provided object is empty.
+         * http://stackoverflow.com/questions/4994201/is-object-empty
+         * 
+         * @param {any} obj The obj to test.
+         * @returns True if the object is null, undefined or empty. False otherwise.
+         */
         isEmpty: function isEmpty(obj) {
             // null and undefined are "empty"
             if (obj === null || obj === undefined) return true;
@@ -93,7 +118,12 @@ define([], function Util() {
             return true;
         },
 
-        // http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+        /**
+         * Genreates a random color.
+         * http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+         * 
+         * @returns A random color hex value.
+         */
         randomColor: function () {
             var golden_ratio_conjugate = 0.618033988749895; // use golden ratio
             var h = Math.random(); // use random start value
@@ -127,6 +157,13 @@ define([], function Util() {
             return '#' + toHex(r) + toHex(g) + toHex(b);
         },
 
+        /**
+         * Upgrade a provided theme to ensure it has all the right fields.
+         * 
+         * @param {any} data The theme to be upgraded.
+         * @param {any} defaultTheme The theme to use to back-fill.
+         * @returns The upgraded theme.
+         */
         upgradeTheme: function(data, defaultTheme) {
             var theme = Object.assign({}, defaultTheme, data);
       

@@ -17,14 +17,14 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
         templates: {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
-            titleFragment: util.createElement('<span class="title clickable"></span>'),
+            titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
+            titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
-            authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>'),
+            authorFragment: util.createElement('<a class="options-color gallery-bio small-text" title="author"></a>'),
             infoFragment: util.createElement('<span class="info"></span>')
         },
 
-        // Initialize this module.
         init: function() {
             this.elems.rootNode = document.getElementById('internal_selector_themes');
             this.themes = new pagebase_grouped();
@@ -35,11 +35,18 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
         },
         
+        /**
+         * Called when the sort order has been changed.
+         * 
+         * @param {any} newSort The new sort order.
+         */
         sortChanged: function (newSort) {
             this.themes.sortChanged(newSort, false);
         },
 
-        // Loads the available themes from local and web storage
+        /**
+         * Loads the available themes from local and web storage
+         */
         loadThemes: function() {
             var that = this;
 
@@ -73,21 +80,29 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             });
         },
 
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
+
+        /**
+         * Templates a provided theme into an HTML element.
+         * 
+         * @param {any} theme The theme that should be turned into an element.
+         * @returns The HTML element.
+         */
         templateFunc: function(theme) {
             var fragment = util.createElement('');
-
+            
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.id = 'theme_' + theme.id;
             title.firstElementChild.textContent = theme.title;
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
-            if (this.themesWidget.data.title === theme.title) {
-                util.addClass(title.firstElementChild, 'theme-active');
-            }
+            var titleWrap = this.templates.titleWrapFragment.cloneNode(true);
+            titleWrap.firstElementChild.appendChild(title);
 
-            fragment.appendChild(title);
+            if (this.themesWidget.data.title === theme.title) {
+                util.addClass(titleWrap.firstElementChild, 'theme-active');
+            }
+            
+            fragment.appendChild(titleWrap);
 
             var options = this.templates.infoFragment.cloneNode(true);
             var author = this.templates.authorFragment.cloneNode(true);
@@ -113,17 +128,15 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             if (theme.title === 'random theme') {
                 this.themesWidget.randomTheme();
             } else {
-                theme.title = '';
-                theme.author = '';
                 this.themesWidget.updateCurrentTheme('currentTheme', theme);
             }
 
             var itemNode = themeNode.parentNode;
-            var siblings = themeNode.parentNode.parentNode.children;
+            var siblings = themeNode.parentNode.parentNode.parentNode.children;
             Array.prototype.slice.call(siblings).forEach(function(item) {
                 util.removeClass(item.firstElementChild, 'theme-active');
             });
-            util.addClass(itemNode.firstElementChild, 'theme-active');
+            util.addClass(itemNode, 'theme-active');
         },
 
         shareTheme: function(theme) {
