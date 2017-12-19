@@ -226,8 +226,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
         });
 
         if (data['fontreadability-chooser'] === 'on') {
+          var shadowColor = tinycolor.mostReadable(data.mainColor, [data.optionsColor, data.backgroundColor], {includeFallbackColors: true}).toHexString();
           jss.set('body', {
-            'text-shadow': tinycolor.mostReadable(data.mainColor, [data.optionsColor, data.backgroundColor], {includeFallbackColors: true}).toHexString() + ' 0px 0px 5px'
+            'text-shadow': shadowColor + ' 0px 0px 0.5em, ' + shadowColor + ' 0px 0px 0.2em'
           });
         } else {
           jss.set('body', {

@@ -157,7 +157,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              */
             bindTextInput: function (inputElement) {
                 inputElement.value = !!this.data[inputElement.id] ? this.data[inputElement.id] : '';
-                inputElement.addEventListener('input', this.updateText.bind(this, inputElement.id));
+                inputElement.addEventListener('input', throttle_debounce.throttle(500, this.updateText.bind(this, inputElement.id)), true);
             },
 
             /**
