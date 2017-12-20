@@ -14,8 +14,7 @@ define(function() {
         defaultTheme: {
             'font-chooser': 'default',
             'fontfamily-chooser': 'system',
-            'fontsize-chooser': 'normal',
-            'fontweight-chooser': 'default',
+            'fontweight-chooser': 'normal',
             'fontvariant-chooser': 'normal',
 
             'palette-chooser': 'automatic',

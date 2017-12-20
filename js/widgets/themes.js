@@ -31,7 +31,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 document.getElementById('font-chooser'),
                 document.getElementById('fontreadability-chooser'),
                 document.getElementById('fontfamily-chooser'),
-                document.getElementById('fontsize-chooser'),
                 document.getElementById('fontweight-chooser'),
                 document.getElementById('fontvariant-chooser'),
 
@@ -157,7 +156,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              */
             bindTextInput: function (inputElement) {
                 inputElement.value = !!this.data[inputElement.id] ? this.data[inputElement.id] : '';
-                inputElement.addEventListener('input', this.updateText.bind(this, inputElement.id));
+                inputElement.addEventListener('input', throttle_debounce.throttle(500, this.updateText.bind(this, inputElement.id)), true);
             },
 
             /**

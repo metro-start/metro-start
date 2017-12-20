@@ -1,241 +1,249 @@
 define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './defaults'],
-  function (jquery, tinycolor, jss, trianglify, util, storage, defaults) {
-    var script = {
-      init: function () { },
+    function (jquery, tinycolor, jss, trianglify, util, storage, defaults) {
+        var script = {
+            init: function () { },
 
-      /**
-      * Changes the style to whatever is in the scope.
-      *
-      * @param {any} data: The new theme to change to.
-      * @param {any} transition: A bool indicating whether to slowly transition or immediately change.
-      */
-      updateTheme: function (data, transition) {
-        var theme = util.upgradeTheme(data, defaults.defaultTheme);
+            /**
+            * Changes the style to whatever is in the scope.
+            *
+            * @param {any} data: The new theme to change to.
+            * @param {any} transition: A bool indicating whether to slowly transition or immediately change.
+            */
+            updateTheme: function (data, transition) {
+                var theme = util.upgradeTheme(data, defaults.defaultTheme);
 
-        var optionsColor = theme.optionsColor;
-        var backgroundColor = theme.backgroundColor;
-        var mainColor = theme.mainColor;
-        var titleColor = theme.titleColor;
+                var optionsColor = theme.optionsColor;
+                var backgroundColor = theme.backgroundColor;
+                var mainColor = theme.mainColor;
+                var titleColor = theme.titleColor;
 
-        this.updateFont(theme);
-        this.updateBackground(theme);
+                this.updateFont(theme);
+                this.updateBackground(theme);
 
-        jss.set('*', {
-          'border-color': optionsColor
-        });
+                jss.set('*', {
+                    'border-color': optionsColor
+                });
 
-        jss.set('::-webkit-scrollbar', {
-          'background': backgroundColor
-        });
+                jss.set('::-webkit-scrollbar', {
+                    'background': backgroundColor
+                });
 
-        jss.set('::-webkit-scrollbar-thumb', {
-          'background': optionsColor
-        });
+                jss.set('::-webkit-scrollbar-thumb', {
+                    'background': optionsColor
+                });
 
-        jss.set('::-webkit-input-placeholder', {
-          'background': optionsColor
-        });
+                jss.set('::-webkit-input-placeholder', {
+                    'background': optionsColor
+                });
 
-        // Animate the color transition.
-        var duration = (transition === true ? 800 : 0);
-        jquery('body').animate({ 'color': mainColor }, { duration: duration, queue: false });
-        jquery('input').animate({ 'color': mainColor }, { duration: duration, queue: false });
-        jquery('.background-color').animate({ 'backgroundColor': backgroundColor }, { duration: duration, queue: false });
-        jquery('.title-color').animate({ 'color': titleColor }, { duration: duration, queue: false });
-        jquery('.options-color').animate({ 'color': optionsColor }, { duration: duration, queue: false });
+                // Animate the color transition.
+                var duration = (transition === true ? 800 : 0);
+                jquery('body').animate({ 'color': mainColor }, { duration: duration, queue: false });
+                jquery('input').animate({ 'color': mainColor }, { duration: duration, queue: false });
+                jquery('.background-color').animate({ 'backgroundColor': backgroundColor }, { duration: duration, queue: false });
+                jquery('.title-color').animate({ 'color': titleColor }, { duration: duration, queue: false });
+                jquery('.options-color').animate({ 'color': optionsColor }, { duration: duration, queue: false });
 
-        // ...but then we still need to add it to the DOM.
-        jss.set('.title-color', {
-          'color': titleColor
-        });
+                // ...but then we still need to add it to the DOM.
+                jss.set('.title-color', {
+                    'color': titleColor
+                });
 
-        jss.set('body', {
-          'color': mainColor,
-        });
-        jss.set('input', {
-          'color': mainColor,
-        });
-        jss.set('.theme-section-title', {
-          'border-bottom-color': mainColor
-        });
-        jss.set('.options-color', {
-          'color': optionsColor
-        });
-        jss.set('.theme-active', {
-          'background-color': optionsColor
-        });
-        jss.set('.bookmark-active', {
-          'background-color': optionsColor
-        });
-        jss.set('.pagebase-grouped > .group > .page', {
-          'border-top-style': 'solid',
-          'border-top-width': '1px',
-          'border-top-color': optionsColor
-        });
-        jss.set('.pagebase-grouped > .group > .page', {
-          'border-top-style': 'solid',
-          'border-top-width': '1px',
-          'border-top-color': optionsColor
-        });
-        jss.set('.modal-info .clickable', {
-          'border': '2px solid ' + optionsColor
-        });
-      },
+                jss.set('body', {
+                    'color': mainColor,
+                });
+                jss.set('input', {
+                    'color': mainColor,
+                });
+                jss.set('.theme-section-title', {
+                    'border-bottom-color': mainColor
+                });
+                jss.set('.options-color', {
+                    'color': optionsColor
+                });
+                jss.set('.theme-active', {
+                    'background-color': optionsColor
+                });
+                jss.set('.bookmark-active', {
+                    'background-color': optionsColor
+                });
+                jss.set('.pagebase-grouped > .group > .page', {
+                    'border-top-style': 'solid',
+                    'border-top-width': '1px',
+                    'border-top-color': optionsColor
+                });
+                jss.set('.pagebase-grouped > .group > .page', {
+                    'border-top-style': 'solid',
+                    'border-top-width': '1px',
+                    'border-top-color': optionsColor
+                });
+                jss.set('.modal-info .clickable', {
+                    'border': '2px solid ' + optionsColor
+                });
+            },
 
-      /**
-       * Updates the current background.
-       * 
-       * @param {any} data Theme object with the new background settings.
-       */
-      updateBackground: function (data) {
-        var jBody = jquery('body');
-        if (data['background-chooser'] === 'trianglify') {
-          var xColors = [data.backgroundColor];
-          var yColors = null;
+            /**
+             * Updates the current background.
+             * 
+             * @param {any} data Theme object with the new background settings.
+             */
+            updateBackground: function (data) {
+                var jBody = jquery('body');
+                if (data['background-chooser'] === 'trianglify') {
+                    var xColors = [data.backgroundColor];
+                    var yColors = null;
 
-          // Convert variance from my option to actual values.
-          var triVariance = 0.75;
-          switch (data['trivariance-chooser'].toLowerCase()) {
-            case 'uniform':
-              triVariance = 0;
-              break;
-            
-            case 'bent':
-              triVariance = 0.375;
-              break;
+                    // Convert variance from my option to actual values.
+                    var triVariance = 0.75;
+                    switch (data['trivariance-chooser'].toLowerCase()) {
+                        case 'uniform':
+                            triVariance = 0;
+                            break;
 
-            case 'freeform':
-              triVariance = 0.75;
-              break;
+                        case 'bent':
+                            triVariance = 0.375;
+                            break;
 
-            default:
-              console.error("Could not recognize trivariance: " + data['trivariance-chooser']);
-              break;
-          }
+                        case 'freeform':
+                            triVariance = 0.75;
+                            break;
 
-          var triSize = 70;
-          switch (data['trisize-chooser'].toLowerCase()) {
-            case 'small':
-              triSize = 25;
-              break;
+                        default:
+                            console.error("Could not recognize trivariance: " + data['trivariance-chooser']);
+                            break;
+                    }
 
-            case 'medium':
-              triSize = 70;
-              break;
+                    var triSize = 70;
+                    switch (data['trisize-chooser'].toLowerCase()) {
+                        case 'small':
+                            triSize = 25;
+                            break;
 
-            case 'large':
-              triSize = 125;
-              break;
+                        case 'medium':
+                            triSize = 70;
+                            break;
 
-            default:
-              console.error("Could not recognize trisize: " + data['trisize-chooser']);
-              break;
-          }
+                        case 'large':
+                            triSize = 125;
+                            break;
 
-          switch (data['tristyle-chooser'].toLowerCase()) {
-            case 'engulfed in flames':
-              xColors = [
-                tinycolor.mix(data.backgroundColor, 'red', 100).toHexString(),
-                tinycolor.mix(data.backgroundColor, 'red', 64).toHexString(),
-                tinycolor.mix(data.backgroundColor, 'red', 8).toHexString(),
-                tinycolor.mix(data.backgroundColor, 'red', 64).toHexString(),
-                tinycolor.mix(data.backgroundColor, 'red', 100).toHexString()
-              ];
-              break;
-            case 'triad':
-              xColors = tinycolor(data.backgroundColor).triad().map(v => v.toHexString());
-              break;
-            case 'tetrad':
-              xColors = tinycolor(data.backgroundColor).tetrad().map(v => v.toHexString());
-              break;
-            case 'monochromatic':
-              xColors = tinycolor(data.backgroundColor).monochromatic().map(v => v.toHexString());
-              break;
-            case 'split complements':
-              xColors = tinycolor(data.backgroundColor).splitcomplement().map(v => v.toHexString());
-              break;
-            default:
-              console.error("Could not recognize tristyle: " + data['tristyle-chooser']);
-              break;
-          }
+                        default:
+                            console.error("Could not recognize trisize: " + data['trisize-chooser']);
+                            break;
+                    }
 
-          if (!yColors) {
-            yColors = xColors;
-          }
+                    switch (data['tristyle-chooser'].toLowerCase()) {
+                        case 'engulfed in flames':
+                            xColors = [
+                                tinycolor.mix(data.backgroundColor, 'red', 100).toHexString(),
+                                tinycolor.mix(data.backgroundColor, 'red', 64).toHexString(),
+                                tinycolor.mix(data.backgroundColor, 'red', 8).toHexString(),
+                                tinycolor.mix(data.backgroundColor, 'red', 64).toHexString(),
+                                tinycolor.mix(data.backgroundColor, 'red', 100).toHexString()
+                            ];
+                            break;
+                        case 'triad':
+                            xColors = tinycolor(data.backgroundColor).triad().map(v => v.toHexString());
+                            break;
+                        case 'tetrad':
+                            xColors = tinycolor(data.backgroundColor).tetrad().map(v => v.toHexString());
+                            break;
+                        case 'monochromatic':
+                            xColors = tinycolor(data.backgroundColor).monochromatic().map(v => v.toHexString());
+                            break;
+                        case 'split complements':
+                            xColors = tinycolor(data.backgroundColor).splitcomplement().map(v => v.toHexString());
+                            break;
+                        default:
+                            console.error("Could not recognize tristyle: " + data['tristyle-chooser']);
+                            break;
+                    }
 
-          var bodyPattern = trianglify({
-            width: jBody.prop('scrollWidth'),
-            height: jBody.prop('scrollHeight'),
-            variance: triVariance,
-            cell_size: triSize,
-            x_colors: xColors
-          });
+                    if (!yColors) {
+                        yColors = xColors;
+                    }
 
-          var modalPattern = trianglify({
-            width: jBody.prop('scrollWidth') * 0.75,
-            height: jBody.prop('scrollHeight') * 0.85,
-            variance: triVariance,
-            cell_size: triSize,
-            x_colors: xColors
-          });
+                    var bodyPattern = trianglify({
+                        width: jBody.prop('scrollWidth'),
+                        height: jBody.prop('scrollHeight'),
+                        variance: triVariance,
+                        cell_size: triSize,
+                        x_colors: xColors
+                    });
 
-          jss.set('body', {
-            'background': 'url(' + bodyPattern.png() + ')'
-          });
+                    var modalPattern = trianglify({
+                        width: jBody.prop('scrollWidth') * 0.75,
+                        height: jBody.prop('scrollHeight') * 0.85,
+                        variance: triVariance,
+                        cell_size: triSize,
+                        x_colors: xColors
+                    });
 
-          jss.set('.modal-content', {
-            'background': 'url(' + modalPattern.png() + ')'
-          });
-        } else {
-          jss.set('body', {
-            'background': data.backgroundColor
-          });
-          jss.set('.modal-content', {
-            'background': data.backgroundColor
-          });
-          jss.set('.background-color', {
-            'background-color': data.backgroundColor
-          });
-        }
-      },
+                    jss.set('body', {
+                        'background': 'url(' + bodyPattern.png() + ')'
+                    });
 
-      /**
-       * Upates the currently selected font.
-       * 
-       * @param {any} data The theme object with the new font settings.
-       */
-      updateFont: function (data) {
-        var currentFont = 'sans-serif';
+                    jss.set('.modal-content', {
+                        'background': 'url(' + modalPattern.png() + ')'
+                    });
+                } else {
+                    jss.set('body', {
+                        'background': data.backgroundColor
+                    });
+                    jss.set('.modal-content', {
+                        'background': data.backgroundColor
+                    });
+                    jss.set('.background-color', {
+                        'background-color': data.backgroundColor
+                    });
+                }
+            },
 
-        switch (data['font-chooser'].toLowerCase()) {
-          case 'system':
-            currentFont = '"Segoe UI", Helvetica, Arial, sans-serif';
-            break;
+            /**
+             * Upates the currently selected font.
+             * 
+             * @param {any} data The theme object with the new font settings.
+             */
+            updateFont: function (data) {
+                var checkFont = function (text) {
+                    switch (text) {
+                        case 'default':
+                        case 'custom':
+                        case 'system':
+                            return '"Segoe UI", Helvetica, Arial, sans-serif';
 
-          case 'raleway':
-            currentFont = 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif';
-            break;
+                        case 'raleway':
+                            return 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif';
 
-          case 'serif':
-            currentFont = 'serif';
-            break;
-        }
+                        case 'serif':
+                            return 'serif';
+                    }
+                };
 
-        jss.set('body', {
-          'font-family': currentFont,
-        });
+                if (data['font-chooser'] === 'custom') {
+                    jss.set('body', {
+                        'font-family': checkFont(data['fontfamily-chooser']),
+                        'font-weight': data['fontweight-chooser'],
+                        'font-variant': data['fontvariant-chooser']
+                    });
+                } else {
+                    jss.set('body', {
+                        'font-family': checkFont(data['font-chooser'])
+                    });
+                }
 
-        if (data['fontreadability-chooser'] === 'on') {
-          jss.set('body', {
-            'text-shadow': tinycolor.mostReadable(data.mainColor, [data.optionsColor, data.backgroundColor], {includeFallbackColors: true}).toHexString() + ' 0px 0px 5px'
-          });
-        } else {
-          jss.set('body', {
-            'text-shadow': 'inherit',
-          });
-        }
-      },
-    };
+                if (data['fontreadability-chooser'] === 'on') {
+                    var shadowColor = tinycolor.mostReadable(data.mainColor, [data.optionsColor, data.backgroundColor], { includeFallbackColors: true }).toHexString();
+                    jss.set('body', {
+                        'text-shadow': shadowColor + ' 0px 0px 0.5em, ' + shadowColor + ' 0px 0px 0.2em'
+                    });
+                } else {
+                    jss.set('body', {
+                        'text-shadow': 'inherit',
+                    });
+                }
+            },
+        };
 
-    return script;
-  });
+        return script;
+    });
