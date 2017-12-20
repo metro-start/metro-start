@@ -44,6 +44,7 @@ module.exports = function (grunt) {
                     // }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
+                        { from: 'fonts', to: 'css' },
                         { from: 'icons', to: 'icons' },
                         { from: 'manifest.json' },
                         { from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
@@ -75,6 +76,7 @@ module.exports = function (grunt) {
                 files: [
 					'js/**/*.js',
 					'css/*.css',
+					'fonts/*.ttf',
                     'haml/start.haml',
                 ],
                 tasks: ['test'],
