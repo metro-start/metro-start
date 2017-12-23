@@ -66,6 +66,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
                 data = JSON.parse(data);
                 for (var i in data) {
                     data[i] = util.upgradeTheme(data[i], defaults.defaultTheme);
+                    data[i]['palette-chooser'] = 'custom';
                     data[i].online = true;
                 }
 
@@ -132,9 +133,9 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             }
 
             var itemNode = themeNode.parentNode;
-            var siblings = themeNode.parentNode.parentNode.parentNode.children;
+            var siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
             Array.prototype.slice.call(siblings).forEach(function(item) {
-                util.removeClass(item.firstElementChild, 'theme-active');
+                util.removeClass(item, 'theme-active');
             });
             util.addClass(itemNode, 'theme-active');
         },

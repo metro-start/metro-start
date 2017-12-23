@@ -207,7 +207,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             updateFont: function (data) {
                 var checkFont = function (text) {
                     switch (text) {
-                        case 'default':
                         case 'custom':
                         case 'system':
                             return '"Segoe UI", Helvetica, Arial, sans-serif';

@@ -12,12 +12,13 @@ define(function() {
 
         // The default theme for the app.
         defaultTheme: {
-            'font-chooser': 'default',
+            'font-chooser': 'system',
+            'fontreadability-chooser': 'no',
             'fontfamily-chooser': 'system',
             'fontweight-chooser': 'normal',
             'fontvariant-chooser': 'normal',
 
-            'palette-chooser': 'automatic',
+            'palette-chooser': 'custom',
             'baseColor': '#aaffaa',
             'mainColor': '#ffffff',
             'titleColor': '#4a4a4a',

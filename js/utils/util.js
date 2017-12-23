@@ -167,6 +167,17 @@ define([], function Util() {
         upgradeTheme: function(data, defaultTheme) {
             var theme = Object.assign({}, defaultTheme, data);
       
+            switch (data['font-chooser']) {
+                case 'system':
+                case 'raleway':
+                case 'serif':
+                case 'custom':
+                break;
+
+                default:
+                theme['font-chooser'] = defaultTheme['font-chooser'];
+            }
+
             if (!!data.author) {
               theme.author = data.author;
             }
