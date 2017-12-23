@@ -13,7 +13,7 @@ define(function() {
         // The default theme for the app.
         defaultTheme: {
             'font-chooser': 'system',
-            'fontreadability-chooser': 'no',
+            'fontreadability-chooser': 'off',
             'fontfamily-chooser': 'system',
             'fontweight-chooser': 'normal',
             'fontvariant-chooser': 'normal',
@@ -27,7 +27,7 @@ define(function() {
             'background-chooser': 'none',
             'trivariance-chooser': 'freeform',
             'trisize-chooser': 'medium',
-            'tristyle-chooser': 'tetrad',
+            'tristyle-chooser': 'monochromatic',
 
             'title': 'metro start',
             'author': 'metro start',
@@ -60,6 +60,8 @@ define(function() {
             'mainColor': '#ffffff',
             'titleColor': '#4a4a4a',
             'backgroundColor': '#000000',
+
+            'online': true
         }]
     };
 });
