@@ -96,10 +96,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
 
                 if (!this.isBound) {
-                    for (var i = 0; i < this.textInputs.length; i++) {
-                        this.bindTextInput(this.textInputs[i]);
-                    }
-
                     for (var j = 0; j < this.colorInputs.length; j++) {
                         this.bindColorInput(this.colorInputs[j]);
                     }
@@ -147,16 +143,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 storage.save('currentTheme', this.data);
 
                 this.themeAdded();
-            },
-
-            /**
-             * Attaches event handlers to the given text field.
-             * 
-             * @param {any} inputElement The name of the text field.
-             */
-            bindTextInput: function (inputElement) {
-                inputElement.value = !!this.data[inputElement.id] ? this.data[inputElement.id] : '';
-                inputElement.addEventListener('input', throttle_debounce.throttle(500, this.updateText.bind(this, inputElement.id)), true);
             },
 
             /**
@@ -214,16 +200,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 }
 
                 this.updateCurrentTheme(inputId, val);
-            },
-
-            /**
-             * Handles changes to text elements.
-             * 
-             * @param {any} inputElement The name of the text that's changing.
-             * @param {any} event The event that contains the new value.
-             */
-            updateText: function (inputId, event) {
-                this.updateCurrentTheme(inputId, event.target.value);
             },
 
             /**

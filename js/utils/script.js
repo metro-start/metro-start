@@ -236,9 +236,12 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     jss.set('body', {
                         'text-shadow': shadowColor + ' 0px 0px 0.5em, ' + shadowColor + ' 0px 0px 0.2em'
                     });
+                    jss.set('body .sp-dd, .theme-active, .bookmark-active', {
+                        'text-shadow': 'none'
+                    });
                 } else {
                     jss.set('body', {
-                        'text-shadow': 'inherit',
+                        'text-shadow': 'none',
                     });
                 }
             },
