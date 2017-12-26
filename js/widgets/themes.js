@@ -218,17 +218,18 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * @param {any} theme The theme to be shared.
              */
             shareTheme: function (theme) {
-                var url = defaults.defaultWebservice + '/newtheme?' +
-                    'title=' + encodeURIComponent(theme.title) +
-                    '&author=' + encodeURIComponent(theme.author) +
-                    '&maincolor=' + encodeURIComponent(theme.mainColor) +
-                    '&optionscolor=' + encodeURIComponent(theme.optionsColor) +
-                    '&titlecolor=' + encodeURIComponent(theme.titleColor) +
-                    '&backgroundcolor=' + encodeURIComponent(themebackgroundColor);
-                console.log('Shared theme with URL: ' + url);
-
-                jquery.get(url, function (data) {
-                    console.log(data);
+                var url = defaults.defaultWebservice + '/newtheme';
+                jquery.ajax({
+                    url : url,
+                    type: 'POST',
+                    data: JSON.stringify(theme),
+                    dataType : "json",
+                    success : function() {
+                        console.log('JSON posted.');
+                    },
+                    error: function (e) {
+                        console.error('JSON did not post: ' + e);
+                    }
                 });
             },
 

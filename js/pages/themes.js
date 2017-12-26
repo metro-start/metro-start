@@ -63,6 +63,11 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
             // Load online themes.
             jquery.get(defaults.defaultWebservice + '/themes.json', function(data) {
+                if (!data || data.length == 0) {
+                    console.log('No online themes available.');
+                    return;
+                }
+
                 data = JSON.parse(data);
                 for (var i in data) {
                     data[i] = util.upgradeTheme(data[i], defaults.defaultTheme);
