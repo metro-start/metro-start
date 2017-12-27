@@ -34,12 +34,19 @@ define(function() {
             'author': 'metro start',
         },
 
-        // The default sortnig for the app.
+        // The default sorting for pages.
         defaultSort: {
             'todos': false,
             'apps': false,
             'bookmarks': false,
             'themes': false
+        },
+
+        // The default weather location.
+        defaultWeather: {
+            'city': 'vancouver, bc',
+            'unit': 'c',
+            'visible': true
         },
 
         systemThemes: [{

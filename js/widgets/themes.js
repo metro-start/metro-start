@@ -57,10 +57,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 } else {
                     script.updateTheme(this.data, false);
                 }
-
-                // DEBUG
-                var that = this;
-                setTimeout(function () { that.elems.editThemeButton.click(); }, 500);
             },
 
             /**

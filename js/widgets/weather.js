@@ -1,4 +1,4 @@
-define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, storage) {
+define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage'], function(jquery, util, defaults, storage) {
     var weather = {
         data: {},
 
@@ -17,34 +17,24 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util, s
         },
         
         init: function(document) {
-            this.data = storage.get('weather');
+            this.data = storage.get('weather', defaults.defaultWeather);
 
-            if (!!this.data) {
-                this.elems.city.innerText = this.data.city;
-                this.elems.currentTemp.innerText = this.data.currentTemp;
-                this.elems.highTemp.innerText = this.data.highTemp;
-                this.elems.lowTemp.innerText = this.data.lowTemp;
-                this.elems.condition.innerText = this.data.condition;
-                this.elems.unit.innerText = this.data.unit;
+            this.elems.city.innerText = this.data.city;
+            this.elems.currentTemp.innerText = this.data.currentTemp;
+            this.elems.highTemp.innerText = this.data.highTemp;
+            this.elems.lowTemp.innerText = this.data.lowTemp;
+            this.elems.condition.innerText = this.data.condition;
+            this.elems.unit.innerText = this.data.unit;
 
-                this.elems.toggleWeather.addEventListener('click', this.toggleWeatherVisibilityDelegate.bind(this));
-                this.elems.saveLocation.addEventListener('submit', this.saveLocationDelegate.bind(this));
+            this.elems.toggleWeather.addEventListener('click', this.toggleWeatherVisibilityDelegate.bind(this));
+            this.elems.saveLocation.addEventListener('submit', this.saveLocationDelegate.bind(this));
 
-                var chooser = jquery('#weather-unit-chooser');
+            var chooser = jquery('#weather-unit-chooser');
 
-                chooser.metroSelect({
-                    'initial': this.data.unit === 'c' ? 'celsius' : 'fahrenheit',
-                    'onchange': this.setWeatherUnitDelegate.bind(this)
-                });
-            }
-            else
-            {
-                this.data = {
-                    "city": "vancouver, bc",
-                    "unit": "c",
-                    "visible": true
-                };
-            }
+            chooser.metroSelect({
+                'initial': this.data.unit === 'c' ? 'celsius' : 'fahrenheit',
+                'onchange': this.setWeatherUnitDelegate.bind(this)
+        });
 
             this.updateWeather(this.data.city, this.data.unit, true);
             this.setWeatherVisibility(this.data.visible);
