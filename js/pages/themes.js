@@ -64,7 +64,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             // Load online themes.
             jquery.get(defaults.defaultWebservice + '/themes.json', function(data) {
                 if (!data || data.length == 0) {
-                    console.log('No online themes available.');
+                    util.warn('No online themes available.');
                     return;
                 }
 
@@ -79,7 +79,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
                 },
                 function(error)
                 {
-                    console.log(error);
+                    util.error('Could not load online themes', error);
                 });
             });
         },

@@ -20,6 +20,30 @@ define([], function Util() {
         },
 
         /**
+         * Log a warning with a marker for how long since an event was logged.
+         * 
+         * @param {any} msg The warning to log.
+         */
+        warn: function(msg) {
+            var time = Date.now();
+            console.warn('[+' + Math.floor((time - this.lastLogTime) / 1000) + 's] ' + msg);
+
+            this.lastLogTime = time;
+        },
+
+        /**
+         * Log an error with a marker for how long since an event was logged.
+         * 
+         * @param {any} msg  The error to log.
+         */
+        error: function(msg) {
+            var time = Date.now();
+            console.error('[+' + Math.floor((time - this.lastLogTime) / 1000) + 's] ' + msg);
+
+            this.lastLogTime = time;
+        },
+
+        /**
          * Log a message that a field has changed.
          * 
          * @param {any} key The field that has been changed.

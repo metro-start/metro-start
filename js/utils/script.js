@@ -109,7 +109,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             break;
 
                         default:
-                            console.error("Could not recognize trivariance: " + data['trivariance-chooser']);
+                            util.error("Could not recognize trivariance: " + data['trivariance-chooser']);
                             break;
                     }
 
@@ -128,7 +128,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             break;
 
                         default:
-                            console.error("Could not recognize trisize: " + data['trisize-chooser']);
+                            util.error("Could not recognize trisize: " + data['trisize-chooser']);
                             break;
                     }
 
@@ -155,7 +155,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             xColors = tinycolor(data.backgroundColor).splitcomplement().map(v => v.toHexString());
                             break;
                         default:
-                            console.error("Could not recognize tristyle: " + data['tristyle-chooser']);
+                            util.error("Could not recognize tristyle: " + data['tristyle-chooser']);
                             break;
                     }
 

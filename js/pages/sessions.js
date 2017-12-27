@@ -67,16 +67,10 @@ function(jquery, pagebase_grouped, util) {
             title.firstElementChild.id = 'session_' + tab.index;
             title.firstElementChild.href = tab.url;
             title.firstElementChild.textContent = tab.title;
-            // title.firstElementChild.addEventListener('click', this.openTab.bind(this, tab));
             fragment.appendChild(title);
 
             return fragment;
         }
-
-        // openTab: function(tab) {
-        //     console.log(tab);
-        //     window.location.href = tab.url;
-        // }
     };
 
     return sessions;

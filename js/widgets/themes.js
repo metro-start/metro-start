@@ -221,10 +221,10 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     data: JSON.stringify(theme),
                     dataType : "json",
                     success : function() {
-                        console.log('JSON posted.');
+                        util.log('Theme shared to the web.');
                     },
                     error: function (e) {
-                        console.error('JSON did not post: ' + e);
+                        util.error('Theme was not shared to the web: ', e);
                     }
                 });
             },
