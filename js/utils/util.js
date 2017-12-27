@@ -167,6 +167,7 @@ define([], function Util() {
         upgradeTheme: function(data, defaultTheme) {
             var theme = Object.assign({}, defaultTheme, data);
       
+            // Upgrade the font.
             switch (data['font-chooser']) {
                 case 'system':
                 case 'raleway':
@@ -178,15 +179,10 @@ define([], function Util() {
                 theme['font-chooser'] = defaultTheme['font-chooser'];
             }
 
-            if (!!data.author) {
-              theme.author = data.author;
-            }
-            if (!!data.title) {
-              theme.title = data.title;
-            }
+            // Upgrade any underscored colors.
             if (!!data.options_color && !data.optionsColor) {
               theme.optionsColor = data.options_color;
-            }
+            } 
             if (!!data.main_color && !data.mainColor) {
               theme.mainColor = data.main_color;
             }
@@ -195,6 +191,22 @@ define([], function Util() {
             }
             if (!!data.title_color && !data.titleColor) {
               theme.titleColor = data.title_color;
+            }
+
+            // Upgrade any theme.colors.
+            if (!!data.colors) {
+                if (!!data.colors.options_color && !data.optionsColor) {
+                    theme.optionsColor = data.colors.options_color;
+                } 
+                if (!!data.colors.main_color && !data.mainColor) {
+                    theme.mainColor = data.colors.main_color;
+                }
+                if (!!data.colors.background_color && !data.backgroundColor) {
+                    theme.backgroundColor = data.colors.background_color;
+                }
+                if (!!data.colors.title_color && !data.titleColor) {
+                    theme.titleColor = data.colors.title_color;
+                }
             }
       
             return theme;

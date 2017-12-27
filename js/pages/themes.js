@@ -70,8 +70,6 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
                 data = JSON.parse(data);
                 for (var i in data) {
-                    data[i] = util.upgradeTheme(data[i], defaults.defaultTheme);
-                    data[i]['palette-chooser'] = 'custom';
                     data[i].online = true;
                 }
 
