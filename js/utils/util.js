@@ -116,7 +116,7 @@ define([], function Util() {
          * @returns True if the object is null, undefined or empty. False otherwise.
          */
         isEmpty: function isEmpty(obj) {
-            // null and undefined are "empty"
+            // null and undefined are 'empty'
             if (obj === null || obj === undefined) return true;
 
             // numbers are not empty.
@@ -130,7 +130,7 @@ define([], function Util() {
             // If it isn't an object at this point
             // it is empty, but it can't be anything *but* empty
             // Is it empty?  Depends on your application.
-            if (typeof obj !== "object") return true;
+            if (typeof obj !== 'object') return true;
 
             // Otherwise, does it have any properties of its own?
             // Note that this doesn't handle
@@ -175,7 +175,7 @@ define([], function Util() {
 
             var toHex = function (c) {
                 var hex = Math.floor(c * 256).toString(16);
-                return hex.length == 1 ? "0" + hex : hex;
+                return hex.length == 1 ? '0' + hex : hex;
             };
 
             return '#' + toHex(r) + toHex(g) + toHex(b);

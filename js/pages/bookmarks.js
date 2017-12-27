@@ -109,8 +109,8 @@ function(jss, pagebase_paneled, modal, util) {
          */
         removeBookmark: function(bookmark, bookmarkNode) {
             modal.createModal(
-                `bookmark-${bookmark.id}`, 
-                `${bookmark.title} will be removed.`, 
+                'bookmark-' + bookmark.id, 
+                bookmark.title + ' will be removed.', 
                 function (res) {
                     if (res)
                     {

@@ -9,10 +9,10 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        haml: {                              // Task 
-            dist: {                            // Target 
-                files: {                         // Dictionary of files 
-                    'dist/start.html': 'haml/start.haml'       // 'destination': 'source' 
+        haml: {
+            dist: {
+                files: {
+                    'dist/start.html': 'haml/start.haml'
                 }
             },
         },
@@ -36,12 +36,12 @@ module.exports = function (grunt) {
                     }
                 },
                 plugins: [
-                    // new WebpackUglifyJsPlugin({
-                    //     cacheFolder: './cached_uglify/',
-                    //     debug: true,
-                    //     minimize: true,
-                    //     sourceMap: true
-                    // }),
+                    new WebpackUglifyJsPlugin({
+                        cacheFolder: './cached_uglify/',
+                        debug: true,
+                        minimize: true,
+                        sourceMap: true
+                    }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
                         { from: 'fonts', to: 'css' },

@@ -73,7 +73,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     for (var j = 0; j < this.colorInputs.length; j++) {
                         var value = this.data[this.colorInputs[j].id];
                         var color = jquery(this.colorInputs[j]);
-                        color.spectrum("set", value);
+                        color.spectrum('set', value);
                     }
 
                     for (var k = 0; k < this.selectInputs.length; k++) {
@@ -219,7 +219,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     url : url,
                     type: 'POST',
                     data: JSON.stringify(theme),
-                    dataType : "json",
+                    dataType : 'json',
                     success : function() {
                         util.log('Theme shared to the web.');
                     },
@@ -255,7 +255,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 for (var i = 0; i < this.colorInputs.length; i++) {
                     var color = util.randomColor();
 
-                    jquery("#" + this.colorInputs[i].id).spectrum('set', color);
+                    jquery('#' + this.colorInputs[i].id).spectrum('set', color);
                     this.data[this.colorInputs[i].id] = color;
                 }
 

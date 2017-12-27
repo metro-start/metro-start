@@ -99,7 +99,7 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage'], fun
             if(force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
                 this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
                 var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit + '"');
-                var url = 'http://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
+                var url = 'https://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
                 var that = this;
                 jquery.ajax(url).done(function(data) {
                     if (data.query.count) {

@@ -145,7 +145,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
         shareTheme: function(theme) {
             var that = this;
-            modal.createModal('shareThemeAlert', `${theme.title} will be shared to the theme gallery.`, 
+            modal.createModal('shareThemeAlert', theme.title + ' will be shared to the theme gallery.',
                 function(result) {
                     if (result) {
                         that.themesWidget.shareTheme(theme);
@@ -158,7 +158,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
         removeTheme: function(theme) {
             var that = this;
-            modal.createModal('shareThemeAlert', `${theme.title} will be removed.`, 
+            modal.createModal('shareThemeAlert', theme.title + ' will be removed.', 
                 function(result) {
                     if (result) {
                         that.themesWidget.removeTheme(theme);

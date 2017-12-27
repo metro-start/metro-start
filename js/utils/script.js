@@ -143,16 +143,16 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             ];
                             break;
                         case 'triad':
-                            xColors = tinycolor(data.backgroundColor).triad().map(v => v.toHexString());
+                            xColors = tinycolor(data.backgroundColor).triad().map(function(v) {return v.toHexString();});
                             break;
                         case 'tetrad':
-                            xColors = tinycolor(data.backgroundColor).tetrad().map(v => v.toHexString());
+                            xColors = tinycolor(data.backgroundColor).tetrad().map(function(v) {return v.toHexString();});
                             break;
                         case 'monochromatic':
-                            xColors = tinycolor(data.backgroundColor).monochromatic().map(v => v.toHexString());
+                            xColors = tinycolor(data.backgroundColor).monochromatic().map(function(v) {return v.toHexString();});
                             break;
                         case 'split complements':
-                            xColors = tinycolor(data.backgroundColor).splitcomplement().map(v => v.toHexString());
+                            xColors = tinycolor(data.backgroundColor).splitcomplement().map(function(v) {return v.toHexString();});
                             break;
                         default:
                             util.error("Could not recognize tristyle: " + data['tristyle-chooser']);
