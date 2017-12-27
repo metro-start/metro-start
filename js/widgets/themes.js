@@ -186,7 +186,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     case 'background-chooser':
                     case 'palette-chooser':
                     case 'font-chooser':
-                        var elems = document.getElementsByClassName(inputId.replace('chooser', 'section'));
+                        var elems = document.getElementsByClassName(inputId + '-section');
                         for (var i = 0; i < elems.length; i++) {
                             // If this element has the same id as our new select value, make it visible.
                             if (elems[i].id === val) {

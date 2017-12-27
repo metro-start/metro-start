@@ -117,10 +117,10 @@
             %option.clickable custom
 
         .theme-editor-section
-          #default.font-section.hide
-          #raleway.font-section.hide
-          #serif.font-section.hide
-          #custom.theme-editor-border.font-section.hide
+          #default.font-chooser-section
+          #raleway.font-chooser-section
+          #serif.font-chooser-section
+          #custom.theme-editor-border.font-chooser-section
             .theme-section-title font style options
             %table.metro-table
               %tbody
@@ -128,7 +128,7 @@
                   %td
                     %span.small-text readability aid
                   %td
-                    .fontreadability-section.options-color
+                    .options-color
                       %select#fontreadability-chooser.chooser
                         %option.clickable on
                         %option.clickable off
@@ -137,7 +137,7 @@
                   %td
                     %span.small-text family
                   %td
-                    .fontfamily-section.options-color
+                    .options-color
                       %select#fontfamily-chooser.chooser
                         %option.clickable system
                         %option.clickable raleway
@@ -147,7 +147,7 @@
                   %td
                     %span.small-text weight
                   %td
-                    .fontweight-section.options-color
+                    .options-color
                       %select#fontweight-chooser.chooser
                         %option.clickable normal
                         %option.clickable lighter
@@ -157,7 +157,7 @@
                   %td
                     %span.small-text variant
                   %td
-                    .fontvariant-section.options-color
+                    .options-color
                       %select#fontvariant-chooser.chooser
                         %option.clickable normal
                         %option.clickable small-caps
@@ -169,13 +169,13 @@
             %option.clickable custom
 
         .theme-editor-section
-          #automatic.theme-editor-border.palette-section
+          #automatic.theme-editor-border.palette-chooser-section
             .theme-section-title automatic color options
             %div
               %span.small-text base
               %input#baseColor{:size => "9", :type => "text"}/
 
-          #custom.theme-editor-border.palette-section
+          #custom.theme-editor-border.palette-chooser-section
             .theme-section-title custom color options
             %div
               %span.small-text title
@@ -197,8 +197,8 @@
             %option.clickable none
 
         .theme-editor-section
-          #none.background-section.hide
-          #trianglify.theme-editor-border.background-section
+          #none.background-chooser-section
+          #trianglify.theme-editor-border.background-chooser-section
             .theme-section-title trianglify options
             %table.metro-table
               %tbody
@@ -206,7 +206,7 @@
                   %td
                     %span.small-text style
                   %td
-                    .tristyle-section.options-color
+                    .options-color
                       %select#tristyle-chooser.chooser
                         %option.clickable Triad
                         %option.clickable Tetrad
@@ -218,7 +218,7 @@
                   %td
                     %span.small-text size
                   %td
-                    .trisize-section.options-color
+                    .options-color
                       %select#trisize-chooser.chooser
                         %option.clickable small
                         %option.clickable medium
@@ -228,7 +228,7 @@
                   %td
                     %span.small-text variance
                   %td
-                    .trivariance-section.options-color
+                    .options-color
                       %select#trivariance-chooser.chooser
                         %option.clickable uniform
                         %option.clickable bent
