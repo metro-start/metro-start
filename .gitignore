@@ -1,0 +1,4 @@
+cached_uglify/*
+dist/*
+node_modules/*
+.vscode/*
