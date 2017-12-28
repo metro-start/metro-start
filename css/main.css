@@ -106,3 +106,6 @@ input {
 	float: left;
 	margin-left: 15px;
 }
+.smaller {
+	font-size: smaller;
+}

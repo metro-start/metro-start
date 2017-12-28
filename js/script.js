@@ -22,5 +22,5 @@ $(function() {
 		});
 		$('.themes').append(themeObj);
 		})(theme);
-	};
+	}
 });
