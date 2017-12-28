@@ -13,7 +13,8 @@
 	},
 	"permissions": [
 		"http://metro-start.appspot.com/*",
-		"http://query.yahooapis.com/*",
+		"https://20171226t133015-dot-metro-start.appspot.com/*",
+		"https://query.yahooapis.com/*",
 		"management",
 		"bookmarks",
 		"storage",
