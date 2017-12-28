@@ -109,3 +109,6 @@ input {
 .smaller {
 	font-size: smaller;
 }
+img.banner {
+	width: 960px;
+}

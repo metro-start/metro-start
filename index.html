@@ -5,6 +5,7 @@
 	<link type="text/css" rel="stylesheet" href="css/reset.css" />
 	<link type="text/css" rel="stylesheet" href="css/main.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.1.0/trianglify.min.js"></script>
 	<script src="js/jquery.cycle.all.latest.js"></script>
 </head>
 <body style="width: 960px; margin: auto">
@@ -15,9 +16,9 @@
 		<a href="https://chrome.google.com/webstore/detail/metro-start/bbhdfpmfdplolnnkpdepnelcfdmikjfd">Get Metro Start Now.</a>
 	</p>
 	<div class="slideshow">
-		<img src="img/banner1.png" alt="Screenshot of metro start." />
-		<img src="img/banner2.png" alt="Screenshot of metro start." />
-		<img src="img/banner3.png" alt="Screenshot of metro start." />
+		<img class="banner" src="img/banner1.png" alt="metro start apps page." />
+		<img class="banner" src="img/banner2.png" alt="metro start bookmarks page." />
+		<img class="banner" src="img/banner3.png" alt="metro start theme editor." />
 	</div>
 	<a href="https://github.com/metro-start/metro-start">
 		<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" />
@@ -27,6 +28,15 @@
 		$('.slideshow').cycle({
 			fx: 'scrollLeft'
 		});
+
+		var bodyPattern = Trianglify({
+			width: window.innerWidth,
+			height: window.innerHeight,
+			cell_size: Math.random() * 200 + 40,
+			x_colors: 'random',
+			variance: Math.random(),
+		});
+		document.body.style.backgroundImage = 'url(' + bodyPattern.png() + ')'
 	</script>
 </body>
 </html>
