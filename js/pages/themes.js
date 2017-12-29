@@ -129,11 +129,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
         },
 
         applyTheme: function(themeNode, theme) {
-            if (theme.title === 'random theme') {
-                this.themesWidget.randomTheme();
-            } else {
-                this.themesWidget.updateCurrentTheme('currentTheme', theme);
-            }
+            this.themesWidget.updateCurrentTheme('currentTheme', theme);
 
             var itemNode = themeNode.parentNode;
             var siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');

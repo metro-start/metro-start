@@ -14,17 +14,28 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 var theme = util.upgradeTheme(data, defaults.defaultTheme);
 
                 if (theme.title === 'randomize') {
-                    this.updateRandomize(theme, duration);
-                } else {
-                    this.updateFont(theme);
-                    this.updateBackground(theme, duration);
-                    this.updateOptionsColor(theme.optionsColor, duration);
-                    this.updateMainColor(theme.mainColor, duration);
-                    this.updateTitleColor(theme.titleColor, duration);
-                }
+                    theme['background-chooser'] = util.randomize(['none', 'trianglify']);
+                    theme['trivariance-chooser'] = util.randomize(['uniform', 'bent', 'freeform']);
+                    theme['trisize-chooser'] = util.randomize(['small', 'medium', 'large', 'yuge']);
+                    theme['tristyle-chooser'] = util.randomize(['triad', 'tetrad', 'monochromatic', 'split complements']);
 
+                    theme.mainColor = tinycolor.random().toHexString();
+                    theme.baseColor = tinycolor.random().toHexString();
+                    theme.titleColor = tinycolor.random().toHexString();
+                    theme.optionsColor = tinycolor.random().toHexString();
+                    theme.backgroundColor = tinycolor.random().toHexString();
 
-                // Animate the color transition.
+                    theme['font-chooser'] = util.randomize(['custom', 'system', 'raleway', 'serif']);
+                    theme['fontfamily-chooser'] = util.randomize(['system', 'raleway', 'serif']);
+                    theme['fontweight-chooser'] = util.randomize(['normal', 'lighter', 'bolder']);
+                    theme['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
+                } 
+
+                this.updateBackground(theme, duration);
+                this.updateFont(theme);
+                this.updateMainColor(theme, duration);
+                this.updateTitleColor(theme, duration);
+                this.updateOptionsColor(theme, duration);
             },
 
             /**
@@ -32,7 +43,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * 
              * @param {any} data The theme to use as a base.
              */
-            updateRandomize: function (data, duration) {
+            updateRandomBackground: function (data, duration) {
                 var bodyPattern = trianglify({
                     width: window.innerWidth,
                     height: window.innerHeight,
@@ -49,9 +60,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     'background': 'url(' + bodyPattern.png() + ')'
                 });
 
-                this.updateMainColor(tinycolor.random().toHexString(), duration);
-                this.updateTitleColor(tinycolor.random().toHexString(), duration);
-                this.updateOptionsColor(tinycolor.random().toHexString(), duration);
             },
 
             /**
@@ -97,6 +105,10 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         case 'large':
                             triSize = 125;
                             break;
+                        
+                        case 'yuge':
+                            triSize = 240;
+                            break;
 
                         default:
                             util.error("Could not recognize trisize: " + data['trisize-chooser']);
@@ -104,15 +116,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     }
 
                     switch (data['tristyle-chooser'].toLowerCase()) {
-                        case 'engulfed in flames':
-                            xColors = [
-                                tinycolor.mix(data.backgroundColor, 'red', 100).toHexString(),
-                                tinycolor.mix(data.backgroundColor, 'red', 64).toHexString(),
-                                tinycolor.mix(data.backgroundColor, 'red', 8).toHexString(),
-                                tinycolor.mix(data.backgroundColor, 'red', 64).toHexString(),
-                                tinycolor.mix(data.backgroundColor, 'red', 100).toHexString()
-                            ];
-                            break;
                         case 'triad':
                             xColors = tinycolor(data.backgroundColor).triad().map(function(v) {return v.toHexString();});
                             break;
@@ -174,8 +177,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * 
              * @param {any} mainColor The new main color.
              */
-            updateMainColor: function(mainColor, duration) {
-                util.logChange('mainColor', mainColor);
+            updateMainColor: function(data, duration) {
+                var mainColor = data.mainColor;
+
                 jquery('body').animate({ 'color': mainColor }, { duration: duration, queue: false });
                 jquery('input').animate({ 'color': mainColor }, { duration: duration, queue: false });
 
@@ -195,7 +199,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * 
              * @param {any} titleColor The new title color.
              */
-            updateTitleColor: function(titleColor, duration) {
+            updateTitleColor: function(data, duration) {
+                var titleColor = data.titleColor;
+
                 jquery('.title-color').animate({ 'color': titleColor }, { duration: duration, queue: false });
 
                 jss.set('.title-color', {
@@ -208,7 +214,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * 
              * @param {any} optionsColor The new options color.
              */
-            updateOptionsColor: function(optionsColor, duration) {
+            updateOptionsColor: function(data, duration) {
+                var optionsColor = data.optionsColor;
+
                 jquery('.options-color').animate({ 'color': optionsColor }, { duration: duration, queue: false });
 
                 jss.set('*', {

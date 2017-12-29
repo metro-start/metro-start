@@ -52,11 +52,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
                 this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
 
-                if (this.data.title === 'random theme') {
-                    this.randomTheme();
-                } else {
-                    script.updateTheme(this.data, false);
-                }
+                script.updateTheme(this.data, false);
             },
 
             /**
@@ -246,20 +242,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
                 storage.save('themesLocal', themesLocal);
                 this.themeRemoved();
-            },
-
-            /**
-             * Randomizes the current thmee.
-             */
-            randomTheme: function () {
-                for (var i = 0; i < this.colorInputs.length; i++) {
-                    var color = util.randomColor();
-
-                    jquery('#' + this.colorInputs[i].id).spectrum('set', color);
-                    this.data[this.colorInputs[i].id] = color;
-                }
-
-                script.updateTheme(this.data, true);
             },
 
             /**
