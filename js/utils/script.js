@@ -10,76 +10,48 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             * @param {any} transition: A bool indicating whether to slowly transition or immediately change.
             */
             updateTheme: function (data, transition) {
+                var duration = (transition === true ? 800 : 0);
                 var theme = util.upgradeTheme(data, defaults.defaultTheme);
 
-                var optionsColor = theme.optionsColor;
-                var backgroundColor = theme.backgroundColor;
-                var mainColor = theme.mainColor;
-                var titleColor = theme.titleColor;
+                if (theme.title === 'randomize') {
+                    this.updateRandomize(theme, duration);
+                } else {
+                    this.updateFont(theme);
+                    this.updateBackground(theme, duration);
+                    this.updateOptionsColor(theme.optionsColor, duration);
+                    this.updateMainColor(theme.mainColor, duration);
+                    this.updateTitleColor(theme.titleColor, duration);
+                }
 
-                this.updateFont(theme);
-                this.updateBackground(theme);
-
-                jss.set('*', {
-                    'border-color': optionsColor
-                });
-
-                jss.set('::-webkit-scrollbar', {
-                    'background': backgroundColor
-                });
-
-                jss.set('::-webkit-scrollbar-thumb', {
-                    'background': optionsColor
-                });
-
-                jss.set('::-webkit-input-placeholder', {
-                    'background': optionsColor
-                });
 
                 // Animate the color transition.
-                var duration = (transition === true ? 800 : 0);
-                jquery('body').animate({ 'color': mainColor }, { duration: duration, queue: false });
-                jquery('input').animate({ 'color': mainColor }, { duration: duration, queue: false });
-                jquery('.background-color').animate({ 'backgroundColor': backgroundColor }, { duration: duration, queue: false });
-                jquery('.title-color').animate({ 'color': titleColor }, { duration: duration, queue: false });
-                jquery('.options-color').animate({ 'color': optionsColor }, { duration: duration, queue: false });
+            },
 
-                // ...but then we still need to add it to the DOM.
-                jss.set('.title-color', {
-                    'color': titleColor
+            /**
+             * Updates the current background to a new random one.
+             * 
+             * @param {any} data The theme to use as a base.
+             */
+            updateRandomize: function (data, duration) {
+                var bodyPattern = trianglify({
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    cell_size: Math.random() * 200 + 40,
+                    x_colors: 'random',
+                    variance: Math.random(),
                 });
 
                 jss.set('body', {
-                    'color': mainColor,
+                    'background': 'url(' + bodyPattern.png() + ')'
                 });
-                jss.set('input', {
-                    'color': mainColor,
+                    
+                jss.set('.modal-content', {
+                    'background': 'url(' + bodyPattern.png() + ')'
                 });
-                jss.set('.theme-section-title', {
-                    'border-bottom-color': mainColor
-                });
-                jss.set('.options-color', {
-                    'color': optionsColor
-                });
-                jss.set('.theme-active', {
-                    'background-color': optionsColor
-                });
-                jss.set('.bookmark-active', {
-                    'background-color': optionsColor
-                });
-                jss.set('.pagebase-grouped > .group > .page', {
-                    'border-top-style': 'solid',
-                    'border-top-width': '1px',
-                    'border-top-color': optionsColor
-                });
-                jss.set('.pagebase-grouped > .group > .page', {
-                    'border-top-style': 'solid',
-                    'border-top-width': '1px',
-                    'border-top-color': optionsColor
-                });
-                jss.set('.modal-info .clickable', {
-                    'border': '2px solid ' + optionsColor
-                });
+
+                this.updateMainColor(tinycolor.random().toHexString(), duration);
+                this.updateTitleColor(tinycolor.random().toHexString(), duration);
+                this.updateOptionsColor(tinycolor.random().toHexString(), duration);
             },
 
             /**
@@ -87,11 +59,10 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * 
              * @param {any} data Theme object with the new background settings.
              */
-            updateBackground: function (data) {
+            updateBackground: function (data, duration) {
                 var jBody = jquery('body');
                 if (data['background-chooser'] === 'trianglify') {
                     var xColors = [data.backgroundColor];
-                    var yColors = null;
 
                     // Convert variance from my option to actual values.
                     var triVariance = 0.75;
@@ -159,16 +130,15 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             break;
                     }
 
-                    if (!yColors) {
-                        yColors = xColors;
-                    }
-
                     var bodyPattern = trianglify({
                         width: jBody.prop('scrollWidth'),
                         height: jBody.prop('scrollHeight'),
                         variance: triVariance,
                         cell_size: triSize,
                         x_colors: xColors
+                    });
+                    jss.set('body', {
+                        'background': 'url(' + bodyPattern.png() + ')'
                     });
 
                     var modalPattern = trianglify({
@@ -178,15 +148,12 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         cell_size: triSize,
                         x_colors: xColors
                     });
-
-                    jss.set('body', {
-                        'background': 'url(' + bodyPattern.png() + ')'
-                    });
-
                     jss.set('.modal-content', {
                         'background': 'url(' + modalPattern.png() + ')'
                     });
                 } else {
+                    jquery('.background-color').animate({ 'backgroundColor': data.backgroundColor }, { duration: duration, queue: false });
+
                     jss.set('body', {
                         'background': data.backgroundColor
                     });
@@ -197,6 +164,87 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         'background-color': data.backgroundColor
                     });
                 }
+
+                jss.set('::-webkit-scrollbar', {
+                    'background': data.backgroundColor
+                });
+            },
+            /**
+             * Updates the options elements colors.
+             * 
+             * @param {any} mainColor The new main color.
+             */
+            updateMainColor: function(mainColor, duration) {
+                util.logChange('mainColor', mainColor);
+                jquery('body').animate({ 'color': mainColor }, { duration: duration, queue: false });
+                jquery('input').animate({ 'color': mainColor }, { duration: duration, queue: false });
+
+                jss.set('body', {
+                    'color': mainColor,
+                });
+                jss.set('input', {
+                    'color': mainColor,
+                });
+                jss.set('.theme-section-title', {
+                    'border-bottom-color': mainColor
+                });
+            },
+
+            /**
+             * Updates the title elements colors.
+             * 
+             * @param {any} titleColor The new title color.
+             */
+            updateTitleColor: function(titleColor, duration) {
+                jquery('.title-color').animate({ 'color': titleColor }, { duration: duration, queue: false });
+
+                jss.set('.title-color', {
+                    'color': titleColor
+                });
+            },
+
+            /**
+             * Updates the options elements colors.
+             * 
+             * @param {any} optionsColor The new options color.
+             */
+            updateOptionsColor: function(optionsColor, duration) {
+                jquery('.options-color').animate({ 'color': optionsColor }, { duration: duration, queue: false });
+
+                jss.set('*', {
+                    'border-color': optionsColor
+                });
+
+                jss.set('::-webkit-scrollbar-thumb', {
+                    'background': optionsColor
+                });
+
+                jss.set('::-webkit-input-placeholder', {
+                    'background': optionsColor
+                });
+
+                jss.set('.options-color', {
+                    'color': optionsColor
+                });
+                jss.set('.theme-active', {
+                    'background-color': optionsColor
+                });
+                jss.set('.bookmark-active', {
+                    'background-color': optionsColor
+                });
+                jss.set('.pagebase-grouped > .group > .page', {
+                    'border-top-style': 'solid',
+                    'border-top-width': '1px',
+                    'border-top-color': optionsColor
+                });
+                jss.set('.pagebase-grouped > .group > .page', {
+                    'border-top-style': 'solid',
+                    'border-top-width': '1px',
+                    'border-top-color': optionsColor
+                });
+                jss.set('.modal-info .clickable', {
+                    'border': '2px solid ' + optionsColor
+                });
             },
 
             /**
@@ -232,7 +280,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 }
 
                 if (data['fontreadability-chooser'] === 'on') {
-                    var shadowColor = tinycolor.mostReadable(data.mainColor, [data.optionsColor, data.backgroundColor], { includeFallbackColors: true }).toHexString();
+                    var shadowColor = tinycolor(data.mainColor).spin(180).toHexString();
                     jss.set('body', {
                         'text-shadow': shadowColor + ' 0px 0px 0.5em, ' + shadowColor + ' 0px 0px 0.2em'
                     });

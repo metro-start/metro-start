@@ -51,7 +51,7 @@ define(function() {
         },
 
         systemThemes: [{
-            'title': 'random theme',
+            'title': 'randomize',
             'author': 'metro start',
 
             'optionsColor': '#ff0000',

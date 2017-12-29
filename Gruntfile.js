@@ -36,12 +36,6 @@ module.exports = function (grunt) {
                     }
                 },
                 plugins: [
-                    new WebpackUglifyJsPlugin({
-                        cacheFolder: './cached_uglify/',
-                        debug: true,
-                        minimize: true,
-                        sourceMap: true
-                    }),
                     new CopyWebpackPlugin([
                         { from: 'css', to: 'css' },
                         { from: 'fonts', to: 'css' },
@@ -79,12 +73,19 @@ module.exports = function (grunt) {
 					'fonts/*.ttf',
                     'haml/start.haml',
                 ],
-                tasks: ['test'],
+                tasks: ['test', 'notify:build'],
                 options: {
                     spawn: false,
                 },
             },
         },
+        notify: {
+            build: {
+              options: {
+                message: 'Build complete',
+              }
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-notify');
