@@ -25,8 +25,7 @@ module.exports = function (grunt) {
                     path: __dirname + '/dist',
                 },
                 stats: {
-                    // Configure the console output
-                    colors: false,
+                    colors: true,
                     modules: true,
                     reasons: true
                 },
