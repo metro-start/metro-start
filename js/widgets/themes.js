@@ -4,6 +4,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
             isBound: false,
 
+            sessionUpdateCount: 0,
+
             data: {},
 
             elems: {
@@ -84,6 +86,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * Shows the theme editor modal window.
              */
             openThemeEditor: function () {
+                this.sessionUpdateCount = 0;
                 storage.save('previousTheme', this.data);
                 modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
 
@@ -107,30 +110,37 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             themeEditorClosed: function (res) {
                 util.log('theme editor closed with result: ' + res);
 
-                if (!res) {
+                if (!res && this.sessionUpdateCount !== 0) {
                     // If the theme edior was canceled, reset the theme.
                     this.undoChanges();
                     return;
                 }
 
+                // If the title or author are empty, make them untitled.
                 if (!this.data.title) {
-                    this.data.title = this.data['trisize-chooser'][0];
-                    this.data.title += this.data['tristyle-chooser'][0];
-                    this.data.title += this.data['trivariance-chooser'][0];
-                    this.data.title = this.data.title.toUpperCase() + ' ';
-
-                    // Generate a title if none was provided.
-                    this.data.title += tinycolor(this.data.backgroundColor).toString();
+                    this.data.title = 'untitled';
                 }
 
                 if (!this.data.author) {
-                    this.data.newThemeAuthor = 'unknown';
+                    this.data.author = 'unknown';
                 }
 
                 this.data.online = false;
 
+                var themeFound = false;
+                var themeIndex = 0;
                 var themesLocal = storage.get('themesLocal', []);
-                themesLocal.push(this.data);
+                for (themeIndex in themesLocal) {
+                    if (themesLocal[themeIndex] === this.data.title) {
+                        themeFound = true;
+                        themesLocal[themeIndex] = this.data;
+                    }
+                }
+
+                if (themeFound === false) {
+                    themesLocal.push(this.data);
+
+                }
                 storage.save('themesLocal', themesLocal);
                 storage.save('currentTheme', this.data);
 
@@ -251,6 +261,11 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * @param {any} val The new theme setting.
              */
             updateCurrentTheme: function (inputId, val) {
+                if (this.data[inputId] === val) {
+                    return;
+                }
+
+                this.sessionUpdateCount++;
                 util.logChange(inputId, val);
 
                 if (inputId === 'currentTheme') {
@@ -261,10 +276,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 }
 
                 this.automaticPalette();
-
-                storage.save('currentTheme', this.data);
                 script.updateTheme(this.data);
-                this.resetInputs();
             },
 
             automaticPalette: function () {

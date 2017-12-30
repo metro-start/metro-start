@@ -57,7 +57,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
             for (var j = 0; j < rows.length; j++) {
                 column.appendChild(rows[j]);
 
-                if (util.hasClass(rows[j], 'bookmark-active') || util.hasClass(rows[j], 'theme-active')) {
+                if (util.hasClass(rows[j], 'active')) {
                     util.log('Scrolling to item');
                     column.scrollTop = rows[j].offsetTop;
                 }

@@ -103,7 +103,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             titleWrap.firstElementChild.appendChild(title);
 
             if (this.themesWidget.data.title === theme.title) {
-                util.addClass(titleWrap.firstElementChild, 'theme-active');
+                util.addClass(titleWrap.firstElementChild, 'active');
             }
             
             fragment.appendChild(titleWrap);
@@ -129,14 +129,20 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
         },
 
         applyTheme: function(themeNode, theme) {
+            // If its an online theme, clear the 'metadata'.
+            if (!!theme.isOnline) {
+                theme.title = '';
+                theme.author = '';
+            }
+
             this.themesWidget.updateCurrentTheme('currentTheme', theme);
 
             var itemNode = themeNode.parentNode;
             var siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
             Array.prototype.slice.call(siblings).forEach(function(item) {
-                util.removeClass(item, 'theme-active');
+                util.removeClass(item, 'active');
             });
-            util.addClass(itemNode, 'theme-active');
+            util.addClass(itemNode, 'active');
         },
 
         shareTheme: function(theme) {
@@ -154,7 +160,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
         removeTheme: function(theme) {
             var that = this;
-            modal.createModal('shareThemeAlert', theme.title + ' will be removed.', 
+            modal.createModal('removeThemeAlert', theme.title + ' will be removed.', 
                 function(result) {
                     if (result) {
                         that.themesWidget.removeTheme(theme);

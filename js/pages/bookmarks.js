@@ -88,9 +88,9 @@ function(jss, pagebase_paneled, modal, util) {
             var itemNode = bookmarkNode.parentNode;
             var siblings = itemNode.parentNode.children;
             Array.prototype.slice.call(siblings).forEach(function(item) {
-                util.removeClass(item.firstElementChild, 'bookmark-active');
+                util.removeClass(item.firstElementChild, 'active');
             });
-            util.addClass(itemNode.firstElementChild, 'bookmark-active');
+            util.addClass(itemNode.firstElementChild, 'active');
                 
             var that = this;
             this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));

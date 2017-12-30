@@ -25,8 +25,8 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     theme.optionsColor = tinycolor.random().toHexString();
                     theme.backgroundColor = tinycolor.random().toHexString();
 
-                    theme['font-chooser'] = util.randomize(['custom', 'system', 'raleway', 'serif']);
-                    theme['fontfamily-chooser'] = util.randomize(['system', 'raleway', 'serif']);
+                    theme['font-chooser'] = util.randomize(['custom', 'system', 'raleway']);
+                    theme['fontfamily-chooser'] = util.randomize(['system', 'raleway']);
                     theme['fontweight-chooser'] = util.randomize(['normal', 'lighter', 'bolder']);
                     theme['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
                 } 
@@ -36,6 +36,8 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 this.updateMainColor(theme, duration);
                 this.updateTitleColor(theme, duration);
                 this.updateOptionsColor(theme, duration);
+
+                return theme;
             },
 
             /**
@@ -234,10 +236,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 jss.set('.options-color', {
                     'color': optionsColor
                 });
-                jss.set('.theme-active', {
-                    'background-color': optionsColor
-                });
-                jss.set('.bookmark-active', {
+                jss.set('.active', {
                     'background-color': optionsColor
                 });
                 jss.set('.pagebase-grouped > .group > .page', {
@@ -269,9 +268,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                         case 'raleway':
                             return 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif';
-
-                        case 'serif':
-                            return 'serif';
                     }
                 };
 
@@ -292,7 +288,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     jss.set('body', {
                         'text-shadow': shadowColor + ' 0px 0px 0.5em, ' + shadowColor + ' 0px 0px 0.2em'
                     });
-                    jss.set('body .sp-dd, .theme-active, .bookmark-active', {
+                    jss.set('body .sp-dd, .active', {
                         'text-shadow': 'none'
                     });
                 } else {

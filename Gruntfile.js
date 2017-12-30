@@ -89,7 +89,7 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-notify');
     grunt.loadNpmTasks('grunt-webpack');
-    grunt.loadNpmTasks('grunt-contrib-haml');
+    grunt.loadNpmTasks('grunt-haml2html');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-compress');

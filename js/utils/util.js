@@ -165,7 +165,6 @@ define([], function Util() {
             switch (data['font-chooser']) {
                 case 'system':
                 case 'raleway':
-                case 'serif':
                 case 'custom':
                 break;
 
