@@ -289,7 +289,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 }
             },
 
-            // TODO: Does undo still make sense?
             undoChanges: function () {
                 var previousTheme = storage.get('previousTheme', this.data);
                 script.updateTheme(previousTheme, true);

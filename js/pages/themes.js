@@ -171,10 +171,6 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
                 'cancel');
         },
 
-        updateTheme: function(theme) {
-            this.themesWidget.updateTheme(theme);
-        },
-
         themeAdded: function() {
             this.loadThemes();
         },
