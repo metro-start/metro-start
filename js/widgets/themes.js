@@ -288,7 +288,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 }
 
                 this.sessionUpdateCount++;
-                util.logChange(inputId, val);
+                util.logChange(inputId, typeof val === 'object' ? JSON.stringify(val) : val);
 
                 if (inputId === 'currentTheme') {
                     this.data = util.clone(val);
