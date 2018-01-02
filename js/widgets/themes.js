@@ -91,6 +91,10 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
 
                 if (!this.isBound) {
+                    for (var i = 0; i < this.selectInputs.length; i++) {
+                        this.bindTextInput(this.textInputs[i]);
+                    }
+
                     for (var j = 0; j < this.colorInputs.length; j++) {
                         this.bindColorInput(this.colorInputs[j]);
                     }
@@ -127,25 +131,42 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
                 this.data.online = false;
 
+                // Ensure no duplicate local themes are created.
                 var themeFound = false;
                 var themeIndex = 0;
                 var themesLocal = storage.get('themesLocal', []);
                 for (themeIndex in themesLocal) {
-                    if (themesLocal[themeIndex] === this.data.title) {
-                        themeFound = true;
+                    if (themesLocal[themeIndex].title === this.data.title) {
                         themesLocal[themeIndex] = this.data;
+                        themeFound = true;
                     }
                 }
 
                 if (themeFound === false) {
                     themesLocal.push(this.data);
-
                 }
+
                 storage.save('themesLocal', themesLocal);
                 storage.save('currentTheme', this.data);
 
                 this.themeAdded();
             },
+
+            /**
+             * Bind updates to text input elements.
+             * 
+             * @param {any} inputElement The name of the field to collect inputs from.
+             */
+            bindTextInput: function(inputElement) {
+                jquery(inputElement).on('input', (event) => {
+                    var target = jquery(event.target);
+                    if(target.data('lastval') !== target.val()) {
+                        target.data('lastval', target.val());
+
+                        this.data[inputElement.id] = target.val();
+                    }
+                });
+           },
 
             /**
              * Create new metro-select for the given inputElement.
@@ -180,7 +201,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             /**
              * Handles changes to metro-select elements.
              * 
-             * @param {any} inputElement The name of the metro-select that's changing.
+             * @param {any} inputId The name of the metro-select that's changing.
              * @param {any} val The new value.
              */
             updateSelect: function (inputId, val) {
@@ -270,7 +291,17 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
                 if (inputId === 'currentTheme') {
                     this.data = val;
-                    this.data.id = this.data.title + this.data.author + new Date().getUTCSeconds;
+                    
+                    // Create an id, if one does not exist.
+                    if (!!this.data.id) {
+                        this.data.id = this.data.title + this.data.author + new Date().getUTCSeconds;
+                    }
+                    
+                    // If its an online theme, clear the 'metadata'.
+                    if (!!this.data.isOnline) {
+                        this.data.title = '';
+                        this.data.author = '';
+                    }
                 } else {
                     this.data[inputId] = val;
                 }

@@ -31,8 +31,8 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     theme['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
                 } 
 
-                this.updateBackground(theme, duration);
                 this.updateFont(theme);
+                this.updateBackground(theme, duration);
                 this.updateMainColor(theme, duration);
                 this.updateTitleColor(theme, duration);
                 this.updateOptionsColor(theme, duration);

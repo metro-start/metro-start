@@ -48,40 +48,41 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
          * Loads the available themes from local and web storage
          */
         loadThemes: function() {
-            var that = this;
-
-            that.themes.clear();
-            that.themes.addAll({
+            this.themes.clear();
+            this.themes.addAll({
               'heading': 'my themes',
               'data': storage.get('themesLocal', [])
             });
 
-            that.themes.addAll({
+            this.themes.addAll({
                 'heading': 'system themes',
                 'data': defaults.systemThemes
             });
 
             // Load online themes.
-            jquery.get(defaults.defaultWebservice + '/themes.json', function(data) {
-                if (!data || data.length == 0) {
-                    util.warn('No online themes available.');
-                    return;
-                }
+            jquery.get(
+                defaults.defaultWebservice + '/themes.json', 
+                data => {
+                    if (!data || data.length == 0) {
+                        util.warn('No online themes available.');
+                        return;
+                    }
 
-                data = JSON.parse(data);
-                for (var i in data) {
-                    data[i].online = true;
-                }
+                    data = JSON.parse(data);
+                    for (var i in data) {
+                        data[i].online = true;
+                    }
 
-                that.themes.addAll({
-                  'heading': 'online themes',
-                  'data': data
-                },
-                function(error)
-                {
-                    util.error('Could not load online themes', error);
+                    this.onlineThemes = data;
+                    this.themes.addAll({
+                    'heading': 'online themes',
+                    'data': data
+                    },
+                    function(error)
+                    {
+                        util.error('Could not load online themes', error);
+                    });
                 });
-            });
         },
 
 
@@ -129,12 +130,6 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
         },
 
         applyTheme: function(themeNode, theme) {
-            // If its an online theme, clear the 'metadata'.
-            if (!!theme.isOnline) {
-                theme.title = '';
-                theme.author = '';
-            }
-
             this.themesWidget.updateCurrentTheme('currentTheme', theme);
 
             var itemNode = themeNode.parentNode;
@@ -146,25 +141,35 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
         },
 
         shareTheme: function(theme) {
-            var that = this;
-            modal.createModal('shareThemeAlert', theme.title + ' will be shared to the theme gallery.',
-                function(result) {
+            var title = theme.title, message, okay, cancel, callback;
+
+            if (this.onlineThemes.map(t => t.title.toLowerCase()).includes(title.toLowerCase())) {
+                message = 'already exists in the theme gallery.';
+                cancel = `that's okay`;
+            } else if (defaults.systemThemes.map(t => t.title.toLowerCase()).includes(title.toLowerCase())) {
+                message = 'already exists as a system theme.';
+                cancel = `that's okay`;
+            } else {
+                message = 'will be shared to the theme gallery.';
+                okay = 'okay';
+                cancel = 'cancel';
+                callback = result => {
                     if (result) {
-                        that.themesWidget.shareTheme(theme);
-                        that.loadThemes();
+                        this.themesWidget.shareTheme(theme);
+                        this.loadThemes();
                     }
-                },
-                'okay',
-                'cancel');
+                };
+            }
+
+            modal.createModal('shareThemeAlert', `${title} ${message}`, callback, okay, cancel);
         },
 
         removeTheme: function(theme) {
-            var that = this;
             modal.createModal('removeThemeAlert', theme.title + ' will be removed.', 
-                function(result) {
+                result => {
                     if (result) {
-                        that.themesWidget.removeTheme(theme);
-                        that.loadThemes();
+                        this.themesWidget.removeTheme(theme);
+                        this.loadThemes();
                     }
                 },
                 'okay',
