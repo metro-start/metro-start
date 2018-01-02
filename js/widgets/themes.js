@@ -147,7 +147,8 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 }
 
                 storage.save('themesLocal', themesLocal);
-                storage.save('currentTheme', this.data);
+
+                this.updateCurrentTheme('currentTheme', this.data);
 
                 this.themeAdded();
             },
@@ -290,7 +291,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 util.logChange(inputId, val);
 
                 if (inputId === 'currentTheme') {
-                    this.data = val;
+                    this.data = util.clone(val);
                     
                     // Create an id, if one does not exist.
                     if (!!this.data.id) {
@@ -302,15 +303,18 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                         this.data.title = '';
                         this.data.author = '';
                     }
+
+                    storage.save('currentTheme', this.data);
                 } else {
                     this.data[inputId] = val;
                 }
 
-                this.automaticPalette();
+                this.autoPaletteAdjust();
+
                 script.updateTheme(this.data);
             },
 
-            automaticPalette: function () {
+            autoPaletteAdjust: function () {
                 if (this.data['palette-chooser'] === 'automatic') {
                     var baseColor = tinycolor(this.data.baseColor);
                     this.data.backgroundColor = baseColor.toHexString();

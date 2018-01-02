@@ -64,7 +64,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
      * Clear the list of groups in the page.
      */
     pagebase_grouped.prototype.clear = function clear() {
-        while (this.rootNode.lastChild) {
+        while (!!this.rootNode.lastChild) {
             this.rootNode.removeChild(this.rootNode.lastChild);
         }
     };

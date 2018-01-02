@@ -277,6 +277,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         'font-weight': data['fontweight-chooser'],
                         'font-variant': data['fontvariant-chooser']
                     });
+                    if (data['fontvariant-chooser'] === 'small-caps') {
+                        jss.set('body', {
+                            'text-transform': 'lowercase'
+                        });
+                    }
                 } else {
                     jss.set('body', {
                         'font-family': checkFont(data['font-chooser'])

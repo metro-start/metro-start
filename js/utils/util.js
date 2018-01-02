@@ -108,6 +108,10 @@ define([], function Util() {
             }
         },
 
+        clone: function clone(elem) {
+            return JSON.parse(JSON.stringify(elem));
+        },
+
         /**
          * Checks if the provided object is empty.
          * http://stackoverflow.com/questions/4994201/is-object-empty
