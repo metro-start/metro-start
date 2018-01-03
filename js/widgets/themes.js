@@ -325,7 +325,6 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     this.data[inputId] = val;
                     script.updateTheme(this.data, true);
                 }
-
             },
 
             autoPaletteAdjust: function () {

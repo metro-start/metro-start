@@ -82,9 +82,8 @@
       #weather.hide
         #city
         %div
-          %form#saveLocation
-            %input#newLocation.option{:placeholder => "vancouver, bc", :size => "14", :type => "text"}/
-            %input.options-color.option{:type => "submit", :value => "save"}/
+          %input#newLocation.option{:placeholder => "vancouver, bc", :size => "14", :type => "text"}/
+          %span#saveLocation.options-color.option.clickable save
         .options-color.option
           %select#weather-unit-chooser.chooser
             %option.clickable fahrenheit
