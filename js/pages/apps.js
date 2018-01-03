@@ -65,8 +65,8 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
             var fragment = util.createElement('');
             
             var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.href = app.launchUrl;
             title.firstElementChild.textContent = app.name;
+            title.firstElementChild.addEventListener('click', this.openAppLaunchUrl.bind(this, app));
 
             if (!app.enabled) {
                 util.addClass(title.firstElementChild, 'disabled');
@@ -104,6 +104,15 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
             }
 
             return fragment;
+        },
+
+        /**
+         * Open an app's homepage.
+         * 
+         * @param {any} app The app to open launch URl.
+         */
+        openAppLaunchUrl: function(app) {
+            window.location.href = app.appLaunchUrl;
         },
 
         /**

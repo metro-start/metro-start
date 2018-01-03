@@ -14,7 +14,8 @@ module.exports = function (grunt) {
         },
         sass: {
             options: {
-                sourceMap: true
+                sourceMap: true,
+                style: 'compressed'
             },
             dist: {
                 files: {
@@ -54,7 +55,7 @@ module.exports = function (grunt) {
                 files: [
                     { 
                         expand: true, 
-                        src: ['fonts/*', 'icons/*', 'mainfest.json'],
+                        src: ['fonts/*', 'icons/*', 'manifest.json'],
                         dest: 'dist/'
                     },
                     { 
