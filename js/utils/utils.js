@@ -1,4 +1,4 @@
-define(['./util', './modal', './storage', './defaults', './script'], function Utils(util, modal, storage, defaults, script) {
+define(['./util', './modal', './storage', './defaults', './script'], (util, modal, storage, defaults, script) => {
     var utils = {
         util: util,
         storage: storage,
@@ -9,7 +9,7 @@ define(['./util', './modal', './storage', './defaults', './script'], function Ut
         modules: [util, storage, defaults, script, modal],
 
         init: function () {
-            this.modules.forEach(function (module) {
+            this.modules.forEach((module) => {
                 module.init(document);
             });
         }

@@ -1,4 +1,4 @@
-define(['jquery', './util'], function Storage(jquery, util) {
+define(['jquery', './util'], (jquery, util) => {
     var storage = {
         cache: {},
         deferred: undefined,
@@ -7,7 +7,7 @@ define(['jquery', './util'], function Storage(jquery, util) {
             if (!this.deferred) {
                 this.deferred = jquery.Deferred();
                 var that = this;
-                chrome.storage.sync.get(null, function(container) {
+                chrome.storage.sync.get(null, (container) => {
                     that.cache = jquery.extend(that.cache, container);
                     that.deferred.resolve(that);
                 });

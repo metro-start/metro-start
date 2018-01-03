@@ -1,4 +1,4 @@
-define([], function Util() {
+define([], () => {
     // Speed up calls to hasOwnProperty
     var hasOwnProperty = Object.prototype.hasOwnProperty;
 
@@ -14,7 +14,8 @@ define([], function Util() {
          */
         log: function(msg) {
             var time = Date.now();
-            console.log('[+' + Math.floor((time - this.lastLogTime) / 1000) + 's] ' + msg);
+            // eslint-disable-next-line no-console
+            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
 
             this.lastLogTime = time;
         },
@@ -26,7 +27,8 @@ define([], function Util() {
          */
         warn: function(msg) {
             var time = Date.now();
-            console.warn('[+' + Math.floor((time - this.lastLogTime) / 1000) + 's] ' + msg);
+            // eslint-disable-next-line no-console
+            console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
 
             this.lastLogTime = time;
         },
@@ -38,7 +40,8 @@ define([], function Util() {
          */
         error: function(msg) {
             var time = Date.now();
-            console.error('[+' + Math.floor((time - this.lastLogTime) / 1000) + 's] ' + msg);
+            // eslint-disable-next-line no-console
+            console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
 
             this.lastLogTime = time;
         },
@@ -50,7 +53,7 @@ define([], function Util() {
          * @param {any} val The value that was changed to.
          */
         logChange: function(key, val) {
-            this.log('setting [' + key + '] to ' + val);
+            this.log(`setting [${key}] to ${val}`);
         },
 
         // Converts an HTML string to a DOM fragment.
@@ -72,8 +75,8 @@ define([], function Util() {
          * @param {any} newClass The class to be applied to the node.
          */
         addClass: function addClass(elem, newClass) {
-            if (!!newClass) {
-                var oldClasses = !!elem.className ? elem.className.split(' ') : [];
+            if (newClass) {
+                var oldClasses = elem.className ? elem.className.split(' ') : [];
                 if (oldClasses.indexOf(newClass) === -1) {
                     oldClasses.unshift(newClass);
                     elem.className = oldClasses.join(' ');
@@ -191,7 +194,7 @@ define([], function Util() {
             }
 
             // Upgrade any theme.colors.
-            if (!!data.colors) {
+            if (data.colors) {
                 if (!!data.colors.options_color && !data.optionsColor) {
                     theme.optionsColor = data.colors.options_color;
                 } 

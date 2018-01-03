@@ -1,5 +1,5 @@
 define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults'],
-function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults) {
+(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults) => {
     var themes = {
         name: 'themes',
 
@@ -61,7 +61,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
             // Load online themes.
             jquery.get(
-                defaults.defaultWebservice + '/themes.json', 
+                `${defaults.defaultWebservice}/themes.json`, 
                 data => {
                     if (!data || data.length == 0) {
                         util.warn('No online themes available.');
@@ -78,8 +78,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
                     'heading': 'online themes',
                     'data': data
                     },
-                    function(error)
-                    {
+                    (error) => {
                         util.error('Could not load online themes', error);
                     });
                 });
@@ -96,7 +95,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
             var fragment = util.createElement('');
             
             var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.id = 'theme_' + theme.id;
+            title.firstElementChild.id = `theme_${theme.id}`;
             title.firstElementChild.textContent = theme.title;
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
@@ -134,7 +133,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
             var itemNode = themeNode.parentNode;
             var siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
-            Array.prototype.slice.call(siblings).forEach(function(item) {
+            Array.prototype.slice.call(siblings).forEach((item) => {
                 util.removeClass(item, 'active');
             });
             util.addClass(itemNode, 'active');
@@ -165,7 +164,7 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
         },
 
         removeTheme: function(theme) {
-            modal.createModal('removeThemeAlert', theme.title + ' will be removed.', 
+            modal.createModal('removeThemeAlert', `${theme.title} will be removed.`, 
                 result => {
                     if (result) {
                         this.themesWidget.removeTheme(theme);

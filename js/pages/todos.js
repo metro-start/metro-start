@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', '../utils/util'], function(pagebase_grouped, storage, defaults, util) {
+define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', '../utils/util'], (pagebase_grouped, storage, defaults, util) => {
     var todos = {
         name: 'todos',
 
@@ -42,11 +42,11 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
           this.todos.clear();
           this.todos.addAll({
               'heading': 'incoming',
-              'data': this.data.filter(function(todo) { return !todo.done; })
+              'data': this.data.filter((todo) => { return !todo.done; })
           });
           this.todos.addAll({
               'heading': 'done',
-              'data': this.data.filter(function(todo) { return !!todo.done; })
+              'data': this.data.filter((todo) => { return !!todo.done; })
           });
         },
 
@@ -62,7 +62,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.textContent = todo.name;
             title.firstElementChild.addEventListener('click', this.todoToggle.bind(this, todo));
-            util.addClass(title.firstElementChild, !!todo.done ? 'done' : '');
+            util.addClass(title.firstElementChild, todo.done ? 'done' : '');
             fragment.appendChild(title);
             
             var edit = this.templates.editFragment.cloneNode(true);

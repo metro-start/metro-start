@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], function(pagebase, storage, util) {
+define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pagebase, storage, util) => {
     var apps = {
         name: 'apps',
 
@@ -34,7 +34,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
 
         loadApps: function() {
             var that = this;
-            chrome.management.getAll(function(res) {
+            chrome.management.getAll((res) => {
                 that.apps.clear();
                 that.apps.addAll({
                     'heading': 'apps',
@@ -42,15 +42,15 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
                         'name': 'Chrome Webstore',
                         'appLaunchUrl': 'https://chrome.google.com/webstore',
                         'enabled': true
-                    }].concat(res.filter(function(item) { return item.type !== 'extension' && item.type !== 'theme'; }))
+                    }].concat(res.filter((item) => { return item.type !== 'extension' && item.type !== 'theme'; }))
                 });
                 that.apps.addAll({
                     'heading': 'extensions',
-                    'data': res.filter(function(item) { return item.type === 'extension'; })
+                    'data': res.filter((item) => { return item.type === 'extension'; })
                 });
                 that.apps.addAll({
                     'heading': 'themes',
-                    'data': res.filter(function(item) { return item.type === 'theme'; })
+                    'data': res.filter((item) => { return item.type === 'theme'; })
                 });
             });
         },
@@ -80,15 +80,15 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
                 fragment.appendChild(homepage);
             }
             
-            if (!!app.optionsUrl) {
+            if (app.optionsUrl) {
                 var options = this.templates.optionsFragment.cloneNode(true);
                 options.firstElementChild.addEventListener('click', this.openOptionsUrl.bind(this, app));
                 fragment.appendChild(options);
             }
             
-            if (!!app.type) {
+            if (app.type) {
                 var toggle = null;
-                if (!!app.enabled) {
+                if (app.enabled) {
                     toggle = this.templates.disableFragment.cloneNode(true);
                 } else {
                     toggle = this.templates.enableFragment.cloneNode(true);
@@ -97,7 +97,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
                 fragment.appendChild(toggle);
             }
 
-            if (!!app.type) {
+            if (app.type) {
                 var remove = this.templates.removeFragment.cloneNode(true);
                 remove.firstElementChild.addEventListener('click', this.removeApp.bind(this, app));
                 fragment.appendChild(remove);
@@ -131,7 +131,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
          */
         toggleEnabled: function(app) {
             var that = this;
-            chrome.management.setEnabled(app.id, !app.enabled, function() {
+            chrome.management.setEnabled(app.id, !app.enabled, () => {
                 that.loadApps();
             });
         },
@@ -144,7 +144,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
         removeApp: function(app) {
             var that = this;
 
-            chrome.management.uninstall(app.id, { showConfirmDialog: true }, function() {
+            chrome.management.uninstall(app.id, { showConfirmDialog: true }, () => {
                 that.loadApps();
             });
         }

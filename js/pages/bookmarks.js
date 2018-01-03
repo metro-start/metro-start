@@ -1,5 +1,5 @@
 define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'], 
-function(jss, pagebase_paneled, modal, util) {
+(jss, pagebase_paneled, modal, util) => {
     var bookmarks = {
         name: 'bookmarks',
 
@@ -38,7 +38,7 @@ function(jss, pagebase_paneled, modal, util) {
          */
         loadBookmarks: function() {
             var that = this;
-            chrome.bookmarks.getTree(function(data) {
+            chrome.bookmarks.getTree((data) => {
                 that.data = data[0].children;
                 that.bookmarks.addAll(that.data);
             });
@@ -55,9 +55,9 @@ function(jss, pagebase_paneled, modal, util) {
             var titleWrap = this.templates.titleWrapFragment.cloneNode(true);
             var title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.textContent = bookmark.title;
-            title.firstElementChild.id = 'bookmark_' + bookmark.id;
+            title.firstElementChild.id = `bookmark_${bookmark.id}`;
                 
-            if (!!bookmark.url) {
+            if (bookmark.url) {
                 title.firstElementChild.href = bookmark.url;
             }
             
@@ -87,14 +87,14 @@ function(jss, pagebase_paneled, modal, util) {
             var currentPage = bookmarkNode.parentNode.parentNode.id;
             var itemNode = bookmarkNode.parentNode;
             var siblings = itemNode.parentNode.children;
-            Array.prototype.slice.call(siblings).forEach(function(item) {
+            Array.prototype.slice.call(siblings).forEach((item) => {
                 util.removeClass(item.firstElementChild, 'active');
             });
             util.addClass(itemNode.firstElementChild, 'active');
                 
             var that = this;
             this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
-            chrome.bookmarks.getChildren(bookmark.id, function(data) {
+            chrome.bookmarks.getChildren(bookmark.id, (data) => {
                 if (data.length !== 0) {
                     that.bookmarks.addAll(data);
                 } 
@@ -109,12 +109,12 @@ function(jss, pagebase_paneled, modal, util) {
          */
         removeBookmark: function(bookmark, bookmarkNode) {
             modal.createModal(
-                'bookmark-' + bookmark.id, 
-                bookmark.title + ' will be removed.', 
-                function (res) {
+                `bookmark-${bookmark.id}`, 
+                `${bookmark.title} will be removed.`, 
+                (res) => {
                     if (res)
                     {
-                        chrome.bookmarks.removeTree(bookmark.id, function () {
+                        chrome.bookmarks.removeTree(bookmark.id, () => {
                             bookmarkNode.parentNode.remove();
                         });
                     }

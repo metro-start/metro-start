@@ -1,5 +1,5 @@
 define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages'],
-  function (domready, utils, widgets, pages) {
+  (domready, utils, widgets, pages) => {
     'use strict';
 
     var app = {
@@ -16,13 +16,13 @@ define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages
       modules: [utils, widgets, pages],
 
       init: function () {
-        this.modules.forEach(function (module) {
+        this.modules.forEach((module) => {
           module.init(document);
         });
 
         var that = this;
         var wrench = document.getElementById('wrench');
-        wrench.addEventListener('click', function () {
+        wrench.addEventListener('click', () => {
           that.clickWrench();
         });
       },
@@ -43,11 +43,11 @@ define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages
 
     // Initialize the app after the storage is done initializing.
     // This ensures we can retrieve our data before rendering the page.
-    utils.storage.init().done(function () {
-      if (!!document) {
+    utils.storage.init().done(() => {
+      if (document) {
         app.init();
       } else {
-        domready(function () {
+        domready(() => {
           app.init();
         });
       }

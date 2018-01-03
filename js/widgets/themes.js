@@ -1,5 +1,5 @@
-define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
-    function (jquery, spectrum, throttle_debounce, modal, util, storage, defaults, script) {
+define(['jquery', 'metro-select', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
+    (jquery, metroSelect, tinycolor, spectrum, throttle_debounce, modal, util, storage, defaults, script) => {
         var themes = {
 
             isBound: false,
@@ -65,7 +65,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 if (this.isBound) {
                     for (var i = 0; i < this.textInputs.length; i++) {
                         var inputElement = this.textInputs[i];
-                        inputElement.value = !!this.data[inputElement.id] ? this.data[inputElement.id] : '';
+                        inputElement.value = this.data[inputElement.id] ? this.data[inputElement.id] : '';
                     }
 
                     for (var j = 0; j < this.colorInputs.length; j++) {
@@ -76,7 +76,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
                     for (var k = 0; k < this.selectInputs.length; k++) {
                         var text = this.data[this.selectInputs[k].id];
-                        jquery('#' + this.selectInputs[k].id).metroSelect().set_active(text);
+                        jquery(`#${this.selectInputs[k].id}`).metroSelect().set_active(text);
                     }
 
                 }
@@ -116,7 +116,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * @param {any} res How the modal was closed. True if the 'okay' option was selected.
              */
             themeEditorClosed: function (res) {
-                util.log('theme editor closed with result: ' + res);
+                util.log(`theme editor closed with result: ${res}`);
 
                 if (!res && this.sessionUpdateCount !== 0) {
                     // If the theme edior was canceled, reset the theme.
@@ -221,7 +221,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     case 'background-chooser':
                     case 'palette-chooser':
                     case 'font-chooser':
-                        var elems = document.getElementsByClassName(inputId + '-section');
+                        var elems = document.getElementsByClassName(`${inputId}-section`);
                         for (var i = 0; i < elems.length; i++) {
                             // If this element has the same id as our new select value, make it visible.
                             if (elems[i].id === val) {
@@ -253,7 +253,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * @param {any} theme The theme to be shared.
              */
             shareTheme: function (theme) {
-                var url = defaults.defaultWebservice + '/newtheme';
+                var url = `${defaults.defaultWebservice}/newtheme`;
                 jquery.ajax({
                     url : url,
                     type: 'POST',
@@ -305,12 +305,12 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     this.data = util.clone(val);
                     
                     // Create an id, if one does not exist.
-                    if (!!this.data.id) {
+                    if (this.data.id) {
                         this.data.id = this.data.title + this.data.author + new Date().getUTCSeconds;
                     }
                     
                     // If its an online theme, clear the 'metadata'.
-                    if (!!this.data.isOnline) {
+                    if (this.data.isOnline) {
                         this.data.title = '';
                         this.data.author = '';
                     }
@@ -333,15 +333,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                     this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor), 1.8);
                     this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor), 1.25);
                 }
-            },
-
-            undoChanges: function () {
-            },
-
-            generateTitle: function () {
-                var title = '';
-                title += this.data['font-chooser'][0];
-                title += this.data['palette-chooser'] === 'automatic' ? 'A' : 'C';
             },
 
             /**

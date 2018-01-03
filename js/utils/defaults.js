@@ -1,7 +1,7 @@
 /**
 The default theme for metro start.
 */
-define(function() {
+define(() => {
     return {
         init: function() {},
         // defaultWebservice: 'http://metro-start.appspot.com',

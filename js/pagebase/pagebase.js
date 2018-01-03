@@ -1,4 +1,4 @@
-define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'metro-select'], function (jquery, util, storage, defaults, metroSelect) {
+define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'metro-select'], (jquery, util, storage, defaults, metroSelect) => {
     var templates = {
         column: util.createElement('<div class="page"></div>'),
         item: util.createElement('<div class="item"></div>')
@@ -11,15 +11,15 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
     pagebase.prototype.init = function (document, name, rootNode, templateFunc) {
         this.name = name;
         this.rootNode = rootNode;
-        this.sort = storage.get(this.name + '_sort', false);
+        this.sort = storage.get(`${this.name}_sort`, false);
         this.currentPage = 0;
         this.templateFunc = templateFunc;
         this.page = 0;
 
         util.addClass(this.rootNode, this.className);
 
-        if (jquery('#' + this.name + '-sort-chooser').length !== 0) {
-            jquery('#' + this.name + '-sort-chooser').metroSelect({
+        if (jquery(`#${this.name}-sort-chooser`).length !== 0) {
+            jquery(`#${this.name}-sort-chooser`).metroSelect({
                 initial: this.getSort(),
                 onchange: this.sortChanged.bind(this)
             });
@@ -45,8 +45,8 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         var nodes = [];
         for (var i = 0; i < rows.length; i++) {
             var item = templates.item.cloneNode(true);
-            item.id = this.name + '_' + i;
-            item.firstElementChild.id = this.name + '_' + i;
+            item.id = `${this.name}_${i}`;
+            item.firstElementChild.id = `${this.name}_${i}`;
             item.firstElementChild.appendChild(this.templateFunc(rows[i], this.currentPage));
             nodes.push(item);
         }
@@ -69,7 +69,7 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         if (nodes.length) {
             var pageIndex = this.rootNode.children.length;
             var columnNode = templates.column.cloneNode(true);
-            columnNode.firstElementChild.id = this.name + '_' + pageIndex;
+            columnNode.firstElementChild.id = `${this.name}_${pageIndex}`;
 
             for (var i = 0; i < nodes.length; i++) {
                 columnNode.firstElementChild.appendChild(nodes[i]);

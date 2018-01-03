@@ -41,6 +41,6 @@
     "optimize-js-plugin": "*",
     "webpack": "*",
     "webpack-dev-server": "*",
-    "webpack-uglify-js-plugin": "*"
+    "uglifyjs-webpack-plugin": "*"
   }
 }

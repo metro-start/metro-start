@@ -1,6 +1,5 @@
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
-var OptimizeJsPlugin = require('optimize-js-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = function (grunt) {
     'use strict';
@@ -20,7 +19,7 @@ module.exports = function (grunt) {
                 devtool: 'source-map',
                 output: {
                     filename: 'metro-start.js',
-                    path: __dirname + '/dist',
+                    path: `${__dirname}/dist`,
                 },
                 stats: {
                     colors: true,
@@ -39,7 +38,12 @@ module.exports = function (grunt) {
                         { from: 'icons', to: 'icons' },
                         { from: 'manifest.json' },
                         { from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
-                    ])]
+                    ]),
+                    new UglifyJsPlugin({
+                        'cache': true,
+                        'parallel': true,
+                        'sourceMap': true
+                    })]
             }
         },
         compress: {

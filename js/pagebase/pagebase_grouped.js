@@ -1,4 +1,4 @@
-define(['../utils/util', '../utils/storage', './pagebase'], function (util, storage, pagebase) {
+define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, pagebase) => {
     var templates = {
         group: util.createElement('<div class="group"></div>'),
         column: util.createElement('<div class="page"></div>'),
@@ -25,8 +25,8 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
             for (var i = 0; i < rows.data.length; i++) {
                 if (rows.data[i] !== null) {
                     var item = templates.item.cloneNode(true);
-                    item.id = this.name + '_' + i;
-                    item.firstElementChild.id = this.name + '_' + i;
+                    item.id = `${this.name}_${i}`;
+                    item.firstElementChild.id = `${this.name}_${i}`;
                     item.firstElementChild.appendChild(this.templateFunc(rows.data[i], this.currentPage));
                     group.nodes.push(item);
                 }
@@ -64,7 +64,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
      * Clear the list of groups in the page.
      */
     pagebase_grouped.prototype.clear = function clear() {
-        while (!!this.rootNode.lastChild) {
+        while (this.rootNode.lastChild) {
             this.rootNode.removeChild(this.rootNode.lastChild);
         }
     };

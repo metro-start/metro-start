@@ -1,4 +1,4 @@
-define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
+define(['jquery', '../utils/util', '../utils/storage'], (jquery, util) => {
     var modal = {
         templates: {
             overlay: util.createElement('<div class="metro-modal overlay-wrap"></div>'),
@@ -32,7 +32,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
             var modalContent = this.templates.modalContent.cloneNode(true);
             var info = this.templates.info.cloneNode(true);
 
-            if (!!confirmText) {
+            if (confirmText) {
                 // Do not show confirm button if the text is empty.
                 var confirm = this.templates.confirm.cloneNode(true);
                 confirm.firstElementChild.textContent = confirmText;
@@ -40,7 +40,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
                 info.firstElementChild.appendChild(confirm);
             }
 
-            if(!!cancelText) {
+            if(cancelText) {
                 // Do not show cancel button if the text is empty.
                 var cancel = this.templates.cancel.cloneNode(true);
                 cancel.firstElementChild.textContent = cancelText;
@@ -50,7 +50,7 @@ define(['jquery', '../utils/util', '../utils/storage'], function(jquery, util) {
 
             modalContent.firstElementChild.id = id;
             util.addClass(modalContent.firstElementChild, id);
-            modalContent.firstElementChild.appendChild(typeof content === 'string' ? util.createElement('<p>' + content + '</p>') : content);
+            modalContent.firstElementChild.appendChild(typeof content === 'string' ? util.createElement(`<p>${content}</p>`) : content);
             modalContent.firstElementChild.appendChild(info);
 
             var body = jquery('body');

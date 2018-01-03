@@ -1,5 +1,5 @@
 define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './defaults'],
-    function (jquery, tinycolor, jss, trianglify, util, storage, defaults) {
+    (jquery, tinycolor, jss, trianglify, util, storage, defaults) => {
         var script = {
             init: function () { },
 
@@ -42,10 +42,8 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
             /**
              * Updates the current background to a new random one.
-             * 
-             * @param {any} data The theme to use as a base.
              */
-            updateRandomBackground: function (data, duration) {
+            updateRandomBackground: function () {
                 var bodyPattern = trianglify({
                     width: window.innerWidth,
                     height: window.innerHeight,
@@ -55,11 +53,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 });
 
                 jss.set('body', {
-                    'background': 'url(' + bodyPattern.png() + ')'
+                    'background': `url(${bodyPattern.png()})`
                 });
                     
                 jss.set('.modal-content', {
-                    'background': 'url(' + bodyPattern.png() + ')'
+                    'background': `url(${bodyPattern.png()})`
                 });
 
             },
@@ -90,7 +88,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             break;
 
                         default:
-                            util.error("Could not recognize trivariance: " + data['trivariance-chooser']);
+                            util.error(`Could not recognize trivariance: ${data['trivariance-chooser']}`);
                             break;
                     }
 
@@ -113,25 +111,25 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             break;
 
                         default:
-                            util.error("Could not recognize trisize: " + data['trisize-chooser']);
+                            util.error(`Could not recognize trisize: ${data['trisize-chooser']}`);
                             break;
                     }
 
                     switch (data['tristyle-chooser'].toLowerCase()) {
                         case 'triad':
-                            xColors = tinycolor(data.backgroundColor).triad().map(function(v) {return v.toHexString();});
+                            xColors = tinycolor(data.backgroundColor).triad().map((v) => {return v.toHexString();});
                             break;
                         case 'tetrad':
-                            xColors = tinycolor(data.backgroundColor).tetrad().map(function(v) {return v.toHexString();});
+                            xColors = tinycolor(data.backgroundColor).tetrad().map((v) => {return v.toHexString();});
                             break;
                         case 'monochromatic':
-                            xColors = tinycolor(data.backgroundColor).monochromatic().map(function(v) {return v.toHexString();});
+                            xColors = tinycolor(data.backgroundColor).monochromatic().map((v) => {return v.toHexString();});
                             break;
                         case 'split complements':
-                            xColors = tinycolor(data.backgroundColor).splitcomplement().map(function(v) {return v.toHexString();});
+                            xColors = tinycolor(data.backgroundColor).splitcomplement().map((v) => {return v.toHexString();});
                             break;
                         default:
-                            util.error("Could not recognize tristyle: " + data['tristyle-chooser']);
+                            util.error(`Could not recognize tristyle: ${data['tristyle-chooser']}`);
                             break;
                     }
 
@@ -143,7 +141,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         x_colors: xColors
                     });
                     jss.set('body', {
-                        'background': 'url(' + bodyPattern.png() + ')'
+                        'background': `url(${bodyPattern.png()})`
                     });
 
                     var modalPattern = trianglify({
@@ -154,7 +152,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         x_colors: xColors
                     });
                     jss.set('.modal-content', {
-                        'background': 'url(' + modalPattern.png() + ')'
+                        'background': `url(${modalPattern.png()})`
                     });
                 } else {
                     jquery('.background-color').animate({ 'backgroundColor': data.backgroundColor }, { duration: duration, queue: false });
@@ -250,7 +248,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     'border-top-color': optionsColor
                 });
                 jss.set('.modal-info .clickable', {
-                    'border': '2px solid ' + optionsColor
+                    'border': `2px solid ${optionsColor}`
                 });
             },
 
@@ -291,7 +289,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 if (data['fontreadability-chooser'] === 'on') {
                     var shadowColor = tinycolor(data.mainColor).spin(180).toHexString();
                     jss.set('body', {
-                        'text-shadow': shadowColor + ' 0px 0px 0.5em, ' + shadowColor + ' 0px 0px 0.2em'
+                        'text-shadow': `${shadowColor} 0px 0px 0.5em, ${shadowColor  } 0px 0px 0.2em`
                     });
                     jss.set('body .sp-dd, .active', {
                         'text-shadow': 'none'

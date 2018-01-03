@@ -1,5 +1,5 @@
 define([ 'jquery', '../pagebase/pagebase_grouped', '../utils/util'],
-function(jquery, pagebase_grouped, util) {
+(jquery, pagebase_grouped, util) => {
     var sessions = {
         name: 'sessions',
 
@@ -36,13 +36,13 @@ function(jquery, pagebase_grouped, util) {
          */
         loadSessions: function() {
             var that = this;
-            chrome.sessions.getDevices(null, function(devices) {
+            chrome.sessions.getDevices(null, (devices) => {
                 for (var i in devices) {
                     var data = [];
                     for (var j in devices[i].sessions) {
-                        if (!!devices[i].sessions[j].tab) {
+                        if (devices[i].sessions[j].tab) {
                             data = data.concat(devices[i].sessions[j]);
-                        } else if (!!devices[i].sessions[j].window) {
+                        } else if (devices[i].sessions[j].window) {
                             data = data.concat(devices[i].sessions[j].window.tabs);
                         }
                     }
@@ -64,7 +64,7 @@ function(jquery, pagebase_grouped, util) {
             var fragment = util.createElement('');
 
             var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.id = 'session_' + tab.index;
+            title.firstElementChild.id = `session_${tab.index}`;
             title.firstElementChild.href = tab.url;
             title.firstElementChild.textContent = tab.title;
             fragment.appendChild(title);

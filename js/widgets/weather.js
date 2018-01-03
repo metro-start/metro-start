@@ -1,4 +1,4 @@
-define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage'], function(jquery, util, defaults, storage) {
+define(['jquery', 'metro-select', '../utils/util', '../utils/defaults', '../utils/storage'], (jquery, metroSelect, util, defaults, storage) => {
     var weather = {
         data: {},
 
@@ -16,7 +16,7 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage'], fun
             unit: document.getElementById('unit')
         },
         
-        init: function(document) {
+        init: function() {
             this.data = storage.get('weather', defaults.defaultWeather);
 
             this.elems.city.innerText = this.data.city;
@@ -98,14 +98,14 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage'], fun
             // If it has been more than an hour since last check.
             if(force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
                 this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
-                var params = encodeURIComponent('select * from weather.forecast where woeid in (select woeid from geo.places where text="' + city + '" limit 1) and u="' + unit + '"');
-                var url = 'https://query.yahooapis.com/v1/public/yql?q=' + params + '&format=json';
+                var params = encodeURIComponent(`select * from weather.forecast where woeid in (select woeid from geo.places where text="${city}" limit 1) and u="${unit  }"`);
+                var url = `https://query.yahooapis.com/v1/public/yql?q=${params}&format=json`;
                 var that = this;
-                jquery.ajax(url).done(function(data) {
+                jquery.ajax(url).done((data) => {
                     if (data.query.count) {
                         var result = data.query.results.channel;
 
-                        that.data.city = (result.location.city + ', ' + (result.location.region ? result.location.region : result.location.country)).toLowerCase();
+                        that.data.city = (`${result.location.city}, ${result.location.region ? result.location.region : result.location.country}`).toLowerCase();
                         that.data.currentTemp = result.item.condition.temp;
                         that.data.highTemp = result.item.forecast[0].high;
                         that.data.lowTemp = result.item.forecast[0].low;
@@ -120,7 +120,7 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage'], fun
         },
 
         update: function(key, value) {
-            if (!!key) {
+            if (key) {
                 this.data[key] = value;
             }
 
