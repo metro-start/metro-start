@@ -1,5 +1,5 @@
-define(['jquery', 'metro-select', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script'],
-    (jquery, metroSelect, tinycolor, spectrum, throttle_debounce, modal, util, storage, defaults, script) => {
+define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults', '../utils/script', 'metro-select'],
+    (jquery, tinycolor, spectrum, throttle_debounce, modal, util, storage, defaults, script) => {
         var themes = {
 
             isBound: false,

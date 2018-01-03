@@ -1,5 +1,5 @@
-define(['jquery', 'metro-select', 'jss', '../utils/storage', '../utils/defaults', './todos', './sessions', './apps', './bookmarks', './themes'],
-(jquery, metroSelect, jss, storage, defaults, todos, sessions, apps, bookmarks, themes) => {
+define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './todos', './sessions', './apps', './bookmarks', './themes', 'metro-select'],
+(jquery, jss, storage, defaults, todos, sessions, apps, bookmarks, themes) => {
   var pages = {
 
     name: 'pages',

@@ -1,4 +1,4 @@
-define(['jquery', 'metro-select', '../utils/util', '../utils/defaults', '../utils/storage'], (jquery, metroSelect, util, defaults, storage) => {
+define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'metro-select'], (jquery, util, defaults, storage) => {
     var weather = {
         data: {},
 

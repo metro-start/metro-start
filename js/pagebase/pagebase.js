@@ -1,4 +1,5 @@
-define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'metro-select'], (jquery, util, storage, defaults, metroSelect) => {
+define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'metro-select'],
+(jquery, util, storage, defaults) => {
     var templates = {
         column: util.createElement('<div class="page"></div>'),
         item: util.createElement('<div class="item"></div>')
