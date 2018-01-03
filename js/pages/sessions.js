@@ -1,5 +1,5 @@
 define([ 'jquery', '../pagebase/pagebase_grouped', '../utils/util'],
-function(jquery, pagebase_grouped, util) {
+(jquery, pagebase_grouped, util) => {
     var sessions = {
         name: 'sessions',
 
@@ -14,7 +14,6 @@ function(jquery, pagebase_grouped, util) {
             titleFragment: util.createElement('<a class="title clickable"></a>'),
         },
 
-        // Initialize this module.
         init: function() {
             this.elems.rootNode = document.getElementById('internal_selector_sessions');
             this.sessions = new pagebase_grouped();
@@ -22,20 +21,28 @@ function(jquery, pagebase_grouped, util) {
             this.loadSessions();
         },
         
+        /**
+         * Called when the sort order has been changed.
+         * 
+         * @param {any} newSort The new sort order.
+         */
         sortChanged: function (newSort) {
             this.sessions.sortChanged(newSort, false);
         },
 
-        // Loads the available sessions from local and web storage
+        // 
+        /**
+         * Loads the available sessions from local and web storage
+         */
         loadSessions: function() {
             var that = this;
-            chrome.sessions.getDevices(null, function(devices) {
+            chrome.sessions.getDevices(null, (devices) => {
                 for (var i in devices) {
                     var data = [];
                     for (var j in devices[i].sessions) {
-                        if (!!devices[i].sessions[j].tab) {
+                        if (devices[i].sessions[j].tab) {
                             data = data.concat(devices[i].sessions[j]);
-                        } else if (!!devices[i].sessions[j].window) {
+                        } else if (devices[i].sessions[j].window) {
                             data = data.concat(devices[i].sessions[j].window.tabs);
                         }
                     }
@@ -47,23 +54,23 @@ function(jquery, pagebase_grouped, util) {
             });
         },
 
+        /**
+         * Templates a provided tab into an HTML element.
+         * 
+         * @param {any} tab The tab session that should be turned into an element.
+         * @returns The HTML element.
+         */
         templateFunc: function(tab) {
             var fragment = util.createElement('');
 
             var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.id = 'session_' + tab.id;
+            title.firstElementChild.id = `session_${tab.index}`;
             title.firstElementChild.href = tab.url;
             title.firstElementChild.textContent = tab.title;
-            // title.firstElementChild.addEventListener('click', this.openTab.bind(this, tab));
             fragment.appendChild(title);
 
             return fragment;
         }
-
-        // openTab: function(tab) {
-        //     console.log(tab);
-        //     window.location.href = tab.url;
-        // }
     };
 
     return sessions;

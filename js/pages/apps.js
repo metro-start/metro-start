@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], function(pagebase, storage, util) {
+define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pagebase, storage, util) => {
     var apps = {
         name: 'apps',
 
@@ -23,32 +23,44 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
             this.loadApps();
         },
 
+        /**
+         * Called when the sort order has been changed.
+         * 
+         * @param {any} newSort The new sort order.
+         */
         sortChanged: function (newSort) {
             this.bookmarks.sortChanged(newSort, false);
         },
 
         loadApps: function() {
             var that = this;
-            chrome.management.getAll(function(res) {
+            chrome.management.getAll((res) => {
+                that.apps.clear();
                 that.apps.addAll({
                     'heading': 'apps',
                     'data': [{
                         'name': 'Chrome Webstore',
                         'appLaunchUrl': 'https://chrome.google.com/webstore',
                         'enabled': true
-                    }].concat(res.filter(function(item) { return item.type !== 'extension' && item.type !== 'theme'; }))
+                    }].concat(res.filter((item) => { return item.type !== 'extension' && item.type !== 'theme'; }))
                 });
                 that.apps.addAll({
                     'heading': 'extensions',
-                    'data': res.filter(function(item) { return item.type === 'extension'; })
+                    'data': res.filter((item) => { return item.type === 'extension'; })
                 });
                 that.apps.addAll({
                     'heading': 'themes',
-                    'data': res.filter(function(item) { return item.type === 'theme'; })
+                    'data': res.filter((item) => { return item.type === 'theme'; })
                 });
             });
         },
 
+        /**
+         * Templates a provided app into an HTML element.
+         * 
+         * @param {any} app The app that should be turned into an element.
+         * @returns The HTML element.
+         */
         templateFunc: function(app) {
             var fragment = util.createElement('');
             
@@ -68,15 +80,15 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
                 fragment.appendChild(homepage);
             }
             
-            if (!!app.optionsUrl) {
+            if (app.optionsUrl) {
                 var options = this.templates.optionsFragment.cloneNode(true);
                 options.firstElementChild.addEventListener('click', this.openOptionsUrl.bind(this, app));
                 fragment.appendChild(options);
             }
             
-            if (!!app.type) {
+            if (app.type) {
                 var toggle = null;
-                if (!!app.enabled) {
+                if (app.enabled) {
                     toggle = this.templates.disableFragment.cloneNode(true);
                 } else {
                     toggle = this.templates.enableFragment.cloneNode(true);
@@ -85,7 +97,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
                 fragment.appendChild(toggle);
             }
 
-            if (!!app.type) {
+            if (app.type) {
                 var remove = this.templates.removeFragment.cloneNode(true);
                 remove.firstElementChild.addEventListener('click', this.removeApp.bind(this, app));
                 fragment.appendChild(remove);
@@ -94,24 +106,45 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], fun
             return fragment;
         },
 
+        /**
+         * Open an app's homepage.
+         * 
+         * @param {any} app The app to open its homepage.
+         */
         openHomepageUrl: function(app) {
             window.location.href = app.homepageUrl;
         },
 
+        /**
+         * Open an app's options page.
+         * 
+         * @param {any} app The app to open its options.
+         */
         openOptionsUrl: function(app) {
             window.location.href = app.optionsUrl;
         },
 
+        /**
+         * Enables/disables the selected app.
+         * 
+         * @param {any} app The app to disable.
+         */
         toggleEnabled: function(app) {
             var that = this;
-            chrome.management.setEnabled(app.id, !app.enabled, function() {
+            chrome.management.setEnabled(app.id, !app.enabled, () => {
                 that.loadApps();
             });
         },
 
+        /**
+         * Uninstall an app.
+         * 
+         * @param {any} app The app to be uninstalled.
+         */
         removeApp: function(app) {
             var that = this;
-            chrome.management.uninstall(app.id, { showConfirmDialog: true }, function() {
+
+            chrome.management.uninstall(app.id, { showConfirmDialog: true }, () => {
                 that.loadApps();
             });
         }

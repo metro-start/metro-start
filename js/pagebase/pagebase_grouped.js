@@ -1,4 +1,4 @@
-define(['../utils/util', '../utils/storage', './pagebase'], function (util, storage, pagebase) {
+define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, pagebase) => {
     var templates = {
         group: util.createElement('<div class="group"></div>'),
         column: util.createElement('<div class="page"></div>'),
@@ -11,6 +11,11 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
     pagebase_grouped.prototype = Object.create(pagebase.prototype);
     pagebase_grouped.prototype.className = 'pagebase-grouped';
 
+    /**
+     * All all rows to the pagebase as a group.
+     * 
+     * @param {any} rows The rows to be added.
+     */
     pagebase_grouped.prototype.addAll = function addAll(rows) {
         var group = {};
         group.heading = rows.heading;
@@ -20,8 +25,8 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
             for (var i = 0; i < rows.data.length; i++) {
                 if (rows.data[i] !== null) {
                     var item = templates.item.cloneNode(true);
-                    item.id = this.name + '_' + i;
-                    item.firstElementChild.id = this.name + '_' + i;
+                    item.id = `${this.name}_${i}`;
+                    item.firstElementChild.id = `${this.name}_${i}`;
                     item.firstElementChild.appendChild(this.templateFunc(rows.data[i], this.currentPage));
                     group.nodes.push(item);
                 }
@@ -30,6 +35,11 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
         }
     };
 
+    /**
+     * All all nodes to the page.
+     * 
+     * @param {any} group The group of nodes to be added.
+     */
     pagebase_grouped.prototype.addAllNodes = function addAllNodes(group) {
         var nodes = group.nodes;
         var groupNode = templates.group.cloneNode(true);
@@ -50,12 +60,20 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
         this.rootNode.appendChild(groupNode);
     };
 
+    /**
+     * Clear the list of groups in the page.
+     */
     pagebase_grouped.prototype.clear = function clear() {
         while (this.rootNode.lastChild) {
             this.rootNode.removeChild(this.rootNode.lastChild);
         }
     };
 
+    /**
+     * Called when the sort order has been changed.
+     * 
+     * @param {any} newSort The new sort order.
+     */
     pagebase_grouped.prototype.sortChanged = function sortChanged(newSort) {
         var currentSort = this.getSort();
         if (newSort === currentSort) {
@@ -63,6 +81,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function (util, stor
         }
 
         this.updateSort(newSort);
+
         var groups = this.rootNode.children;
         for (var i = 0; i < groups.length; i++) {
             var column = groups[i].children[1];
