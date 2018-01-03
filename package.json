@@ -32,15 +32,17 @@
     "grunt": "*",
     "grunt-cli": "*",
     "grunt-contrib-compress": "*",
+    "grunt-contrib-copy": "*",
     "grunt-contrib-watch": "*",
     "grunt-haml2html": "*",
     "grunt-notify": "*",
     "grunt-release": "*",
+    "grunt-sass": "^2.0.0",
     "grunt-webpack": "*",
     "gruntify-eslint": "^4.0.0",
     "optimize-js-plugin": "*",
+    "uglifyjs-webpack-plugin": "*",
     "webpack": "*",
-    "webpack-dev-server": "*",
-    "uglifyjs-webpack-plugin": "*"
+    "webpack-dev-server": "*"
   }
 }

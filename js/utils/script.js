@@ -59,7 +59,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 jss.set('.modal-content', {
                     'background': `url(${bodyPattern.png()})`
                 });
-
             },
 
             /**
@@ -227,6 +226,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     'background': optionsColor
                 });
 
+                jss.set('input::placeholder', {
+                    'background': optionsColor
+                });
                 jss.set('::-webkit-input-placeholder', {
                     'background': optionsColor
                 });
@@ -275,9 +277,17 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         'font-weight': data['fontweight-chooser'],
                         'font-variant': data['fontvariant-chooser']
                     });
+                    jss.set('input::placeholder', {
+                        'font-family': checkFont(data['fontfamily-chooser']),
+                        'font-weight': data['fontweight-chooser'],
+                        'font-variant': data['fontvariant-chooser']
+                    });
                     if (data['fontvariant-chooser'] === 'small-caps') {
                         jss.set('body', {
-                            'text-transform': 'lowercase'
+                            'text-transform': 'capitalize'
+                        });
+                        jss.set('input::placeholder', {
+                            'text-transform': 'capitalize'
                         });
                     }
                 } else {

@@ -1,4 +1,3 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = function (grunt) {
@@ -12,6 +11,17 @@ module.exports = function (grunt) {
                     'dist/start.html': 'haml/start.haml'
                 }
             },
+        },
+        sass: {
+            options: {
+                sourceMap: true
+            },
+            dist: {
+                files: {
+                    'dist/css/style.css': 'scss/style.scss',
+                    'dist/css/reset.css': 'scss/reset.scss'
+                }
+            }
         },
         webpack: {
             all: {
@@ -32,19 +42,29 @@ module.exports = function (grunt) {
                     }
                 },
                 plugins: [
-                    new CopyWebpackPlugin([
-                        { from: 'css', to: 'css' },
-                        { from: 'fonts', to: 'css' },
-                        { from: 'icons', to: 'icons' },
-                        { from: 'manifest.json' },
-                        { from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
-                    ]),
                     new UglifyJsPlugin({
                         'cache': true,
                         'parallel': true,
                         'sourceMap': true
                     })]
             }
+        },
+        copy: {
+            dist: {
+                files: [
+                    { 
+                        expand: true, 
+                        src: ['fonts/*', 'icons/*', 'mainfest.json'],
+                        dest: 'dist/'
+                    },
+                    { 
+                        expand: true, 
+                        flatten: true,
+                        src: ['node_modules/spectrum-colorpicker/spectrum.css'],
+                        dest: 'dist/css' 
+                    },
+                ],
+            },
         },
         compress: {
             all: {
@@ -84,13 +104,15 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-notify');
+    grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-haml2html');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('gruntify-eslint');
 
-    grunt.registerTask('build', ['webpack', 'haml']);
+    grunt.registerTask('build', ['webpack', 'haml', 'sass', 'copy']);
     grunt.registerTask('test', ['build', 'eslint']);
     
     grunt.registerTask('publish', ['test', 'compress']);
