@@ -137,7 +137,8 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         height: jBody.prop('scrollHeight'),
                         variance: triVariance,
                         cell_size: triSize,
-                        x_colors: xColors
+                        x_colors: xColors,
+                        seed: 'metro-start'
                     });
                     jss.set('body', {
                         'background': `url(${bodyPattern.png()})`
@@ -241,13 +242,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 });
                 jss.set('.pagebase-grouped > .group > .page', {
                     'border-top-style': 'solid',
-                    'border-top-width': '1px',
-                    'border-top-color': optionsColor
-                });
-                jss.set('.pagebase-grouped > .group > .page', {
-                    'border-top-style': 'solid',
-                    'border-top-width': '1px',
-                    'border-top-color': optionsColor
+                    'border-top-width': '1px'
                 });
                 jss.set('.modal-info .clickable', {
                     'border': `2px solid ${optionsColor}`
@@ -271,28 +266,28 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     }
                 };
 
+                var jssSetMultiple = (selectors, style) => {
+                    for (var selector of selectors) {
+                        jss.set(selector, style);
+                    }
+                };
+
                 if (data['font-chooser'] === 'custom') {
-                    jss.set('body', {
+                    jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
                         'font-family': checkFont(data['fontfamily-chooser']),
                         'font-weight': data['fontweight-chooser'],
                         'font-variant': data['fontvariant-chooser']
                     });
-                    jss.set('input::placeholder', {
-                        'font-family': checkFont(data['fontfamily-chooser']),
-                        'font-weight': data['fontweight-chooser'],
-                        'font-variant': data['fontvariant-chooser']
-                    });
+
                     if (data['fontvariant-chooser'] === 'small-caps') {
-                        jss.set('body', {
-                            'text-transform': 'capitalize'
-                        });
-                        jss.set('input::placeholder', {
-                            'text-transform': 'capitalize'
+                        jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
+                            'text-transform': 'lowercase'
                         });
                     }
                 } else {
-                    jss.set('body', {
-                        'font-family': checkFont(data['font-chooser'])
+                    jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
+                        'font-family': checkFont(data['font-chooser']),
+                        'text-transform': 'none'
                     });
                 }
 

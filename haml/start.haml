@@ -29,9 +29,9 @@
                   sorted
             #external_selector_todos.external_selector
               #internal_selector_todos.internal_selector
-            %form#addTodo.add.option
-              %input#newTodo.option{:name => "newTodo", :placeholder => "new todo", :size => "26", :type => "text"}/
-              %input.options-color.option{:type => "submit", :value => "save"}/
+            #addTodo.add.option
+              %input#newTodo.option{:name => "newTodo", :placeholder => "new todo", :type => "text"}/
+              #saveTodo.options-color.option.clickable save
 
         .sessions.collection
           #sessions
@@ -82,7 +82,7 @@
       #weather.hide
         #city
         %div
-          %input#newLocation.option{:placeholder => "vancouver, bc", :size => "14", :type => "text"}/
+          %input#newLocation.option{:placeholder => "vancouver, bc", :type => "text"}/
           %span#saveLocation.options-color.option.clickable save
         .options-color.option
           %select#weather-unit-chooser.chooser
@@ -175,16 +175,16 @@
             .theme-section-title custom color options
             %div
               %span.small-text title
-              %input#titleColor{:size => "9", :type => "text"}/
+              %input#titleColor{:type => "text"}/
             %div
               %span.small-text main
-              %input#mainColor{:size => "9", :type => "text"}/
+              %input#mainColor{:type => "text"}/
             %div
               %span.small-text options
-              %input#optionsColor{:size => "9", :type => "text"}/
+              %input#optionsColor{:type => "text"}/
             %div
               %span.small-text background
-              %input#backgroundColor{:size => "9", :type => "text"}/
+              %input#backgroundColor{:type => "text"}/
 
         .theme-section-title background options
         .theme-editor-section.options-color
@@ -238,12 +238,12 @@
                   %td
                     %span.small-text title
                   %td
-                    %input#title{:size => "20", :type => "text"}/
+                    %input#title{:type => "text"}/
                 %tr
                   %td
                     %span.small-text author
                   %td
-                    %input#author{:size => "20", :type => "text"}/
+                    %input#author{:type => "text"}/
 
     // Rule to hide all options when page first loads.
     // Removes option elements added after the calls to hide .option were made.

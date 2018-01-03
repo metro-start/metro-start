@@ -7,7 +7,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
         elems: {
             rootDom: document.getElementById('internal_selector_todos'),
             newTodo: document.getElementById('newTodo'),
-            addTodo: document.getElementById('addTodo')
+            saveTodo: document.getElementById('saveTodo')
         },
 
         templates: {
@@ -17,7 +17,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
         },
 
         init: function(document) {
-            this.elems.addTodo.addEventListener('submit', this.addTodo.bind(this));
+            this.elems.saveTodo.addEventListener('click', this.addTodo.bind(this));
 
             this.todos = new pagebase_grouped();
             this.todos.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
