@@ -118,9 +118,11 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
             themeEditorClosed: function (res) {
                 util.log(`theme editor closed with result: ${res}`);
 
-                if (!res && this.sessionUpdateCount !== 0) {
-                    // If the theme edior was canceled, reset the theme.
-                    this.data = storage.get('previousTheme', this.data);
+                if (!res) {
+                    if (this.sessionUpdateCount !== 0) {
+                        // If the theme edior was canceled, reset the theme.
+                        this.data = storage.get('previousTheme', this.data);
+                    }
                 } else {
                     if (defaults.systemThemes.map(t => t.title.toLowerCase()).includes(this.data.title.toLowerCase())) {
                         this.data.title = '';
@@ -304,6 +306,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 if (inputId === 'currentTheme') {
                     this.data = util.clone(val);
                     
+                    this.autoPaletteAdjust();
+
                     // Create an id, if one does not exist.
                     if (this.data.id) {
                         this.data.id = this.data.title + this.data.author + new Date().getUTCSeconds;
@@ -315,14 +319,13 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                         this.data.author = '';
                     }
 
-                    storage.save('currentTheme', this.data);
+                    var updatedTheme =  script.updateTheme(this.data, true);
+                    storage.save('currentTheme', updatedTheme);
                 } else {
                     this.data[inputId] = val;
+                    script.updateTheme(this.data, true);
                 }
 
-                this.autoPaletteAdjust();
-
-                script.updateTheme(this.data, true);
             },
 
             autoPaletteAdjust: function () {
