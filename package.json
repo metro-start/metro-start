@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "copy-webpack-plugin": "*",
+    "eslint": "*",
     "grunt": "*",
     "grunt-cli": "*",
     "grunt-contrib-compress": "*",

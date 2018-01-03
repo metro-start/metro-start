@@ -7,6 +7,12 @@
         "es6": true
     },
     "rules": {
+        "prefer-arrow-callback":"warn",
+        "prefer-template":"warn",
+        "prefer-const":"warn",
+        "prefer-spread":"warn",
+        "prefer-rest-params":"warn",
+
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
         "no-undef": "warn",
