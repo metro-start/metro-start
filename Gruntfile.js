@@ -1,5 +1,3 @@
-/* jshint node: true */
-
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
 var OptimizeJsPlugin = require('optimize-js-plugin');
@@ -55,14 +53,8 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        jshint: {
-            all: [
-                'js/**/*.js',
-            ],
-            options: {
-                reporter: require('jshint-stylish'),
-                'esversion': 6,
-            }
+        eslint: {
+            target: ['js/**/*.js']
         },
         watch: {
             scripts: {
@@ -91,11 +83,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-haml2html');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('gruntify-eslint');
 
     grunt.registerTask('build', ['webpack', 'haml']);
-    grunt.registerTask('test', ['build', 'jshint']);
+    grunt.registerTask('test', ['build', 'eslint']);
     
     grunt.registerTask('publish', ['test', 'compress']);
     grunt.registerTask('default', ['test']);
