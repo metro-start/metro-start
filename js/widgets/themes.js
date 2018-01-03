@@ -139,7 +139,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     }
 
                     if (!this.data.author) {
-                        this.data.author = 'unknown';
+                        this.data.author = 'anonymous';
                     }
 
                     this.data.online = false;
