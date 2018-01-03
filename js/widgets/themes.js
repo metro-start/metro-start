@@ -54,7 +54,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
                 this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
 
-                script.updateTheme(this.data, false);
+                storage.save('currentTheme', script.updateTheme(this.data, false));
             },
 
             /**
@@ -87,7 +87,11 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              */
             openThemeEditor: function () {
                 this.sessionUpdateCount = 0;
+
+                this.data = storage.get('currentTheme', defaults.defaultTheme);
                 storage.save('previousTheme', this.data);
+            
+
                 modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
 
                 if (!this.isBound) {
@@ -116,41 +120,48 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
                 if (!res && this.sessionUpdateCount !== 0) {
                     // If the theme edior was canceled, reset the theme.
-                    this.undoChanges();
-                    return;
-                }
-
-                // If the title or author are empty, make them untitled.
-                if (!this.data.title) {
-                    this.data.title = 'untitled';
-                }
-
-                if (!this.data.author) {
-                    this.data.author = 'unknown';
-                }
-
-                this.data.online = false;
-
-                // Ensure no duplicate local themes are created.
-                var themeFound = false;
-                var themeIndex = 0;
-                var themesLocal = storage.get('themesLocal', []);
-                for (themeIndex in themesLocal) {
-                    if (themesLocal[themeIndex].title === this.data.title) {
-                        themesLocal[themeIndex] = this.data;
-                        themeFound = true;
+                    this.data = storage.get('previousTheme', this.data);
+                } else {
+                    if (defaults.systemThemes.map(t => t.title.toLowerCase()).includes(this.data.title.toLowerCase())) {
+                        this.data.title = '';
+                        modal.createModal(
+                            'themeEditorModal',
+                            `${this.data.title} already exists as a system theme.`,
+                            null,
+                            null,
+                            'okay');
                     }
-                }
+                    // If the title or author are empty, make them untitled.
+                    if (!this.data.title) {
+                        this.data.title = 'untitled';
+                    }
 
-                if (themeFound === false) {
-                    themesLocal.push(this.data);
-                }
+                    if (!this.data.author) {
+                        this.data.author = 'unknown';
+                    }
 
-                storage.save('themesLocal', themesLocal);
+                    this.data.online = false;
+
+                    // Ensure no duplicate local themes are created.
+                    var themeFound = false;
+                    var themeIndex = 0;
+                    var themesLocal = storage.get('themesLocal', []);
+                    for (themeIndex in themesLocal) {
+                        if (themesLocal[themeIndex].title.toLowerCase() === this.data.title.toLowerCase()) {
+                            themesLocal[themeIndex] = this.data;
+                            themeFound = true;
+                        }
+                    }
+
+                    if (themeFound === false) {
+                        themesLocal.push(this.data);
+                    }
+
+                    storage.save('themesLocal', themesLocal);
+                    this.themeAdded();
+                }
 
                 this.updateCurrentTheme('currentTheme', this.data);
-
-                this.themeAdded();
             },
 
             /**
@@ -263,7 +274,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
              * @param {any} theme The theme to be removed. Only checks by name.
              */
             removeTheme: function (theme) {
-                var themesLocal = storage.get('themesLocal', [defaults.defaultTheme]);
+                var themesLocal = storage.get('themesLocal', []);
 
                 for (var i = 0; i < themesLocal.length; i++) {
                     if (theme.title === themesLocal[i].title) {
@@ -311,7 +322,7 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
 
                 this.autoPaletteAdjust();
 
-                script.updateTheme(this.data);
+                script.updateTheme(this.data, true);
             },
 
             autoPaletteAdjust: function () {
@@ -325,8 +336,6 @@ define(['jquery', 'spectrum-colorpicker', 'throttle-debounce', '../utils/modal',
             },
 
             undoChanges: function () {
-                var previousTheme = storage.get('previousTheme', this.data);
-                script.updateTheme(previousTheme, true);
             },
 
             generateTitle: function () {

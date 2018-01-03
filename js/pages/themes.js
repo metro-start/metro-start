@@ -145,10 +145,10 @@ function(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults)
 
             if (this.onlineThemes.map(t => t.title.toLowerCase()).includes(title.toLowerCase())) {
                 message = 'already exists in the theme gallery.';
-                cancel = `that's okay`;
+                cancel = `okay`;
             } else if (defaults.systemThemes.map(t => t.title.toLowerCase()).includes(title.toLowerCase())) {
                 message = 'already exists as a system theme.';
-                cancel = `that's okay`;
+                cancel = `okay`;
             } else {
                 message = 'will be shared to the theme gallery.';
                 okay = 'okay';
