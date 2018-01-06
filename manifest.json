@@ -1,5 +1,6 @@
 {
 	"name": "Metro Start",
+	"short_name": "Metro Start",
 	"version": "10.5",
 	"manifest_version": 2,
 	"description": "A new tab page for Google Chrome inspired by Zune",

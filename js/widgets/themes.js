@@ -90,7 +90,10 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
 
                 this.data = storage.get('currentTheme', defaults.defaultTheme);
                 storage.save('previousTheme', this.data);
-            
+                    
+                if (defaults.systemThemes.map(t => t.title.toLowerCase()).includes(this.data.title.toLowerCase())) {
+                    this.data.title = '';
+                }
 
                 modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
 
