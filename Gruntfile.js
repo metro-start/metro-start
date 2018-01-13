@@ -74,7 +74,7 @@ module.exports = function (grunt) {
                     mode: 'zip'
                 },
                 files: [
-                    { cwd: 'dist/', src: '**', expand: true }
+                    { expand: true, cwd: 'dist/', src: '**/*', dest: '/' }
                 ]
             }
         },
