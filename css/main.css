@@ -112,3 +112,7 @@ input {
 img.banner {
 	width: 960px;
 }
+.clickable {
+	color: red;
+	cursor: pointer;
+}

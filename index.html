@@ -6,6 +6,7 @@
 	<link type="text/css" rel="stylesheet" href="css/main.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.1.0/trianglify.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.4.1/tinycolor.min.js"></script>
 	<script src="js/jquery.cycle.all.latest.js"></script>
 </head>
 <body style="width: 960px; margin: auto">
@@ -14,6 +15,9 @@
 	<p class="info smaller">Inspired by Zune.</p>
 	<p class="info smaller">
 		<a href="https://chrome.google.com/webstore/detail/metro-start/bbhdfpmfdplolnnkpdepnelcfdmikjfd">Get Metro Start Now.</a>
+	</p>
+	<p class="info smaller">
+		<span id="pause_bg" class="clickable">(pause background)</span>	
 	</p>
 	<div class="slideshow">
 		<img class="banner" src="img/banner1.png" alt="metro start apps page." />
@@ -29,14 +33,35 @@
 			fx: 'scrollLeft'
 		});
 
-		var bodyPattern = Trianglify({
-			width: window.innerWidth,
-			height: window.innerHeight,
-			cell_size: Math.random() * 200 + 40,
-			x_colors: 'random',
-			variance: Math.random(),
-		});
-		document.body.style.backgroundImage = 'url(' + bodyPattern.png() + ')'
+		var isRunning = true;
+		var variance = Math.random();
+		var cell_size = Math.random() * 200 + 40;
+		var x_colors = Trianglify({x_colors: 'random'}).opts.x_colors;
+
+		$('#pause_bg').click(() => {
+			if (!!this.interval) {
+				$('#pause_bg').text('(resume background)')
+				window.clearInterval(this.interval);
+				this.interval = undefined;
+			} else {
+				$('#pause_bg').text('(pause background)')
+				this.interval = window.setInterval(() => {
+					x_colors = x_colors.map(c => tinycolor(c).spin(2).toHexString());
+					variance = (variance <= 0 ? 1 : (variance - 0.08));
+					cell_size = (cell_size <= 40 ? 250 : (cell_size - 2));
+
+					var bodyPattern = Trianglify({
+						width: window.innerWidth,
+						height: window.innerHeight,
+						cell_size: cell_size,
+						variance: variance,
+						x_colors: x_colors
+					});
+					document.body.style.backgroundImage = 'url(' + bodyPattern.png() + ')';
+				}, 100);
+			}
+			isRunning = !isRunning;
+		}).click();
 	</script>
 </body>
 </html>
