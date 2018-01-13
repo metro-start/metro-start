@@ -1,7 +1,6 @@
-define(['../utils/util', '../utils/storage', './pagebase'], function(util, storage, pagebase) {
+define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, pagebase) => {
     var templates = {
        column: util.createElement('<div class="page panel-page"></div>'),
-       item: util.createElement('<div class="item"></div>')
     };
 
     var pagebase_paneled = function pagebase_paneled() { };
@@ -9,13 +8,16 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
     pagebase_paneled.prototype = Object.create(pagebase.prototype);
     pagebase_paneled.prototype.className = 'pagebase-grouped';
 
-    // Adds all the given HTML nodes to the DOM in one single column.
-    // nodes: List of nodes to be added.
+    /**
+     * Adds all the given HTML nodes to the DOM in one single column.
+     * 
+     * @param {any} nodes List of nodes to be added.
+     */
     pagebase_paneled.prototype.addAllNodes = function addAllNodes(nodes) {
         if (nodes.length) {
             var pageIndex = this.rootNode.children.length;
             var columnNode = templates.column.cloneNode(true);
-            columnNode.firstElementChild.id = this.name + '_' + pageIndex;
+            columnNode.firstElementChild.id = `${this.name}_${pageIndex}`;
 
             for (var i = 0; i < nodes.length; i++) {
                 columnNode.firstElementChild.appendChild(nodes[i]);
@@ -24,6 +26,11 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
         }
     };
 
+    /**
+     * Called when the sort order has been changed.
+     * 
+     * @param {any} newSort The new sort order.
+     */
     pagebase_paneled.prototype.sortChanged = function sortChanged(newSort) {
         var currentSort = this.getSort();
         if (newSort === currentSort) {
@@ -31,6 +38,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
         }
 
         this.updateSort(newSort);
+
         var columns = this.rootNode.children;
         for (var i = 0; i < columns.length; i++) {
             var column = columns[i];
@@ -49,18 +57,23 @@ define(['../utils/util', '../utils/storage', './pagebase'], function(util, stora
             for (var j = 0; j < rows.length; j++) {
                 column.appendChild(rows[j]);
 
-                if (util.hasClass(rows[j], 'bookmark-active')) {
-                    console.log("Scrolling");
+                if (util.hasClass(rows[j], 'active')) {
+                    util.log('Scrolling to item');
                     column.scrollTop = rows[j].offsetTop;
                 }
             }
         }
     };
 
+    /**
+     * Remove some set of panels.
+     * 
+     * @param {any} pageNumber The panel number to start removing.
+     */
     pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
         var nodes = Array.prototype.slice.call(this.rootNode.children);
         nodes.splice(0, parseInt(pageNumber, 10) + 1);
-        nodes.forEach(function (node) {
+        nodes.forEach((node) => {
             node.remove();
         });
     };

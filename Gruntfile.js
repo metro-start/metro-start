@@ -1,25 +1,39 @@
-/* jshint node: true */
-
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var WebpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
-var OptimizeJsPlugin = require('optimize-js-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = function (grunt) {
     'use strict';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        haml: {
+            dist: {
+                files: {
+                    'dist/start.html': 'haml/start.haml'
+                }
+            },
+        },
+        sass: {
+            options: {
+                sourceMap: true,
+                style: 'compressed'
+            },
+            dist: {
+                files: {
+                    'dist/css/style.css': 'scss/style.scss',
+                    'dist/css/reset.css': 'scss/reset.scss'
+                }
+            }
+        },
         webpack: {
             all: {
                 entry: './js/app.js',
                 devtool: 'source-map',
                 output: {
                     filename: 'metro-start.js',
-                    path: './dist',
+                    path: `${__dirname}/dist`,
                 },
                 stats: {
-                    // Configure the console output
-                    colors: false,
+                    colors: true,
                     modules: true,
                     reasons: true
                 },
@@ -29,23 +43,29 @@ module.exports = function (grunt) {
                     }
                 },
                 plugins: [
-                    new OptimizeJsPlugin({
-                        sourceMap: true
-                    }),
-                    new WebpackUglifyJsPlugin({
-                        cacheFolder: './cached_uglify/',
-                        debug: true,
-                        minimize: true,
-                        sourceMap: true
-                    }),
-                    new CopyWebpackPlugin([
-                        { from: 'css', to: 'css' },
-                        { from: 'icons', to: 'icons' },
-                        { from: 'manifest.json' },
-                        { from: 'start.html' },
-                        { from: 'node_modules/spectrum-colorpicker/spectrum.css', to: 'css' }
-                    ])]
+                    new UglifyJsPlugin({
+                        'cache': true,
+                        'parallel': true,
+                        'sourceMap': true
+                    })]
             }
+        },
+        copy: {
+            dist: {
+                files: [
+                    { 
+                        expand: true, 
+                        src: ['fonts/*', 'icons/*', 'manifest.json'],
+                        dest: 'dist/'
+                    },
+                    { 
+                        expand: true, 
+                        flatten: true,
+                        src: ['node_modules/spectrum-colorpicker/spectrum.css'],
+                        dest: 'dist/css' 
+                    },
+                ],
+            },
         },
         compress: {
             all: {
@@ -54,38 +74,48 @@ module.exports = function (grunt) {
                     mode: 'zip'
                 },
                 files: [
-                    { cwd: 'dist/', src: '**', expand: true }
+                    { expand: true, cwd: 'dist/', src: '**/*', dest: '/' }
                 ]
             }
         },
-        jshint: {
-            all: [
-                'js/**/*.js'
-            ]
+        eslint: {
+            target: ['js/**/*.js']
         },
         watch: {
             scripts: {
                 files: [
-                    'js/**/*.js',
-                    'start.html',
-                    'css/*.css'
+					'js/**/*.js',
+					'css/*.css',
+					'fonts/*.ttf',
+                    'haml/start.haml',
                 ],
-                tasks: ['test'],
+                tasks: ['test', 'notify:build'],
                 options: {
                     spawn: false,
                 },
             },
         },
+        notify: {
+            build: {
+              options: {
+                message: 'Build complete',
+              }
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-notify');
+    grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-webpack');
+    grunt.loadNpmTasks('grunt-haml2html');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('gruntify-eslint');
 
-    grunt.registerTask('build', ['webpack']);
-    grunt.registerTask('test', ['webpack', 'jshint']);
-    grunt.registerTask('default', ['webpack', 'test']);
-    grunt.registerTask('publish', ['webpack', 'jshint', 'compress']);
+    grunt.registerTask('build', ['webpack', 'haml', 'sass', 'copy']);
+    grunt.registerTask('test', ['build', 'eslint']);
+    
+    grunt.registerTask('publish', ['test', 'compress']);
+    grunt.registerTask('default', ['test']);
 };

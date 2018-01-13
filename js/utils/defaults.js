@@ -1,10 +1,11 @@
 /**
 The default theme for metro start.
 */
-define(function() {
+define(() => {
     return {
         init: function() {},
-        defaultWebservice: 'http://metro-start.appspot.com',
+        // defaultWebservice: 'http://metro-start.appspot.com',
+        defaultWebservice: 'https://20171226t133015-dot-metro-start.appspot.com',
 
         defaultTodos: [
             {'name': 'use the wrench to get started. . . ', 'done': false}
@@ -12,17 +13,29 @@ define(function() {
 
         // The default theme for the app.
         defaultTheme: {
+            'font-chooser': 'system',
+            'fontfamily-chooser': 'system',
+            'fontweight-chooser': 'normal',
+            'fontvariant-chooser': 'normal',
+            'fontreadability-chooser': 'off',
+
+            'palette-chooser': 'custom',
+            'baseColor': '#aaffaa',
+            'mainColor': '#ffffff',
+            'titleColor': '#4a4a4a',
+            'optionsColor': '#ff0000',
+            'backgroundColor': '#000000',
+
+            'background-chooser': 'none',
+            'trivariance-chooser': 'uniform',
+            'trisize-chooser': 'medium',
+            'tristyle-chooser': 'monochromatic',
+
             'title': 'metro start',
-            'colors': {
-                'options-color': '#ff0000',
-                'main-color': '#ffffff',
-                'title-color': '#4a4a4a',
-                'background-color': '#000000'
-            },
-            'author': 'metro start'
+            'author': 'metro start',
         },
 
-        // The default sortnig for the app.
+        // The default sorting for pages.
         defaultSort: {
             'todos': false,
             'apps': false,
@@ -30,27 +43,34 @@ define(function() {
             'themes': false
         },
 
+        // The default weather location.
+        defaultWeather: {
+            'city': 'vancouver, bc',
+            'unit': 'c',
+            'visible': true
+        },
+
         systemThemes: [{
-            'title': 'random theme',
+            'title': 'randomize',
+            'author': 'metro start',
+
+            'optionsColor': '#ff0000',
+            'mainColor': '#ffffff',
+            'titleColor': '#4a4a4a',
+            'backgroundColor': '#000000',
+
             'online': true,
-            'colors': {
-                'options-color': '#ff0000',
-                'main-color': '#ffffff',
-                'title-color': '#4a4a4a',
-                'background-color': '#000000'
-            },
-            'author': 'metro start'
         },
         {
             'title': 'metro start',
-            'online': true,
-            'colors': {
-                'options-color': '#ff0000',
-                'main-color': '#ffffff',
-                'title-color': '#4a4a4a',
-                'background-color': '#000000'
-            },
-            'author': 'metro start'
+            'author': 'metro start',
+
+            'optionsColor': '#ff0000',
+            'mainColor': '#ffffff',
+            'titleColor': '#4a4a4a',
+            'backgroundColor': '#000000',
+
+            'online': true
         }]
     };
 });

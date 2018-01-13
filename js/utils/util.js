@@ -1,9 +1,60 @@
-define([], function Util() {
+define([], () => {
     // Speed up calls to hasOwnProperty
     var hasOwnProperty = Object.prototype.hasOwnProperty;
 
     var util = {
-        init: function () { },
+        init: function () { 
+            this.lastLogTime = Date.now();
+        },
+
+        /**
+         * Log a message with a marker for how long since an event was logged.
+         * 
+         * @param {any} msg The message to log.
+         */
+        log: function(msg) {
+            var time = Date.now();
+            // eslint-disable-next-line no-console
+            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
+        },
+
+        /**
+         * Log a warning with a marker for how long since an event was logged.
+         * 
+         * @param {any} msg The warning to log.
+         */
+        warn: function(msg) {
+            var time = Date.now();
+            // eslint-disable-next-line no-console
+            console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
+        },
+
+        /**
+         * Log an error with a marker for how long since an event was logged.
+         * 
+         * @param {any} msg  The error to log.
+         */
+        error: function(msg) {
+            var time = Date.now();
+            // eslint-disable-next-line no-console
+            console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
+        },
+
+        /**
+         * Log a message that a field has changed.
+         * 
+         * @param {any} key The field that has been changed.
+         * @param {any} val The value that was changed to.
+         */
+        logChange: function(key, val) {
+            this.log(`setting [${key}] to ${val}`);
+        },
 
         // Converts an HTML string to a DOM fragment.
         // htmlStr: The string to convert.
@@ -16,13 +67,16 @@ define([], function Util() {
             }
             return fragment;
         },
-
-        // Add a CSS class to a DOM element.
-        // elem: The DOM element to be mondified.
-        // newClass: The class to be applied to the node.
+        
+        /**
+         * Add a CSS class to a DOM element.
+         * 
+         * @param {any} elem The DOM element to be mondified.
+         * @param {any} newClass The class to be applied to the node.
+         */
         addClass: function addClass(elem, newClass) {
-            if (!!newClass) {
-                var oldClasses = !!elem.className ? elem.className.split(' ') : [];
+            if (newClass) {
+                var oldClasses = elem.className ? elem.className.split(' ') : [];
                 if (oldClasses.indexOf(newClass) === -1) {
                     oldClasses.unshift(newClass);
                     elem.className = oldClasses.join(' ');
@@ -30,17 +84,24 @@ define([], function Util() {
             }
         },
 
-        // Checks is a DOM element has a CSS class.
-        // elem: The DOM element to be checked.
-        // testlass: The class to be checked for.
+        /**
+         * Checks is a DOM element has a CSS class.
+         * 
+         * @param {any} elem The DOM element to be checked.
+         * @param {any} testClass The class to be checked for.
+         * @returns 
+         */
         hasClass: function hasClass(elem, testClass) {
             var oldClass = elem.className.split(' ');
             return oldClass.indexOf(testClass) !== -1;
         },
 
-        // Removes a CSS class from a DOM element.
-        // elem: The DOM element to be modified.
-        // className: The class to be addded to the node.
+        /**
+         * Removes a CSS class from a DOM element.
+         * 
+         * @param {any} elem The DOM element to be modified.
+         * @param {any} className The class to be addded to the node.
+         */
         removeClass: function removeClass(elem, className) {
             var oldClass = elem.className.split(' ');
             var index = oldClass.indexOf(className);
@@ -50,11 +111,19 @@ define([], function Util() {
             }
         },
 
-        // Checks if the provided object is empty.
-        // obj: The obj to test.
-        // http://stackoverflow.com/questions/4994201/is-object-empty
+        clone: function clone(elem) {
+            return JSON.parse(JSON.stringify(elem));
+        },
+
+        /**
+         * Checks if the provided object is empty.
+         * http://stackoverflow.com/questions/4994201/is-object-empty
+         * 
+         * @param {any} obj The obj to test.
+         * @returns True if the object is null, undefined or empty. False otherwise.
+         */
         isEmpty: function isEmpty(obj) {
-            // null and undefined are "empty"
+            // null and undefined are 'empty'
             if (obj === null || obj === undefined) return true;
 
             // numbers are not empty.
@@ -68,7 +137,7 @@ define([], function Util() {
             // If it isn't an object at this point
             // it is empty, but it can't be anything *but* empty
             // Is it empty?  Depends on your application.
-            if (typeof obj !== "object") return true;
+            if (typeof obj !== 'object') return true;
 
             // Otherwise, does it have any properties of its own?
             // Note that this doesn't handle
@@ -80,38 +149,67 @@ define([], function Util() {
             return true;
         },
 
-        // http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
-        randomColor: function () {
-            var golden_ratio_conjugate = 0.618033988749895; // use golden ratio
-            var h = Math.random(); // use random start value
-            var s = 0.74;
-            var v = 0.95;
+        /**
+         * Selects an item from an array at random.
+         * 
+         * @returns A random item.
+         */
+        randomize: function (arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        },
 
-            // HSV values in [0..1]
-            h += golden_ratio_conjugate;
-            h %= 1;
+        /**
+         * Upgrade a provided theme to ensure it has all the right fields.
+         * 
+         * @param {any} data The theme to be upgraded.
+         * @param {any} defaultTheme The theme to use to back-fill.
+         * @returns The upgraded theme.
+         */
+        upgradeTheme: function(data, defaultTheme) {
+            var theme = Object.assign({}, defaultTheme, data);
+      
+            // Upgrade the font.
+            switch (data['font-chooser']) {
+                case 'system':
+                case 'raleway':
+                case 'custom':
+                break;
 
-            // returns [r, g, b] values from 0 to 255
-            var h_i = Math.floor(h * 6);
-            var f = h * 6 - h_i;
-            var p = v * (1 - s);
-            var q = v * (1 - f * s);
-            var t = v * (1 - (1 - f) * s);
-            var r = 0, g = 0, b = 0;
+                default:
+                theme['font-chooser'] = defaultTheme['font-chooser'];
+            }
 
-            if (h_i === 0) { r = v; g = t; b = p; }
-            if (h_i === 1) { r = q; g = v; b = p; }
-            if (h_i === 2) { r = p; g = v; b = t; }
-            if (h_i === 3) { r = p; g = q; b = v; }
-            if (h_i === 4) { r = t; g = p; b = v; }
-            if (h_i === 5) { r = v; g = p; b = q; }
+            // Upgrade any underscored colors.
+            if (!!data.options_color && !data.optionsColor) {
+              theme.optionsColor = data.options_color;
+            } 
+            if (!!data.main_color && !data.mainColor) {
+              theme.mainColor = data.main_color;
+            }
+            if (!!data.background_color && !data.backgroundColor) {
+              theme.backgroundColor = data.background_color;
+            }
+            if (!!data.title_color && !data.titleColor) {
+              theme.titleColor = data.title_color;
+            }
 
-            var toHex = function (c) {
-                var hex = Math.floor(c * 256).toString(16);
-                return hex.length == 1 ? "0" + hex : hex;
-            };
-
-            return '#' + toHex(r) + toHex(g) + toHex(b);
+            // Upgrade any theme.colors.
+            if (data.colors) {
+                if (!!data.colors.options_color && !data.optionsColor) {
+                    theme.optionsColor = data.colors.options_color;
+                } 
+                if (!!data.colors.main_color && !data.mainColor) {
+                    theme.mainColor = data.colors.main_color;
+                }
+                if (!!data.colors.background_color && !data.backgroundColor) {
+                    theme.backgroundColor = data.colors.background_color;
+                }
+                if (!!data.colors.title_color && !data.titleColor) {
+                    theme.titleColor = data.colors.title_color;
+                }
+            }
+      
+            return theme;
         }
     };
 

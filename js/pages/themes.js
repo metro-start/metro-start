@@ -1,5 +1,5 @@
-define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../widgets/confirm', '../utils/util', '../utils/storage', '../utils/defaults'],
-function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, defaults) {
+define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults'],
+(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults) => {
     var themes = {
         name: 'themes',
 
@@ -9,7 +9,7 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
 
         themes: {},
 
-        localThemes: {},
+        themesLocal: {},
 
         onlineThemes: {},
 
@@ -17,14 +17,14 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
 
         templates: {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
-            titleFragment: util.createElement('<span class="title clickable"></span>'),
+            titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
+            titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
-            authorFragment: util.createElement('<a class="options-color gallery-bio small-text"></a>'),
+            authorFragment: util.createElement('<a class="options-color gallery-bio small-text" title="author"></a>'),
             infoFragment: util.createElement('<span class="info"></span>')
         },
 
-        // Initialize this module.
         init: function() {
             this.elems.rootNode = document.getElementById('internal_selector_themes');
             this.themes = new pagebase_grouped();
@@ -35,65 +35,78 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
             this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
         },
         
+        /**
+         * Called when the sort order has been changed.
+         * 
+         * @param {any} newSort The new sort order.
+         */
         sortChanged: function (newSort) {
             this.themes.sortChanged(newSort, false);
         },
 
-        // Loads the available themes from local and web storage
+        /**
+         * Loads the available themes from local and web storage
+         */
         loadThemes: function() {
-            var that = this;
-
-            that.themes.clear();
-            that.themes.addAll({
+            this.themes.clear();
+            this.themes.addAll({
               'heading': 'my themes',
-              'data': storage.get('localThemes', [])
+              'data': storage.get('themesLocal', [])
             });
 
-            console.log(this.themesWidget.currentTheme);
-            that.themes.addAll({
+            this.themes.addAll({
                 'heading': 'system themes',
                 'data': defaults.systemThemes
             });
 
             // Load online themes.
-            jquery.get(defaults.defaultWebservice + '/themes.json', function(data) {
-                data = JSON.parse(data);
-                for (var i in data) {
-                    data[i].online = true;
-                    data[i].colors = {
-                        'options-color': data[i].options_color,
-                        'main-color': data[i].main_color,
-                        'title-color': data[i].title_color,
-                        'background-color': data[i].background_color,
-                    };
-                }
+            jquery.get(
+                `${defaults.defaultWebservice}/themes.json`, 
+                data => {
+                    if (!data || data.length == 0) {
+                        util.warn('No online themes available.');
+                        return;
+                    }
 
-                that.themes.addAll({
-                  'heading': 'online themes',
-                  'data': data
-                },
-                function(error)
-                {
-                    console.log(error);
+                    data = JSON.parse(data);
+                    for (var i in data) {
+                        data[i].online = true;
+                    }
+
+                    this.onlineThemes = data;
+                    this.themes.addAll({
+                    'heading': 'online themes',
+                    'data': data
+                    },
+                    (error) => {
+                        util.error('Could not load online themes', error);
+                    });
                 });
-            });
         },
 
-        // Returns an HTML link node item.
-        // item: The link item to be converted into a node.
+
+        /**
+         * Templates a provided theme into an HTML element.
+         * 
+         * @param {any} theme The theme that should be turned into an element.
+         * @returns The HTML element.
+         */
         templateFunc: function(theme) {
             var fragment = util.createElement('');
-
+            
             var title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.id = 'theme_' + theme.id;
+            title.firstElementChild.id = `theme_${theme.id}`;
             title.firstElementChild.textContent = theme.title;
-            title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, theme));
+            title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
-            if (this.themesWidget.currentTheme.title === theme.title) {
-                util.addClass(title.firstElementChild, 'bookmark-active');
+            var titleWrap = this.templates.titleWrapFragment.cloneNode(true);
+            titleWrap.firstElementChild.appendChild(title);
+
+            if (this.themesWidget.data.title === theme.title) {
+                util.addClass(titleWrap.firstElementChild, 'active');
             }
-
-            fragment.appendChild(title);
+            
+            fragment.appendChild(titleWrap);
 
             var options = this.templates.infoFragment.cloneNode(true);
             var author = this.templates.authorFragment.cloneNode(true);
@@ -115,31 +128,51 @@ function(jquery, pagebase_grouped, themesWidget, confirmWidget, util, storage, d
             return fragment;
         },
 
-        applyTheme: function(theme) {
-            if (theme.title === 'random theme') {
-                theme = jquery.extend({}, theme);
-            }
-            this.themesWidget.applyTheme(theme);
-            console.log(theme);
+        applyTheme: function(themeNode, theme) {
+            this.themesWidget.updateCurrentTheme('currentTheme', theme);
+
+            var itemNode = themeNode.parentNode;
+            var siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
+            Array.prototype.slice.call(siblings).forEach((item) => {
+                util.removeClass(item, 'active');
+            });
+            util.addClass(itemNode, 'active');
         },
 
         shareTheme: function(theme) {
-            var that = this;
-            confirmWidget.alert(theme.title + ' will be shared to the theme gallery.', function() {
-                that.themesWidget.shareTheme(theme);
-                that.loadThemes();
-            });
+            var title = theme.title, message, okay, cancel, callback;
+
+            if (this.onlineThemes.map(t => t.title.toLowerCase()).includes(title.toLowerCase())) {
+                message = 'already exists in the theme gallery.';
+                cancel = `okay`;
+            } else if (defaults.systemThemes.map(t => t.title.toLowerCase()).includes(title.toLowerCase())) {
+                message = 'already exists as a system theme.';
+                cancel = `okay`;
+            } else {
+                message = 'will be shared to the theme gallery.';
+                okay = 'okay';
+                cancel = 'cancel';
+                callback = result => {
+                    if (result) {
+                        this.themesWidget.shareTheme(theme);
+                        this.loadThemes();
+                    }
+                };
+            }
+
+            modal.createModal('shareThemeAlert', `${title} ${message}`, callback, okay, cancel);
         },
 
         removeTheme: function(theme) {
-            var that = this;
-            confirmWidget.alert(theme.title + ' will be removed.', function() {
-                that.themesWidget.removeTheme(theme);
-            });
-        },
-
-        updateTheme: function(theme) {
-            this.themesWidget.updateTheme(theme);
+            modal.createModal('removeThemeAlert', `${theme.title} will be removed.`, 
+                result => {
+                    if (result) {
+                        this.themesWidget.removeTheme(theme);
+                        this.loadThemes();
+                    }
+                },
+                'okay',
+                'cancel');
         },
 
         themeAdded: function() {
