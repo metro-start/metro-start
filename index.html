@@ -33,10 +33,24 @@
 			fx: 'scrollLeft'
 		});
 
-		var isRunning = true;
 		var variance = Math.random();
 		var cell_size = Math.random() * 200 + 40;
 		var x_colors = Trianglify({x_colors: 'random'}).opts.x_colors;
+
+		var updateBg = () => {
+			variance = (variance <= 0 ? 1 : (variance - 0.1));
+			cell_size = (cell_size <= 40 ? 250 : (cell_size - 25));
+			x_colors = x_colors.map(c => tinycolor(c).spin(25).toHexString());
+
+			var bodyPattern = Trianglify({
+				width: window.innerWidth,
+				height: window.innerHeight,
+				cell_size: cell_size,
+				variance: variance,
+				x_colors: x_colors
+			});
+			document.body.style.backgroundImage = 'url(' + bodyPattern.png() + ')';
+		};
 
 		$('#pause_bg').click(() => {
 			if (!!this.interval) {
@@ -45,23 +59,11 @@
 				this.interval = undefined;
 			} else {
 				$('#pause_bg').text('(pause background)')
-				this.interval = window.setInterval(() => {
-					x_colors = x_colors.map(c => tinycolor(c).spin(2).toHexString());
-					variance = (variance <= 0 ? 1 : (variance - 0.08));
-					cell_size = (cell_size <= 40 ? 250 : (cell_size - 2));
-
-					var bodyPattern = Trianglify({
-						width: window.innerWidth,
-						height: window.innerHeight,
-						cell_size: cell_size,
-						variance: variance,
-						x_colors: x_colors
-					});
-					document.body.style.backgroundImage = 'url(' + bodyPattern.png() + ')';
-				}, 100);
+				this.interval = window.setInterval(updateBg, 1000);
 			}
-			isRunning = !isRunning;
 		}).click();
+
+		updateBg();
 	</script>
 </body>
 </html>
