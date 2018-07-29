@@ -1,5 +1,5 @@
 define(['./weather', './themes'], (weather, themes) => {
-    var widgets = {
+    let widgets = {
         weather: weather,
         themes: themes,
 
@@ -9,7 +9,7 @@ define(['./weather', './themes'], (weather, themes) => {
             this.data.forEach((module) => {
                 module.init(document);
             });
-        }
+        },
     };
 
     return widgets;

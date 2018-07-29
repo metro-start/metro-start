@@ -2,11 +2,11 @@ define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages
   (domready, utils, widgets, pages) => {
     'use strict';
 
-    var app = {
+    let app = {
       data: {},
 
       elems: {
-        hideRule: document.getElementById('hideRule')
+        hideRule: document.getElementById('hideRule'),
       },
 
       showOptions: false,
@@ -15,13 +15,13 @@ define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages
 
       modules: [utils, widgets, pages],
 
-      init: function () {
+      init: function() {
         this.modules.forEach((module) => {
           module.init(document);
         });
 
-        var that = this;
-        var wrench = document.getElementById('wrench');
+        let that = this;
+        let wrench = document.getElementById('wrench');
         wrench.addEventListener('click', () => {
           that.clickWrench();
         });
@@ -30,7 +30,7 @@ define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages
       /**
        * Shows the options on the page when the wrench is clicked.
        */
-      clickWrench: function () {
+      clickWrench: function() {
         this.showOptions = !this.showOptions;
 
         if (this.showOptions) {
@@ -38,7 +38,7 @@ define(['detect-dom-ready', './utils/utils', './widgets/widgets', './pages/pages
         } else {
           document.body.appendChild(this.elems.hideRule);
         }
-      }
+      },
     };
 
     // Initialize the app after the storage is done initializing.

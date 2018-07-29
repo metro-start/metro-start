@@ -8,7 +8,7 @@ define(() => {
         defaultWebservice: 'https://20171226t133015-dot-metro-start.appspot.com',
 
         defaultTodos: [
-            {'name': 'use the wrench to get started. . . ', 'done': false}
+            {'name': 'use the wrench to get started. . . ', 'done': false},
         ],
 
         // The default theme for the app.
@@ -40,14 +40,14 @@ define(() => {
             'todos': false,
             'apps': false,
             'bookmarks': false,
-            'themes': false
+            'themes': false,
         },
 
         // The default weather location.
         defaultWeather: {
             'city': 'vancouver, bc',
             'unit': 'c',
-            'visible': true
+            'visible': true,
         },
 
         systemThemes: [{
@@ -70,7 +70,7 @@ define(() => {
             'titleColor': '#4a4a4a',
             'backgroundColor': '#000000',
 
-            'online': true
-        }]
+            'online': true,
+        }],
     };
 });

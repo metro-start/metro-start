@@ -1,5 +1,5 @@
 define(['./util', './modal', './storage', './defaults', './script'], (util, modal, storage, defaults, script) => {
-    var utils = {
+    let utils = {
         util: util,
         storage: storage,
         defaults: defaults,
@@ -8,11 +8,11 @@ define(['./util', './modal', './storage', './defaults', './script'], (util, moda
 
         modules: [util, storage, defaults, script, modal],
 
-        init: function () {
+        init: function() {
             this.modules.forEach((module) => {
                 module.init(document);
             });
-        }
+        },
     };
     return utils;
 });

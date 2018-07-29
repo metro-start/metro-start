@@ -1,5 +1,5 @@
 define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'metro-select'], (jquery, util, defaults, storage) => {
-    var weather = {
+    let weather = {
         data: {},
 
         elems: {
@@ -13,9 +13,9 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
             highTemp: document.getElementById('highTemp'),
             lowTemp: document.getElementById('lowTemp'),
             condition: document.getElementById('condition'),
-            unit: document.getElementById('unit')
+            unit: document.getElementById('unit'),
         },
-        
+
         init: function() {
             this.data = storage.get('weather', defaults.defaultWeather);
 
@@ -31,11 +31,11 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
                 this.setWeatherVisibility(!this.data.visible);
             });
 
-            var chooser = jquery('#weather-unit-chooser');
+            let chooser = jquery('#weather-unit-chooser');
 
             chooser.metroSelect({
                 'initial': this.data.unit,
-                'onchange': this.updateWeatherUnit.bind(this)
+                'onchange': this.updateWeatherUnit.bind(this),
             });
 
             this.updateWeather(true);
@@ -44,29 +44,27 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
 
         /**
          * Updates the current weather units.
-         * 
+         *
          * @param {any} newWeatherUnit The new weather unit.
          */
         updateWeatherUnit: function(newWeatherUnit) {
             this.update('unit', newWeatherUnit);
-            this.updateWeather(true);            
+            this.updateWeather(true);
         },
 
         /**
          * Updates the current weather location when the weather form is submitted.
          */
         updateLocation: function() {
-            var location = this.elems.newLocation.value;
+            let location = this.elems.newLocation.value;
             if (this.data.city !== location) {
                 this.update('city', location);
             }
-
-            return false;
         },
-        
+
         /**
          * Sets the visibility of the weather panel.
-         * 
+         *
          * @param {any} visible: True is the weather element should be visible.
          */
         setWeatherVisibility: function(visible) {
@@ -82,21 +80,19 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
 
         /**
          * Update the weather data being displayed.
-         * 
-         * @param {any} city The new city to use.
-         * @param {any} unit The new weather unit to use.
+         *
          * @param {any} force Skip timeout check.
          */
         updateWeather: function(force) {
             // If it has been more than an hour since last check.
-            if(force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
+            if (force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
                 this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
-                var params = encodeURIComponent(`select * from weather.forecast where woeid in (select woeid from geo.places where text="${this.data.city}" limit 1) and u="${this.data.unit[0]}"`);
-                var url = `https://query.yahooapis.com/v1/public/yql?q=${params}&format=json`;
-                var that = this;
+                let params = encodeURIComponent(`select * from weather.forecast where woeid in (select woeid from geo.places where text="${this.data.city}" limit 1) and u="${this.data.unit[0]}"`);
+                let url = `https://query.yahooapis.com/v1/public/yql?q=${params}&format=json`;
+                let that = this;
                 jquery.ajax(url).done((data) => {
                     if (data.query.count) {
-                        var result = data.query.results.channel;
+                        let result = data.query.results.channel;
 
                         that.data.city = (`${result.location.city}, ${result.location.region ? result.location.region : result.location.country}`).toLowerCase();
                         that.data.currentTemp = result.item.condition.temp;
@@ -125,7 +121,7 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
             this.elems.lowTemp.innerText = this.data.lowTemp;
             this.elems.condition.innerText = this.data.condition;
             this.elems.unit.innerText = this.data.unit[0];
-        }
+        },
     };
     return weather;
 });

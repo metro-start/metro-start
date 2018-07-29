@@ -1,25 +1,25 @@
 define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, pagebase) => {
-    var templates = {
+    let templates = {
        column: util.createElement('<div class="page panel-page"></div>'),
     };
 
-    var pagebase_paneled = function pagebase_paneled() { };
+    let PagebasePaneled = function PagebasePaneled() { };
 
-    pagebase_paneled.prototype = Object.create(pagebase.prototype);
-    pagebase_paneled.prototype.className = 'pagebase-grouped';
+    PagebasePaneled.prototype = Object.create(pagebase.prototype);
+    PagebasePaneled.prototype.className = 'pagebase-grouped';
 
     /**
      * Adds all the given HTML nodes to the DOM in one single column.
-     * 
+     *
      * @param {any} nodes List of nodes to be added.
      */
-    pagebase_paneled.prototype.addAllNodes = function addAllNodes(nodes) {
+    PagebasePaneled.prototype.addAllNodes = function addAllNodes(nodes) {
         if (nodes.length) {
-            var pageIndex = this.rootNode.children.length;
-            var columnNode = templates.column.cloneNode(true);
+            let pageIndex = this.rootNode.children.length;
+            let columnNode = templates.column.cloneNode(true);
             columnNode.firstElementChild.id = `${this.name}_${pageIndex}`;
 
-            for (var i = 0; i < nodes.length; i++) {
+            for (let i = 0; i < nodes.length; i++) {
                 columnNode.firstElementChild.appendChild(nodes[i]);
             }
             this.rootNode.appendChild(columnNode);
@@ -28,21 +28,21 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
 
     /**
      * Called when the sort order has been changed.
-     * 
+     *
      * @param {any} newSort The new sort order.
      */
-    pagebase_paneled.prototype.sortChanged = function sortChanged(newSort) {
-        var currentSort = this.getSort();
+    PagebasePaneled.prototype.sortChanged = function sortChanged(newSort) {
+        let currentSort = this.getSort();
         if (newSort === currentSort) {
             return;
         }
 
         this.updateSort(newSort);
 
-        var columns = this.rootNode.children;
-        for (var i = 0; i < columns.length; i++) {
-            var column = columns[i];
-            var rows = [];
+        let columns = this.rootNode.children;
+        for (let i = 0; i < columns.length; i++) {
+            let column = columns[i];
+            let rows = [];
             while (column.lastChild) {
                 rows.push(column.lastChild);
                 column.removeChild(column.lastChild);
@@ -54,7 +54,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
                 rows.sort(this.unsortFunc);
             }
 
-            for (var j = 0; j < rows.length; j++) {
+            for (let j = 0; j < rows.length; j++) {
                 column.appendChild(rows[j]);
 
                 if (util.hasClass(rows[j], 'active')) {
@@ -67,16 +67,16 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
 
     /**
      * Remove some set of panels.
-     * 
+     *
      * @param {any} pageNumber The panel number to start removing.
      */
     pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
-        var nodes = Array.prototype.slice.call(this.rootNode.children);
+        let nodes = Array.prototype.slice.call(this.rootNode.children);
         nodes.splice(0, parseInt(pageNumber, 10) + 1);
         nodes.forEach((node) => {
             node.remove();
         });
     };
 
-    return pagebase_paneled;
+    return PagebasePaneled;
 });

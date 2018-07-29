@@ -1,6 +1,6 @@
-define([ 'jquery', '../pagebase/pagebase_grouped', '../utils/util'],
-(jquery, pagebase_grouped, util) => {
-    var sessions = {
+define(['jquery', '../pagebase/pagebase_grouped', '../utils/util'],
+(jquery, PagebaseGrouped, util) => {
+    let sessions = {
         name: 'sessions',
 
         data: {},
@@ -16,39 +16,39 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../utils/util'],
 
         init: function() {
             this.elems.rootNode = document.getElementById('internal-selector-sessions');
-            this.sessions = new pagebase_grouped();
+            this.sessions = new PagebaseGrouped();
             this.sessions.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadSessions();
         },
-        
+
         /**
          * Called when the sort order has been changed.
-         * 
+         *
          * @param {any} newSort The new sort order.
          */
-        sortChanged: function (newSort) {
+        sortChanged: function(newSort) {
             this.sessions.sortChanged(newSort, false);
         },
 
-        // 
+        //
         /**
          * Loads the available sessions from local and web storage
          */
         loadSessions: function() {
-            var that = this;
+            let that = this;
             chrome.sessions.getDevices(null, (devices) => {
-                for (var i in devices) {
-                    var data = [];
-                    for (var j in devices[i].sessions) {
-                        if (devices[i].sessions[j].tab) {
-                            data = data.concat(devices[i].sessions[j]);
-                        } else if (devices[i].sessions[j].window) {
-                            data = data.concat(devices[i].sessions[j].window.tabs);
+                for (let device of devices) {
+                    let data = [];
+                    for (let session of device.sessions) {
+                        if (session.tab) {
+                            data = data.concat(session);
+                        } else if (session.window) {
+                            data = data.concat(session.window.tabs);
                         }
                     }
                     that.sessions.addAll({
-                        'heading': devices[i].deviceName,
-                        'data': data
+                        'heading': device.deviceName,
+                        'data': data,
                     });
                 }
             });
@@ -56,21 +56,21 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../utils/util'],
 
         /**
          * Templates a provided tab into an HTML element.
-         * 
+         *
          * @param {any} tab The tab session that should be turned into an element.
-         * @returns The HTML element.
+         * @return {any} The HTML element.
          */
         templateFunc: function(tab) {
-            var fragment = util.createElement('');
+            let fragment = util.createElement('');
 
-            var title = this.templates.titleFragment.cloneNode(true);
+            let title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.id = `session_${tab.index}`;
             title.firstElementChild.href = tab.url;
             title.firstElementChild.textContent = tab.title;
             fragment.appendChild(title);
 
             return fragment;
-        }
+        },
     };
 
     return sessions;

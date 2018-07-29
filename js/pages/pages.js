@@ -1,11 +1,11 @@
 define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './todos', './sessions', './apps', './bookmarks', './themes', 'metro-select'],
 (jquery, jss, storage, defaults, todos, sessions, apps, bookmarks, themes) => {
-  var pages = {
+  let pages = {
 
     name: 'pages',
 
     elems: {
-      chooser: document.getElementById('pages-chooser')
+      chooser: document.getElementById('pages-chooser'),
     },
 
     modules: [todos, sessions, apps, bookmarks, themes],
@@ -17,10 +17,10 @@ define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './todos', './
       this.modules.forEach((module) => {
           module.init(document);
       });
-      
+
       jquery(this.elems.chooser).metroSelect({
         'initial': this.page,
-        'onchange': this.changePage.bind(this)
+        'onchange': this.changePage.bind(this),
       });
 
       // Set the initial page.
@@ -29,19 +29,21 @@ define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './todos', './
 
     /**
      * Change the currently selected page.
-     * 
+     *
      * @param {any} page The new page.
      */
     changePage: function changePage(page) {
       this.page = page;
       storage.save('page', page);
 
-      var moduleIndex = this.modules.map((m) => { return m.name; }).indexOf(page);
+      let moduleIndex = this.modules.map((m) => {
+return m.name;
+}).indexOf(page);
 
       jss.set('.external .internal', {
-        'margin-left': `${moduleIndex * -100}%`
+        'margin-left': `${moduleIndex * -100}%`,
       });
-    }
+    },
   };
 
   return pages;

@@ -1,15 +1,15 @@
 define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'metro-select'],
 (jquery, util, storage, defaults) => {
-    var templates = {
+    let templates = {
         column: util.createElement('<div class="page"></div>'),
-        item: util.createElement('<div class="item"></div>')
+        item: util.createElement('<div class="item"></div>'),
     };
 
-    var pagebase = function pagebase() { };
+    let pagebase = function pagebase() { };
 
     pagebase.prototype.className = 'pagebase';
 
-    pagebase.prototype.init = function (document, name, rootNode, templateFunc) {
+    pagebase.prototype.init = function(document, name, rootNode, templateFunc) {
         this.name = name;
         this.rootNode = rootNode;
         this.sort = storage.get(`${this.name}_sort`, false);
@@ -22,14 +22,14 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         if (jquery(`#${this.name}-sort-chooser`).length !== 0) {
             jquery(`#${this.name}-sort-chooser`).metroSelect({
                 initial: this.getSort(),
-                onchange: this.sortChanged.bind(this)
+                onchange: this.sortChanged.bind(this),
             });
         }
     };
 
     /**
      * Build the dom.
-     * 
+     *
      * @param {any} rows HTML rows to be added to the Dom.
      */
     pagebase.prototype.buildDom = function buildDom(rows) {
@@ -39,13 +39,13 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     /**
      * Add all rows to the page.
-     * 
+     *
      * @param {any} rows The new ros to be added to the page.
      */
     pagebase.prototype.addAll = function addAll(rows) {
-        var nodes = [];
-        for (var i = 0; i < rows.length; i++) {
-            var item = templates.item.cloneNode(true);
+        let nodes = [];
+        for (let i = 0; i < rows.length; i++) {
+            let item = templates.item.cloneNode(true);
             item.id = `${this.name}_${i}`;
             item.firstElementChild.id = `${this.name}_${i}`;
             item.firstElementChild.appendChild(this.templateFunc(rows[i], this.currentPage));
@@ -63,16 +63,16 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     /**
      * Adds all the given HTML nodes to the DOM, in a naive way (top to bottom, left to right).
-     * 
+     *
      * @param {any} nodes List of nodes to be added.
      */
     pagebase.prototype.addAllNodes = function addAllNodes(nodes) {
         if (nodes.length) {
-            var pageIndex = this.rootNode.children.length;
-            var columnNode = templates.column.cloneNode(true);
+            let pageIndex = this.rootNode.children.length;
+            let columnNode = templates.column.cloneNode(true);
             columnNode.firstElementChild.id = `${this.name}_${pageIndex}`;
 
-            for (var i = 0; i < nodes.length; i++) {
+            for (let i = 0; i < nodes.length; i++) {
                 columnNode.firstElementChild.appendChild(nodes[i]);
             }
 
@@ -92,12 +92,12 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     /**
      * Called when the sort options on the page chagnes.
-     * 
+     *
      * @param {any} newSort The new sort order.
      * @param {any} saveSort Whether the new sort should be saved.
      */
     pagebase.prototype.sortChanged = function sortChanged(newSort, saveSort) {
-        var currentSort = this.getSort();
+        let currentSort = this.getSort();
         if (saveSort === currentSort) {
             return;
         }
@@ -105,7 +105,7 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
         this.updateSort(newSort);
 
         if (!!this.rootNode && this.rootNode.childElementCount !== 0) {
-            var items = Array.prototype.slice.call(this.rootNode.children);
+            let items = Array.prototype.slice.call(this.rootNode.children);
             while (this.rootNode.lastChild) {
                 this.rootNode.removeChild(this.rootNode.lastChild);
             }
@@ -116,7 +116,7 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
                 items.sort(this.unsortFunc.bind(this));
             }
 
-            for (var i = 0; i < items.length; i++) {
+            for (let i = 0; i < items.length; i++) {
                 this.rootNode.appendChild(items[i]);
             }
         }
@@ -124,10 +124,10 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     /**
      * Sort the provided elements in order.
-     * 
+     *
      * @param {any} a The first element being compared.
      * @param {any} b The second element being compared.
-     * @returns True if the first element is larger, false otherwise.
+     * @return {any} True if the first element is larger, false otherwise.
      */
     pagebase.prototype.sortFunc = function sortFunc(a, b) {
         return pagebase.prototype.compareFunc(a.textContent, b.textContent);
@@ -135,10 +135,10 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     /**
      * Revert the sorting on the elements.
-     * 
+     *
      * @param {any} a The first element being compared.
      * @param {any} b The second element being compared.
-     * @returns True if the first element was naturally first.
+     * @return {any} True if the first element was naturally first.
      */
     pagebase.prototype.unsortFunc = function unsortFunc(a, b) {
         return pagebase.prototype.compareFunc(a.id, b.id);
@@ -146,14 +146,14 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     /**
      * Compare the two fields for sorting.
-     * 
+     *
      * @param {any} a The first element being compared.
      * @param {any} b The second element being compared.
-     * @returns True if the first element is larger, false otherwise.
+     * @return {any} True if the first element is larger, false otherwise.
      */
     pagebase.prototype.compareFunc = function compareFunc(a, b) {
-        var nameA = a.toUpperCase();
-        var nameB = b.toUpperCase();
+        let nameA = a.toUpperCase();
+        let nameB = b.toUpperCase();
         if (nameA < nameB) {
             return -1;
         } else if (nameA > nameB) {
@@ -163,21 +163,21 @@ define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'met
 
     /**
      * Gets the sort order for the current page.
-     * 
-     * @returns True if the page should be sorted, false otherwise.
+     *
+     * @return {any} True if the page should be sorted, false otherwise.
      */
     pagebase.prototype.getSort = function getSort() {
-        var sort = storage.get('sort', defaults.defaultSort);
+        let sort = storage.get('sort', defaults.defaultSort);
         return sort[this.name];
     };
 
     /**
      * Updates the current sort options.
-     * 
+     *
      * @param {any} newSort The new sort order.
      */
     pagebase.prototype.updateSort = function updateSort(newSort) {
-        var sort = storage.get('sort', defaults.defaultSort);
+        let sort = storage.get('sort', defaults.defaultSort);
         sort[this.name] = newSort;
         storage.save('sort', sort);
     };

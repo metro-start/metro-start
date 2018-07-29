@@ -246,8 +246,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
             /**
              * Handles changes to color elements.
              *
-             * @param {any} inputElement The name of the color field that's changing.
-             * @param {any} event The new color.
+             * @param {any} inputId The name of the color field that's changing.
+             * @param {any} color The new color.
              */
             updateColor: function(inputId, color) {
                 this.updateCurrentTheme(inputId, color.toHexString());

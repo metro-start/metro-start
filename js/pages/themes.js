@@ -1,6 +1,6 @@
-define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults'],
-(jquery, pagebase_grouped, themesWidget, modal, util, storage, defaults) => {
-    var themes = {
+define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults'],
+(jquery, PagebaseGrouped, themesWidget, modal, util, storage, defaults) => {
+    let themes = {
         name: 'themes',
 
         data: {},
@@ -22,25 +22,25 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../util
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
             authorFragment: util.createElement('<a class="options-color gallery-bio small-text" title="author"></a>'),
-            infoFragment: util.createElement('<span class="info"></span>')
+            infoFragment: util.createElement('<span class="info"></span>'),
         },
 
         init: function() {
             this.elems.rootNode = document.getElementById('internal-selector-themes');
-            this.themes = new pagebase_grouped();
+            this.themes = new PagebaseGrouped();
             this.themes.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadThemes();
 
             this.themesWidget.themeAdded = this.themeAdded.bind(this);
             this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
         },
-        
+
         /**
          * Called when the sort order has been changed.
-         * 
+         *
          * @param {any} newSort The new sort order.
          */
-        sortChanged: function (newSort) {
+        sortChanged: function(newSort) {
             this.themes.sortChanged(newSort, false);
         },
 
@@ -51,32 +51,32 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../util
             this.themes.clear();
             this.themes.addAll({
               'heading': 'my themes',
-              'data': storage.get('themesLocal', [])
+              'data': storage.get('themesLocal', []),
             });
 
             this.themes.addAll({
                 'heading': 'system themes',
-                'data': defaults.systemThemes
+                'data': defaults.systemThemes,
             });
 
             // Load online themes.
             jquery.get(
-                `${defaults.defaultWebservice}/themes.json`, 
-                data => {
-                    if (!data || data.length == 0) {
+                `${defaults.defaultWebservice}/themes.json`,
+                (themes) => {
+                    if (!themes || themes.length == 0) {
                         util.warn('No online themes available.');
                         return;
                     }
 
-                    data = JSON.parse(data);
-                    for (var i in data) {
-                        data[i].online = true;
+                    themes = JSON.parse(themes);
+                    for (let theme of themes) {
+                        theme.online = true;
                     }
 
-                    this.onlineThemes = data;
+                    this.onlineThemes = themes;
                     this.themes.addAll({
                     'heading': 'online themes',
-                    'data': data
+                    'data': themes,
                     },
                     (error) => {
                         util.error('Could not load online themes', error);
@@ -87,38 +87,38 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../util
 
         /**
          * Templates a provided theme into an HTML element.
-         * 
+         *
          * @param {any} theme The theme that should be turned into an element.
-         * @returns The HTML element.
+         * @return {any} The HTML element.
          */
         templateFunc: function(theme) {
-            var fragment = util.createElement('');
-            
-            var title = this.templates.titleFragment.cloneNode(true);
+            let fragment = util.createElement('');
+
+            let title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.id = `theme_${theme.id}`;
             title.firstElementChild.textContent = theme.title;
             title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
-            var titleWrap = this.templates.titleWrapFragment.cloneNode(true);
+            let titleWrap = this.templates.titleWrapFragment.cloneNode(true);
             titleWrap.firstElementChild.appendChild(title);
 
             if (this.themesWidget.data.title === theme.title) {
                 util.addClass(titleWrap.firstElementChild, 'active');
             }
-            
+
             fragment.appendChild(titleWrap);
 
-            var options = this.templates.infoFragment.cloneNode(true);
-            var author = this.templates.authorFragment.cloneNode(true);
+            let options = this.templates.infoFragment.cloneNode(true);
+            let author = this.templates.authorFragment.cloneNode(true);
             author.firstElementChild.textContent = theme.author;
             options.firstElementChild.appendChild(author);
-            
+
             if (!theme.online) {
-                var share = this.templates.shareFragment.cloneNode(true);
+                let share = this.templates.shareFragment.cloneNode(true);
                 share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
                 options.firstElementChild.appendChild(share);
 
-                var remove = this.templates.removeFragment.cloneNode(true);
+                let remove = this.templates.removeFragment.cloneNode(true);
                 remove.firstElementChild.addEventListener('click', this.removeTheme.bind(this, theme));
                 options.firstElementChild.appendChild(remove);
             }
@@ -131,8 +131,8 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../util
         applyTheme: function(themeNode, theme) {
             this.themesWidget.updateCurrentTheme('currentTheme', theme);
 
-            var itemNode = themeNode.parentNode;
-            var siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
+            let itemNode = themeNode.parentNode;
+            let siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
             Array.prototype.slice.call(siblings).forEach((item) => {
                 util.removeClass(item, 'active');
             });
@@ -140,19 +140,19 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../util
         },
 
         shareTheme: function(theme) {
-            var title = theme.title, message, okay, cancel, callback;
+            let title = theme.title; let message; let okay; let cancel; let callback;
 
-            if (this.onlineThemes.map(t => t.title.toLowerCase()).includes(title.toLowerCase())) {
+            if (this.onlineThemes.map((t) => t.title.toLowerCase()).includes(title.toLowerCase())) {
                 message = 'already exists in the theme gallery.';
                 cancel = `okay`;
-            } else if (defaults.systemThemes.map(t => t.title.toLowerCase()).includes(title.toLowerCase())) {
+            } else if (defaults.systemThemes.map((t) => t.title.toLowerCase()).includes(title.toLowerCase())) {
                 message = 'already exists as a system theme.';
                 cancel = `okay`;
             } else {
                 message = 'will be shared to the theme gallery.';
                 okay = 'okay';
                 cancel = 'cancel';
-                callback = result => {
+                callback = (result) => {
                     if (result) {
                         this.themesWidget.shareTheme(theme);
                         this.loadThemes();
@@ -164,8 +164,8 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../util
         },
 
         removeTheme: function(theme) {
-            modal.createModal('removeThemeAlert', `${theme.title} will be removed.`, 
-                result => {
+            modal.createModal('removeThemeAlert', `${theme.title} will be removed.`,
+                (result) => {
                     if (result) {
                         this.themesWidget.removeTheme(theme);
                         this.loadThemes();
@@ -181,7 +181,7 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../util
 
         themeRemoved: function() {
             this.loadThemes();
-        }
+        },
     };
 
     return themes;

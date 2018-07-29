@@ -1,4 +1,4 @@
-define(['../pagebase/pagebase_grouped', '../utils/storage', '../utils/util'], (pagebase, storage, util) => {
+define(['../pagebase/pagebase_grouped', '../utils/storage', '../utils/util'], (Pagebase, storage, util) => {
     const apps = {
         name: 'apps',
 
@@ -18,7 +18,7 @@ define(['../pagebase/pagebase_grouped', '../utils/storage', '../utils/util'], (p
         init: function(document) {
             this.elems.rootNode = document.getElementById('internal-selector-apps');
 
-            this.apps = new pagebase();
+            this.apps = new Pagebase();
             this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadApps();
         },
@@ -65,7 +65,7 @@ return item.type === 'theme';
          * Templates a provided app into an HTML element.
          *
          * @param {any} app The app that should be turned into an element.
-         * @return The HTML element.
+         * @return {any} The HTML element.
          */
         templateFunc: function(app) {
             const fragment = util.createElement('');
