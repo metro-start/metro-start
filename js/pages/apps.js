@@ -16,7 +16,7 @@ define(['../pagebase/pagebase_grouped', '../utils/storage', '../utils/util'], (p
         },
 
         init: function(document) {
-            this.elems.rootNode = document.getElementById('internal-selector_apps');
+            this.elems.rootNode = document.getElementById('internal-selector-apps');
 
             this.apps = new pagebase();
             this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
