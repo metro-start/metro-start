@@ -223,9 +223,11 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              */
             updateSelect: function (inputId, val) {
                 switch (inputId.toLowerCase()) {
+                    // These are the choosers that have something to hide.
                     case 'background-chooser':
                     case 'palette-chooser':
                     case 'font-chooser':
+                    case 'fontfamily-chooser':
                         var elems = document.getElementsByClassName(`${inputId}-section`);
                         for (var i = 0; i < elems.length; i++) {
                             // If this element has the same id as our new select value, make it visible.
@@ -299,9 +301,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              * @param {any} val The new theme setting.
              */
             updateCurrentTheme: function (inputId, val) {
-                if (this.data[inputId] === val) {
-                    return;
-                }
+                if (this.data[inputId] === val) {return;}
 
                 this.sessionUpdateCount++;
                 util.logChange(inputId, typeof val === 'object' ? JSON.stringify(val) : val);

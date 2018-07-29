@@ -5,7 +5,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/defaults', 
         data: [],
 
         elems: {
-            rootDom: document.getElementById('internal_selector_todos'),
+            rootDom: document.getElementById('internal-selector-todos'),
             newTodo: document.getElementById('newTodo'),
             saveTodo: document.getElementById('saveTodo')
         },

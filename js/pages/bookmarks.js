@@ -6,7 +6,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'
         data: {},
 
         elems: {
-            rootNode: document.getElementById('internal_selector_bookmarks')
+            rootNode: document.getElementById('internal-selector-bookmarks')
         },
 
         bookmarks: {},

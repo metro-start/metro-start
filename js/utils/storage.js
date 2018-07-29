@@ -23,7 +23,7 @@ define(['jquery', './util'], (jquery, util) => {
          * @param {any} value The value to be saved.
          */
         save: function save(key, value) {
-            if (this.cache) this.cache[key] = value;
+            if (this.cache) {this.cache[key] = value;}
 
             var obj = {};
             obj[key] = value;

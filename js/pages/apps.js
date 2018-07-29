@@ -1,5 +1,5 @@
-define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pagebase, storage, util) => {
-    var apps = {
+define(['../pagebase/pagebase_grouped', '../utils/storage', '../utils/util'], (pagebase, storage, util) => {
+    const apps = {
         name: 'apps',
 
         data: {},
@@ -12,11 +12,11 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             disableFragment: util.createElement('<span class="option options-color small-text clickable">disable</span>'),
             enableFragment: util.createElement('<span class="option options-color small-text clickable">enable</span>'),
-            optionsFragment: util.createElement('<span class="option options-color small-text clickable">options</span>')
+            optionsFragment: util.createElement('<span class="option options-color small-text clickable">options</span>'),
         },
 
         init: function(document) {
-            this.elems.rootNode = document.getElementById('internal_selector_apps');
+            this.elems.rootNode = document.getElementById('internal-selector_apps');
 
             this.apps = new pagebase();
             this.apps.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
@@ -25,15 +25,15 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
 
         /**
          * Called when the sort order has been changed.
-         * 
+         *
          * @param {any} newSort The new sort order.
          */
-        sortChanged: function (newSort) {
+        sortChanged: function(newSort) {
             this.bookmarks.sortChanged(newSort, false);
         },
 
         loadApps: function() {
-            var that = this;
+            const that = this;
             chrome.management.getAll((res) => {
                 that.apps.clear();
                 that.apps.addAll({
@@ -41,53 +41,59 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
                     'data': [{
                         'name': 'Chrome Webstore',
                         'appLaunchUrl': 'https://chrome.google.com/webstore',
-                        'enabled': true
-                    }].concat(res.filter((item) => { return item.type !== 'extension' && item.type !== 'theme'; }))
+                        'enabled': true,
+                    }].concat(res.filter((item) => {
+return item.type !== 'extension' && item.type !== 'theme';
+})),
                 });
                 that.apps.addAll({
                     'heading': 'extensions',
-                    'data': res.filter((item) => { return item.type === 'extension'; })
+                    'data': res.filter((item) => {
+return item.type === 'extension';
+}),
                 });
                 that.apps.addAll({
                     'heading': 'themes',
-                    'data': res.filter((item) => { return item.type === 'theme'; })
+                    'data': res.filter((item) => {
+return item.type === 'theme';
+}),
                 });
             });
         },
 
         /**
          * Templates a provided app into an HTML element.
-         * 
+         *
          * @param {any} app The app that should be turned into an element.
-         * @returns The HTML element.
+         * @return The HTML element.
          */
         templateFunc: function(app) {
-            var fragment = util.createElement('');
-            
-            var title = this.templates.titleFragment.cloneNode(true);
+            const fragment = util.createElement('');
+
+            const title = this.templates.titleFragment.cloneNode(true);
             title.firstElementChild.textContent = app.name;
             title.firstElementChild.addEventListener('click', this.openAppLaunchUrl.bind(this, app));
 
             if (!app.enabled) {
                 util.addClass(title.firstElementChild, 'disabled');
-            } 
+            }
 
             fragment.appendChild(title);
 
             if (app.homepageUrl !== '') {
-                var homepage = this.templates.homepageFragment.cloneNode(true);
+                const homepage = this.templates.homepageFragment.cloneNode(true);
                 homepage.firstElementChild.addEventListener('click', this.openHomepageUrl.bind(this, app));
                 fragment.appendChild(homepage);
             }
-            
+
             if (app.optionsUrl) {
-                var options = this.templates.optionsFragment.cloneNode(true);
+                const options = this.templates.optionsFragment.cloneNode(true);
                 options.firstElementChild.addEventListener('click', this.openOptionsUrl.bind(this, app));
                 fragment.appendChild(options);
             }
-            
+
             if (app.type) {
-                var toggle = null;
+                let toggle = null;
                 if (app.enabled) {
                     toggle = this.templates.disableFragment.cloneNode(true);
                 } else {
@@ -98,7 +104,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
             }
 
             if (app.type) {
-                var remove = this.templates.removeFragment.cloneNode(true);
+                const remove = this.templates.removeFragment.cloneNode(true);
                 remove.firstElementChild.addEventListener('click', this.removeApp.bind(this, app));
                 fragment.appendChild(remove);
             }
@@ -108,7 +114,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
 
         /**
          * Open an app's homepage.
-         * 
+         *
          * @param {any} app The app to open launch URl.
          */
         openAppLaunchUrl: function(app) {
@@ -117,7 +123,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
 
         /**
          * Open an app's homepage.
-         * 
+         *
          * @param {any} app The app to open its homepage.
          */
         openHomepageUrl: function(app) {
@@ -126,7 +132,7 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
 
         /**
          * Open an app's options page.
-         * 
+         *
          * @param {any} app The app to open its options.
          */
         openOptionsUrl: function(app) {
@@ -135,11 +141,11 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
 
         /**
          * Enables/disables the selected app.
-         * 
+         *
          * @param {any} app The app to disable.
          */
         toggleEnabled: function(app) {
-            var that = this;
+            const that = this;
             chrome.management.setEnabled(app.id, !app.enabled, () => {
                 that.loadApps();
             });
@@ -147,16 +153,16 @@ define(['../pagebase/pagebase_grouped','../utils/storage', '../utils/util'], (pa
 
         /**
          * Uninstall an app.
-         * 
+         *
          * @param {any} app The app to be uninstalled.
          */
         removeApp: function(app) {
-            var that = this;
+            const that = this;
 
-            chrome.management.uninstall(app.id, { showConfirmDialog: true }, () => {
+            chrome.management.uninstall(app.id, {showConfirmDialog: true}, () => {
                 that.loadApps();
             });
-        }
+        },
     };
 
     return apps;

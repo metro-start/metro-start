@@ -27,8 +27,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_todos.external_selector
-              #internal_selector_todos.internal_selector
+            #external-selector-todos.external-selector
+              #internal-selector-todos.internal-selector
             #addTodo.add.option
               %input#newTodo.option{:name => "newTodo", :placeholder => "new todo", :type => "text"}/
               #saveTodo.options-color.option.clickable save
@@ -41,8 +41,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_sessions.external_selector
-              #internal_selector_sessions.internal_selector
+            #external-selector-sessions.external-selector
+              #internal-selector-sessions.internal-selector
 
         .apps.collection
           #apps
@@ -52,8 +52,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_apps.external_selector
-              #internal_selector_apps.internal_selector
+            #external-selector-apps.external-selector
+              #internal-selector-apps.internal-selector
 
         .bookmarks.collection
           #bookmarks
@@ -63,8 +63,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_bookmarks.external_selector
-              #internal_selector_bookmarks.internal_selector
+            #external-selector-bookmarks.external-selector
+              #internal-selector-bookmarks.internal-selector
 
         .themes.collection
           #themes
@@ -74,8 +74,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_themes.external_selector
-              #internal_selector_themes.internal_selector
+            #external-selector-themes.external-selector
+              #internal-selector-themes.internal-selector
 
     .weather
       #toggleWeather.options-color.option.clickable
@@ -147,7 +147,7 @@
                       %select#fontweight-chooser.chooser
                         %option.clickable normal
                         %option.clickable lighter
-                        %option.clickable bolder
+                        %option#raleway.clickable.fontfamily-section bolder
 
                 %tr
                   %td
@@ -253,11 +253,11 @@
       }
 
       \/* Remove extra space that was added for sorting. */
-      \.external_selector {
+      \.external-selector {
       height: 100%;
       }
       
-      \#external_selector_todos {
+      \#external-selector-todos {
       height: 100%;
       }
 

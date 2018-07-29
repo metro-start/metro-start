@@ -15,7 +15,7 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../utils/util'],
         },
 
         init: function() {
-            this.elems.rootNode = document.getElementById('internal_selector_sessions');
+            this.elems.rootNode = document.getElementById('internal-selector-sessions');
             this.sessions = new pagebase_grouped();
             this.sessions.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadSessions();

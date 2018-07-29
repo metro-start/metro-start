@@ -255,14 +255,13 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * @param {any} data The theme object with the new font settings.
              */
             updateFont: function (data) {
-                var checkFont = function (text) {
-                    switch (text) {
-                        case 'custom':
-                        case 'system':
-                            return '"Segoe UI", Helvetica, Arial, sans-serif';
+                var checkFont = function (font) {
+                switch (font) {
+                    case 'system':
+                        return '"Segoe UI", Helvetica, Arial, sans-serif';
 
-                        case 'raleway':
-                            return 'Raleway, "Segoe UI", Helvetica, Arial, sans-serif';
+                    case 'raleway':
+                        return '"Raleway", "Segoe UI", Helvetica, Arial, sans-serif';
                     }
                 };
 
@@ -271,38 +270,58 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         jss.set(selector, style);
                     }
                 };
+                
+                switch (data['font-chooser']) {
+                    case 'system':
+                        data['fontfamily-chooser'] = 'system';
+                        data['fontweight-chooser'] = 'normal';
+                        data['fontvariant-chooser'] = 'normal';
+                        break;
 
-                if (data['font-chooser'] === 'custom') {
-                    jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
-                        'font-family': checkFont(data['fontfamily-chooser']),
-                        'font-weight': data['fontweight-chooser'],
-                        'font-variant': data['fontvariant-chooser']
-                    });
-
-                    if (data['fontvariant-chooser'] === 'small-caps') {
-                        jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
-                            'text-transform': 'lowercase'
-                        });
-                    }
-                } else {
-                    jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
-                        'font-family': checkFont(data['font-chooser']),
-                        'text-transform': 'none'
-                    });
+                    case 'raleway':
+                        data['fontfamily-chooser'] = 'raleway';
+                        data['fontweight-chooser'] = 'normal';
+                        data['fontvariant-chooser'] = 'normal';
+                        break;
                 }
 
-                if (data['fontreadability-chooser'] === 'on') {
-                    var shadowColor = tinycolor(data.mainColor).spin(180).toHexString();
-                    jss.set('body', {
-                        'text-shadow': `${shadowColor} 0px 0px 0.5em, ${shadowColor  } 0px 0px 0.2em`
-                    });
-                    jss.set('body .sp-dd, .active', {
-                        'text-shadow': 'none'
-                    });
-                } else {
-                    jss.set('body', {
-                        'text-shadow': 'none',
-                    });
+                jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
+                    'font-family': checkFont(data['fontfamily-chooser']),
+                    'font-weight': data['fontweight-chooser']
+                });
+
+                switch (data['fontvariant-chooser']) {
+                    case 'small-caps':
+                        jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
+                            'text-transform': 'lowercase',
+                            'font-variant': 'small-caps'
+                        });
+                        break;
+
+                    case 'normal':
+                        jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
+                            'text-transform': 'none',
+                            'font-variant':'normal'
+                        });    
+                        break;
+                }
+
+                switch (data['fontreadability-chooser']) {
+                    case 'on':
+                        var shadowColor = tinycolor(data.mainColor).spin(180).toHexString();
+                        jss.set('body', {
+                            'text-shadow': `${shadowColor} 0px 0px 0.5em, ${shadowColor  } 0px 0px 0.2em`
+                        });
+                        jss.set('body .sp-dd, .active', {
+                            'text-shadow': 'none'
+                        });
+                        break;
+
+                    case 'off':
+                        jss.set('body', {
+                            'text-shadow': 'none',
+                        });
+                        break;
                 }
             },
         };

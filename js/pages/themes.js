@@ -26,7 +26,7 @@ define([ 'jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../util
         },
 
         init: function() {
-            this.elems.rootNode = document.getElementById('internal_selector_themes');
+            this.elems.rootNode = document.getElementById('internal-selector-themes');
             this.themes = new pagebase_grouped();
             this.themes.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
             this.loadThemes();

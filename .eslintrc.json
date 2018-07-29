@@ -1,4 +1,5 @@
 {
+    "extends": ["eslint:recommended"],
     "globals": {
         "__dirname": true,
         "chrome": true
@@ -22,6 +23,8 @@
         "no-unreachable": "warn",
         "no-unused-vars": "warn",
         "constructor-super": "warn",
-        "valid-typeof": "warn"
+        "valid-typeof": "warn",
+        "block-scoped-var":"warn",
+        "curly":"warn"
     }
 }

@@ -28,6 +28,7 @@ module.exports = function (grunt) {
             all: {
                 entry: './js/app.js',
                 devtool: 'source-map',
+                mode: 'production',
                 output: {
                     filename: 'metro-start.js',
                     path: `${__dirname}/dist`,
@@ -85,7 +86,7 @@ module.exports = function (grunt) {
             scripts: {
                 files: [
 					'js/**/*.js',
-					'css/*.css',
+					'scss/*.scss',
 					'fonts/*.ttf',
                     'haml/start.haml',
                 ],
