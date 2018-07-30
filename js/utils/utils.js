@@ -1,18 +1,9 @@
-define(['./util', './modal', './storage', './defaults', './script'], (util, modal, storage, defaults, script) => {
-    let utils = {
-        util: util,
-        storage: storage,
-        defaults: defaults,
-        script: script,
-        modal: modal,
+import _Script from './script';
+import _Storage from './storage';
+import _Modal from './modal';
+import _Util from './util';
 
-        modules: [util, storage, defaults, script, modal],
-
-        init: function() {
-            this.modules.forEach((module) => {
-                module.init(document);
-            });
-        },
-    };
-    return utils;
-});
+export let Util = new _Util();
+export let Storage = new _Storage();
+export let Script = new _Script();
+export let Modal = new _Modal();

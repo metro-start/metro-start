@@ -1,22 +1,39 @@
-define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, pagebase) => {
-    let templates = {
-       column: util.createElement('<div class="page panel-page"></div>'),
-    };
+import {Util} from '../utils/utils';
+import Pagebase from './pagebase';
 
-    let PagebasePaneled = function PagebasePaneled() { };
+let Templates = {
+    column: Util.createElement('<div class="page panel-page"></div>'),
+};
 
-    PagebasePaneled.prototype = Object.create(pagebase.prototype);
-    PagebasePaneled.prototype.className = 'pagebase-grouped';
+/**
+ * Pages that contain panels.
+ *
+ * @export
+ * @class PagebasePaneled
+ * @extends {Pagebase}
+ */
+export default class PagebasePaneled extends Pagebase {
+    /**
+     * Creates an instance of PagebasePaneled.
+     * @param {*} document The render document.
+     * @param {*} name The name of the pagebae.
+     * @param {*} rootNode The root DOM node to render into.
+     * @param {*} templateFunc Row generator function.
+     * @memberof Pagebase
+     */
+    constructor(document, name, rootNode, templateFunc) {
+        super(document, name, rootNode, templateFunc);
+    }
 
     /**
      * Adds all the given HTML nodes to the DOM in one single column.
      *
      * @param {any} nodes List of nodes to be added.
      */
-    PagebasePaneled.prototype.addAllNodes = function addAllNodes(nodes) {
+    addAllNodes(nodes) {
         if (nodes.length) {
             let pageIndex = this.rootNode.children.length;
-            let columnNode = templates.column.cloneNode(true);
+            let columnNode = Templates.column.cloneNode(true);
             columnNode.firstElementChild.id = `${this.name}_${pageIndex}`;
 
             for (let i = 0; i < nodes.length; i++) {
@@ -24,14 +41,14 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
             }
             this.rootNode.appendChild(columnNode);
         }
-    };
+    }
 
     /**
      * Called when the sort order has been changed.
      *
      * @param {any} newSort The new sort order.
      */
-    PagebasePaneled.prototype.sortChanged = function sortChanged(newSort) {
+    sortChanged(newSort) {
         let currentSort = this.getSort();
         if (newSort === currentSort) {
             return;
@@ -57,26 +74,24 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
             for (let j = 0; j < rows.length; j++) {
                 column.appendChild(rows[j]);
 
-                if (util.hasClass(rows[j], 'active')) {
-                    util.log('Scrolling to item');
+                if (Util.hasClass(rows[j], 'active')) {
+                    Util.log('Scrolling to item');
                     column.scrollTop = rows[j].offsetTop;
                 }
             }
         }
-    };
+    }
 
     /**
      * Remove some set of panels.
      *
      * @param {any} pageNumber The panel number to start removing.
      */
-    pagebase.prototype.truncatePages = function truncatePages(pageNumber) {
+    truncatePages(pageNumber) {
         let nodes = Array.prototype.slice.call(this.rootNode.children);
         nodes.splice(0, parseInt(pageNumber, 10) + 1);
         nodes.forEach((node) => {
             node.remove();
         });
-    };
-
-    return PagebasePaneled;
-});
+    }
+}

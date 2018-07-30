@@ -1,77 +1,83 @@
-define(['jquery', '../pagebase/pagebase_grouped', '../utils/util'],
-(jquery, PagebaseGrouped, util) => {
-    let sessions = {
-        name: 'sessions',
+import {Util} from '../utils/utils';
+import PagebaseGrouped from '../pagebase/pagebase_grouped';
 
-        data: {},
+let Templates = {
+    itemFragment: Util.createElement('<div class="session_item"></div>'),
+    titleFragment: Util.createElement('<a class="title clickable"></a>'),
+};
 
-        elems: {},
+/**
+ * Active sessions on other computers.
+ *
+ * @export
+ * @class Sessions
+ */
+export default class Sessions {
+    /**
+     *Creates an instance of Sessions.
+     * @memberof Sessions
+     */
+    constructor() {
+        this.name = 'sessions';
 
-        sessions: {},
+        this.data = {};
 
-        templates: {
-            itemFragment: util.createElement('<div class="session_item"></div>'),
-            titleFragment: util.createElement('<a class="title clickable"></a>'),
-        },
+        this.elems = {};
 
-        init: function() {
-            this.elems.rootNode = document.getElementById('internal-selector-sessions');
-            this.sessions = new PagebaseGrouped();
-            this.sessions.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
-            this.loadSessions();
-        },
+        this.sessions = {};
+        this.elems.rootNode = document.getElementById('internal-selector-sessions');
+        this.sessions = new PagebaseGrouped(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
+        this.loadSessions();
+    }
 
-        /**
-         * Called when the sort order has been changed.
-         *
-         * @param {any} newSort The new sort order.
-         */
-        sortChanged: function(newSort) {
-            this.sessions.sortChanged(newSort, false);
-        },
+    /**
+     * Called when the sort order has been changed.
+     *
+     * @param {any} newSort The new sort order.
+     */
+    sortChanged(newSort) {
+        this.sessions.sortChanged(newSort, false);
+    }
 
-        //
-        /**
-         * Loads the available sessions from local and web storage
-         */
-        loadSessions: function() {
-            let that = this;
-            chrome.sessions.getDevices(null, (devices) => {
-                for (let device of devices) {
-                    let data = [];
-                    for (let session of device.sessions) {
-                        if (session.tab) {
-                            data = data.concat(session);
-                        } else if (session.window) {
-                            data = data.concat(session.window.tabs);
-                        }
+    //
+    /**
+     * Loads the available sessions from local and web storage
+     */
+    loadSessions() {
+        let that = this;
+        chrome.sessions.getDevices(null, (devices) => {
+            for (let device of devices) {
+                let data = [];
+                for (let session of device.sessions) {
+                    if (session.tab) {
+                        data = data.concat(session);
+                    } else if (session.window) {
+                        data = data.concat(session.window.tabs);
                     }
-                    that.sessions.addAll({
-                        'heading': device.deviceName,
-                        'data': data,
-                    });
                 }
-            });
-        },
+                that.sessions.addAll({
+                    'heading': device.deviceName,
+                    'data': data,
+                });
+            }
+        });
+    }
 
-        /**
-         * Templates a provided tab into an HTML element.
-         *
-         * @param {any} tab The tab session that should be turned into an element.
-         * @return {any} The HTML element.
-         */
-        templateFunc: function(tab) {
-            let fragment = util.createElement('');
+    /**
+     * Templates a provided tab into an HTML element.
+     *
+     * @param {any} tab The tab session that should be turned into an element.
+     * @return {any} The HTML element.
+     */
+    templateFunc(tab) {
+        let fragment = Util.createElement('');
 
-            let title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.id = `session_${tab.index}`;
-            title.firstElementChild.href = tab.url;
-            title.firstElementChild.textContent = tab.title;
-            fragment.appendChild(title);
+        let title = Templates.titleFragment.cloneNode(true);
+        title.firstElementChild.id = `session_${tab.index}`;
+        title.firstElementChild.href = tab.url;
+        title.firstElementChild.textContent = tab.title;
+        fragment.appendChild(title);
 
-            return fragment;
-        },
-    };
-
-    return sessions;
-});
+        return fragment;
+    }
+}

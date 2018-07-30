@@ -1,16 +1,5 @@
-define(['./weather', './themes'], (weather, themes) => {
-    let widgets = {
-        weather: weather,
-        themes: themes,
+import _Weather from './weather';
+import _Themes from './themes';
 
-        data: [weather, themes],
-
-        init: function(document) {
-            this.data.forEach((module) => {
-                module.init(document);
-            });
-        },
-    };
-
-    return widgets;
-});
+export const Weather = new _Weather();
+export const Themes = new _Themes();

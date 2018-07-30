@@ -1,6 +1,12 @@
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = function (grunt) {
+/**
+ *
+ *
+ * @export
+ * @param {*} grunt
+ */
+module.exports = function(grunt) {
     'use strict';
 
     grunt.initConfig({
@@ -8,27 +14,27 @@ module.exports = function (grunt) {
         haml: {
             dist: {
                 files: {
-                    'dist/start.html': 'haml/start.haml'
-                }
+                    'dist/start.html': 'haml/start.haml',
+                },
             },
         },
         sass: {
             options: {
                 sourceMap: true,
-                style: 'compressed'
+                style: 'compressed',
             },
             dist: {
                 files: {
                     'dist/css/style.css': 'scss/style.scss',
-                    'dist/css/reset.css': 'scss/reset.scss'
-                }
-            }
+                    'dist/css/reset.css': 'scss/reset.scss',
+                },
+            },
         },
         webpack: {
             all: {
                 entry: './js/app.js',
                 devtool: 'source-map',
-                mode: 'production',
+                mode: 'development',
                 output: {
                     filename: 'metro-start.js',
                     path: `${__dirname}/dist`,
@@ -36,34 +42,34 @@ module.exports = function (grunt) {
                 stats: {
                     colors: true,
                     modules: true,
-                    reasons: true
+                    reasons: true,
                 },
                 resolve: {
                     alias: {
-                        jss: '../../node_modules/jss/jss.js'
-                    }
+                        jss: '../../node_modules/jss/jss.js',
+                    },
                 },
                 plugins: [
                     new UglifyJsPlugin({
                         'cache': true,
                         'parallel': true,
-                        'sourceMap': true
-                    })]
-            }
+                        'sourceMap': true,
+                    }),
+                ],
+            },
         },
         copy: {
             dist: {
-                files: [
-                    { 
-                        expand: true, 
+                files: [{
+                        expand: true,
                         src: ['fonts/*', 'icons/*', 'manifest.json'],
-                        dest: 'dist/'
+                        dest: 'dist/',
                     },
-                    { 
-                        expand: true, 
+                    {
+                        expand: true,
                         flatten: true,
                         src: ['node_modules/spectrum-colorpicker/spectrum.css'],
-                        dest: 'dist/css' 
+                        dest: 'dist/css',
                     },
                 ],
             },
@@ -72,22 +78,25 @@ module.exports = function (grunt) {
             all: {
                 options: {
                     archive: './metro-start.zip',
-                    mode: 'zip'
+                    mode: 'zip',
                 },
-                files: [
-                    { expand: true, cwd: 'dist/', src: '**/*', dest: '/' }
-                ]
-            }
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: '**/*',
+                    dest: '/',
+                }],
+            },
         },
         eslint: {
-            target: ['js/**/*.js']
+            target: ['js/**/*.js'],
         },
         watch: {
             scripts: {
                 files: [
-					'js/**/*.js',
-					'scss/*.scss',
-					'fonts/*.ttf',
+                    'js/**/*.js',
+                    'scss/*.scss',
+                    'fonts/*.ttf',
                     'haml/start.haml',
                 ],
                 tasks: ['test', 'notify:build'],
@@ -98,11 +107,11 @@ module.exports = function (grunt) {
         },
         notify: {
             build: {
-              options: {
-                message: 'Build complete',
-              }
-            }
-        }
+                options: {
+                    message: 'Build complete',
+                },
+            },
+        },
     });
 
     grunt.loadNpmTasks('grunt-notify');
@@ -116,7 +125,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', ['webpack', 'haml', 'sass', 'copy']);
     grunt.registerTask('test', ['build', 'eslint']);
-    
+
     grunt.registerTask('publish', ['test', 'compress']);
     grunt.registerTask('default', ['test']);
 };

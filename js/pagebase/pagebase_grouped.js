@@ -1,22 +1,39 @@
-define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, pagebase) => {
-    let templates = {
-        group: util.createElement('<div class="group"></div>'),
-        column: util.createElement('<div class="page"></div>'),
-        item: util.createElement('<div class="item"></div>'),
-        heading: util.createElement('<div class="options-color"></div>'),
-    };
+import {Util} from '../utils/utils';
+import Pagebase from './pagebase';
 
-    let PagebaseGrouped = function PagebaseGrouped() {};
+let Templates = {
+    group: Util.createElement('<div class="group"></div>'),
+    column: Util.createElement('<div class="page"></div>'),
+    item: Util.createElement('<div class="item"></div>'),
+    heading: Util.createElement('<div class="options-color"></div>'),
+};
 
-    PagebaseGrouped.prototype = Object.create(pagebase.prototype);
-    PagebaseGrouped.prototype.className = 'pagebase-grouped';
+/**
+ * Pages with grouped sections.
+ *
+ * @export
+ * @class PagebaseGrouped
+ * @extends {Pagebase}
+ */
+export default class PagebaseGrouped extends Pagebase {
+    /**
+     * Creates an instance of PagebaseGrouped.
+     * @param {*} document The render document.
+     * @param {*} name The name of the pagebae.
+     * @param {*} rootNode The root DOM node to render into.
+     * @param {*} templateFunc Row generator function.
+     * @memberof Pagebase
+     */
+    constructor(document, name, rootNode, templateFunc) {
+        super(document, name, rootNode, templateFunc);
+    }
 
     /**
      * All all rows to the pagebase as a group.
      *
      * @param {any} rows The rows to be added.
      */
-    PagebaseGrouped.prototype.addAll = function addAll(rows) {
+    addAll(rows) {
         let group = {};
         group.heading = rows.heading;
         group.nodes = [];
@@ -24,7 +41,7 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
         if (!!rows && !!rows.data) {
             for (let i = 0; i < rows.data.length; i++) {
                 if (rows.data[i] !== null) {
-                    let item = templates.item.cloneNode(true);
+                    let item = Templates.item.cloneNode(true);
                     item.id = `${this.name}_${i}`;
                     item.firstElementChild.id = `${this.name}_${i}`;
                     item.firstElementChild.appendChild(this.templateFunc(rows.data[i], this.currentPage));
@@ -33,22 +50,22 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
             }
             this.addAllNodes(group);
         }
-    };
+    }
 
     /**
      * All all nodes to the page.
      *
      * @param {any} group The group of nodes to be added.
      */
-    PagebaseGrouped.prototype.addAllNodes = function addAllNodes(group) {
+    addAllNodes(group) {
         let nodes = group.nodes;
-        let groupNode = templates.group.cloneNode(true);
+        let groupNode = Templates.group.cloneNode(true);
 
-        let heading = templates.heading.cloneNode(true);
+        let heading = Templates.heading.cloneNode(true);
         heading.firstElementChild.textContent = group.heading;
         groupNode.firstElementChild.appendChild(heading);
 
-        let columnNode = templates.column.cloneNode(true);
+        let columnNode = Templates.column.cloneNode(true);
 
         if (nodes.length) {
             for (let i = 0; i < nodes.length; i++) {
@@ -58,23 +75,23 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
 
         groupNode.firstElementChild.appendChild(columnNode);
         this.rootNode.appendChild(groupNode);
-    };
+    }
 
     /**
      * Clear the list of groups in the page.
      */
-    PagebaseGrouped.prototype.clear = function clear() {
+    clear() {
         while (this.rootNode.lastChild) {
             this.rootNode.removeChild(this.rootNode.lastChild);
         }
-    };
+    }
 
     /**
      * Called when the sort order has been changed.
      *
      * @param {any} newSort The new sort order.
      */
-    PagebaseGrouped.prototype.sortChanged = function sortChanged(newSort) {
+    sortChanged(newSort) {
         let currentSort = this.getSort();
         if (newSort === currentSort) {
             return;
@@ -101,7 +118,5 @@ define(['../utils/util', '../utils/storage', './pagebase'], (util, storage, page
                 column.appendChild(rows[j]);
             }
         }
-    };
-
-    return PagebaseGrouped;
-});
+    }
+}

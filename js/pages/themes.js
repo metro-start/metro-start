@@ -1,188 +1,231 @@
-define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils/modal', '../utils/util', '../utils/storage', '../utils/defaults'],
-(jquery, PagebaseGrouped, themesWidget, modal, util, storage, defaults) => {
-    let themes = {
-        name: 'themes',
+import jquery from 'jquery';
 
-        data: {},
+import {Storage} from '../utils/utils';
+import {Util} from '../utils/utils';
+import {Modal} from '../utils/utils';
+import ThemesWidget from '../widgets/themes';
+import PagebaseGrouped from '../pagebase/pagebase_grouped';
+import {SystemThemes, DefaultWebservice} from '../defaults';
 
-        elems: {},
+let Templates = {
+    itemFragment: Util.createElement('<div class="theme_item"></div>'),
+    titleFragment: Util.createElement('<span class="panel-item clickable"></span>'),
+    titleWrapFragment: Util.createElement('<div class="panel-item-wrap"></div>'),
+    removeFragment: Util.createElement('<span class="option options-color small-text clickable">remove</span>'),
+    shareFragment: Util.createElement('<span class="option options-color small-text clickable">share</span>'),
+    authorFragment: Util.createElement('<a class="options-color gallery-bio small-text" title="author"></a>'),
+    infoFragment: Util.createElement('<span class="info"></span>'),
+};
 
-        themes: {},
+/**
+ * Page of available themes.
+ *
+ * @export
+ * @class Themes
+ */
+export default class Themes {
+    /**
+     *Creates an instance of Themes.
+     * @memberof Themes
+     */
+    constructor() {
+        this.name = 'themes';
 
-        themesLocal: {},
+        this.data = {};
 
-        onlineThemes: {},
+        this.elems = {};
 
-        themesWidget: themesWidget,
+        this.themes = {};
 
-        templates: {
-            itemFragment: util.createElement('<div class="theme_item"></div>'),
-            titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
-            titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
-            removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
-            shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
-            authorFragment: util.createElement('<a class="options-color gallery-bio small-text" title="author"></a>'),
-            infoFragment: util.createElement('<span class="info"></span>'),
-        },
+        this.themesLocal = {};
 
-        init: function() {
-            this.elems.rootNode = document.getElementById('internal-selector-themes');
-            this.themes = new PagebaseGrouped();
-            this.themes.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
-            this.loadThemes();
+        this.onlineThemes = {};
 
-            this.themesWidget.themeAdded = this.themeAdded.bind(this);
-            this.themesWidget.themeRemoved = this.themeRemoved.bind(this);
-        },
+        this.elems.rootNode = document.getElementById('internal-selector-themes');
+        this.themes = new PagebaseGrouped(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
+        this.loadThemes();
 
-        /**
-         * Called when the sort order has been changed.
-         *
-         * @param {any} newSort The new sort order.
-         */
-        sortChanged: function(newSort) {
-            this.themes.sortChanged(newSort, false);
-        },
+        ThemesWidget.themeAdded = this.themeAdded.bind(this);
+        ThemesWidget.themeRemoved = this.themeRemoved.bind(this);
+    }
 
-        /**
-         * Loads the available themes from local and web storage
-         */
-        loadThemes: function() {
-            this.themes.clear();
-            this.themes.addAll({
-              'heading': 'my themes',
-              'data': storage.get('themesLocal', []),
-            });
+    /**
+     * Called when the sort order has been changed.
+     *
+     * @param {any} newSort The new sort order.
+     */
+    sortChanged(newSort) {
+        this.themes.sortChanged(newSort, false);
+    }
 
-            this.themes.addAll({
-                'heading': 'system themes',
-                'data': defaults.systemThemes,
-            });
+    /**
+     * Loads the available themes from local and web storage
+     */
+    loadThemes() {
+        this.themes.clear();
+        this.themes.addAll({
+            'heading': 'my themes',
+            'data': Storage.get('themesLocal', []),
+        });
 
-            // Load online themes.
-            jquery.get(
-                `${defaults.defaultWebservice}/themes.json`,
-                (themes) => {
-                    if (!themes || themes.length == 0) {
-                        util.warn('No online themes available.');
-                        return;
-                    }
+        this.themes.addAll({
+            'heading': 'system themes',
+            'data': SystemThemes,
+        });
 
-                    themes = JSON.parse(themes);
-                    for (let theme of themes) {
-                        theme.online = true;
-                    }
+        // Load online themes.
+        jquery.get(
+            `${DefaultWebservice}/themes.json`,
+            (themes) => {
+                if (!themes || themes.length == 0) {
+                    Util.warn('No online themes available.');
+                    return;
+                }
 
-                    this.onlineThemes = themes;
-                    this.themes.addAll({
-                    'heading': 'online themes',
-                    'data': themes,
+                themes = JSON.parse(themes);
+                for (let theme of themes) {
+                    theme.online = true;
+                }
+
+                this.onlineThemes = themes;
+                this.themes.addAll({
+                        'heading': 'online themes',
+                        'data': themes,
                     },
                     (error) => {
-                        util.error('Could not load online themes', error);
+                        Util.error('Could not load online themes', error);
                     });
-                });
-        },
-
-
-        /**
-         * Templates a provided theme into an HTML element.
-         *
-         * @param {any} theme The theme that should be turned into an element.
-         * @return {any} The HTML element.
-         */
-        templateFunc: function(theme) {
-            let fragment = util.createElement('');
-
-            let title = this.templates.titleFragment.cloneNode(true);
-            title.firstElementChild.id = `theme_${theme.id}`;
-            title.firstElementChild.textContent = theme.title;
-            title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
-
-            let titleWrap = this.templates.titleWrapFragment.cloneNode(true);
-            titleWrap.firstElementChild.appendChild(title);
-
-            if (this.themesWidget.data.title === theme.title) {
-                util.addClass(titleWrap.firstElementChild, 'active');
-            }
-
-            fragment.appendChild(titleWrap);
-
-            let options = this.templates.infoFragment.cloneNode(true);
-            let author = this.templates.authorFragment.cloneNode(true);
-            author.firstElementChild.textContent = theme.author;
-            options.firstElementChild.appendChild(author);
-
-            if (!theme.online) {
-                let share = this.templates.shareFragment.cloneNode(true);
-                share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
-                options.firstElementChild.appendChild(share);
-
-                let remove = this.templates.removeFragment.cloneNode(true);
-                remove.firstElementChild.addEventListener('click', this.removeTheme.bind(this, theme));
-                options.firstElementChild.appendChild(remove);
-            }
-
-            fragment.appendChild(options);
-
-            return fragment;
-        },
-
-        applyTheme: function(themeNode, theme) {
-            this.themesWidget.updateCurrentTheme('currentTheme', theme);
-
-            let itemNode = themeNode.parentNode;
-            let siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
-            Array.prototype.slice.call(siblings).forEach((item) => {
-                util.removeClass(item, 'active');
             });
-            util.addClass(itemNode, 'active');
-        },
+    }
 
-        shareTheme: function(theme) {
-            let title = theme.title; let message; let okay; let cancel; let callback;
+    /**
+     * Templates a provided theme into an HTML element.
+     *
+     * @param {any} theme The theme that should be turned into an element.
+     * @return {any} The HTML element.
+     */
+    templateFunc(theme) {
+        let fragment = Util.createElement('');
 
-            if (this.onlineThemes.map((t) => t.title.toLowerCase()).includes(title.toLowerCase())) {
-                message = 'already exists in the theme gallery.';
-                cancel = `okay`;
-            } else if (defaults.systemThemes.map((t) => t.title.toLowerCase()).includes(title.toLowerCase())) {
-                message = 'already exists as a system theme.';
-                cancel = `okay`;
-            } else {
-                message = 'will be shared to the theme gallery.';
-                okay = 'okay';
-                cancel = 'cancel';
-                callback = (result) => {
-                    if (result) {
-                        this.themesWidget.shareTheme(theme);
-                        this.loadThemes();
-                    }
-                };
-            }
+        let title = Templates.titleFragment.cloneNode(true);
+        title.firstElementChild.id = `theme_${theme.id}`;
+        title.firstElementChild.textContent = theme.title;
+        title.firstElementChild.addEventListener('click', this.applyTheme.bind(this, title.firstElementChild, theme));
 
-            modal.createModal('shareThemeAlert', `${title} ${message}`, callback, okay, cancel);
-        },
+        let titleWrap = Templates.titleWrapFragment.cloneNode(true);
+        titleWrap.firstElementChild.appendChild(title);
 
-        removeTheme: function(theme) {
-            modal.createModal('removeThemeAlert', `${theme.title} will be removed.`,
-                (result) => {
-                    if (result) {
-                        this.themesWidget.removeTheme(theme);
-                        this.loadThemes();
-                    }
-                },
-                'okay',
-                'cancel');
-        },
+        if (ThemesWidget.data.title === theme.title) {
+            Util.addClass(titleWrap.firstElementChild, 'active');
+        }
 
-        themeAdded: function() {
-            this.loadThemes();
-        },
+        fragment.appendChild(titleWrap);
 
-        themeRemoved: function() {
-            this.loadThemes();
-        },
-    };
+        let options = Templates.infoFragment.cloneNode(true);
+        let author = Templates.authorFragment.cloneNode(true);
+        author.firstElementChild.textContent = theme.author;
+        options.firstElementChild.appendChild(author);
 
-    return themes;
-});
+        if (!theme.online) {
+            let share = Templates.shareFragment.cloneNode(true);
+            share.firstElementChild.addEventListener('click', this.shareTheme.bind(this, theme));
+            options.firstElementChild.appendChild(share);
+
+            let remove = Templates.removeFragment.cloneNode(true);
+            remove.firstElementChild.addEventListener('click', this.removeTheme.bind(this, theme));
+            options.firstElementChild.appendChild(remove);
+        }
+
+        fragment.appendChild(options);
+
+        return fragment;
+    }
+
+    /**
+     * Applies the selected theme.
+     *
+     * @param {*} themeNode The node to apply.
+     * @param {*} theme The theme to apply.
+     * @memberof Themes
+     */
+    applyTheme(themeNode, theme) {
+        ThemesWidget.updateCurrentTheme('currentTheme', theme);
+
+        let itemNode = themeNode.parentNode;
+        let siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
+        Array.prototype.slice.call(siblings).forEach((item) => {
+            Util.removeClass(item, 'active');
+        });
+        Util.addClass(itemNode, 'active');
+    }
+
+    /**
+     * Share theme to the web service.
+     *
+     * @param {*} theme The theme to share.
+     * @memberof Themes
+     */
+    shareTheme(theme) {
+        let title = theme.title;
+        let message;
+        let okay;
+        let cancel;
+        let callback;
+
+        if (this.onlineThemes.map((t) => t.title.toLowerCase()).includes(title.toLowerCase())) {
+            message = 'already exists in the theme gallery.';
+            cancel = `okay`;
+        } else if (SystemThemes.map((t) => t.title.toLowerCase()).includes(title.toLowerCase())) {
+            message = 'already exists as a system theme.';
+            cancel = `okay`;
+        } else {
+            message = 'will be shared to the theme gallery.';
+            okay = 'okay';
+            cancel = 'cancel';
+            callback = (result) => {
+                if (result) {
+                    ThemesWidget.shareTheme(theme);
+                    this.loadThemes();
+                }
+            };
+        }
+
+        Modal.createModal('shareThemeAlert', `${title} ${message}`, callback, okay, cancel);
+    }
+
+    /**
+     * Removes a theme.
+     *
+     * @param {*} theme Theme to be removed.
+     * @memberof Themes
+     */
+    removeTheme(theme) {
+        Modal.createModal('removeThemeAlert', `${theme.title} will be removed.`,
+            (result) => {
+                if (result) {
+                    ThemesWidget.removeTheme(theme);
+                    this.loadThemes();
+                }
+            },
+            'okay',
+            'cancel');
+    }
+
+    /**
+     * A theme has been added.
+     *
+     * @memberof Themes
+     */
+    themeAdded() {
+        this.loadThemes();
+    }
+
+    /**
+     * A theme has been removed.
+     *
+     * @memberof Themes
+     */
+    themeRemoved() {
+        this.loadThemes();
+    }
+}
