@@ -1,41 +1,23 @@
-import jquery from 'jquery';
+define(['jquery', '../utils/util', '../utils/storage', '../utils/defaults', 'metro-select'],
+(jquery, util, storage, defaults) => {
+    let templates = {
+        column: util.createElement('<div class="page"></div>'),
+        item: util.createElement('<div class="item"></div>'),
+    };
 
-import {Util} from '../utils/utils';
-import {Storage} from '../utils/utils';
-import 'metro-select';
-import {
-    DefaultSort,
-} from '../utils/utils';
+    let pagebase = function pagebase() { };
 
-let Templates = {
-    column: Util.createElement('<div class="page"></div>'),
-    item: Util.createElement('<div class="item"></div>'),
-};
+    pagebase.prototype.className = 'pagebase';
 
-/**
- * Horizontally scrolling pages.
- *
- * @export
- * @class Pagebase
- */
-export default class Pagebase {
-    /**
-     * Creates an instance of Pagebase.
-     * @param {*} document The render document.
-     * @param {*} name The name of the pagebae.
-     * @param {*} rootNode The root DOM node to render into.
-     * @param {*} templateFunc Row generator function.
-     * @memberof Pagebase
-     */
-    constructor(document, name, rootNode, templateFunc) {
+    pagebase.prototype.init = function(document, name, rootNode, templateFunc) {
         this.name = name;
         this.rootNode = rootNode;
-        this.sort = Storage.get(`${this.name}_sort`, false);
+        this.sort = storage.get(`${this.name}_sort`, false);
         this.currentPage = 0;
         this.templateFunc = templateFunc;
         this.page = 0;
 
-        Util.addClass(this.rootNode, this.className);
+        util.addClass(this.rootNode, this.className);
 
         if (jquery(`#${this.name}-sort-chooser`).length !== 0) {
             jquery(`#${this.name}-sort-chooser`).metroSelect({
@@ -43,27 +25,27 @@ export default class Pagebase {
                 onchange: this.sortChanged.bind(this),
             });
         }
-    }
+    };
 
     /**
      * Build the dom.
      *
      * @param {any} rows HTML rows to be added to the Dom.
      */
-    buildDom(rows) {
+    pagebase.prototype.buildDom = function buildDom(rows) {
         this.clear();
         this.addAll(rows);
-    }
+    };
 
     /**
      * Add all rows to the page.
      *
      * @param {any} rows The new ros to be added to the page.
      */
-    addAll(rows) {
+    pagebase.prototype.addAll = function addAll(rows) {
         let nodes = [];
         for (let i = 0; i < rows.length; i++) {
-            let item = Templates.item.cloneNode(true);
+            let item = templates.item.cloneNode(true);
             item.id = `${this.name}_${i}`;
             item.firstElementChild.id = `${this.name}_${i}`;
             item.firstElementChild.appendChild(this.templateFunc(rows[i], this.currentPage));
@@ -77,17 +59,17 @@ export default class Pagebase {
         }
 
         this.addAllNodes(nodes);
-    }
+    };
 
     /**
      * Adds all the given HTML nodes to the DOM, in a naive way (top to bottom, left to right).
      *
      * @param {any} nodes List of nodes to be added.
      */
-    addAllNodes(nodes) {
+    pagebase.prototype.addAllNodes = function addAllNodes(nodes) {
         if (nodes.length) {
             let pageIndex = this.rootNode.children.length;
-            let columnNode = Templates.column.cloneNode(true);
+            let columnNode = templates.column.cloneNode(true);
             columnNode.firstElementChild.id = `${this.name}_${pageIndex}`;
 
             for (let i = 0; i < nodes.length; i++) {
@@ -96,17 +78,17 @@ export default class Pagebase {
 
             this.rootNode.appendChild(columnNode);
         }
-    }
+    };
 
     /**
      * Clear the list of elements in the page.
      */
-    clear() {
+    pagebase.prototype.clear = function clear() {
         this.currentPage = 0;
         while (this.rootNode.firstElementChild) {
             this.rootNode.firstElementChild.remove();
         }
-    }
+    };
 
     /**
      * Called when the sort options on the page chagnes.
@@ -114,7 +96,7 @@ export default class Pagebase {
      * @param {any} newSort The new sort order.
      * @param {any} saveSort Whether the new sort should be saved.
      */
-    sortChanged(newSort, saveSort) {
+    pagebase.prototype.sortChanged = function sortChanged(newSort, saveSort) {
         let currentSort = this.getSort();
         if (saveSort === currentSort) {
             return;
@@ -138,7 +120,7 @@ export default class Pagebase {
                 this.rootNode.appendChild(items[i]);
             }
         }
-    }
+    };
 
     /**
      * Sort the provided elements in order.
@@ -147,9 +129,9 @@ export default class Pagebase {
      * @param {any} b The second element being compared.
      * @return {any} True if the first element is larger, false otherwise.
      */
-    sortFunc(a, b) {
-        return super.compareFunc(a.textContent, b.textContent);
-    }
+    pagebase.prototype.sortFunc = function sortFunc(a, b) {
+        return pagebase.prototype.compareFunc(a.textContent, b.textContent);
+    };
 
     /**
      * Revert the sorting on the elements.
@@ -158,9 +140,9 @@ export default class Pagebase {
      * @param {any} b The second element being compared.
      * @return {any} True if the first element was naturally first.
      */
-    unsortFunc(a, b) {
-        return super.compareFunc(a.id, b.id);
-    }
+    pagebase.prototype.unsortFunc = function unsortFunc(a, b) {
+        return pagebase.prototype.compareFunc(a.id, b.id);
+    };
 
     /**
      * Compare the two fields for sorting.
@@ -169,7 +151,7 @@ export default class Pagebase {
      * @param {any} b The second element being compared.
      * @return {any} True if the first element is larger, false otherwise.
      */
-    compareFunc(a, b) {
+    pagebase.prototype.compareFunc = function compareFunc(a, b) {
         let nameA = a.toUpperCase();
         let nameB = b.toUpperCase();
         if (nameA < nameB) {
@@ -177,26 +159,28 @@ export default class Pagebase {
         } else if (nameA > nameB) {
             return 1;
         }
-    }
+    };
 
     /**
      * Gets the sort order for the current page.
      *
      * @return {any} True if the page should be sorted, false otherwise.
      */
-    getSort() {
-        let sort = Storage.get('sort', DefaultSort);
+    pagebase.prototype.getSort = function getSort() {
+        let sort = storage.get('sort', defaults.defaultSort);
         return sort[this.name];
-    }
+    };
 
     /**
      * Updates the current sort options.
      *
      * @param {any} newSort The new sort order.
      */
-    updateSort(newSort) {
-        let sort = Storage.get('sort', DefaultSort);
+    pagebase.prototype.updateSort = function updateSort(newSort) {
+        let sort = storage.get('sort', defaults.defaultSort);
         sort[this.name] = newSort;
-        Storage.set('sort', sort);
-    }
-}
+        storage.save('sort', sort);
+    };
+
+    return pagebase;
+});

@@ -1,5 +1,16 @@
-import _Weather from './weather';
-import _Themes from './themes';
+define(['./weather', './themes'], (weather, themes) => {
+    let widgets = {
+        weather: weather,
+        themes: themes,
 
-export const Weather = new _Weather();
-export const Themes = new _Themes();
+        data: [weather, themes],
+
+        init: function(document) {
+            this.data.forEach((module) => {
+                module.init(document);
+            });
+        },
+    };
+
+    return widgets;
+});

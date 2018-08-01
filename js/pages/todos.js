@@ -1,162 +1,151 @@
-import {Util} from '../utils/utils';
-import {Storage} from '../utils/utils';
-import PagebaseGrouped from '../pagebase/pagebase_grouped';
-import {DefaultTodos} from '../utils/utils';
+define(['../pagebase/pagebase_grouped', '../utils/storage', '../utils/defaults', '../utils/util'], (PagebaseGrouped, storage, defaults, util) => {
+    let todos = {
+        name: 'todos',
 
-let Templates = {
-    titleFragment: Util.createElement('<span class="title clickable"></span>'),
-    removeFragment: Util.createElement('<span class="option options-color small-text clickable">remove</span>'),
-    editFragment: Util.createElement('<span class="edit option options-color small-text clickable">edit</span>'),
-};
+        data: [],
 
-/**
- * User added todos.
- *
- * @export
- * @class Todos
- */
-export default class Todos {
-    /**
-     *Creates an instance of Todos.
-     * @param {*} document
-     * @memberof Todos
-     */
-    constructor() {
-        this.name = 'todos';
-
-        this.data = [];
-
-        this.elems = {
+        elems: {
             rootDom: document.getElementById('internal-selector-todos'),
             newTodo: document.getElementById('newTodo'),
             saveTodo: document.getElementById('saveTodo'),
-        };
+        },
 
-        this.elems.saveTodo.addEventListener('click', this.addTodo.bind(this));
+        templates: {
+            titleFragment: util.createElement('<span class="title clickable"></span>'),
+            removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
+            editFragment: util.createElement('<span class="edit option options-color small-text clickable">edit</span>'),
+        },
 
-        this.todos = new PagebaseGrouped(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
-        this.loadTodos();
-    }
+        init: function(document) {
+            this.elems.saveTodo.addEventListener('click', this.addTodo.bind(this));
 
-    /**
-     * Called when the sort order has been changed.
-     *
-     * @param {any} newSort The new sort order.
-     */
-    sortChanged(newSort) {
-        this.todos.sortChanged(newSort, false);
-    }
+            this.todos = new PagebaseGrouped();
+            this.todos.init(document, this.name, this.elems.rootDom, this.templateFunc.bind(this));
+            this.loadTodos();
+        },
 
-    /**
-     * Loads the todos from storage into the DOM.
-     */
-    loadTodos() {
-        this.data = Storage.get('todos', DefaultTodos);
+        /**
+         * Called when the sort order has been changed.
+         *
+         * @param {any} newSort The new sort order.
+         */
+        sortChanged: function(newSort) {
+            this.todos.sortChanged(newSort, false);
+        },
 
-        this.todos.clear();
-        this.todos.addAll({
-            'heading': 'incoming',
-            'data': this.data.filter((todo) => {
-                return !todo.done;
-            }),
-        });
-        this.todos.addAll({
-            'heading': 'done',
-            'data': this.data.filter((todo) => {
-                return !!todo.done;
-            }),
-        });
-    }
+        /**
+         * Loads the todos from storage into the DOM.
+         */
+        loadTodos: function() {
+          this.data = storage.get('todos', defaults.defaultTodos);
 
-    /**
-     * Templates a provided todo into an HTML element.
-     *
-     * @param {any} todo The todo that should be turned into an element.
-     * @return {any} The HTML element.
-     */
-    templateFunc(todo) {
-        let fragment = Util.createElement('');
+          this.todos.clear();
+          this.todos.addAll({
+              'heading': 'incoming',
+              'data': this.data.filter((todo) => {
+return !todo.done;
+}),
+          });
+          this.todos.addAll({
+              'heading': 'done',
+              'data': this.data.filter((todo) => {
+return !!todo.done;
+}),
+          });
+        },
 
-        let title = Templates.titleFragment.cloneNode(true);
-        title.firstElementChild.textContent = todo.name;
-        title.firstElementChild.addEventListener('click', this.todoToggle.bind(this, todo));
-        Util.addClass(title.firstElementChild, todo.done ? 'done' : '');
-        fragment.appendChild(title);
+        /**
+         * Templates a provided todo into an HTML element.
+         *
+         * @param {any} todo The todo that should be turned into an element.
+         * @return {any} The HTML element.
+         */
+        templateFunc: function(todo) {
+            let fragment = util.createElement('');
 
-        let edit = Templates.editFragment.cloneNode(true);
-        edit.firstElementChild.addEventListener('click', this.editTodo.bind(this, todo));
-        fragment.appendChild(edit);
+            let title = this.templates.titleFragment.cloneNode(true);
+            title.firstElementChild.textContent = todo.name;
+            title.firstElementChild.addEventListener('click', this.todoToggle.bind(this, todo));
+            util.addClass(title.firstElementChild, todo.done ? 'done' : '');
+            fragment.appendChild(title);
 
-        let remove = Templates.removeFragment.cloneNode(true);
-        remove.firstElementChild.addEventListener('click', this.removeTodo.bind(this, todo));
-        fragment.appendChild(remove);
+            let edit = this.templates.editFragment.cloneNode(true);
+            edit.firstElementChild.addEventListener('click', this.editTodo.bind(this, todo));
+            fragment.appendChild(edit);
 
-        return fragment;
-    }
+            let remove = this.templates.removeFragment.cloneNode(true);
+            remove.firstElementChild.addEventListener('click', this.removeTodo.bind(this, todo));
+            fragment.appendChild(remove);
 
-    /**
-     * Adds a new todo, or completes editing an exiting todo.
-     *
-     * @param {any} event This parameter is unused.
-     */
-    addTodo(event) {
-        event.preventDefault();
-        let title = this.elems.newTodo.value.trim();
-        if (title === '') {
-            return;
-        }
+            return fragment;
+        },
 
-        // If a todo is currently being edited.
-        if (this.todoToEdit) {
-            this.todoToEdit.name = title;
-        } else {
-            this.data.push({
-                'name': title,
-            });
-        }
-
-        Storage.set('todos', this.data);
-        this.loadTodos();
-
-        this.todoToEdit = null;
-        this.elems.addTodo.reset();
-    }
-
-    /**
-     * Begins editing a todo.
-     *
-     * @param {any} todo The todo to be edited.
-     */
-    todoToggle(todo) {
-        todo.done = !todo.done;
-        Storage.set('todos', this.data);
-        this.loadTodos();
-    }
-
-    /**
-     * Begins editing a todo.
-     * The todo to be edited.
-     * @param {any} todo
-     */
-    editTodo(todo) {
-        this.todoToEdit = todo;
-        this.elems.newTodo.value = todo.name;
-    }
-
-    /**
-     * Removes a todo from the app.
-     *
-     * @param {any} todo The todo to be removed.
-     */
-    removeTodo(todo) {
-        for (let i = 0; i < this.data.length; i++) {
-            if (this.data[i] === todo) {
-                this.data.splice(i, 1);
-                break;
+        /**
+         * Adds a new todo, or completes editing an exiting todo.
+         *
+         * @param {any} event This parameter is unused.
+         */
+        addTodo: function(event) {
+            event.preventDefault();
+            let title = this.elems.newTodo.value.trim();
+            if (title === '') {
+                return;
             }
-        }
 
-        Storage.set('todos', this.data);
-        this.loadTodos();
-    }
-}
+            // If a todo is currently being edited.
+            if (this.todoToEdit) {
+                this.todoToEdit.name = title;
+            } else {
+                this.data.push({
+                    'name': title,
+                });
+            }
+
+            storage.save('todos', this.data);
+            this.loadTodos();
+
+            this.todoToEdit = null;
+            this.elems.addTodo.reset();
+        },
+
+        /**
+         * Begins editing a todo.
+         *
+         * @param {any} todo The todo to be edited.
+         */
+        todoToggle: function(todo) {
+            todo.done = !todo.done;
+            storage.save('todos', this.data);
+            this.loadTodos();
+        },
+
+        /**
+         * Begins editing a todo.
+         * The todo to be edited.
+         * @param {any} todo
+         */
+        editTodo: function(todo) {
+            this.todoToEdit = todo;
+            this.elems.newTodo.value = todo.name;
+        },
+
+        /**
+         * Removes a todo from the app.
+         *
+         * @param {any} todo The todo to be removed.
+         */
+        removeTodo: function(todo) {
+            for (let i = 0; i < this.data.length; i++) {
+                if (this.data[i] === todo) {
+                    this.data.splice(i, 1);
+                    break;
+                }
+            }
+
+            storage.save('todos', this.data);
+            this.loadTodos();
+        },
+    };
+
+    return todos;
+});

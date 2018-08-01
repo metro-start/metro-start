@@ -26,7 +26,6 @@
     "trianglify": "^1.1.0"
   },
   "devDependencies": {
-    "@types/uglifyjs-webpack-plugin": "^1.1.0",
     "copy-webpack-plugin": "*",
     "eslint": "*",
     "eslint-config-google": "^0.9.1",
