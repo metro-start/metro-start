@@ -209,7 +209,7 @@ h3 {
 .title {
     display: block;
     line-height: 100%;
-    padding: 5px;
+    padding: 5px 0;
     white-space: nowrap;
 
     #internal-selector-sessions {
@@ -236,10 +236,6 @@ h3 {
     .group > .page {
         height: calc(100% - 32px);
         overflow-y: auto;
-
-        .item > span {
-            padding-left: 10px;
-        }
     }
 }
 

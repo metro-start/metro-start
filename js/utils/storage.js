@@ -24,8 +24,8 @@ define(['jquery', './util'], (jquery, util) => {
          */
         save: function save(key, value) {
             if (this.cache) {
-this.cache[key] = value;
-}
+                this.cache[key] = value;
+            }
 
             let obj = {};
             obj[key] = value;
