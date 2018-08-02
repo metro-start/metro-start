@@ -2,5 +2,6 @@ rules:
   indentation:
     - 2
     - size: 4
+  no-ids: 0
   no-url-domains: 0
   no-vendor-prefixes: 0

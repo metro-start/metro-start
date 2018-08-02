@@ -118,24 +118,16 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                     switch (data['tristyle-chooser'].toLowerCase()) {
                         case 'triad':
-                            xColors = tinycolor(data.backgroundColor).triad().map((v) => {
-return v.toHexString();
-});
+                            xColors = tinycolor(data.backgroundColor).triad().map((v) => v.toHexString());
                             break;
                         case 'tetrad':
-                            xColors = tinycolor(data.backgroundColor).tetrad().map((v) => {
-return v.toHexString();
-});
+                            xColors = tinycolor(data.backgroundColor).tetrad().map((v) => v.toHexString());
                             break;
                         case 'monochromatic':
-                            xColors = tinycolor(data.backgroundColor).monochromatic().map((v) => {
-return v.toHexString();
-});
+                            xColors = tinycolor(data.backgroundColor).monochromatic().map((v) => v.toHexString());
                             break;
                         case 'split complements':
-                            xColors = tinycolor(data.backgroundColor).splitcomplement().map((v) => {
-return v.toHexString();
-});
+                            xColors = tinycolor(data.backgroundColor).splitcomplement().map((v) => v.toHexString());
                             break;
                         default:
                             util.error(`Could not recognize tristyle: ${data['tristyle-chooser']}`);
@@ -191,14 +183,16 @@ return v.toHexString();
             updateMainColor: function(data, duration) {
                 let mainColor = data.mainColor;
 
-                jquery('body').animate({'color': mainColor}, {duration: duration, queue: false});
+                jquery('body').animate({'color': mainColor, 'text-shadow': this.getShadow(data, mainColor)}, {duration: duration, queue: false});
                 jquery('input').animate({'color': mainColor}, {duration: duration, queue: false});
 
                 jss.set('body', {
                     'color': mainColor,
+                    'text-shadow': this.getShadow(data, mainColor),
                 });
                 jss.set('input', {
                     'color': mainColor,
+                    'text-shadow': this.getShadow(data, mainColor),
                 });
                 jss.set('.theme-section-title', {
                     'border-bottom-color': mainColor,
@@ -214,10 +208,19 @@ return v.toHexString();
             updateTitleColor: function(data, duration) {
                 let titleColor = data.titleColor;
 
-                jquery('.title-color').animate({'color': titleColor}, {duration: duration, queue: false});
+                jquery('.title-color').animate(
+                    {
+                        'color': titleColor,
+                        'text-shadow': this.getShadow(data, titleColor),
+                    },
+                    {
+                        duration: duration,
+                        queue: false,
+                    });
 
                 jss.set('.title-color', {
                     'color': titleColor,
+                    'text-shadow': this.getShadow(data, titleColor),
                 });
             },
 
@@ -229,8 +232,20 @@ return v.toHexString();
              */
             updateOptionsColor: function(data, duration) {
                 let optionsColor = data.optionsColor;
+                jquery('.options-color').animate(
+                    {
+                        'color': optionsColor,
+                        'text-shadow': this.getShadow(data, optionsColor),
+                    },
+                    {
+                        duration: duration,
+                        queue: false,
+                    });
 
-                jquery('.options-color').animate({'color': optionsColor}, {duration: duration, queue: false});
+                jss.set('.options-color', {
+                    'color': optionsColor,
+                    'text-shadow': this.getShadow(data, optionsColor),
+                });
 
                 jss.set('*', {
                     'border-color': optionsColor,
@@ -247,9 +262,6 @@ return v.toHexString();
                     'background': optionsColor,
                 });
 
-                jss.set('.options-color', {
-                    'color': optionsColor,
-                });
                 jss.set('.active', {
                     'background-color': optionsColor,
                 });
@@ -318,24 +330,13 @@ return v.toHexString();
                         });
                         break;
                 }
+            },
 
-                switch (data['fontreadability-chooser']) {
-                    case 'on':
-                        let shadowColor = tinycolor(data.mainColor).spin(180).toHexString();
-                        jss.set('body', {
-                            'text-shadow': `${shadowColor} 0px 0px 0.5em, ${shadowColor } 0px 0px 0.2em`,
-                        });
-                        jss.set('body .sp-dd, .active', {
-                            'text-shadow': 'none',
-                        });
-                        break;
-
-                    case 'off':
-                        jss.set('body', {
-                            'text-shadow': 'none',
-                        });
-                        break;
-                }
+            getShadow: function(data, color) {
+                let shadow = tinycolor(color);
+                return data['fontreadability-chooser'] == 'on'
+                    ? `${shadow.spin(90)} 0 0 0.1em, ${shadow.spin(180)} 0 0 0.2em`
+                    : 'none';
             },
         };
 

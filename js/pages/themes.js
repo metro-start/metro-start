@@ -17,7 +17,7 @@ define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils
 
         templates: {
             itemFragment: util.createElement('<div class="theme_item"></div>'),
-            titleFragment: util.createElement('<span class="panel-item clickable"></span>'),
+            titleFragment: util.createElement('<span class="panel-item theme-item clickable"></span>'),
             titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
             removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             shareFragment: util.createElement('<span class="option options-color small-text clickable">share</span>'),
