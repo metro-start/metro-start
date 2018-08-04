@@ -1,15 +1,15 @@
 define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './defaults'],
     (jquery, tinycolor, jss, trianglify, util, storage, defaults) => {
         let script = {
-            init: function() { },
+            init: function() {},
 
             /**
-            * Changes the style to whatever is in the scope.
-            *
-            * @param {any} data: The new theme to change to.
-            * @param {any} transition: A bool indicating whether to slowly transition or immediately change.
-            * @return {any} The upgrade and applied theme.
-            */
+             * Changes the style to whatever is in the scope.
+             *
+             * @param {any} data: The new theme to change to.
+             * @param {any} transition: A bool indicating whether to slowly transition or immediately change.
+             * @return {any} The upgrade and applied theme.
+             */
             updateTheme: function(data, transition) {
                 let duration = (transition === true ? 800 : 0);
                 let theme = util.upgradeTheme(data, defaults.defaultTheme);
@@ -157,7 +157,12 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         'background': `url(${modalPattern.png()})`,
                     });
                 } else {
-                    jquery('.background-color').animate({'backgroundColor': data.backgroundColor}, {duration: duration, queue: false});
+                    jquery('.background-color').animate({
+                        'backgroundColor': data.backgroundColor,
+                    }, {
+                        duration: duration,
+                        queue: false,
+                    });
 
                     jss.set('body', {
                         'background': data.backgroundColor,
@@ -183,8 +188,19 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             updateMainColor: function(data, duration) {
                 let mainColor = data.mainColor;
 
-                jquery('body').animate({'color': mainColor, 'text-shadow': this.getShadow(data, mainColor)}, {duration: duration, queue: false});
-                jquery('input').animate({'color': mainColor}, {duration: duration, queue: false});
+                jquery('body').animate({
+                    'color': mainColor,
+                    'text-shadow': this.getShadow(data, mainColor),
+                }, {
+                    duration: duration,
+                    queue: false,
+                });
+                jquery('input').animate({
+                    'color': mainColor,
+                }, {
+                    duration: duration,
+                    queue: false,
+                });
 
                 jss.set('body', {
                     'color': mainColor,
@@ -208,15 +224,13 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             updateTitleColor: function(data, duration) {
                 let titleColor = data.titleColor;
 
-                jquery('.title-color').animate(
-                    {
-                        'color': titleColor,
-                        'text-shadow': this.getShadow(data, titleColor),
-                    },
-                    {
-                        duration: duration,
-                        queue: false,
-                    });
+                jquery('.title-color').animate({
+                    'color': titleColor,
+                    'text-shadow': this.getShadow(data, titleColor),
+                }, {
+                    duration: duration,
+                    queue: false,
+                });
 
                 jss.set('.title-color', {
                     'color': titleColor,
@@ -232,15 +246,13 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              */
             updateOptionsColor: function(data, duration) {
                 let optionsColor = data.optionsColor;
-                jquery('.options-color').animate(
-                    {
-                        'color': optionsColor,
-                        'text-shadow': this.getShadow(data, optionsColor),
-                    },
-                    {
-                        duration: duration,
-                        queue: false,
-                    });
+                jquery('.options-color').animate({
+                    'color': optionsColor,
+                    'text-shadow': this.getShadow(data, optionsColor),
+                }, {
+                    duration: duration,
+                    queue: false,
+                });
 
                 jss.set('.options-color', {
                     'color': optionsColor,
@@ -281,12 +293,12 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              */
             updateFont: function(data) {
                 let checkFont = function(font) {
-                switch (font) {
-                    case 'system':
-                        return '"Segoe UI", Helvetica, Arial, sans-serif';
+                    switch (font) {
+                        case 'system':
+                            return '"Segoe UI", Helvetica, Arial, sans-serif';
 
-                    case 'raleway':
-                        return '"Raleway", "Segoe UI", Helvetica, Arial, sans-serif';
+                        case 'raleway':
+                            return '"Raleway", "Segoe UI", Helvetica, Arial, sans-serif';
                     }
                 };
 
@@ -334,9 +346,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
             getShadow: function(data, color) {
                 let shadow = tinycolor(color);
-                return data['fontreadability-chooser'] == 'on'
-                    ? `${shadow.spin(90)} 0 0 0.1em, ${shadow.spin(180)} 0 0 0.2em`
-                    : 'none';
+                return data['fontreadability-chooser'] == 'on' ?
+                    `${shadow.spin(90)} 0 0 0.1em, ${shadow.spin(180)} 0 0 0.2em` :
+                    'none';
             },
         };
 

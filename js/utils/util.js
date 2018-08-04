@@ -125,37 +125,37 @@ define([], () => {
         isEmpty: function isEmpty(obj) {
             // null and undefined are 'empty'
             if (obj === null || obj === undefined) {
-return true;
-}
+                return true;
+            }
 
             // numbers are not empty.
             if (typeof obj === 'number') {
-return false;
-}
+                return false;
+            }
 
             // Assume if it has a length property with a non-zero value
             // that that property is correct.
             if (obj.length > 0) {
-return false;
-}
+                return false;
+            }
             if (obj.length === 0) {
-return true;
-}
+                return true;
+            }
 
             // If it isn't an object at this point
             // it is empty, but it can't be anything *but* empty
             // Is it empty?  Depends on your application.
             if (typeof obj !== 'object') {
-return true;
-}
+                return true;
+            }
 
             // Otherwise, does it have any properties of its own?
             // Note that this doesn't handle
             // toString and valueOf enumeration bugs in IE < 9
             for (let key in obj) {
                 if (hasOwnProperty.call(obj, key)) {
-return false;
-}
+                    return false;
+                }
             }
 
             return true;
@@ -194,16 +194,16 @@ return false;
 
             // Upgrade any underscored colors.
             if (!!data.options_color && !data.optionsColor) {
-              theme.optionsColor = data.options_color;
+                theme.optionsColor = data.options_color;
             }
             if (!!data.main_color && !data.mainColor) {
-              theme.mainColor = data.main_color;
+                theme.mainColor = data.main_color;
             }
             if (!!data.background_color && !data.backgroundColor) {
-              theme.backgroundColor = data.background_color;
+                theme.backgroundColor = data.background_color;
             }
             if (!!data.title_color && !data.titleColor) {
-              theme.titleColor = data.title_color;
+                theme.titleColor = data.title_color;
             }
 
             // Upgrade any theme.colors.

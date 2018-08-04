@@ -43,8 +43,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 document.getElementById('tristyle-chooser'),
             ],
 
-            themeAdded: function() { },
-            themeRemoved: function() { },
+            themeAdded: function() {},
+            themeRemoved: function() {},
 
             init: function() {
                 // this.data = defaults.defaultTheme;
@@ -182,7 +182,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                         this.data[inputElement.id] = target.val();
                     }
                 });
-           },
+            },
 
             /**
              * Create new metro-select for the given inputElement.
@@ -301,8 +301,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              */
             updateCurrentTheme: function(inputId, val) {
                 if (this.data[inputId] === val) {
-return;
-}
+                    return;
+                }
 
                 this.sessionUpdateCount++;
                 util.logChange(inputId, typeof val === 'object' ? JSON.stringify(val) : val);
@@ -349,8 +349,7 @@ return;
              * @return {any} The most readable color.
              */
             getReadable: function(color, multiplier) {
-                return tinycolor.mostReadable(color,
-                [
+                return tinycolor.mostReadable(color, [
                     // My reckons for good color stops :shrug:
                     tinycolor(color.toHexString()).spin(multiplier * 38),
                     tinycolor(color.toHexString()).spin(multiplier * 100),
@@ -367,8 +366,9 @@ return;
                     tinycolor(color.toHexString()).spin(multiplier * 190).brighten(25),
                     tinycolor(color.toHexString()).spin(multiplier * 242).brighten(25),
                     tinycolor(color.toHexString()).spin(multiplier * 303).brighten(25),
-                ],
-                {includeFallbackColors: false}).toHexString();
+                ], {
+                    includeFallbackColors: false,
+                }).toHexString();
             },
         };
 
