@@ -26,8 +26,8 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     theme.optionsColor = tinycolor.random().toHexString();
                     theme.backgroundColor = tinycolor.random().toHexString();
 
-                    theme['font-chooser'] = util.randomize(['custom', 'system', 'raleway']);
-                    theme['fontfamily-chooser'] = util.randomize(['system', 'raleway']);
+                    theme['font-chooser'] = util.randomize(defaults.defaultFonts);
+                    theme['fontfamily-chooser'] = util.randomize(defaults.defaultFonts);
                     theme['fontweight-chooser'] = util.randomize(['normal', 'lighter', 'bolder']);
                     theme['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
                 }
@@ -292,56 +292,37 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * @param {any} data The theme object with the new font settings.
              */
             updateFont: function(data) {
-                let checkFont = function(font) {
-                    switch (font) {
-                        case 'system':
-                            return '"Segoe UI", Helvetica, Arial, sans-serif';
-
-                        case 'raleway':
-                            return '"Raleway", "Segoe UI", Helvetica, Arial, sans-serif';
-                    }
-                };
-
                 let jssSetMultiple = (selectors, style) => {
                     for (let selector of selectors) {
                         jss.set(selector, style);
                     }
                 };
 
-                switch (data['font-chooser']) {
-                    case 'system':
-                        data['fontfamily-chooser'] = 'system';
-                        data['fontweight-chooser'] = 'normal';
-                        data['fontvariant-chooser'] = 'normal';
-                        break;
+                // If the current font group is not custom, make it active.
+                if (data['font-chooser'] !== 'custom') {
+                    data['fontfamily-chooser'] = data['font-chooser'];
+                }
 
-                    case 'raleway':
-                        data['fontfamily-chooser'] = 'raleway';
-                        data['fontweight-chooser'] = 'normal';
-                        data['fontvariant-chooser'] = 'normal';
-                        break;
+                // If the current font is not system, at it to the font list.
+                let font = `"Segoe UI", Helvetica, Arial, sans-serif`;
+                if (data['fontfamily-chooser'] !== 'system') {
+                    font = `"${data['fontfamily-chooser']}", ${font}`;
+                }
+
+                // If the current font is small caps, set it to the real values.
+                let transform = 'none';
+                let variant = 'normal';
+                if (data['fontvariant-chooser'] == 'small-caps') {
+                    transform = 'lowercase';
+                    variant = 'small-caps';
                 }
 
                 jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
-                    'font-family': checkFont(data['fontfamily-chooser']),
+                    'font-family': font,
                     'font-weight': data['fontweight-chooser'],
+                    'text-transform': transform,
+                    'font-variant': variant,
                 });
-
-                switch (data['fontvariant-chooser']) {
-                    case 'small-caps':
-                        jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
-                            'text-transform': 'lowercase',
-                            'font-variant': 'small-caps',
-                        });
-                        break;
-
-                    case 'normal':
-                        jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
-                            'text-transform': 'none',
-                            'font-variant': 'normal',
-                        });
-                        break;
-                }
             },
 
             getShadow: function(data, color) {

@@ -4,6 +4,9 @@ The default theme for metro start.
 define(() => {
     return {
         init: function() {},
+
+        defaultFonts: ['system', 'raleway', 'source', 'wire one', 'im fell'],
+
         // defaultWebservice: 'http://metro-start.appspot.com',
         defaultWebservice: 'https://20171226t133015-dot-metro-start.appspot.com',
 

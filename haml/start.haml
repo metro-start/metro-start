@@ -112,6 +112,9 @@
           %select#font-chooser.chooser
             %option.clickable system
             %option.clickable raleway
+            %option.clickable source
+            %option.clickable wire one
+            %option.clickable im fell 
             %option.clickable custom
 
         .theme-editor-section
@@ -138,6 +141,9 @@
                       %select#fontfamily-chooser.chooser
                         %option.clickable system
                         %option.clickable raleway
+                        %option.clickable source
+                        %option.clickable wire one
+                        %option.clickable im fell 
 
                 %tr
                   %td
@@ -248,17 +254,11 @@
     // Rule to hide all options when page first loads.
     // Removes option elements added after the calls to hide .option were made.
     %style#hideRule{:type => "text/css"}
-      \.option {
-      display: none;
-      }
+      \.option { display: none; }
 
-      \/* Remove extra space that was added for sorting. */
-      \.external-selector {
-      height: 100%;
-      }
+      /* Remove extra space that was added for sorting. */
+      \.external-selector { height: 100%; }
       
-      \#external-selector-todos {
-      height: 100%;
-      }
+      \#external-selector-todos { height: 100%; }
 
     %script{:src => "metro-start.js"}

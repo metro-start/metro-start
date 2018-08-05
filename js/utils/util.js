@@ -1,4 +1,4 @@
-define([], () => {
+define(['./defaults'], (defaults) => {
     // Speed up calls to hasOwnProperty
     let hasOwnProperty = Object.prototype.hasOwnProperty;
 
@@ -181,15 +181,8 @@ define([], () => {
             let theme = Object.assign({}, defaultTheme, data);
 
             // Upgrade the font.
-            switch (data['font-chooser']) {
-                case 'system':
-                case 'raleway':
-                case 'custom':
-                    break;
-
-                default:
+            if (!defaults.defaultFonts.concat(['custom']).includes(data['font-chooser'])) {
                     theme['font-chooser'] = defaultTheme['font-chooser'];
-                    break;
             }
 
             // Upgrade any underscored colors.
