@@ -102,7 +102,16 @@
 
     .footer
       %p#wrench.options-color.wrench.clickable wrench
+      %p#aboutButton.option.options-color.clickable.about-button about 
       %p#editThemeButton.option.options-color.clickable.theme-button edit theme
+
+    #aboutPage
+      %h3.title-color about metro %start
+      %h4 designed by @chustar
+      %h5 powered by:
+      %ul
+        %li
+          %a{:href => 'http://www.google.com'} project
 
     #themeEditor
       %h3.title-color theme editor

@@ -10,8 +10,10 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
 
             elems: {
                 themeEditor: document.getElementById('themeEditor'),
+                aboutPage: document.getElementById('aboutPage'),
                 trianglify: document.getElementById('trianglifyButton'),
                 editThemeButton: document.getElementById('editThemeButton'),
+                aboutButton: document.getElementById('aboutButton'),
                 solidSection: document.getElementById('solid'),
                 trianglifySection: document.getElementById('trianglify'),
             },
@@ -52,7 +54,9 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 this.data = util.upgradeTheme(this.data, defaults.defaultTheme);
 
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
+                this.elems.aboutPage.parentNode.removeChild(this.elems.aboutPage);
                 this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
+                this.elems.aboutButton.addEventListener('click', this.openAboutEditor.bind(this));
 
                 storage.save('currentTheme', script.updateTheme(this.data, false));
             },
@@ -111,6 +115,94 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     this.isBound = true;
                 }
             },
+
+            /**
+             * Shows the theme editor modal window.
+             */
+            openAboutEditor: function() {
+                this.sessionUpdateCount = 0;
+
+                this.data = storage.get('currentTheme', defaults.defaultTheme);
+                storage.save('previousTheme', this.data);
+
+                if (defaults.systemThemes.map((t) => t.title.toLowerCase()).includes(this.data.title.toLowerCase())) {
+                    this.data.title = '';
+                }
+
+                modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
+
+                if (!this.isBound) {
+                    for (let i = 0; i < this.selectInputs.length; i++) {
+                        this.bindTextInput(this.textInputs[i]);
+                    }
+
+                    for (let j = 0; j < this.colorInputs.length; j++) {
+                        this.bindColorInput(this.colorInputs[j]);
+                    }
+
+                    for (let k = 0; k < this.selectInputs.length; k++) {
+                        this.bindSelectInput(this.selectInputs[k]);
+                    }
+                    this.isBound = true;
+                }
+            },
+
+            /**
+             * Handles whwhen the theme editor modal is closed.
+             *
+             * @param {any} res How the modal was closed. True if the 'okay' option was selected.
+             */
+            aboutClosed: function(res) {
+                util.log(`theme editor closed with result: ${res}`);
+
+                if (!res) {
+                    if (this.sessionUpdateCount !== 0) {
+                        // If the theme edior was canceled, reset the theme.
+                        this.data = storage.get('previousTheme', this.data);
+                    }
+                } else {
+                    if (defaults.systemThemes.map((t) => t.title.toLowerCase()).includes(this.data.title.toLowerCase())) {
+                        this.data.title = '';
+                        modal.createModal(
+                            'themeEditorModal',
+                            `${this.data.title} already exists as a system theme.`,
+                            null,
+                            null,
+                            'okay');
+                    }
+                    // If the title or author are empty, make them untitled.
+                    if (!this.data.title) {
+                        this.data.title = 'untitled';
+                    }
+
+                    if (!this.data.author) {
+                        this.data.author = 'anonymous';
+                    }
+
+                    this.data.online = false;
+
+                    // Ensure no duplicate local themes are created.
+                    let themeFound = false;
+                    let themeIndex = 0;
+                    let themesLocal = storage.get('themesLocal', []);
+                    for (themeIndex in themesLocal) {
+                        if (themesLocal[themeIndex].title.toLowerCase() === this.data.title.toLowerCase()) {
+                            themesLocal[themeIndex] = this.data;
+                            themeFound = true;
+                        }
+                    }
+
+                    if (themeFound === false) {
+                        themesLocal.push(this.data);
+                    }
+
+                    storage.save('themesLocal', themesLocal);
+                    this.themeAdded();
+                }
+
+                this.updateCurrentTheme('currentTheme', this.data);
+            },
+
 
             /**
              * Handles whwhen the theme editor modal is closed.
