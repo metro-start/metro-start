@@ -1,6 +1,5 @@
 // Generic Styles
 $default-background: #fff;
-
 * {
     box-sizing: border-box;
 }
@@ -118,18 +117,11 @@ input {
     font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
-
-    [type='text'] {
-        border-style: solid;
-        border-width: 2px;
-    }
-
     [type='submit'] {
         border: 0;
         cursor: pointer;
     }
 }
-
 
 ::-webkit-scrollbar {
     height: 10px;
@@ -159,6 +151,16 @@ h2 {
 
 h3 {
     font-size: 58px;
+    margin: 12px auto;
+}
+
+h4 {
+    font-size: 42px;
+    margin: 12px auto;
+}
+
+h4 {
+    font-size: 32px;
     margin: 12px auto;
 }
 
@@ -208,8 +210,7 @@ h3 {
     float: left;
     height: 100%;
     width: 20%;
-
-    > div {
+    >div {
         height: 100%;
     }
 }
@@ -232,7 +233,6 @@ h3 {
 .item {
     align-items: center;
     min-width: 0;
-
     :last-child {
         margin-bottom: 0;
     }
@@ -243,7 +243,6 @@ h3 {
     line-height: 100%;
     padding: 5px 0;
     white-space: nowrap;
-
     #internal-selector-sessions {
         max-width: 375px;
         overflow: hidden;
@@ -257,15 +256,13 @@ h3 {
     flex-direction: row;
     flex-grow: 0;
     height: calc(100% - 1px);
-
     .group {
         display: inline-block;
         height: 100%;
         margin-right: 28px;
     }
-
     .page,
-    .group > .page {
+    .group>.page {
         border-top: 1px solid;
         height: calc(100% - 32px);
         margin-left: -5px;
@@ -292,7 +289,6 @@ h3 {
     padding: 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
-
     &.theme-item {
         padding: 0;
     }
@@ -314,7 +310,7 @@ h3 {
 }
 
 // Bookmarks
-#internal-selector-bookmarks > .pagebase-grouped > .page {
+#internal-selector-bookmarks>.pagebase-grouped>.page {
     height: 100%;
     padding-left: 0;
 }
@@ -328,7 +324,7 @@ h3 {
 }
 
 // Themes
-#internal-selector-themes > .group > .page > .item {
+#internal-selector-themes>.group>.page>.item {
     padding-bottom: 10px;
 }
 
@@ -396,12 +392,10 @@ h3 {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-
     .clickable {
         margin-bottom: 8px;
         margin-right: 4px;
         padding: 6px;
-
         :first {
             margin-right: 4px;
         }
@@ -446,15 +440,16 @@ h3 {
 // Table formatting
 .metro-table {
     border-spacing: 8px;
-
     td {
         padding: 4px;
         padding-bottom: 8px;
         vertical-align: middle;
-
-        :last-child {
-            padding-bottom: 4px;
-        }
     }
 }
 
+#aboutModal {
+    text-align: center;
+    .metro-table {
+        width: 100%;
+    }
+}

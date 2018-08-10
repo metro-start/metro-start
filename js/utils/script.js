@@ -54,11 +54,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 });
 
                 jss.set('body', {
-                    'background': `url(${bodyPattern.png()})`,
+                    'background-image': `url(${bodyPattern.png()})`,
                 });
 
                 jss.set('.modal-content', {
-                    'background': `url(${bodyPattern.png()})`,
+                    'background-image': `url(${bodyPattern.png()})`,
                 });
             },
 
@@ -143,7 +143,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         seed: 'metro-start',
                     });
                     jss.set('body', {
-                        'background': `url(${bodyPattern.png()})`,
+                        'background-color': `url(${bodyPattern.png()})`,
                     });
 
                     let modalPattern = trianglify({
@@ -154,7 +154,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         x_colors: xColors,
                     });
                     jss.set('.modal-content', {
-                        'background': `url(${modalPattern.png()})`,
+                        'background-color': `url(${modalPattern.png()})`,
                     });
                 } else {
                     jquery('.background-color').animate({
@@ -165,10 +165,10 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     });
 
                     jss.set('body', {
-                        'background': data.backgroundColor,
+                        'background-color': data.backgroundColor,
                     });
                     jss.set('.modal-content', {
-                        'background': data.backgroundColor,
+                        'background-color': data.backgroundColor,
                     });
                     jss.set('.background-color', {
                         'background-color': data.backgroundColor,
@@ -176,7 +176,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 }
 
                 jss.set('::-webkit-scrollbar', {
-                    'background': data.backgroundColor,
+                    'background-color': data.backgroundColor,
                 });
             },
             /**
@@ -264,14 +264,14 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 });
 
                 jss.set('::-webkit-scrollbar-thumb', {
-                    'background': optionsColor,
+                    'background-color': optionsColor,
                 });
 
                 jss.set('input::placeholder', {
-                    'background': optionsColor,
+                    'background-color': optionsColor,
                 });
                 jss.set('::-webkit-input-placeholder', {
-                    'background': optionsColor,
+                    'background-color': optionsColor,
                 });
 
                 jss.set('.active', {

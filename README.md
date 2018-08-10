@@ -8,9 +8,6 @@ A new tab page for Google Chrome inspired by Zune.
 
 ⚡ Powered by:
 * [Trianglify](http://qrohlf.com/trianglify/)
-* [Grunt](http://gruntjs.com/)
-* [Yarn](https://yarnpkg.com/en/)
-* [Webpack](https://webpack.js.org/)
 * [Jquery](https://jquery.com/)
 * [JSS](https://github.com/Box9/jss)
 * [MetroSelect](https://github.com/metro-start/metro-select)

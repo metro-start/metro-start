@@ -105,13 +105,33 @@
       %p#aboutButton.option.options-color.clickable.about-button about 
       %p#editThemeButton.option.options-color.clickable.theme-button edit theme
 
-    #aboutPage
-      %h3.title-color about metro %start
-      %h4 designed by @chustar
-      %h5 powered by:
-      %ul
-        %li
-          %a{:href => 'http://www.google.com'} project
+    #aboutModal
+      %h2.title-color about metro start
+      %h4.title-color A new tab page for Google Chrome inspired by Zune.
+      %h5.options-color ⚡ POWERED BY:
+      %table.metro-table
+        %tbody
+          %tr
+            %td
+              %a{:href => 'http://qrohlf.com/trianglify'} Trianglify
+          %tr
+            %td 
+              %a{:href => 'https://jquery.com'} Jquery
+          %tr
+            %td 
+              %a{:href => 'https://github.com/Box9/jss'} JSS
+          %tr
+            %td 
+              %a{:href => 'https://github.com/metro-start/metro-select'} MetroSelect
+          %tr
+            %td 
+              %a{:href => 'https://bgrins.github.io/spectrum'} Spectrum Colorpicker
+          %tr
+            %td 
+              %a{:href => 'https://bgrins.github.io/TinyColor'} TinyColor
+          %tr
+            %td 
+              %a{:href => 'https://github.com/metro-start/metro-start/blob/master/package.json'} and others...
 
     #themeEditor
       %h3.title-color theme editor
