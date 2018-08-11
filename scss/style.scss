@@ -5,6 +5,7 @@ $default-background: #fff;
 }
 
 html {
+    font-size: 32px;
     height: 100%;
 }
 
@@ -85,7 +86,6 @@ html {
 body {
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
-    font-size: 32px;
     height: 100%;
 }
 
@@ -140,33 +140,33 @@ h3 {
 }
 
 h1 {
-    font-size: 132px;
+    font-size: 4rem;
     margin: 0 0 15px 50px;
 }
 
 h2 {
-    font-size: 72px;
+    font-size: 3.2rem;
     margin: 12px auto;
 }
 
 h3 {
-    font-size: 58px;
+    font-size: 2.6rem;
     margin: 12px auto;
 }
 
 h4 {
-    font-size: 42px;
+    font-size: 2rem;
     margin: 12px auto;
 }
 
-h4 {
-    font-size: 32px;
+h5 {
+    font-size: 1.4rem;
     margin: 12px auto;
 }
 
 .small-text {
     display: inline-block;
-    font-size: 24px;
+    font-size: .8rem;
     margin-right: 20px;
 }
 
@@ -317,9 +317,8 @@ h4 {
 
 .slash {
     align-self: center;
-    font-size: 1.3em;
-    font-weight: bold;
-    padding-left: 2px;
+    font-size: 1.2rem;
+    font-weight: bolder;
     padding-right: 4px;
 }
 
@@ -412,7 +411,6 @@ h4 {
 .theme-section-title {
     align-content: left;
     border-bottom: 2px solid;
-    font-size: .7em;
     font-style: italic;
 }
 
@@ -426,8 +424,8 @@ h4 {
     border-left-style: solid;
     border-left-width: 2px;
     margin-left: 12.5%;
-    padding-bottom: 8px;
-    padding-left: 8px;
+    padding-bottom: 4px;
+    padding-left: 4px;
 }
 
 .tristyle-section,
@@ -442,7 +440,7 @@ h4 {
     border-spacing: 8px;
     td {
         padding: 4px;
-        padding-bottom: 8px;
+        padding-bottom: 4px;
         vertical-align: middle;
     }
 }

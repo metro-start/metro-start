@@ -136,7 +136,7 @@
     #themeEditor
       %h3.title-color theme editor
       .picker
-        .theme-section-title font options
+        .theme-section-title.small-text font options
         .theme-editor-section.options-color
           %select#font-chooser.chooser
             %option.clickable system
@@ -150,7 +150,7 @@
           #default.font-chooser-section
           #raleway.font-chooser-section
           #custom.theme-editor-border.font-chooser-section
-            .theme-section-title font style options
+            .theme-section-title.small-text font style options
             %table.metro-table
               %tbody
                 %tr
@@ -193,7 +193,7 @@
                         %option.clickable normal
                         %option.clickable small-caps
 
-        .theme-section-title color palette options
+        .theme-section-title.small-text color palette options
         .theme-editor-section.options-color
           %select#palette-chooser.chooser
             %option.clickable automatic
@@ -201,27 +201,45 @@
 
         .theme-editor-section
           #automatic.theme-editor-border.palette-chooser-section
-            .theme-section-title automatic color options
-            %div
-              %span.small-text base
-              %input#baseColor{:size => "9", :type => "text"}/
+            %table.metro-table
+              %thead
+                %tr
+                  %th.theme-section-title.small-text automatic color options
+              %tbody
+                %tr
+                  %td
+                    %span.small-text base
+                  %td
+                    %input#baseColor{:size => "9", :type => "text"}/
 
           #custom.theme-editor-border.palette-chooser-section
-            .theme-section-title custom color options
-            %div
-              %span.small-text title
-              %input#titleColor{:type => "text"}/
-            %div
-              %span.small-text main
-              %input#mainColor{:type => "text"}/
-            %div
-              %span.small-text options
-              %input#optionsColor{:type => "text"}/
-            %div
-              %span.small-text background
-              %input#backgroundColor{:type => "text"}/
-
-        .theme-section-title background options
+            %table.metro-table
+              %thead
+                %tr
+                  %th.theme-section-title.small-text custom color options
+              %tbody
+                %tr
+                  %td
+                    %span.small-text title
+                  %td
+                    %input#titleColor{:type => "text"}/
+                %tr
+                  %td
+                    %span.small-text main
+                  %td
+                    %input#mainColor{:type => "text"}/
+                %tr
+                  %td
+                    %span.small-text options
+                  %td
+                    %input#optionsColor{:type => "text"}/
+                %tr
+                  %td
+                    %span.small-text background
+                  %td
+                    %input#backgroundColor{:type => "text"}/
+            
+        .theme-section-title.small-text background options
         .theme-editor-section.options-color
           %select#background-chooser.chooser.theme-editor-section
             %option.clickable trianglify
@@ -230,8 +248,10 @@
         .theme-editor-section
           #none.background-chooser-section
           #trianglify.theme-editor-border.background-chooser-section
-            .theme-section-title trianglify options
             %table.metro-table
+              %thead
+                %tr
+                  %th.theme-section-title.small-text trianglify options
               %tbody
                 %tr
                   %td
@@ -264,7 +284,7 @@
                         %option.clickable bent
                         %option.clickable freeform
 
-        .theme-section-title author info
+        .theme-section-title.small-text author info
         .theme-editor-section
           #author.theme-editor-border
             %table.metro-table

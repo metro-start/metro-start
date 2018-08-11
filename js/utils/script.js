@@ -143,7 +143,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         seed: 'metro-start',
                     });
                     jss.set('body', {
-                        'background-color': `url(${bodyPattern.png()})`,
+                        'background': `url(${bodyPattern.png()})`,
                     });
 
                     let modalPattern = trianglify({
@@ -153,8 +153,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         cell_size: triSize,
                         x_colors: xColors,
                     });
+
                     jss.set('.modal-content', {
-                        'background-color': `url(${modalPattern.png()})`,
+                        'background': `url(${modalPattern.png()})`,
                     });
                 } else {
                     jquery('.background-color').animate({
