@@ -278,13 +278,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 jss.set('.active', {
                     'background-color': optionsColor,
                 });
-                jss.set('.pagebase-grouped > .group > .page', {
-                    'border-top-style': 'solid',
-                    'border-top-width': '1px',
-                });
-                jss.set('.modal-info .clickable', {
-                    'border': `2px solid ${optionsColor}`,
-                });
             },
 
             /**
