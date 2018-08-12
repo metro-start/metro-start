@@ -304,13 +304,15 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     return;
                 }
 
+                if (this.data['palette-chooser'] === 'automatic') {
+                    this.autoPaletteAdjust();
+                }
+
                 this.sessionUpdateCount++;
                 util.logChange(inputId, typeof val === 'object' ? JSON.stringify(val) : val);
 
                 if (inputId === 'currentTheme') {
                     this.data = util.clone(val);
-
-                    this.autoPaletteAdjust();
 
                     // Create an id, if one does not exist.
                     if (this.data.id) {
@@ -332,13 +334,11 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
             },
 
             autoPaletteAdjust: function() {
-                if (this.data['palette-chooser'] === 'automatic') {
-                    let baseColor = tinycolor(this.data.baseColor);
-                    this.data.backgroundColor = baseColor.toHexString();
-                    this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor), -1.6);
-                    this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor), 1.8);
-                    this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor), 1.25);
-                }
+                let baseColor = tinycolor(this.data.baseColor);
+                this.data.backgroundColor = baseColor.toHexString();
+                this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor), -1.6);
+                this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor), 1.8);
+                this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor), 1.25);
             },
 
             /**

@@ -143,7 +143,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         seed: 'metro-start',
                     });
                     jss.set('body', {
-                        'background': `url(${bodyPattern.png()})`,
+                        'background-image': `url(${bodyPattern.png()})`,
                     });
 
                     let modalPattern = trianglify({
@@ -155,7 +155,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     });
 
                     jss.set('.modal-content', {
-                        'background': `url(${modalPattern.png()})`,
+                        'background-image': `url(${modalPattern.png()})`,
+                    });
+
+                    jss.set('.background-color', {
+                        'background-color': data.backgroundColor,
                     });
                 } else {
                     jquery('.background-color').animate({
@@ -166,9 +170,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     });
 
                     jss.set('body', {
+                        'background-image': `none`,
                         'background-color': data.backgroundColor,
                     });
                     jss.set('.modal-content', {
+                        'background-image': `none`,
                         'background-color': data.backgroundColor,
                     });
                     jss.set('.background-color', {
@@ -178,6 +184,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                 jss.set('::-webkit-scrollbar', {
                     'background-color': data.backgroundColor,
+                });
+
+
+                jss.set('input[type="text"]', {
+                    'background-color': data.optionsColor,
                 });
             },
             /**
@@ -306,7 +317,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 // If the current font is small caps, set it to the real values.
                 let transform = 'none';
                 let variant = 'normal';
-                if (data['fontvariant-chooser'] == 'small-caps') {
+                if (data['fontvariant-chooser'] === 'small-caps') {
                     transform = 'lowercase';
                     variant = 'small-caps';
                 }
@@ -321,7 +332,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
             getShadow: function(data, color) {
                 let shadow = tinycolor(color);
-                return data['fontreadability-chooser'] == 'on' ?
+                return data['fontreadability-chooser'] === 'on' ?
                     `${shadow.spin(90)} 0 0 0.1em, ${shadow.spin(180)} 0 0 0.2em` :
                     'none';
             },

@@ -63,7 +63,7 @@ define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils
                 jquery.get(
                     `${defaults.defaultWebservice}/themes.json`,
                     (themes) => {
-                        if (!themes || themes.length == 0) {
+                        if (!themes || themes.length === 0) {
                             util.warn('No online themes available.');
                             return;
                         }
