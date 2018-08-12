@@ -1,48 +1,50 @@
 define(['jquery', 'jss', '../utils/storage', '../utils/defaults', './todos', './sessions', './apps', './bookmarks', './themes', 'metro-select'],
-(jquery, jss, storage, defaults, todos, sessions, apps, bookmarks, themes) => {
-  var pages = {
+    (jquery, jss, storage, defaults, todos, sessions, apps, bookmarks, themes) => {
+        let pages = {
 
-    name: 'pages',
+            name: 'pages',
 
-    elems: {
-      chooser: document.getElementById('pages-chooser')
-    },
+            elems: {
+                chooser: document.getElementById('pages-chooser'),
+            },
 
-    modules: [todos, sessions, apps, bookmarks, themes],
+            modules: [todos, sessions, apps, bookmarks, themes],
 
-    init: function(document) {
-      this.showOptions = false;
-      this.page = storage.get('page', 'todos');
+            init: function(document) {
+                this.showOptions = false;
+                this.page = storage.get('page', 'todos');
 
-      this.modules.forEach((module) => {
-          module.init(document);
-      });
-      
-      jquery(this.elems.chooser).metroSelect({
-        'initial': this.page,
-        'onchange': this.changePage.bind(this)
-      });
+                this.modules.forEach((module) => {
+                    module.init(document);
+                });
 
-      // Set the initial page.
-      this.changePage(this.page);
-    },
+                jquery(this.elems.chooser).metroSelect({
+                    'initial': this.page,
+                    'onchange': this.changePage.bind(this),
+                });
 
-    /**
-     * Change the currently selected page.
-     * 
-     * @param {any} page The new page.
-     */
-    changePage: function changePage(page) {
-      this.page = page;
-      storage.save('page', page);
+                // Set the initial page.
+                this.changePage(this.page);
+            },
 
-      var moduleIndex = this.modules.map((m) => { return m.name; }).indexOf(page);
+            /**
+             * Change the currently selected page.
+             *
+             * @param {any} page The new page.
+             */
+            changePage: function changePage(page) {
+                this.page = page;
+                storage.save('page', page);
 
-      jss.set('.external .internal', {
-        'margin-left': `${moduleIndex * -100}%`
-      });
-    }
-  };
+                let moduleIndex = this.modules.map((m) => {
+                    return m.name;
+                }).indexOf(page);
 
-  return pages;
-});
+                jss.set('.external .internal', {
+                    'margin-left': `${moduleIndex * -100}%`,
+                });
+            },
+        };
+
+        return pages;
+    });
