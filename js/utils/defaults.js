@@ -5,7 +5,17 @@ define(() => {
     return {
         init: function() {},
 
-        defaultFonts: ['system', 'raleway', 'source', 'wire one', 'im fell'],
+        // defaultFonts: ['system', 'raleway', 'source', 'wire one', 'im fell'],
+
+        defaultFonts: [
+            'raleway',
+            'kurale',
+            'wire One',
+            'im fell english',
+            'source serif pro',
+            'monoton',
+            'inconsolata',
+        ],
 
         // defaultWebservice: 'http://metro-start.appspot.com',
         defaultWebservice: 'https://20171226t133015-dot-metro-start.appspot.com',

@@ -4,6 +4,7 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %link{:href => "css/reset.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "css/style.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "https://fonts.googleapis.com/css?family=IM+Fell+English|Inconsolata|Kurale|Monoton|Raleway|Source+Serif+Pro|Wire+One", :rel => "stylesheet"}/
     %link{:href => "css/spectrum.css", :rel => "stylesheet"}/
     %title start
       
@@ -133,7 +134,7 @@
             %td 
               %a{:href => 'https://bgrins.github.io/TinyColor'} TinyColor
           %tr
-            %td 
+            %td
               %a{:href => 'https://github.com/metro-start/metro-start/blob/master/package.json'} and others...
 
     #themeEditor
@@ -142,12 +143,15 @@
         .theme-section-title.small-text font options
         .theme-editor-section.options-color
           %select#font-chooser.chooser
-            %option.clickable system
-            %option.clickable raleway
-            %option.clickable source
-            %option.clickable wire one
-            %option.clickable im fell 
-            %option.clickable custom
+            %option.clickable{:style => 'font-family: initial'} system
+            %option.clickable{:style => 'font-family: initial'} custom
+            %option.clickable{:style => 'font-family: raleway'} raleway
+            %option.clickable{:style => 'font-family: kurale'} kurale
+            %option.clickable{:style => 'font-family: "wire one"'} wire one
+            %option.clickable{:style => 'font-family: "im fell english"'} im fell english
+            %option.clickable{:style => 'font-family: "source serif pro"'} source serif pro
+            %option.clickable{:style => 'font-family: monoton'} monoton
+            %option.clickable{:style => 'font-family: inconsolata'} inconsolata
 
         .theme-editor-section
           #default.font-chooser-section
@@ -173,10 +177,12 @@
                       %select#fontfamily-chooser.chooser
                         %option.clickable system
                         %option.clickable raleway
-                        %option.clickable source
-                        %option.clickable wire one
-                        %option.clickable im fell 
-
+                        %option.clickable kurale
+                        %option.clickable wire One
+                        %option.clickable im fell english
+                        %option.clickable source serif pro
+                        %option.clickable monoton
+                        %option.clickable inconsolata
                 %tr
                   %td
                     %span.small-text weight

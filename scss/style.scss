@@ -9,50 +9,6 @@ html {
     height: 100%;
 }
 
-@font-face {
-    font-family: 'Raleway';
-    font-weight: 300;
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/Raleway-Thin.ttf');
-}
-
-@font-face {
-    font-family: 'Raleway';
-    font-weight: 400;
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/Raleway-Regular.ttf');
-}
-
-@font-face {
-    font-family: 'Wire One';
-    font-weight: 400;
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/WireOne.ttf');
-}
-
-@font-face {
-    font-family: 'Source';
-    font-weight: 300;
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/SourceSerifPro-Regular.ttf');
-}
-
-@font-face {
-    font-family: 'Source';
-    font-weight: 400;
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/SourceSerifPro-Semibold.ttf');
-}
-
-@font-face {
-    font-family: 'IM Fell';
-    font-style: normal;
-    font-weight: 400;
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/IMFeENrm28P.ttf');
-}
-
-@font-face {
-    font-family: 'IM Fell';
-    font-style: italic;
-    font-weight: 400;
-    src: url('chrome-extension://__MSG_@@extension_id__/fonts/IMFeENit28P.ttf');
-}
-
 @media only screen and (max-width: 1048px) {
     body {
         transform: scale(.9);
