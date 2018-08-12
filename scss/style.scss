@@ -174,7 +174,13 @@ h5 {
 .small-text {
     display: inline-block;
     font-size: .8rem;
-    margin-right: 20px;
+}
+
+.item,
+.info {
+    >.small-text {
+        margin-right: 20px;
+    }
 }
 
 .option {
@@ -242,7 +248,9 @@ h5 {
     min-width: 0;
     :last-child {
         margin-bottom: 0;
-    }
+    } // .small-text {
+    //     margin-right: 20px;
+    // }
 }
 
 .title {
@@ -304,7 +312,9 @@ h5 {
 .info {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: flex-start; // .small-text {
+    //     margin-right: 20px;
+    // }
 }
 
 // Todos
