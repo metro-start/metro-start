@@ -14,7 +14,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'
             templates: {
                 titleFragment: util.createElement('<a class="panel-item bookmark-item clickable"></a>'),
                 titleWrapFragment: util.createElement('<div class="panel-item-wrap"></div>'),
-                slashFragment: util.createElement('<span class="options-color clickable slash">/</span>'),
+                slashFragment: util.createElement('<span class="options-color panel-item clickable slash">/</span>'),
                 removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             },
 

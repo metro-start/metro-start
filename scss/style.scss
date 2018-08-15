@@ -78,7 +78,6 @@ input {
         cursor: pointer;
     }
     &[type='text'] {
-        border-width: 0;
         padding-left: 8px;
         #newLocation {
             margin-bottom: 8px;
@@ -155,24 +154,22 @@ h5 {
     height: calc(100% - 251px);
     overflow: hidden;
     width: 100%;
-}
-
-.internal {
-    height: 100%;
-    transition: height .2s, width .2s linear;
-    width: 500%;
+    .internal {
+        height: 100%;
+        transition: margin .3s ease-in-out;
+        width: 500%;
+    }
 }
 
 .external-selector {
     height: calc(100% - 42px);
     overflow: auto;
     width: 100%;
-}
-
-.internal-selector {
-    height: 100%;
-    margin-left: 50px;
-    white-space: nowrap;
+    .internal-selector {
+        height: 100%;
+        margin-left: 50px;
+        white-space: nowrap;
+    }
 }
 
 .collection {
@@ -204,9 +201,7 @@ h5 {
     min-width: 0;
     :last-child {
         margin-bottom: 0;
-    } // .small-text {
-    //     margin-right: 20px;
-    // }
+    }
 }
 
 .title {
@@ -236,9 +231,7 @@ h5 {
     .group>.page {
         border-top: 1px solid;
         height: calc(100% - 32px);
-        margin-left: -5px;
         overflow-y: auto;
-        padding-left: 5px;
     }
 }
 
@@ -257,7 +250,7 @@ h5 {
 .panel-item {
     max-width: 375px;
     overflow: hidden;
-    padding: 10px;
+    padding: 10px 0;
     text-overflow: ellipsis;
     white-space: nowrap;
     &.theme-item {
