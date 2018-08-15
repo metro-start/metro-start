@@ -21,63 +21,58 @@
 
       .external
         .internal
-          .todos.collection
-            #todos
-              .options-color.option.sort
-                %select#todos-sort-chooser.chooser
-                  %option.clickable
-                    unsorted
-                  %option.clickable
-                    sorted
-              #external-selector-todos.external-selector
-                #internal-selector-todos.internal-selector
-              #addTodo.add.option
-                %input#newTodo.option{:name => "newTodo", :placeholder => "new todo", :type => "text"}/
-                #saveTodo.options-color.option.clickable save
+          #todos.collection
+            .options-color.option.sort
+              %select#todos-sort-chooser.chooser
+                %option.clickable
+                  unsorted
+                %option.clickable
+                  sorted
+            #external-selector-todos.external-selector
+              #internal-selector-todos.internal-selector
+            #addTodo.add.option
+              %input#newTodo.option{:name => "newTodo", :placeholder => "new todo", :type => "text"}/
+              #saveTodo.options-color.option.clickable save
 
-          .sessions.collection
-            #sessions
-              .options-color.option.sort
-                %select#sessions-sort-chooser.chooser
-                  %option.clickable
-                    unsorted
-                  %option.clickable
-                    sorted
-              #external-selector-sessions.external-selector
-                #internal-selector-sessions.internal-selector
+          #sessions.collection
+            .options-color.option.sort
+              %select#sessions-sort-chooser.chooser
+                %option.clickable
+                  unsorted
+                %option.clickable
+                  sorted
+            #external-selector-sessions.external-selector
+              #internal-selector-sessions.internal-selector
 
-          .apps.collection
-            #apps
-              .options-color.option.sort
-                %select#apps-sort-chooser.chooser
-                  %option.clickable
-                    unsorted
-                  %option.clickable
-                    sorted
-              #external-selector-apps.external-selector
-                #internal-selector-apps.internal-selector
+          #apps.collection
+            .options-color.option.sort
+              %select#apps-sort-chooser.chooser
+                %option.clickable
+                  unsorted
+                %option.clickable
+                  sorted
+            #external-selector-apps.external-selector
+              #internal-selector-apps.internal-selector
 
-          .bookmarks.collection
-            #bookmarks
-              .options-color.option.sort
-                %select#bookmarks-sort-chooser.chooser
-                  %option.clickable
-                    unsorted
-                  %option.clickable
-                    sorted
-              #external-selector-bookmarks.external-selector
-                #internal-selector-bookmarks.internal-selector
+          #bookmarks.collection
+            .options-color.option.sort
+              %select#bookmarks-sort-chooser.chooser
+                %option.clickable
+                  unsorted
+                %option.clickable
+                  sorted
+            #external-selector-bookmarks.external-selector
+              #internal-selector-bookmarks.internal-selector
 
-          .themes.collection
-            #themes
-              .options-color.option.sort
-                %select#themes-sort-chooser.chooser
-                  %option.clickable
-                    unsorted
-                  %option.clickable
-                    sorted
-              #external-selector-themes.external-selector
-                #internal-selector-themes.internal-selector
+          #themes.collection
+            .options-color.option.sort
+              %select#themes-sort-chooser.chooser
+                %option.clickable
+                  unsorted
+                %option.clickable
+                  sorted
+            #external-selector-themes.external-selector
+              #internal-selector-themes.internal-selector
 
       .footer
         %p#wrench.options-color.wrench.clickable wrench
