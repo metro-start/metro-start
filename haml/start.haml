@@ -9,74 +9,80 @@
     %title start
       
   %body.background-color
-    %h1.title-color start here . . .
-    .pages-chooser
-      %select#pages-chooser.chooser
-        %option.clickable.todos-option todos
-        %option.clickable.sessions-option sessions
-        %option.clickable.apps-option apps
-        %option.clickable.bookmarks-option bookmarks
-        %option.clickable.themes-option themes
+    .grid
+      %h1.title-color start here . . .
+      .pages-chooser
+        %select#pages-chooser.chooser
+          %option.clickable.todos-option todos
+          %option.clickable.sessions-option sessions
+          %option.clickable.apps-option apps
+          %option.clickable.bookmarks-option bookmarks
+          %option.clickable.themes-option themes
 
-    .external
-      .internal
-        .todos.collection
-          #todos
-            .options-color.option.sort
-              %select#todos-sort-chooser.chooser
-                %option.clickable
-                  unsorted
-                %option.clickable
-                  sorted
-            #external-selector-todos.external-selector
-              #internal-selector-todos.internal-selector
-            #addTodo.add.option
-              %input#newTodo.option{:name => "newTodo", :placeholder => "new todo", :type => "text"}/
-              #saveTodo.options-color.option.clickable save
+      .external
+        .internal
+          .todos.collection
+            #todos
+              .options-color.option.sort
+                %select#todos-sort-chooser.chooser
+                  %option.clickable
+                    unsorted
+                  %option.clickable
+                    sorted
+              #external-selector-todos.external-selector
+                #internal-selector-todos.internal-selector
+              #addTodo.add.option
+                %input#newTodo.option{:name => "newTodo", :placeholder => "new todo", :type => "text"}/
+                #saveTodo.options-color.option.clickable save
 
-        .sessions.collection
-          #sessions
-            .options-color.option.sort
-              %select#sessions-sort-chooser.chooser
-                %option.clickable
-                  unsorted
-                %option.clickable
-                  sorted
-            #external-selector-sessions.external-selector
-              #internal-selector-sessions.internal-selector
+          .sessions.collection
+            #sessions
+              .options-color.option.sort
+                %select#sessions-sort-chooser.chooser
+                  %option.clickable
+                    unsorted
+                  %option.clickable
+                    sorted
+              #external-selector-sessions.external-selector
+                #internal-selector-sessions.internal-selector
 
-        .apps.collection
-          #apps
-            .options-color.option.sort
-              %select#apps-sort-chooser.chooser
-                %option.clickable
-                  unsorted
-                %option.clickable
-                  sorted
-            #external-selector-apps.external-selector
-              #internal-selector-apps.internal-selector
+          .apps.collection
+            #apps
+              .options-color.option.sort
+                %select#apps-sort-chooser.chooser
+                  %option.clickable
+                    unsorted
+                  %option.clickable
+                    sorted
+              #external-selector-apps.external-selector
+                #internal-selector-apps.internal-selector
 
-        .bookmarks.collection
-          #bookmarks
-            .options-color.option.sort
-              %select#bookmarks-sort-chooser.chooser
-                %option.clickable
-                  unsorted
-                %option.clickable
-                  sorted
-            #external-selector-bookmarks.external-selector
-              #internal-selector-bookmarks.internal-selector
+          .bookmarks.collection
+            #bookmarks
+              .options-color.option.sort
+                %select#bookmarks-sort-chooser.chooser
+                  %option.clickable
+                    unsorted
+                  %option.clickable
+                    sorted
+              #external-selector-bookmarks.external-selector
+                #internal-selector-bookmarks.internal-selector
 
-        .themes.collection
-          #themes
-            .options-color.option.sort
-              %select#themes-sort-chooser.chooser
-                %option.clickable
-                  unsorted
-                %option.clickable
-                  sorted
-            #external-selector-themes.external-selector
-              #internal-selector-themes.internal-selector
+          .themes.collection
+            #themes
+              .options-color.option.sort
+                %select#themes-sort-chooser.chooser
+                  %option.clickable
+                    unsorted
+                  %option.clickable
+                    sorted
+              #external-selector-themes.external-selector
+                #internal-selector-themes.internal-selector
+
+      .footer
+        %p#wrench.options-color.wrench.clickable wrench
+        %p#aboutButton.option.options-color.clickable.about-button about 
+        %p#editThemeButton.option.options-color.clickable.theme-button edit theme
 
     .weather
       #toggleWeather.options-color.option.clickable
@@ -100,11 +106,6 @@
           %span#lowTemp
           %span.options-color lo
         %p#condition
-
-    .footer
-      %p#wrench.options-color.wrench.clickable wrench
-      %p#aboutButton.option.options-color.clickable.about-button about 
-      %p#editThemeButton.option.options-color.clickable.theme-button edit theme
 
     #aboutModal
       %h2.title-color about metro start
