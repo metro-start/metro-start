@@ -45,24 +45,6 @@ body {
     height: 100%;
 }
 
-.grid {
-    display: grid;
-    grid: 'header' 1fr 'pages-chooser' 1fr 'content' auto 'footer' 1fr;
-    height: 100%;
-    >h1 {
-        grid-area: header;
-    }
-    >.pages-chooser {
-        grid-area: pages-chooser;
-    }
-    >.external {
-        grid-area: content;
-    }
-    >.footer {
-        grid-area: footer;
-    }
-}
-
 // Document wide styles
 .show {
     display: block;
@@ -169,6 +151,7 @@ h5 {
 
 // Collection and Panels
 .external {
+    height: calc(100% - 251px);
     overflow: hidden;
     width: 100%;
     .internal {
