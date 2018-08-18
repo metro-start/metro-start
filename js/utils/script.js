@@ -169,15 +169,8 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         queue: false,
                     });
 
-                    jss.set('body', {
+                    this.jssSetMultiple(['body', '.modal-content', '.background-color'], {
                         'background-image': `none`,
-                        'background-color': data.backgroundColor,
-                    });
-                    jss.set('.modal-content', {
-                        'background-image': `none`,
-                        'background-color': data.backgroundColor,
-                    });
-                    jss.set('.background-color', {
                         'background-color': data.backgroundColor,
                     });
                 }
@@ -275,18 +268,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     'border-color': optionsColor,
                 });
 
-                jss.set('::-webkit-scrollbar-thumb', {
-                    'background-color': optionsColor,
-                });
-
-                jss.set('input::placeholder', {
-                    'background-color': optionsColor,
-                });
-                jss.set('::-webkit-input-placeholder', {
-                    'background-color': optionsColor,
-                });
-
-                jss.set('.active', {
+                this.jssSetMultiple(['.modal-info .clickable', '.active', 'input::placeholder', '::-webkit-scrollbar-thumb', '::-webkit-input-placeholder'], {
                     'background-color': optionsColor,
                 });
             },
@@ -297,12 +279,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * @param {any} data The theme object with the new font settings.
              */
             updateFont: function(data) {
-                let jssSetMultiple = (selectors, style) => {
-                    for (let selector of selectors) {
-                        jss.set(selector, style);
-                    }
-                };
-
                 // If the current font group is not custom, make it active.
                 if (data['font-chooser'] !== 'custom') {
                     data['fontfamily-chooser'] = data['font-chooser'];
@@ -322,7 +298,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     variant = 'small-caps';
                 }
 
-                jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
+                this.jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
                     'font-family': font,
                     'font-weight': data['fontweight-chooser'],
                     'text-transform': transform,
@@ -335,6 +311,12 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 return data['fontreadability-chooser'] === 'on' ?
                     `${shadow.spin(90)} 0 0 0.1em, ${shadow.spin(180)} 0 0 0.2em` :
                     'none';
+            },
+
+            jssSetMultiple: function(selectors, style) {
+                for (let selector of selectors) {
+                    jss.set(selector, style);
+                }
             },
         };
 

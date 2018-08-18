@@ -247,8 +247,9 @@ h5 {
     overflow-y: auto;
 }
 
-.panel-item {
-    max-width: 375px;
+.panel-item,
+.item>.title {
+    max-width: 425px;
     overflow: hidden;
     padding: 10px 0;
     text-overflow: ellipsis;
