@@ -14,16 +14,16 @@
     "url": "https://github.com/metro-start/metro-start.git"
   },
   "dependencies": {
-    "detect-dom-ready": "*",
-    "jquery": "*",
-    "jquery-color": "git+https://github.com/jquery/jquery-color.git",
-    "jss": "git+https://github.com/Box9/jss.git",
     "metro-select": "^1.0.17",
-    "requirejs": "^2.3.2",
     "spectrum-colorpicker": "^1.8.0",
-    "throttle-debounce": "^1.0.1",
+    "trianglify": "^1.1.0",
     "tinycolor2": "^1.4.1",
-    "trianglify": "^1.1.0"
+    "requirejs": "^2.3.2",
+    "jquery": "*",
+    "jss": "git+https://github.com/Box9/jss.git",
+    "jquery-color": "git+https://github.com/jquery/jquery-color.git",
+    "detect-dom-ready": "*",
+    "throttle-debounce": "^1.0.1"
   },
   "devDependencies": {
     "copy-webpack-plugin": "*",
