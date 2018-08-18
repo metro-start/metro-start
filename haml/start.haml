@@ -175,14 +175,14 @@
                   %td
                     .options-color
                       %select#fontfamily-chooser.chooser
-                        %option.clickable system
-                        %option.clickable raleway
-                        %option.clickable kurale
-                        %option.clickable wire One
-                        %option.clickable im fell english
-                        %option.clickable source serif pro
-                        %option.clickable monoton
-                        %option.clickable inconsolata
+                        %option.clickable{:style => 'font-family: initial'} system
+                        %option.clickable{:style => 'font-family: raleway'} raleway
+                        %option.clickable{:style => 'font-family: kurale'} kurale
+                        %option.clickable{:style => 'font-family: "wire one"'} wire one
+                        %option.clickable{:style => 'font-family: "im fell english"'} im fell english
+                        %option.clickable{:style => 'font-family: "source serif pro"'} source serif pro
+                        %option.clickable{:style => 'font-family: monoton'} monoton
+                        %option.clickable{:style => 'font-family: inconsolata'} inconsolata
                 %tr
                   %td
                     %span.small-text weight
@@ -190,8 +190,7 @@
                     .options-color
                       %select#fontweight-chooser.chooser
                         %option.clickable normal
-                        %option.clickable lighter
-                        %option#raleway.clickable.fontfamily-section bolder
+                        %option.clickable bold
 
                 %tr
                   %td

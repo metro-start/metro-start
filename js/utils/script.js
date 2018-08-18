@@ -28,7 +28,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                     theme['font-chooser'] = util.randomize(defaults.defaultFonts);
                     theme['fontfamily-chooser'] = util.randomize(defaults.defaultFonts);
-                    theme['fontweight-chooser'] = util.randomize(['normal', 'lighter', 'bolder']);
+                    theme['fontweight-chooser'] = util.randomize(['normal', 'bold']);
                     theme['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
                 }
 
