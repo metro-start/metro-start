@@ -317,20 +317,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 for (let selector of selectors) {
                     jss.set(selector, style);
                 }
-
-                jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
-                    'font-family': font,
-                    'font-weight': data['fontweight-chooser'],
-                    'text-transform': transform,
-                    'font-variant': variant,
-                });
-            },
-
-            getShadow: function(data, color) {
-                let shadow = tinycolor(color);
-                return data['fontreadability-chooser'] === 'on' ?
-                    `${shadow.spin(90)} 0 0 0.1em, ${shadow.spin(180)} 0 0 0.2em` :
-                    'none';
             },
         };
 
