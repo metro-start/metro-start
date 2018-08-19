@@ -1,4 +1,5 @@
 {
+    "extends": ["eslint:recommended", "google"],
     "globals": {
         "__dirname": true,
         "chrome": true
@@ -10,18 +11,7 @@
         "node": true
     },
     "rules": {
-        "prefer-arrow-callback":"warn",
-        "prefer-template":"warn",
-        "prefer-const":"warn",
-        "prefer-spread":"warn",
-        "prefer-rest-params":"warn",
-
-        "no-const-assign": "warn",
-        "no-this-before-super": "warn",
-        "no-undef": "warn",
-        "no-unreachable": "warn",
-        "no-unused-vars": "warn",
-        "constructor-super": "warn",
-        "valid-typeof": "warn"
+        "max-len": "off",
+        "no-case-declarations": "off"
     }
 }

@@ -4,6 +4,7 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %link{:href => "css/reset.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "css/style.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "https://fonts.googleapis.com/css?family=IM+Fell+English|Inconsolata|Kurale|Monoton|Raleway|Source+Serif+Pro|Wire+One", :rel => "stylesheet"}/
     %link{:href => "css/spectrum.css", :rel => "stylesheet"}/
     %title start
       
@@ -27,8 +28,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_todos.external_selector
-              #internal_selector_todos.internal_selector
+            #external-selector-todos.external-selector
+              #internal-selector-todos.internal-selector
             #addTodo.add.option
               %input#newTodo.option{:name => "newTodo", :placeholder => "new todo", :type => "text"}/
               #saveTodo.options-color.option.clickable save
@@ -41,8 +42,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_sessions.external_selector
-              #internal_selector_sessions.internal_selector
+            #external-selector-sessions.external-selector
+              #internal-selector-sessions.internal-selector
 
         .apps.collection
           #apps
@@ -52,8 +53,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_apps.external_selector
-              #internal_selector_apps.internal_selector
+            #external-selector-apps.external-selector
+              #internal-selector-apps.internal-selector
 
         .bookmarks.collection
           #bookmarks
@@ -63,8 +64,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_bookmarks.external_selector
-              #internal_selector_bookmarks.internal_selector
+            #external-selector-bookmarks.external-selector
+              #internal-selector-bookmarks.internal-selector
 
         .themes.collection
           #themes
@@ -74,8 +75,8 @@
                   unsorted
                 %option.clickable
                   sorted
-            #external_selector_themes.external_selector
-              #internal_selector_themes.internal_selector
+            #external-selector-themes.external-selector
+              #internal-selector-themes.internal-selector
 
     .weather
       #toggleWeather.options-color.option.clickable
@@ -102,23 +103,61 @@
 
     .footer
       %p#wrench.options-color.wrench.clickable wrench
+      %p#aboutButton.option.options-color.clickable.about-button about 
       %p#editThemeButton.option.options-color.clickable.theme-button edit theme
+
+    #aboutModal
+      %h2.title-color about metro start
+      %p A new tab page for Google Chrome inspired by Zune.
+      %h5.options-color 
+        .small-text ⚡
+        POWERED BY
+        .small-text ⚡
+      %table.metro-table
+        %tbody
+          %tr
+            %td
+              %a{:href => 'http://qrohlf.com/trianglify'} Trianglify
+          %tr
+            %td 
+              %a{:href => 'https://jquery.com'} Jquery
+          %tr
+            %td 
+              %a{:href => 'https://github.com/Box9/jss'} JSS
+          %tr
+            %td 
+              %a{:href => 'https://github.com/metro-start/metro-select'} MetroSelect
+          %tr
+            %td 
+              %a{:href => 'https://bgrins.github.io/spectrum'} Spectrum Colorpicker
+          %tr
+            %td 
+              %a{:href => 'https://bgrins.github.io/TinyColor'} TinyColor
+          %tr
+            %td
+              %a{:href => 'https://github.com/metro-start/metro-start/blob/master/package.json'} and others...
 
     #themeEditor
       %h3.title-color theme editor
       .picker
-        .theme-section-title font options
+        .theme-section-title.small-text font options
         .theme-editor-section.options-color
           %select#font-chooser.chooser
-            %option.clickable system
-            %option.clickable raleway
-            %option.clickable custom
+            %option.clickable{:style => 'font-family: initial'} system
+            %option.clickable{:style => 'font-family: initial'} custom
+            %option.clickable{:style => 'font-family: raleway'} raleway
+            %option.clickable{:style => 'font-family: kurale'} kurale
+            %option.clickable{:style => 'font-family: "wire one"'} wire one
+            %option.clickable{:style => 'font-family: "im fell english"'} im fell english
+            %option.clickable{:style => 'font-family: "source serif pro"'} source serif pro
+            %option.clickable{:style => 'font-family: monoton'} monoton
+            %option.clickable{:style => 'font-family: inconsolata'} inconsolata
 
         .theme-editor-section
           #default.font-chooser-section
           #raleway.font-chooser-section
           #custom.theme-editor-border.font-chooser-section
-            .theme-section-title font style options
+            .theme-section-title.small-text font style options
             %table.metro-table
               %tbody
                 %tr
@@ -136,9 +175,14 @@
                   %td
                     .options-color
                       %select#fontfamily-chooser.chooser
-                        %option.clickable system
-                        %option.clickable raleway
-
+                        %option.clickable{:style => 'font-family: initial'} system
+                        %option.clickable{:style => 'font-family: raleway'} raleway
+                        %option.clickable{:style => 'font-family: kurale'} kurale
+                        %option.clickable{:style => 'font-family: "wire one"'} wire one
+                        %option.clickable{:style => 'font-family: "im fell english"'} im fell english
+                        %option.clickable{:style => 'font-family: "source serif pro"'} source serif pro
+                        %option.clickable{:style => 'font-family: monoton'} monoton
+                        %option.clickable{:style => 'font-family: inconsolata'} inconsolata
                 %tr
                   %td
                     %span.small-text weight
@@ -146,8 +190,7 @@
                     .options-color
                       %select#fontweight-chooser.chooser
                         %option.clickable normal
-                        %option.clickable lighter
-                        %option.clickable bolder
+                        %option.clickable bold
 
                 %tr
                   %td
@@ -158,7 +201,7 @@
                         %option.clickable normal
                         %option.clickable small-caps
 
-        .theme-section-title color palette options
+        .theme-section-title.small-text color palette options
         .theme-editor-section.options-color
           %select#palette-chooser.chooser
             %option.clickable automatic
@@ -166,27 +209,45 @@
 
         .theme-editor-section
           #automatic.theme-editor-border.palette-chooser-section
-            .theme-section-title automatic color options
-            %div
-              %span.small-text base
-              %input#baseColor{:size => "9", :type => "text"}/
+            %table.metro-table
+              %thead
+                %tr
+                  %th.theme-section-title.small-text automatic color options
+              %tbody
+                %tr
+                  %td
+                    %span.small-text base
+                  %td
+                    %input#baseColor{:size => "9", :type => "text"}/
 
           #custom.theme-editor-border.palette-chooser-section
-            .theme-section-title custom color options
-            %div
-              %span.small-text title
-              %input#titleColor{:type => "text"}/
-            %div
-              %span.small-text main
-              %input#mainColor{:type => "text"}/
-            %div
-              %span.small-text options
-              %input#optionsColor{:type => "text"}/
-            %div
-              %span.small-text background
-              %input#backgroundColor{:type => "text"}/
-
-        .theme-section-title background options
+            %table.metro-table
+              %thead
+                %tr
+                  %th.theme-section-title.small-text custom color options
+              %tbody
+                %tr
+                  %td
+                    %span.small-text title
+                  %td
+                    %input#titleColor{:type => "text"}/
+                %tr
+                  %td
+                    %span.small-text main
+                  %td
+                    %input#mainColor{:type => "text"}/
+                %tr
+                  %td
+                    %span.small-text options
+                  %td
+                    %input#optionsColor{:type => "text"}/
+                %tr
+                  %td
+                    %span.small-text background
+                  %td
+                    %input#backgroundColor{:type => "text"}/
+            
+        .theme-section-title.small-text background options
         .theme-editor-section.options-color
           %select#background-chooser.chooser.theme-editor-section
             %option.clickable trianglify
@@ -195,8 +256,10 @@
         .theme-editor-section
           #none.background-chooser-section
           #trianglify.theme-editor-border.background-chooser-section
-            .theme-section-title trianglify options
             %table.metro-table
+              %thead
+                %tr
+                  %th.theme-section-title.small-text trianglify options
               %tbody
                 %tr
                   %td
@@ -229,7 +292,7 @@
                         %option.clickable bent
                         %option.clickable freeform
 
-        .theme-section-title author info
+        .theme-section-title.small-text author info
         .theme-editor-section
           #author.theme-editor-border
             %table.metro-table
@@ -248,17 +311,11 @@
     // Rule to hide all options when page first loads.
     // Removes option elements added after the calls to hide .option were made.
     %style#hideRule{:type => "text/css"}
-      \.option {
-      display: none;
-      }
+      \.option { display: none; }
 
-      \/* Remove extra space that was added for sorting. */
-      \.external_selector {
-      height: 100%;
-      }
+      /* Remove extra space that was added for sorting. */
+      \.external-selector { height: 100%; }
       
-      \#external_selector_todos {
-      height: 100%;
-      }
+      \#external-selector-todos { height: 100%; }
 
     %script{:src => "metro-start.js"}
