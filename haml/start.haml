@@ -83,16 +83,16 @@
       #weather.hide
         #city
         %div
-          %input#newLocation.option{:placeholder => "vancouver, bc", :type => "text"}/
+          %input#newLocation.option{:placeholder => "vancouver, ca", :type => "text"}/
           %span#saveLocation.options-color.option.clickable save
         .options-color.option
-          %select#weather-unit-chooser.chooser
-            %option.clickable fahrenheit
+          %select#weather-units-chooser.chooser
             %option.clickable celsius
+            %option.clickable fahrenheit
         %p#temp
           %span#currentTemp>
           °
-          %span#unit.options-color
+          %span#units.options-color
           \/
           %span#highTemp
           %span.options-color hi

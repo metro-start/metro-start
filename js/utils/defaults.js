@@ -3,7 +3,7 @@ The default theme for metro start.
 */
 define(() => {
     return {
-        init: function() {},
+        init: function () {},
 
         // defaultFonts: ['system', 'raleway', 'source', 'wire one', 'im fell'],
 
@@ -17,8 +17,7 @@ define(() => {
             'inconsolata',
         ],
 
-        // defaultWebservice: 'http://metro-start.appspot.com',
-        defaultWebservice: 'https://20171226t133015-dot-metro-start.appspot.com',
+        defaultWebservice: 'https://metro-start.azurewebsites.net/api',
 
         defaultTodos: [{
             'name': 'use the wrench to get started. . . ',
@@ -27,24 +26,25 @@ define(() => {
 
         // The default theme for the app.
         defaultTheme: {
-            'font-chooser': 'system',
-            'fontfamily-chooser': 'system',
-            'fontweight-chooser': 'normal',
-            'fontvariant-chooser': 'normal',
-            'fontreadability-chooser': 'off',
+            'themeContent': {
+                'font-chooser': 'system',
+                'fontfamily-chooser': 'system',
+                'fontweight-chooser': 'normal',
+                'fontvariant-chooser': 'normal',
+                'fontreadability-chooser': 'off',
 
-            'palette-chooser': 'custom',
-            'baseColor': '#aaffaa',
-            'mainColor': '#ffffff',
-            'titleColor': '#4a4a4a',
-            'optionsColor': '#ff0000',
-            'backgroundColor': '#000000',
+                'palette-chooser': 'custom',
+                'baseColor': '#aaffaa',
+                'mainColor': '#ffffff',
+                'titleColor': '#4a4a4a',
+                'optionsColor': '#ff0000',
+                'backgroundColor': '#000000',
 
-            'background-chooser': 'none',
-            'trivariance-chooser': 'uniform',
-            'trisize-chooser': 'medium',
-            'tristyle-chooser': 'monochromatic',
-
+                'background-chooser': 'none',
+                'trivariance-chooser': 'uniform',
+                'trisize-chooser': 'medium',
+                'tristyle-chooser': 'monochromatic',
+            },
             'title': 'metro start',
             'author': 'metro start',
         },
@@ -60,7 +60,7 @@ define(() => {
         // The default weather location.
         defaultWeather: {
             'city': 'vancouver, bc',
-            'unit': 'c',
+            'units': 'celsius',
             'visible': true,
         },
 

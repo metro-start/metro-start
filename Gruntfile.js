@@ -1,4 +1,7 @@
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglify-es');
+
+const sass = require('node-sass');
 
 module.exports = function(grunt) {
     'use strict';
@@ -14,6 +17,7 @@ module.exports = function(grunt) {
         },
         sass: {
             options: {
+                implementation: sass,
                 sourceMap: true,
                 style: 'compressed',
             },
@@ -27,7 +31,7 @@ module.exports = function(grunt) {
         webpack: {
             all: {
                 entry: './js/app.js',
-                devtool: 'source-map',
+                devtool: 'inline-source-map',
                 mode: 'production',
                 output: {
                     filename: 'metro-start.js',
@@ -44,17 +48,20 @@ module.exports = function(grunt) {
                     },
                 },
                 plugins: [
-                    new UglifyJsPlugin({
-                        'cache': true,
-                        'parallel': true,
-                        'sourceMap': true,
-                    })],
+                    // new UglifyJsPlugin({
+                    //     'cache': true,
+                    //     'parallel': true,
+                    //     'sourceMap': true,
+                    //     'uglifyOptions': {
+                    //         'ecma': 6,
+                    //     },
+                    // }),
+                ],
             },
         },
         copy: {
             dist: {
-                files: [
-                    {
+                files: [{
                         expand: true,
                         src: ['fonts/*', 'icons/*', 'manifest.json'],
                         dest: 'dist/',
@@ -74,9 +81,12 @@ module.exports = function(grunt) {
                     archive: './metro-start.zip',
                     mode: 'zip',
                 },
-                files: [
-                    {expand: true, cwd: 'dist/', src: '**/*', dest: '/'},
-                ],
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: '**/*',
+                    dest: '/',
+                }],
             },
         },
         eslint: {
@@ -98,9 +108,9 @@ module.exports = function(grunt) {
         },
         notify: {
             build: {
-              options: {
-                message: 'Build complete',
-              },
+                options: {
+                    message: 'Build complete',
+                },
             },
         },
     });

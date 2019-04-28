@@ -23,7 +23,7 @@
     "spectrum-colorpicker": "^1.8.0",
     "throttle-debounce": "^1.0.1",
     "tinycolor2": "^1.4.1",
-    "trianglify": "^1.1.0"
+    "trianglify": "metro-start/trianglify"
   },
   "devDependencies": {
     "copy-webpack-plugin": "*",

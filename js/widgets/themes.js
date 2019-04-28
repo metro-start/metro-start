@@ -65,17 +65,17 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 if (this.isBound) {
                     for (let i = 0; i < this.textInputs.length; i++) {
                         let inputElement = this.textInputs[i];
-                        inputElement.value = this.data[inputElement.id] ? this.data[inputElement.id] : '';
+                        inputElement.value = this.data.themeContent[inputElement.id] ? this.data.themeContent[inputElement.id] : '';
                     }
 
                     for (let j = 0; j < this.colorInputs.length; j++) {
-                        let value = this.data[this.colorInputs[j].id];
+                        let value = this.data.themeContent[this.colorInputs[j].id];
                         let color = jquery(this.colorInputs[j]);
                         color.spectrum('set', value);
                     }
 
                     for (let k = 0; k < this.selectInputs.length; k++) {
-                        let text = this.data[this.selectInputs[k].id];
+                        let text = this.data.themeContent[this.selectInputs[k].id];
                         jquery(`#${this.selectInputs[k].id}`).metroSelect().set_active(text);
                     }
                 }
@@ -97,7 +97,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
 
                 if (!this.isBound) {
-                    for (let i = 0; i < this.selectInputs.length; i++) {
+                    for (let i = 0; i < this.textInputs.length; i++) {
                         this.bindTextInput(this.textInputs[i]);
                     }
 
@@ -191,11 +191,11 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              */
             bindSelectInput: function(inputElement) {
                 jquery(inputElement).metroSelect({
-                    'initial': this.data[inputElement.id],
+                    'initial': this.data.themeContent[inputElement.id],
                     'onchange': this.updateSelect.bind(this, inputElement.id),
                 });
 
-                this.updateSelect(inputElement.id, this.data[inputElement.id]);
+                this.updateSelect(inputElement.id, this.data.themeContent[inputElement.id]);
             },
 
             /**
@@ -209,7 +209,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     replacerClassName: 'spectrum-replacer',
                     appendTo: inputElement.parentNode,
                     showButtons: false,
-                    color: this.data[inputElement.id],
+                    color: this.data.themeContent[inputElement.id],
                     move: throttleDebounce.throttle(250, this.updateColor.bind(this, inputElement.id), true),
                 });
             },
@@ -269,7 +269,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                         util.log('Theme shared to the web.');
                     },
                     error: function(e) {
-                        util.error('Theme was not shared to the web: ', e);
+                        util.error('Theme was not shared to the web', e);
                     },
                 });
             },
@@ -304,7 +304,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     return;
                 }
 
-                if (this.data['palette-chooser'] === 'automatic') {
+                if (this.data.themeContent['palette-chooser'] === 'automatic') {
                     this.autoPaletteAdjust();
                 }
 
@@ -328,17 +328,17 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     let updatedTheme = script.updateTheme(this.data, true);
                     storage.save('currentTheme', updatedTheme);
                 } else {
-                    this.data[inputId] = val;
+                    this.data.themeContent[inputId] = val;
                     script.updateTheme(this.data, true);
                 }
             },
 
             autoPaletteAdjust: function() {
-                let baseColor = tinycolor(this.data.baseColor);
-                this.data.backgroundColor = baseColor.toHexString();
-                this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor), -1.6);
-                this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor), 1.8);
-                this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor), 1.25);
+                let baseColor = tinycolor(this.data.themeContent.baseColor);
+                this.data.themeContent.backgroundColor = baseColor.toHexString();
+                this.data.themeContent.titleColor = this.getReadable(tinycolor(this.data.themeContent.baseColor), -1.6);
+                this.data.themeContent.mainColor = this.getReadable(tinycolor(this.data.themeContent.baseColor), 1.8);
+                this.data.themeContent.optionsColor = this.getReadable(tinycolor(this.data.themeContent.baseColor), 1.25);
             },
 
             /**

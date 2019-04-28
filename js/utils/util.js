@@ -182,36 +182,36 @@ define(['./defaults'], (defaults) => {
 
             // Upgrade the font.
             if (!defaults.defaultFonts.concat(['custom']).includes(data['font-chooser'])) {
-                    theme['font-chooser'] = defaultTheme['font-chooser'];
+                theme.themeContent['font-chooser'] = defaultTheme['font-chooser'];
             }
 
             // Upgrade any underscored colors.
             if (!!data.options_color && !data.optionsColor) {
-                theme.optionsColor = data.options_color;
+                theme.themeContent.optionsColor = data.options_color;
             }
             if (!!data.main_color && !data.mainColor) {
-                theme.mainColor = data.main_color;
+                theme.themeContent.mainColor = data.main_color;
             }
             if (!!data.background_color && !data.backgroundColor) {
-                theme.backgroundColor = data.background_color;
+                theme.themeContent.backgroundColor = data.background_color;
             }
             if (!!data.title_color && !data.titleColor) {
-                theme.titleColor = data.title_color;
+                theme.themeContent.titleColor = data.title_color;
             }
 
             // Upgrade any theme.colors.
             if (data.colors) {
                 if (!!data.colors.options_color && !data.optionsColor) {
-                    theme.optionsColor = data.colors.options_color;
+                    theme.themeContent.optionsColor = data.colors.options_color;
                 }
                 if (!!data.colors.main_color && !data.mainColor) {
-                    theme.mainColor = data.colors.main_color;
+                    theme.themeContent.mainColor = data.colors.main_color;
                 }
                 if (!!data.colors.background_color && !data.backgroundColor) {
-                    theme.backgroundColor = data.colors.background_color;
+                    theme.themeContent.backgroundColor = data.colors.background_color;
                 }
                 if (!!data.colors.title_color && !data.titleColor) {
-                    theme.titleColor = data.colors.title_color;
+                    theme.themeContent.titleColor = data.colors.title_color;
                 }
             }
 

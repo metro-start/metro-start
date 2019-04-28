@@ -13,8 +13,7 @@
 		"128": "icons/icon128.png"
 	},
 	"permissions": [
-		"http://metro-start.appspot.com/*",
-		"https://query.yahooapis.com/*",
+		"https://metro-start.azurewebsites.net/*",
 		"management",
 		"bookmarks",
 		"storage",

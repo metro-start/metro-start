@@ -61,14 +61,13 @@ define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils
 
                 // Load online themes.
                 jquery.get(
-                    `${defaults.defaultWebservice}/themes.json`,
+                    `${defaults.defaultWebservice}/themes`,
                     (themes) => {
                         if (!themes || themes.length === 0) {
                             util.warn('No online themes available.');
                             return;
                         }
 
-                        themes = JSON.parse(themes);
                         for (let theme of themes) {
                             theme.online = true;
                         }
