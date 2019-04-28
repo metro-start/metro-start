@@ -1,7 +1,7 @@
 define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './defaults'],
     (jquery, tinycolor, jss, trianglify, util, storage, defaults) => {
         let script = {
-            init: function() {},
+            init: function() { },
 
             /**
              * Changes the style to whatever is in the scope.
@@ -165,9 +165,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     jquery('.background-color').animate({
                         'backgroundColor': data.themeContent.backgroundColor,
                     }, {
-                        duration: duration,
-                        queue: false,
-                    });
+                            duration: duration,
+                            queue: false,
+                        });
 
                     this.jssSetMultiple(['body', '.modal-content', '.background-color'], {
                         'background-image': `none`,
@@ -197,15 +197,15 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     'color': mainColor,
                     'text-shadow': this.getShadow(data, mainColor),
                 }, {
-                    duration: duration,
-                    queue: false,
-                });
+                        duration: duration,
+                        queue: false,
+                    });
                 jquery('input').animate({
                     'color': mainColor,
                 }, {
-                    duration: duration,
-                    queue: false,
-                });
+                        duration: duration,
+                        queue: false,
+                    });
 
                 jss.set('body', {
                     'color': mainColor,
@@ -233,9 +233,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     'color': titleColor,
                     'text-shadow': this.getShadow(data, titleColor),
                 }, {
-                    duration: duration,
-                    queue: false,
-                });
+                        duration: duration,
+                        queue: false,
+                    });
 
                 jss.set('.title-color', {
                     'color': titleColor,
@@ -255,9 +255,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     'color': optionsColor,
                     'text-shadow': this.getShadow(data, optionsColor),
                 }, {
-                    duration: duration,
-                    queue: false,
-                });
+                        duration: duration,
+                        queue: false,
+                    });
 
                 jss.set('.options-color', {
                     'color': optionsColor,

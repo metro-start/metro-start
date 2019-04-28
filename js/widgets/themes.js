@@ -43,8 +43,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 document.getElementById('tristyle-chooser'),
             ],
 
-            themeAdded: function() {},
-            themeRemoved: function() {},
+            themeAdded: function() { },
+            themeRemoved: function() { },
 
             init: function() {
                 // this.data = defaults.defaultTheme;
@@ -367,8 +367,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     tinycolor(color.toHexString()).spin(multiplier * 242).brighten(25),
                     tinycolor(color.toHexString()).spin(multiplier * 303).brighten(25),
                 ], {
-                    includeFallbackColors: false,
-                }).toHexString();
+                        includeFallbackColors: false,
+                    }).toHexString();
             },
         };
 

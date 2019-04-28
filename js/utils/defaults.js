@@ -3,7 +3,7 @@ The default theme for metro start.
 */
 define(() => {
     return {
-        init: function() {},
+        init: function() { },
 
         // defaultFonts: ['system', 'raleway', 'source', 'wire one', 'im fell'],
 
@@ -65,27 +65,27 @@ define(() => {
         },
 
         systemThemes: [{
-                'title': 'randomize',
-                'author': 'metro start',
+            'title': 'randomize',
+            'author': 'metro start',
 
-                'optionsColor': '#ff0000',
-                'mainColor': '#ffffff',
-                'titleColor': '#4a4a4a',
-                'backgroundColor': '#000000',
+            'optionsColor': '#ff0000',
+            'mainColor': '#ffffff',
+            'titleColor': '#4a4a4a',
+            'backgroundColor': '#000000',
 
-                'online': true,
-            },
-            {
-                'title': 'metro start',
-                'author': 'metro start',
+            'online': true,
+        },
+        {
+            'title': 'metro start',
+            'author': 'metro start',
 
-                'optionsColor': '#ff0000',
-                'mainColor': '#ffffff',
-                'titleColor': '#4a4a4a',
-                'backgroundColor': '#000000',
+            'optionsColor': '#ff0000',
+            'mainColor': '#ffffff',
+            'titleColor': '#4a4a4a',
+            'backgroundColor': '#000000',
 
-                'online': true,
-            },
+            'online': true,
+        },
         ],
     };
 });
