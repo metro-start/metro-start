@@ -3,7 +3,7 @@ The default theme for metro start.
 */
 define(() => {
     return {
-        init: function () {},
+        init: function() {},
 
         // defaultFonts: ['system', 'raleway', 'source', 'wire one', 'im fell'],
 
