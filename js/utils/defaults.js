@@ -10,7 +10,7 @@ define(() => {
         defaultFonts: [
             'raleway',
             'kurale',
-            'wire One',
+            'wire one',
             'im fell english',
             'source serif pro',
             'monoton',
@@ -59,7 +59,7 @@ define(() => {
 
         // The default weather location.
         defaultWeather: {
-            'city': 'vancouver, bc',
+            'city': 'vancouver, ca',
             'units': 'celsius',
             'visible': true,
         },

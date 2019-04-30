@@ -173,45 +173,45 @@ define(['./defaults'], (defaults) => {
         /**
          * Upgrade a provided theme to ensure it has all the right fields.
          *
-         * @param {any} data The theme to be upgraded.
+         * @param {any} oldTheme The theme to be upgraded.
          * @param {any} defaultTheme The theme to use to back-fill.
          * @return {any} The upgraded theme.
          */
-        upgradeTheme: function(data, defaultTheme) {
-            let theme = Object.assign({}, defaultTheme, data);
+        upgradeTheme: function(oldTheme, defaultTheme) {
+            let theme = Object.assign({}, defaultTheme, oldTheme);
 
             // Upgrade the font.
-            if (!defaults.defaultFonts.concat(['custom']).includes(data['font-chooser'])) {
-                theme.themeContent['font-chooser'] = defaultTheme['font-chooser'];
+            if (!defaults.defaultFonts.concat(['custom']).includes(oldTheme.themeContent['font-chooser'])) {
+                theme.themeContent['font-chooser'] = defaultTheme.themeContent['font-chooser'];
             }
 
             // Upgrade any underscored colors.
-            if (!!data.options_color && !data.optionsColor) {
-                theme.themeContent.optionsColor = data.options_color;
+            if (!!oldTheme.themeContent.options_color && !oldTheme.themeContent.optionsColor) {
+                theme.themeContent.optionsColor = oldTheme.themeContent.options_color;
             }
-            if (!!data.main_color && !data.mainColor) {
-                theme.themeContent.mainColor = data.main_color;
+            if (!!oldTheme.themeContent.main_color && !oldTheme.themeContent.mainColor) {
+                theme.themeContent.mainColor = oldTheme.themeContent.main_color;
             }
-            if (!!data.background_color && !data.backgroundColor) {
-                theme.themeContent.backgroundColor = data.background_color;
+            if (!!oldTheme.themeContent.background_color && !oldTheme.themeContent.backgroundColor) {
+                theme.themeContent.backgroundColor = oldTheme.themeContent.background_color;
             }
-            if (!!data.title_color && !data.titleColor) {
-                theme.themeContent.titleColor = data.title_color;
+            if (!!oldTheme.themeContent.title_color && !oldTheme.themeContent.titleColor) {
+                theme.themeContent.titleColor = oldTheme.themeContent.title_color;
             }
 
             // Upgrade any theme.colors.
-            if (data.colors) {
-                if (!!data.colors.options_color && !data.optionsColor) {
-                    theme.themeContent.optionsColor = data.colors.options_color;
+            if (oldTheme.themeContent.colors) {
+                if (!!oldTheme.themeContent.colors.options_color && !oldTheme.themeContent.optionsColor) {
+                    theme.themeContent.optionsColor = oldTheme.themeContent.colors.options_color;
                 }
-                if (!!data.colors.main_color && !data.mainColor) {
-                    theme.themeContent.mainColor = data.colors.main_color;
+                if (!!oldTheme.themeContent.colors.main_color && !oldTheme.themeContent.mainColor) {
+                    theme.themeContent.mainColor = oldTheme.themeContent.colors.main_color;
                 }
-                if (!!data.colors.background_color && !data.backgroundColor) {
-                    theme.themeContent.backgroundColor = data.colors.background_color;
+                if (!!oldTheme.themeContent.colors.background_color && !oldTheme.themeContent.backgroundColor) {
+                    theme.themeContent.backgroundColor = oldTheme.themeContent.colors.background_color;
                 }
-                if (!!data.colors.title_color && !data.titleColor) {
-                    theme.themeContent.titleColor = data.colors.title_color;
+                if (!!oldTheme.themeContent.colors.title_color && !oldTheme.themeContent.titleColor) {
+                    theme.themeContent.titleColor = oldTheme.themeContent.colors.title_color;
                 }
             }
 

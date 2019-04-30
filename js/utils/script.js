@@ -6,13 +6,13 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             /**
              * Changes the style to whatever is in the scope.
              *
-             * @param {any} data: The new theme to change to.
+             * @param {any} newTheme: The new theme to change to.
              * @param {any} transition: A bool indicating whether to slowly transition or immediately change.
              * @return {any} The upgrade and applied theme.
              */
-            updateTheme: function(data, transition) {
+            updateTheme: function(newTheme, transition) {
                 let duration = (transition === true ? 800 : 0);
-                let theme = util.upgradeTheme(data, defaults.defaultTheme);
+                let theme = util.upgradeTheme(newTheme, defaults.defaultTheme);
 
                 if (theme.title === 'randomize') {
                     theme['background-chooser'] = util.randomize(['none', 'trianglify']);
@@ -65,17 +65,17 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             /**
              * Updates the current background.
              *
-             * @param {any} data Theme object with the new background settings.
+             * @param {any} theme Theme object with the new background settings.
              * @param {any} duration How long to animate the transition.
              */
-            updateBackground: function(data, duration) {
+            updateBackground: function(theme, duration) {
                 let jBody = jquery('body');
-                if (data.themeContent['background-chooser'] === 'trianglify') {
-                    let xColors = [data.backgroundColor];
+                if (theme.themeContent['background-chooser'] === 'trianglify') {
+                    let xColors = [theme.backgroundColor];
 
                     // Convert variance from my option to actual values.
                     let triVariance = 0.75;
-                    switch (data.themeContent['trivariance-chooser'].toLowerCase()) {
+                    switch (theme.themeContent['trivariance-chooser'].toLowerCase()) {
                         case 'uniform':
                             triVariance = 0;
                             break;
@@ -89,12 +89,12 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             break;
 
                         default:
-                            util.error(`Could not recognize trivariance: ${data.themeContent['trivariance-chooser']}`);
+                            util.error(`Could not recognize trivariance: ${theme.themeContent['trivariance-chooser']}`);
                             break;
                     }
 
                     let triSize = 70;
-                    switch (data.themeContent['trisize-chooser'].toLowerCase()) {
+                    switch (theme.themeContent['trisize-chooser'].toLowerCase()) {
                         case 'small':
                             triSize = 25;
                             break;
@@ -112,25 +112,25 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                             break;
 
                         default:
-                            util.error(`Could not recognize trisize: ${data.themeContent['trisize-chooser']}`);
+                            util.error(`Could not recognize trisize: ${theme.themeContent['trisize-chooser']}`);
                             break;
                     }
 
-                    switch (data.themeContent['tristyle-chooser'].toLowerCase()) {
+                    switch (theme.themeContent['tristyle-chooser'].toLowerCase()) {
                         case 'triad':
-                            xColors = tinycolor(data.themeContent.backgroundColor).triad().map((v) => v.toHexString());
+                            xColors = tinycolor(theme.themeContent.backgroundColor).triad().map((v) => v.toHexString());
                             break;
                         case 'tetrad':
-                            xColors = tinycolor(data.themeContent.backgroundColor).tetrad().map((v) => v.toHexString());
+                            xColors = tinycolor(theme.themeContent.backgroundColor).tetrad().map((v) => v.toHexString());
                             break;
                         case 'monochromatic':
-                            xColors = tinycolor(data.themeContent.backgroundColor).monochromatic().map((v) => v.toHexString());
+                            xColors = tinycolor(theme.themeContent.backgroundColor).monochromatic().map((v) => v.toHexString());
                             break;
                         case 'split complements':
-                            xColors = tinycolor(data.themeContent.backgroundColor).splitcomplement().map((v) => v.toHexString());
+                            xColors = tinycolor(theme.themeContent.backgroundColor).splitcomplement().map((v) => v.toHexString());
                             break;
                         default:
-                            util.error(`Could not recognize tristyle: ${data.themeContent['tristyle-chooser']}`);
+                            util.error(`Could not recognize tristyle: ${theme.themeContent['tristyle-chooser']}`);
                             break;
                     }
 
@@ -159,11 +159,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     });
 
                     jss.set('.background-color', {
-                        'background-color': data.themeContent.backgroundColor,
+                        'background-color': theme.themeContent.backgroundColor,
                     });
                 } else {
                     jquery('.background-color').animate({
-                        'backgroundColor': data.themeContent.backgroundColor,
+                        'backgroundColor': theme.themeContent.backgroundColor,
                     }, {
                             duration: duration,
                             queue: false,
@@ -171,31 +171,31 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                     this.jssSetMultiple(['body', '.modal-content', '.background-color'], {
                         'background-image': `none`,
-                        'background-color': data.themeContent.backgroundColor,
+                        'background-color': theme.themeContent.backgroundColor,
                     });
                 }
 
                 jss.set('::-webkit-scrollbar', {
-                    'background-color': data.themeContent.backgroundColor,
+                    'background-color': theme.themeContent.backgroundColor,
                 });
 
 
                 jss.set('input[type="text"]', {
-                    'background-color': data.themeContent.optionsColor,
+                    'background-color': theme.themeContent.optionsColor,
                 });
             },
             /**
              * Updates the options elements colors.
              *
-             * @param {any} data Theme object with the new color settings.
+             * @param {any} theme Theme object with the new color settings.
              * @param {any} duration How long to animate the transition.
              */
-            updateMainColor: function(data, duration) {
-                let mainColor = data.themeContent.mainColor;
+            updateMainColor: function(theme, duration) {
+                let mainColor = theme.themeContent.mainColor;
 
                 jquery('body').animate({
                     'color': mainColor,
-                    'text-shadow': this.getShadow(data, mainColor),
+                    'text-shadow': this.getShadow(theme, mainColor),
                 }, {
                         duration: duration,
                         queue: false,
@@ -209,11 +209,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                 jss.set('body', {
                     'color': mainColor,
-                    'text-shadow': this.getShadow(data, mainColor),
+                    'text-shadow': this.getShadow(theme, mainColor),
                 });
                 jss.set('input', {
                     'color': mainColor,
-                    'text-shadow': this.getShadow(data, mainColor),
+                    'text-shadow': this.getShadow(theme, mainColor),
                 });
                 jss.set('.theme-section-title', {
                     'border-bottom-color': mainColor,
@@ -223,15 +223,15 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             /**
              * Updates the title elements colors.
              *
-             * @param {any} data Theme object with the new color settings.
+             * @param {any} theme Theme object with the new color settings.
              * @param {any} duration How long to animate the transition.
              */
-            updateTitleColor: function(data, duration) {
-                let titleColor = data.themeContent.titleColor;
+            updateTitleColor: function(theme, duration) {
+                let titleColor = theme.themeContent.titleColor;
 
                 jquery('.title-color').animate({
                     'color': titleColor,
-                    'text-shadow': this.getShadow(data, titleColor),
+                    'text-shadow': this.getShadow(theme, titleColor),
                 }, {
                         duration: duration,
                         queue: false,
@@ -239,21 +239,21 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                 jss.set('.title-color', {
                     'color': titleColor,
-                    'text-shadow': this.getShadow(data, titleColor),
+                    'text-shadow': this.getShadow(theme, titleColor),
                 });
             },
 
             /**
              * Updates the options elements colors.
              *
-             * @param {any} data Theme object with the new color settings.
+             * @param {any} theme Theme object with the new color settings.
              * @param {any} duration How long to animate the transition.
              */
-            updateOptionsColor: function(data, duration) {
-                let optionsColor = data.themeContent.optionsColor;
+            updateOptionsColor: function(theme, duration) {
+                let optionsColor = theme.themeContent.optionsColor;
                 jquery('.options-color').animate({
                     'color': optionsColor,
-                    'text-shadow': this.getShadow(data, optionsColor),
+                    'text-shadow': this.getShadow(theme, optionsColor),
                 }, {
                         duration: duration,
                         queue: false,
@@ -261,7 +261,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                 jss.set('.options-color', {
                     'color': optionsColor,
-                    'text-shadow': this.getShadow(data, optionsColor),
+                    'text-shadow': this.getShadow(theme, optionsColor),
                 });
 
                 jss.set('*', {
@@ -276,35 +276,35 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             /**
              * Upates the currently selected font.
              *
-             * @param {any} data The theme object with the new font settings.
+             * @param {any} theme The theme object with the new font settings.
              */
-            updateFont: function(data) {
+            updateFont: function(theme) {
                 // If the current font group is not custom, make it active.
-                if (data.themeContent['font-chooser'] !== 'custom') {
-                    data.themeContent['fontfamily-chooser'] = data.themeContent['font-chooser'];
+                if (theme.themeContent['font-chooser'] !== 'custom') {
+                    theme.themeContent['fontfamily-chooser'] = theme.themeContent['font-chooser'];
                 }
 
                 // If the current font is not system, at it to the font list.
                 let font = `"Segoe UI", Helvetica, Arial, sans-serif`;
-                if (data.themeContent['fontfamily-chooser'] !== 'system') {
-                    font = `"${data.themeContent['fontfamily-chooser']}", ${font}`;
+                if (theme.themeContent['fontfamily-chooser'] !== 'system') {
+                    font = `"${theme.themeContent['fontfamily-chooser']}", ${font}`;
                 }
 
-                // if (data.themeContent['fontweight-chooser'] !== 'normal' && data.themeContent['fontweight-chooser'] !== 'bold') {
-                //     data.themeContent['fontweight-chooser'] = 'normal';
-                // }
+                if (theme.themeContent['fontweight-chooser'] !== 'normal' && theme.themeContent['fontweight-chooser'] !== 'bold') {
+                    theme.themeContent['fontweight-chooser'] = 'normal';
+                }
 
                 // If the current font is small caps, set it to the real values.
                 let transform = 'none';
                 let variant = 'normal';
-                if (data.themeContent['fontvariant-chooser'] === 'small-caps') {
+                if (theme.themeContent['fontvariant-chooser'] === 'small-caps') {
                     transform = 'lowercase';
                     variant = 'small-caps';
                 }
 
                 this.jssSetMultiple(['body', 'input::placeholder', 'input[type="text"]'], {
                     'font-family': font,
-                    'font-weight': data.themeContent['fontweight-chooser'],
+                    'font-weight': theme.themeContent['fontweight-chooser'],
                     'text-transform': transform,
                     'font-variant': variant,
                 });
