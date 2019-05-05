@@ -42,7 +42,6 @@ define(['./defaults'], (defaults) => {
             let time = Date.now();
             // eslint-disable-next-line no-console
             console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
-
             this.lastLogTime = time;
         },
 

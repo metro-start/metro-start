@@ -264,12 +264,11 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     url: url,
                     type: 'POST',
                     data: JSON.stringify(theme),
-                    dataType: 'json',
                     success: function() {
                         util.log('Theme shared to the web.');
                     },
-                    error: function(e) {
-                        util.error('Theme was not shared to the web', e);
+                    error: function(jqxhr, status, ex) {
+                        util.error(`Theme was not shared to the web with status: ${status} and ex: ${ex}`);
                     },
                 });
             },
