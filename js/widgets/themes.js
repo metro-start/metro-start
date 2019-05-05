@@ -257,8 +257,9 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              * Share a locally saved theme to the community.
              *
              * @param {any} theme The theme to be shared.
+             * @param {function} callback Function to call sharing completes.
              */
-            shareTheme: function(theme) {
+            shareTheme: function(theme, callback) {
                 let url = `${defaults.defaultWebservice}/newtheme`;
                 jquery.ajax({
                     url: url,
@@ -266,9 +267,11 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     data: JSON.stringify(theme),
                     success: function() {
                         util.log('Theme shared to the web.');
+                        callback(true, '');
                     },
                     error: function(jqxhr, status, ex) {
                         util.error(`Theme was not shared to the web with status: ${status} and ex: ${ex}`);
+                        callback(false, status);
                     },
                 });
             },
