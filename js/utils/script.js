@@ -15,21 +15,21 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 let theme = util.upgradeTheme(newTheme, defaults.defaultTheme);
 
                 if (theme.title === 'randomize') {
-                    theme['background-chooser'] = util.randomize(['none', 'trianglify']);
-                    theme['trivariance-chooser'] = util.randomize(['uniform', 'bent', 'freeform']);
-                    theme['trisize-chooser'] = util.randomize(['small', 'medium', 'large', 'yuge']);
-                    theme['tristyle-chooser'] = util.randomize(['triad', 'tetrad', 'monochromatic', 'split complements']);
+                    theme.themeContent['background-chooser'] = util.randomize(['none', 'trianglify']);
+                    theme.themeContent['trivariance-chooser'] = util.randomize(['uniform', 'bent', 'freeform']);
+                    theme.themeContent['trisize-chooser'] = util.randomize(['small', 'medium', 'large', 'yuge']);
+                    theme.themeContent['tristyle-chooser'] = util.randomize(['triad', 'tetrad', 'monochromatic', 'split complements']);
 
-                    theme.mainColor = tinycolor.random().toHexString();
-                    theme.baseColor = tinycolor.random().toHexString();
-                    theme.titleColor = tinycolor.random().toHexString();
-                    theme.optionsColor = tinycolor.random().toHexString();
-                    theme.backgroundColor = tinycolor.random().toHexString();
+                    theme.themeContent.mainColor = tinycolor.random().toHexString();
+                    theme.themeContent.baseColor = tinycolor.random().toHexString();
+                    theme.themeContent.titleColor = tinycolor.random().toHexString();
+                    theme.themeContent.optionsColor = tinycolor.random().toHexString();
+                    theme.themeContent.backgroundColor = tinycolor.random().toHexString();
 
-                    theme['font-chooser'] = util.randomize(defaults.defaultFonts);
-                    theme['fontfamily-chooser'] = util.randomize(defaults.defaultFonts);
-                    theme['fontweight-chooser'] = util.randomize(['normal', 'bold']);
-                    theme['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
+                    theme.themeContent['font-chooser'] = util.randomize(defaults.defaultFonts);
+                    theme.themeContent['fontfamily-chooser'] = util.randomize(defaults.defaultFonts);
+                    theme.themeContent['fontweight-chooser'] = util.randomize(['normal', 'bold']);
+                    theme.themeContent['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
                 }
 
                 this.updateFont(theme);

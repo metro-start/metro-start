@@ -62,20 +62,19 @@ define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils
                 // Load online themes.
                 jquery.get(
                     `${defaults.defaultWebservice}/themes`,
-                    (themes) => {
-                        if (!themes || themes.length === 0) {
+                    (onlineThemes) => {
+                        if (!onlineThemes || onlineThemes.length === 0) {
                             util.warn('No online themes available.');
                             return;
                         }
 
-                        for (let theme of themes) {
+                        for (let theme of onlineThemes) {
                             theme.online = true;
                         }
 
-                        this.onlineThemes = themes;
                         this.themes.addAll({
                             'heading': 'online themes',
-                            'data': themes,
+                            'data': onlineThemes,
                         },
                             (error) => {
                                 util.error('Could not load online themes', error);
