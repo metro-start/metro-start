@@ -17,7 +17,7 @@ define(() => {
             'inconsolata',
         ],
 
-        defaultWebservice: 'https://metro-start.azurewebsites.net/api',
+        defaultWebservice: 'https://api.metro-start.com',
 
         defaultTodos: [{
             'name': 'use the wrench to get started. . . ',
