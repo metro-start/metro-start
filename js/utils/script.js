@@ -7,10 +7,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * Changes the style to whatever is in the scope.
              *
              * @param {any} newTheme: The new theme to change to.
+             * @param {any} oldTheme: The old theme to change from.
              * @param {any} transition: A bool indicating whether to slowly transition or immediately change.
              * @return {any} The upgrade and applied theme.
              */
-            updateTheme: function(newTheme, transition) {
+            updateTheme: function(newTheme, oldTheme, transition) {
                 let duration = (transition === true ? 800 : 0);
                 let theme = util.upgradeTheme(newTheme, defaults.defaultTheme);
 
@@ -32,11 +33,11 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     theme.themeContent['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
                 }
 
-                this.updateFont(theme);
-                this.updateBackground(theme, duration);
-                this.updateMainColor(theme, duration);
-                this.updateTitleColor(theme, duration);
-                this.updateOptionsColor(theme, duration);
+                this.updateFont(theme, oldTheme);
+                this.updateBackground(theme, oldTheme, duration);
+                this.updateMainColor(theme, oldTheme, duration);
+                this.updateTitleColor(theme, oldTheme, duration);
+                this.updateOptionsColor(theme, oldTheme, duration);
 
                 return theme;
             },
@@ -66,12 +67,21 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * Updates the current background.
              *
              * @param {any} theme Theme object with the new background settings.
+             * @param {any} oldTheme Theme object with the old background settings.
              * @param {any} duration How long to animate the transition.
              */
-            updateBackground: function(theme, duration) {
+            updateBackground: function(theme, oldTheme, duration) {
                 let jBody = jquery('body');
                 if (theme.themeContent['background-chooser'] === 'trianglify') {
-                    let xColors = [theme.backgroundColor];
+                    if (theme.themeContent.backgroundColor === oldTheme.themeContent.backgroundColor
+                        && theme.themeContent.optionsColor === oldTheme.themeContent.optionsColor
+                        && theme.themeContent['trisize-chooser'] === oldTheme.themeContent['trisize-chooser']
+                        && theme.themeContent['tristyle-chooser'] === oldTheme.themeContent['tristyle-chooser']
+                        && theme.themeContent['trivariance-chooser'] === oldTheme.themeContent['trivariance-chooser']) {
+                        return;
+                    }
+
+                    let xColors = [theme.themeContent.backgroundColor];
 
                     // Convert variance from my option to actual values.
                     let triVariance = 0.75;
@@ -188,10 +198,15 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * Updates the options elements colors.
              *
              * @param {any} theme Theme object with the new color settings.
+             * @param {any} oldTheme Theme object with the old color settings.
              * @param {any} duration How long to animate the transition.
              */
-            updateMainColor: function(theme, duration) {
+            updateMainColor: function(theme, oldTheme, duration) {
                 let mainColor = theme.themeContent.mainColor;
+
+                if (mainColor === oldTheme.mainColor) {
+                    return;
+                }
 
                 jquery('body').animate({
                     'color': mainColor,
@@ -224,10 +239,14 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * Updates the title elements colors.
              *
              * @param {any} theme Theme object with the new color settings.
+             * @param {any} oldTheme Theme object with the old color settings.
              * @param {any} duration How long to animate the transition.
              */
-            updateTitleColor: function(theme, duration) {
+            updateTitleColor: function(theme, oldTheme, duration) {
                 let titleColor = theme.themeContent.titleColor;
+                if (titleColor === oldTheme.themeContent.titleColor) {
+                    return;
+                }
 
                 jquery('.title-color').animate({
                     'color': titleColor,
@@ -247,10 +266,14 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * Updates the options elements colors.
              *
              * @param {any} theme Theme object with the new color settings.
+             * @param {any} oldTheme Theme object with the new color settings.
              * @param {any} duration How long to animate the transition.
              */
-            updateOptionsColor: function(theme, duration) {
+            updateOptionsColor: function(theme, oldTheme, duration) {
                 let optionsColor = theme.themeContent.optionsColor;
+                if (optionsColor === oldTheme.themeContent.titleColor) {
+                    return;
+                }
                 jquery('.options-color').animate({
                     'color': optionsColor,
                     'text-shadow': this.getShadow(theme, optionsColor),
@@ -279,6 +302,13 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * @param {any} theme The theme object with the new font settings.
              */
             updateFont: function(theme) {
+                if (theme.themeContent['font-chooser'] === theme.themeContent['font-chooser']
+                    && theme.themeContent['fontfamily-chooser'] === theme.themeContent['fontfamily-chooser']
+                    && theme.themeContent['fontweight-chooser'] === theme.themeContent['fontweight-chooser']
+                    && theme.themeContent['fontvariant-chooser'] === theme.themeContent['fontvariant-chooser']) {
+                    return;
+                }
+
                 // If the current font group is not custom, make it active.
                 if (theme.themeContent['font-chooser'] !== 'custom') {
                     theme.themeContent['fontfamily-chooser'] = theme.themeContent['font-chooser'];

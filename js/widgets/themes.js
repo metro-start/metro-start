@@ -8,6 +8,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
 
             data: {},
 
+            oldTheme: {},
+
             elems: {
                 themeEditor: document.getElementById('themeEditor'),
                 trianglify: document.getElementById('trianglifyButton'),
@@ -50,11 +52,12 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 // this.data = defaults.defaultTheme;
                 this.data = storage.get('currentTheme', defaults.defaultTheme);
                 this.data = util.upgradeTheme(this.data, defaults.defaultTheme);
+                this.oldTheme = this.data;
 
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
                 this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
 
-                storage.save('currentTheme', script.updateTheme(this.data, false));
+                storage.save('currentTheme', script.updateTheme(this.data, this.oldTheme, false));
             },
 
             /**
@@ -210,7 +213,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     appendTo: inputElement.parentNode,
                     showButtons: false,
                     color: this.data.themeContent[inputElement.id],
-                    move: throttleDebounce.throttle(250, this.updateColor.bind(this, inputElement.id), true),
+                    move: throttleDebounce.throttle(125, this.updateColor.bind(this, inputElement.id), true),
                 });
             },
 
@@ -221,6 +224,9 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              * @param {any} val The new value.
              */
             updateSelect: function(inputId, val) {
+                if (this.data[inputId] === val) {
+                    return;
+                }
                 switch (inputId.toLowerCase()) {
                     // These are the choosers that have something to hide.
                     case 'background-chooser':
@@ -250,6 +256,9 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              * @param {any} color The new color.
              */
             updateColor: function(inputId, color) {
+                if (this.data[inputId] === color.toHexString()) {
+                    return;
+                }
                 this.updateCurrentTheme(inputId, color.toHexString());
             },
 
@@ -327,11 +336,11 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                         this.data.author = '';
                     }
 
-                    let updatedTheme = script.updateTheme(this.data, true);
+                    let updatedTheme = script.updateTheme(this.data, this.oldTheme, true);
                     storage.save('currentTheme', updatedTheme);
                 } else {
                     this.data.themeContent[inputId] = val;
-                    script.updateTheme(this.data, true);
+                    this.oldTheme = script.updateTheme(this.data, this.oldTheme, true);
                 }
             },
 

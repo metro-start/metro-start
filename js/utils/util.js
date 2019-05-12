@@ -12,12 +12,14 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The message to log.
          */
-        log: function(msg) {
-            let time = Date.now();
-            // eslint-disable-next-line no-console
-            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        // log: function(msg) {
+        //     let time = Date.now();
+        //     // eslint-disable-next-line no-console
+        //     console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
 
-            this.lastLogTime = time;
+        //     this.lastLogTime = time;
+        // },
+        log: function() {
         },
 
         /**
@@ -25,12 +27,14 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The warning to log.
          */
-        warn: function(msg) {
-            let time = Date.now();
-            // eslint-disable-next-line no-console
-            console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        // warn: function(msg) {
+        //     let time = Date.now();
+        //     // eslint-disable-next-line no-console
+        //     console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
 
-            this.lastLogTime = time;
+        //     this.lastLogTime = time;
+        // },
+        warn: function() {
         },
 
         /**
@@ -38,11 +42,13 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg  The error to log.
          */
-        error: function(msg) {
-            let time = Date.now();
-            // eslint-disable-next-line no-console
-            console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
-            this.lastLogTime = time;
+        // error: function(msg) {
+        //     let time = Date.now();
+        //     // eslint-disable-next-line no-console
+        //     console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        //     this.lastLogTime = time;
+        // },
+        error: function() {
         },
 
         /**
@@ -51,8 +57,10 @@ define(['./defaults'], (defaults) => {
          * @param {any} key The field that has been changed.
          * @param {any} val The value that was changed to.
          */
-        logChange: function(key, val) {
-            this.log(`setting [${key}] to ${val}`);
+        // logChange: function(key, val) {
+        //     this.log(`setting [${key}] to ${val}`);
+        // },
+        logChange: function() {
         },
 
         // Converts an HTML string to a DOM fragment.
@@ -177,7 +185,10 @@ define(['./defaults'], (defaults) => {
          * @return {any} The upgraded theme.
          */
         upgradeTheme: function(oldTheme, defaultTheme) {
+            let themeContent = Object.assign({}, defaultTheme.themeContent, oldTheme.themeContent);
             let theme = Object.assign({}, defaultTheme, oldTheme);
+
+            theme.themeContent = themeContent;
 
             // Upgrade the font.
             if (!defaults.defaultFonts.concat(['custom']).includes(oldTheme.themeContent['font-chooser'])) {
