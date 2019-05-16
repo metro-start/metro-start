@@ -300,13 +300,19 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * Upates the currently selected font.
              *
              * @param {any} theme The theme object with the new font settings.
+             * @param {any} oldTheme The theme object with the old font settings.
              */
-            updateFont: function(theme) {
-                if (theme.themeContent['font-chooser'] === theme.themeContent['font-chooser']
-                    && theme.themeContent['fontfamily-chooser'] === theme.themeContent['fontfamily-chooser']
-                    && theme.themeContent['fontweight-chooser'] === theme.themeContent['fontweight-chooser']
-                    && theme.themeContent['fontvariant-chooser'] === theme.themeContent['fontvariant-chooser']) {
+            updateFont: function(theme, oldTheme) {
+                if (theme.themeContent['font-chooser'] === oldTheme.themeContent['font-chooser']
+                    && theme.themeContent['fontfamily-chooser'] === oldTheme.themeContent['fontfamily-chooser']
+                    && theme.themeContent['fontweight-chooser'] === oldTheme.themeContent['fontweight-chooser']
+                    && theme.themeContent['fontvariant-chooser'] === oldTheme.themeContent['fontvariant-chooser']) {
                     return;
+                }
+
+                // If the current font group is being changed to custom, also make it the font-family.
+                if (theme.themeContent['font-chooser'] === 'custom' && oldTheme.themeContent['font-chooser'] !== 'custom') {
+                    theme.themeContent['fontfamily-chooser'] = oldTheme.themeContent['font-chooser'];
                 }
 
                 // If the current font group is not custom, make it active.

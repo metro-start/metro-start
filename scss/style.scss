@@ -201,6 +201,12 @@ h5 {
     flex-basis: auto;
     min-width: 375px;
     vertical-align: top;
+
+    .item {
+        .active {
+            padding-left: 10px;
+        }
+    }
 }
 
 .item {
