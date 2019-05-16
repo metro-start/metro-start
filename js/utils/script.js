@@ -310,11 +310,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     return;
                 }
 
-                // If the current font group is being changed to custom, also make it the font-family.
-                if (theme.themeContent['font-chooser'] === 'custom' && oldTheme.themeContent['font-chooser'] !== 'custom') {
-                    theme.themeContent['fontfamily-chooser'] = oldTheme.themeContent['font-chooser'];
-                }
-
                 // If the current font group is not custom, make it active.
                 if (theme.themeContent['font-chooser'] !== 'custom') {
                     theme.themeContent['fontfamily-chooser'] = theme.themeContent['font-chooser'];
