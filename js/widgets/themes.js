@@ -8,6 +8,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
 
             data: {},
 
+            oldTheme: {},
+
             elems: {
                 themeEditor: document.getElementById('themeEditor'),
                 trianglify: document.getElementById('trianglifyButton'),
@@ -43,18 +45,19 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 document.getElementById('tristyle-chooser'),
             ],
 
-            themeAdded: function() {},
-            themeRemoved: function() {},
+            themeAdded: function() { },
+            themeRemoved: function() { },
 
             init: function() {
                 // this.data = defaults.defaultTheme;
                 this.data = storage.get('currentTheme', defaults.defaultTheme);
                 this.data = util.upgradeTheme(this.data, defaults.defaultTheme);
+                this.oldTheme = this.data;
 
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
                 this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
 
-                storage.save('currentTheme', script.updateTheme(this.data, false));
+                storage.save('currentTheme', script.updateTheme(this.data, this.oldTheme, false));
             },
 
             /**
@@ -65,17 +68,17 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 if (this.isBound) {
                     for (let i = 0; i < this.textInputs.length; i++) {
                         let inputElement = this.textInputs[i];
-                        inputElement.value = this.data[inputElement.id] ? this.data[inputElement.id] : '';
+                        inputElement.value = this.data.themeContent[inputElement.id] ? this.data.themeContent[inputElement.id] : '';
                     }
 
                     for (let j = 0; j < this.colorInputs.length; j++) {
-                        let value = this.data[this.colorInputs[j].id];
+                        let value = this.data.themeContent[this.colorInputs[j].id];
                         let color = jquery(this.colorInputs[j]);
                         color.spectrum('set', value);
                     }
 
                     for (let k = 0; k < this.selectInputs.length; k++) {
-                        let text = this.data[this.selectInputs[k].id];
+                        let text = this.data.themeContent[this.selectInputs[k].id];
                         jquery(`#${this.selectInputs[k].id}`).metroSelect().set_active(text);
                     }
                 }
@@ -97,7 +100,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 modal.createModal('themeEditorModal', this.elems.themeEditor, this.themeEditorClosed.bind(this), 'save', 'cancel');
 
                 if (!this.isBound) {
-                    for (let i = 0; i < this.selectInputs.length; i++) {
+                    for (let i = 0; i < this.textInputs.length; i++) {
                         this.bindTextInput(this.textInputs[i]);
                     }
 
@@ -191,11 +194,11 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              */
             bindSelectInput: function(inputElement) {
                 jquery(inputElement).metroSelect({
-                    'initial': this.data[inputElement.id],
+                    'initial': this.data.themeContent[inputElement.id],
                     'onchange': this.updateSelect.bind(this, inputElement.id),
                 });
 
-                this.updateSelect(inputElement.id, this.data[inputElement.id]);
+                this.updateSelect(inputElement.id, this.data.themeContent[inputElement.id]);
             },
 
             /**
@@ -209,8 +212,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     replacerClassName: 'spectrum-replacer',
                     appendTo: inputElement.parentNode,
                     showButtons: false,
-                    color: this.data[inputElement.id],
-                    move: throttleDebounce.throttle(250, this.updateColor.bind(this, inputElement.id), true),
+                    color: this.data.themeContent[inputElement.id],
+                    move: throttleDebounce.throttle(125, this.updateColor.bind(this, inputElement.id), true),
                 });
             },
 
@@ -221,6 +224,9 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              * @param {any} val The new value.
              */
             updateSelect: function(inputId, val) {
+                if (this.data[inputId] === val) {
+                    return;
+                }
                 switch (inputId.toLowerCase()) {
                     // These are the choosers that have something to hide.
                     case 'background-chooser':
@@ -250,6 +256,9 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              * @param {any} color The new color.
              */
             updateColor: function(inputId, color) {
+                if (this.data[inputId] === color.toHexString()) {
+                    return;
+                }
                 this.updateCurrentTheme(inputId, color.toHexString());
             },
 
@@ -257,19 +266,21 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
              * Share a locally saved theme to the community.
              *
              * @param {any} theme The theme to be shared.
+             * @param {function} callback Function to call sharing completes.
              */
-            shareTheme: function(theme) {
+            shareTheme: function(theme, callback) {
                 let url = `${defaults.defaultWebservice}/newtheme`;
                 jquery.ajax({
                     url: url,
                     type: 'POST',
                     data: JSON.stringify(theme),
-                    dataType: 'json',
                     success: function() {
                         util.log('Theme shared to the web.');
+                        callback(true, '');
                     },
-                    error: function(e) {
-                        util.error('Theme was not shared to the web: ', e);
+                    error: function(jqxhr, status, ex) {
+                        util.error(`Theme was not shared to the web with status: ${status} and ex: ${ex}`);
+                        callback(false, status);
                     },
                 });
             },
@@ -304,7 +315,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     return;
                 }
 
-                if (this.data['palette-chooser'] === 'automatic') {
+                if (this.data.themeContent['palette-chooser'] === 'automatic') {
                     this.autoPaletteAdjust();
                 }
 
@@ -325,20 +336,20 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                         this.data.author = '';
                     }
 
-                    let updatedTheme = script.updateTheme(this.data, true);
+                    let updatedTheme = script.updateTheme(this.data, this.oldTheme, true);
                     storage.save('currentTheme', updatedTheme);
                 } else {
-                    this.data[inputId] = val;
-                    script.updateTheme(this.data, true);
+                    this.data.themeContent[inputId] = val;
+                    this.oldTheme = script.updateTheme(this.data, this.oldTheme, true);
                 }
             },
 
             autoPaletteAdjust: function() {
-                let baseColor = tinycolor(this.data.baseColor);
-                this.data.backgroundColor = baseColor.toHexString();
-                this.data.titleColor = this.getReadable(tinycolor(this.data.baseColor), -1.6);
-                this.data.mainColor = this.getReadable(tinycolor(this.data.baseColor), 1.8);
-                this.data.optionsColor = this.getReadable(tinycolor(this.data.baseColor), 1.25);
+                let baseColor = tinycolor(this.data.themeContent.baseColor);
+                this.data.themeContent.backgroundColor = baseColor.toHexString();
+                this.data.themeContent.titleColor = this.getReadable(tinycolor(this.data.themeContent.baseColor), -1.6);
+                this.data.themeContent.mainColor = this.getReadable(tinycolor(this.data.themeContent.baseColor), 1.8);
+                this.data.themeContent.optionsColor = this.getReadable(tinycolor(this.data.themeContent.baseColor), 1.25);
             },
 
             /**
@@ -367,8 +378,8 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     tinycolor(color.toHexString()).spin(multiplier * 242).brighten(25),
                     tinycolor(color.toHexString()).spin(multiplier * 303).brighten(25),
                 ], {
-                    includeFallbackColors: false,
-                }).toHexString();
+                        includeFallbackColors: false,
+                    }).toHexString();
             },
         };
 

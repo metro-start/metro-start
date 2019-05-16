@@ -61,23 +61,22 @@ define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils
 
                 // Load online themes.
                 jquery.get(
-                    `${defaults.defaultWebservice}/themes.json`,
-                    (themes) => {
-                        if (!themes || themes.length === 0) {
+                    `${defaults.defaultWebservice}/themes`,
+                    (downloadedThemes) => {
+                        if (!downloadedThemes || downloadedThemes.length === 0) {
                             util.warn('No online themes available.');
                             return;
                         }
 
-                        themes = JSON.parse(themes);
-                        for (let theme of themes) {
+                        this.onlineThemes = downloadedThemes;
+                        for (let theme of this.onlineThemes) {
                             theme.online = true;
                         }
 
-                        this.onlineThemes = themes;
                         this.themes.addAll({
-                                'heading': 'online themes',
-                                'data': themes,
-                            },
+                            'heading': 'online themes',
+                            'data': this.onlineThemes,
+                        },
                             (error) => {
                                 util.error('Could not load online themes', error);
                             });
@@ -158,8 +157,7 @@ define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils
                     cancel = 'cancel';
                     callback = (result) => {
                         if (result) {
-                            this.themesWidget.shareTheme(theme);
-                            this.loadThemes();
+                            this.themesWidget.shareTheme(theme, this.themeSharedHandler.bind(this, title));
                         }
                     };
                 }
@@ -185,6 +183,14 @@ define(['jquery', '../pagebase/pagebase_grouped', '../widgets/themes', '../utils
 
             themeRemoved: function() {
                 this.loadThemes();
+            },
+
+            themeSharedHandler: function(title, result, status) {
+                if (result) {
+                    this.loadThemes();
+                } else {
+                    modal.createModal('shareThemeAlert', `${title} was not shared to the gallery. ErrorCode: '${status}'`, null, null, 'okay');
+                }
             },
         };
 

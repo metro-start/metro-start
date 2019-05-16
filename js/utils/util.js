@@ -12,12 +12,14 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The message to log.
          */
-        log: function(msg) {
-            let time = Date.now();
-            // eslint-disable-next-line no-console
-            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        // log: function(msg) {
+        //     let time = Date.now();
+        //     // eslint-disable-next-line no-console
+        //     console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
 
-            this.lastLogTime = time;
+        //     this.lastLogTime = time;
+        // },
+        log: function() {
         },
 
         /**
@@ -25,12 +27,14 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The warning to log.
          */
-        warn: function(msg) {
-            let time = Date.now();
-            // eslint-disable-next-line no-console
-            console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        // warn: function(msg) {
+        //     let time = Date.now();
+        //     // eslint-disable-next-line no-console
+        //     console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
 
-            this.lastLogTime = time;
+        //     this.lastLogTime = time;
+        // },
+        warn: function() {
         },
 
         /**
@@ -38,12 +42,13 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg  The error to log.
          */
-        error: function(msg) {
-            let time = Date.now();
-            // eslint-disable-next-line no-console
-            console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
-
-            this.lastLogTime = time;
+        // error: function(msg) {
+        //     let time = Date.now();
+        //     // eslint-disable-next-line no-console
+        //     console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        //     this.lastLogTime = time;
+        // },
+        error: function() {
         },
 
         /**
@@ -52,8 +57,10 @@ define(['./defaults'], (defaults) => {
          * @param {any} key The field that has been changed.
          * @param {any} val The value that was changed to.
          */
-        logChange: function(key, val) {
-            this.log(`setting [${key}] to ${val}`);
+        // logChange: function(key, val) {
+        //     this.log(`setting [${key}] to ${val}`);
+        // },
+        logChange: function() {
         },
 
         // Converts an HTML string to a DOM fragment.
@@ -173,45 +180,48 @@ define(['./defaults'], (defaults) => {
         /**
          * Upgrade a provided theme to ensure it has all the right fields.
          *
-         * @param {any} data The theme to be upgraded.
+         * @param {any} oldTheme The theme to be upgraded.
          * @param {any} defaultTheme The theme to use to back-fill.
          * @return {any} The upgraded theme.
          */
-        upgradeTheme: function(data, defaultTheme) {
-            let theme = Object.assign({}, defaultTheme, data);
+        upgradeTheme: function(oldTheme, defaultTheme) {
+            let themeContent = Object.assign({}, defaultTheme.themeContent, oldTheme.themeContent);
+            let theme = Object.assign({}, defaultTheme, oldTheme);
+
+            theme.themeContent = themeContent;
 
             // Upgrade the font.
-            if (!defaults.defaultFonts.concat(['custom']).includes(data['font-chooser'])) {
-                    theme['font-chooser'] = defaultTheme['font-chooser'];
+            if (!defaults.defaultFonts.concat(['custom']).includes(oldTheme.themeContent['font-chooser'])) {
+                theme.themeContent['font-chooser'] = defaultTheme.themeContent['font-chooser'];
             }
 
             // Upgrade any underscored colors.
-            if (!!data.options_color && !data.optionsColor) {
-                theme.optionsColor = data.options_color;
+            if (!!oldTheme.themeContent.options_color && !oldTheme.themeContent.optionsColor) {
+                theme.themeContent.optionsColor = oldTheme.themeContent.options_color;
             }
-            if (!!data.main_color && !data.mainColor) {
-                theme.mainColor = data.main_color;
+            if (!!oldTheme.themeContent.main_color && !oldTheme.themeContent.mainColor) {
+                theme.themeContent.mainColor = oldTheme.themeContent.main_color;
             }
-            if (!!data.background_color && !data.backgroundColor) {
-                theme.backgroundColor = data.background_color;
+            if (!!oldTheme.themeContent.background_color && !oldTheme.themeContent.backgroundColor) {
+                theme.themeContent.backgroundColor = oldTheme.themeContent.background_color;
             }
-            if (!!data.title_color && !data.titleColor) {
-                theme.titleColor = data.title_color;
+            if (!!oldTheme.themeContent.title_color && !oldTheme.themeContent.titleColor) {
+                theme.themeContent.titleColor = oldTheme.themeContent.title_color;
             }
 
             // Upgrade any theme.colors.
-            if (data.colors) {
-                if (!!data.colors.options_color && !data.optionsColor) {
-                    theme.optionsColor = data.colors.options_color;
+            if (oldTheme.themeContent.colors) {
+                if (!!oldTheme.themeContent.colors.options_color && !oldTheme.themeContent.optionsColor) {
+                    theme.themeContent.optionsColor = oldTheme.themeContent.colors.options_color;
                 }
-                if (!!data.colors.main_color && !data.mainColor) {
-                    theme.mainColor = data.colors.main_color;
+                if (!!oldTheme.themeContent.colors.main_color && !oldTheme.themeContent.mainColor) {
+                    theme.themeContent.mainColor = oldTheme.themeContent.colors.main_color;
                 }
-                if (!!data.colors.background_color && !data.backgroundColor) {
-                    theme.backgroundColor = data.colors.background_color;
+                if (!!oldTheme.themeContent.colors.background_color && !oldTheme.themeContent.backgroundColor) {
+                    theme.themeContent.backgroundColor = oldTheme.themeContent.colors.background_color;
                 }
-                if (!!data.colors.title_color && !data.titleColor) {
-                    theme.titleColor = data.colors.title_color;
+                if (!!oldTheme.themeContent.colors.title_color && !oldTheme.themeContent.titleColor) {
+                    theme.themeContent.titleColor = oldTheme.themeContent.colors.title_color;
                 }
             }
 

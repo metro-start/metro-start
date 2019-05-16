@@ -12,7 +12,7 @@ define(['jquery', '../utils/util', '../utils/storage'],
 
             modalCallbacks: {},
 
-            init: function() {},
+            init: function() { },
 
             /**
              * Creates a new modal window.

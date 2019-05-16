@@ -83,16 +83,16 @@
       #weather.hide
         #city
         %div
-          %input#newLocation.option{:placeholder => "vancouver, bc", :type => "text"}/
+          %input#newLocation.option{:placeholder => "vancouver, ca", :type => "text"}/
           %span#saveLocation.options-color.option.clickable save
         .options-color.option
-          %select#weather-unit-chooser.chooser
-            %option.clickable fahrenheit
+          %select#weather-units-chooser.chooser
             %option.clickable celsius
+            %option.clickable fahrenheit
         %p#temp
           %span#currentTemp>
           °
-          %span#unit.options-color
+          %span#units.options-color
           \/
           %span#highTemp
           %span.options-color hi
@@ -120,19 +120,10 @@
               %a{:href => 'http://qrohlf.com/trianglify'} Trianglify
           %tr
             %td 
-              %a{:href => 'https://jquery.com'} Jquery
-          %tr
-            %td 
-              %a{:href => 'https://github.com/Box9/jss'} JSS
-          %tr
-            %td 
-              %a{:href => 'https://github.com/metro-start/metro-select'} MetroSelect
+              %a{:href => 'https://openweathermap.org'} Open Weather Map
           %tr
             %td 
               %a{:href => 'https://bgrins.github.io/spectrum'} Spectrum Colorpicker
-          %tr
-            %td 
-              %a{:href => 'https://bgrins.github.io/TinyColor'} TinyColor
           %tr
             %td
               %a{:href => 'https://github.com/metro-start/metro-start/blob/master/package.json'} and others...
@@ -154,9 +145,7 @@
             %option.clickable{:style => 'font-family: inconsolata'} inconsolata
 
         .theme-editor-section
-          #default.font-chooser-section
-          #raleway.font-chooser-section
-          #custom.theme-editor-border.font-chooser-section
+          #custom.font-chooser-section.theme-editor-border
             .theme-section-title.small-text font style options
             %table.metro-table
               %tbody

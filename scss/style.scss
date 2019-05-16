@@ -1,5 +1,6 @@
 // Generic Styles
 $default-background: #fff;
+
 * {
     box-sizing: border-box;
 }
@@ -73,12 +74,15 @@ input {
     font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
+
     &[type='submit'] {
         border: 0;
         cursor: pointer;
     }
+
     &[type='text'] {
         padding-left: 8px;
+
         #newLocation {
             margin-bottom: 8px;
         }
@@ -154,6 +158,7 @@ h5 {
     height: calc(100% - 251px);
     overflow: hidden;
     width: 100%;
+
     .internal {
         height: 100%;
         transition: margin .3s ease-in-out;
@@ -165,6 +170,7 @@ h5 {
     height: calc(100% - 42px);
     overflow: auto;
     width: 100%;
+
     .internal-selector {
         height: 100%;
         margin-left: 50px;
@@ -176,6 +182,7 @@ h5 {
     float: left;
     height: 100%;
     width: 20%;
+
     >div {
         height: 100%;
     }
@@ -194,11 +201,18 @@ h5 {
     flex-basis: auto;
     min-width: 375px;
     vertical-align: top;
+
+    .item {
+        .active {
+            padding-left: 10px;
+        }
+    }
 }
 
 .item {
     align-items: center;
     min-width: 0;
+
     :last-child {
         margin-bottom: 0;
     }
@@ -209,6 +223,7 @@ h5 {
     line-height: 100%;
     padding: 5px 0;
     white-space: nowrap;
+
     #internal-selector-sessions {
         max-width: 375px;
         overflow: hidden;
@@ -222,11 +237,13 @@ h5 {
     flex-direction: row;
     flex-grow: 0;
     height: calc(100% - 1px); // Minus the number of points the font has increased by...
+
     .group {
         display: inline-block;
         height: 100%;
         margin-right: 28px;
     }
+
     .page,
     .group>.page {
         border-top: 1px solid;
@@ -254,6 +271,7 @@ h5 {
     padding: 10px 0;
     text-overflow: ellipsis;
     white-space: nowrap;
+
     &.theme-item {
         padding-left: 0;
     }
@@ -358,11 +376,13 @@ h5 {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+
     .clickable {
         border: 2px solid;
         margin-bottom: 8px;
         margin-right: 4px;
         padding: 6px;
+
         :first {
             margin-right: 4px;
         }
@@ -406,6 +426,7 @@ h5 {
 // Table formatting
 .metro-table {
     border-spacing: 8px;
+
     td {
         padding: 4px;
         padding-bottom: 4px;
@@ -415,6 +436,7 @@ h5 {
 
 #aboutModal {
     text-align: center;
+
     .metro-table {
         width: 100%;
     }
@@ -422,6 +444,7 @@ h5 {
 
 .group>.page>.item {
     padding-bottom: 8px;
+
     >.title {
         margin-bottom: -8px;
     }
