@@ -19,6 +19,7 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
 
             init: function() {
                 this.data = storage.get('weather', defaults.defaultWeather);
+                this.upgradeWeather('weather', defaults.defaultWeather);
 
                 this.elems.city.innerText = this.data.city;
                 this.elems.currentTemp.innerText = this.data.currentTemp;
@@ -123,6 +124,14 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
                 this.elems.lowTemp.innerText = this.data.lowTemp;
                 this.elems.condition.innerText = this.data.condition;
                 this.elems.units.innerText = this.data.units[0];
+            },
+
+            upgradeWeather: function(weather, defaultWeather) {
+                if (weather.units) {
+                    return defaultWeather;
+                }
+
+                return defaultWeather;
             },
         };
         return weather;
