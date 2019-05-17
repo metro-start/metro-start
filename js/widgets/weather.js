@@ -128,10 +128,9 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
 
             upgradeWeather: function(weather, defaultWeather) {
                 if (weather.units) {
-                    return defaultWeather;
+                    this.data = defaultWeather;
                 }
-
-                return defaultWeather;
+                this.data = weather;
             },
         };
         return weather;
