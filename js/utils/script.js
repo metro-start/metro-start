@@ -33,6 +33,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                     theme.themeContent['fontvariant-chooser'] = util.randomize(['normal', 'small-caps']);
                 }
 
+                this.clearJss();
                 this.updateFont(theme, oldTheme);
                 this.updateBackground(theme, oldTheme, duration);
                 this.updateMainColor(theme, oldTheme, duration);
@@ -152,6 +153,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                         x_colors: xColors,
                         seed: 'metro-start',
                     });
+                    jss.set('.background-color', {
+                        'background-color': theme.themeContent.backgroundColor,
+                    });
                     jss.set('body', {
                         'background-image': `url(${bodyPattern.png()})`,
                     });
@@ -166,10 +170,6 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
 
                     jss.set('.modal-content', {
                         'background-image': `url(${modalPattern.png()})`,
-                    });
-
-                    jss.set('.background-color', {
-                        'background-color': theme.themeContent.backgroundColor,
                     });
                 } else {
                     jquery('.background-color').animate({
@@ -352,6 +352,12 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
                 for (let selector of selectors) {
                     jss.set(selector, style);
                 }
+            },
+
+            clearJss: function() {
+                ['body', '.background-color', '.modal-content'].forEach((element) => {
+                    jss.remove(element);
+                });
             },
         };
 

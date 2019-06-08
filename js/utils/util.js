@@ -1,5 +1,6 @@
 define(['./defaults'], (defaults) => {
     // Speed up calls to hasOwnProperty
+    let loggingEnabled = true;
     let hasOwnProperty = Object.prototype.hasOwnProperty;
 
     let util = {
@@ -12,14 +13,16 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The message to log.
          */
-        // log: function(msg) {
-        //     let time = Date.now();
-        //     // eslint-disable-next-line no-console
-        //     console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        log: function(msg) {
+            if (!loggingEnabled) {
+                return;
+            }
 
-        //     this.lastLogTime = time;
-        // },
-        log: function() {
+            let time = Date.now();
+            // eslint-disable-next-line no-console
+            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
         },
 
         /**
@@ -27,14 +30,16 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The warning to log.
          */
-        // warn: function(msg) {
-        //     let time = Date.now();
-        //     // eslint-disable-next-line no-console
-        //     console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        warn: function(msg) {
+            if (!loggingEnabled) {
+                return;
+            }
 
-        //     this.lastLogTime = time;
-        // },
-        warn: function() {
+            let time = Date.now();
+            // eslint-disable-next-line no-console
+            console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
         },
 
         /**
@@ -42,13 +47,15 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg  The error to log.
          */
-        // error: function(msg) {
-        //     let time = Date.now();
-        //     // eslint-disable-next-line no-console
-        //     console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
-        //     this.lastLogTime = time;
-        // },
-        error: function() {
+        error: function(msg) {
+            if (!loggingEnabled) {
+                return;
+            }
+
+            let time = Date.now();
+            // eslint-disable-next-line no-console
+            console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+            this.lastLogTime = time;
         },
 
         /**
@@ -57,10 +64,12 @@ define(['./defaults'], (defaults) => {
          * @param {any} key The field that has been changed.
          * @param {any} val The value that was changed to.
          */
-        // logChange: function(key, val) {
-        //     this.log(`setting [${key}] to ${val}`);
-        // },
-        logChange: function() {
+        logChange: function(key, val) {
+            if (!loggingEnabled) {
+                return;
+            }
+
+            this.log(`setting [${key}] to ${val}`);
         },
 
         // Converts an HTML string to a DOM fragment.
@@ -185,6 +194,10 @@ define(['./defaults'], (defaults) => {
          * @return {any} The upgraded theme.
          */
         upgradeTheme: function(oldTheme, defaultTheme) {
+            if (!oldTheme.themeContent) {
+                return this.upgradeOldTheme(oldTheme, defaultTheme);
+            }
+
             let themeContent = Object.assign({}, defaultTheme.themeContent, oldTheme.themeContent);
             let theme = Object.assign({}, defaultTheme, oldTheme);
 
@@ -222,6 +235,50 @@ define(['./defaults'], (defaults) => {
                 }
                 if (!!oldTheme.themeContent.colors.title_color && !oldTheme.themeContent.titleColor) {
                     theme.themeContent.titleColor = oldTheme.themeContent.colors.title_color;
+                }
+            }
+
+            return theme;
+        },
+
+        upgradeOldTheme: function(oldTheme, defaultTheme) {
+            let themeContent = Object.assign({}, defaultTheme.themeContent, oldTheme);
+            let theme = Object.assign({}, defaultTheme, oldTheme);
+
+            theme.themeContent = themeContent;
+
+            // Upgrade the font.
+            if (!defaults.defaultFonts.concat(['custom']).includes(oldTheme['font-chooser'])) {
+                theme.themeContent['font-chooser'] = defaultTheme['font-chooser'];
+            }
+
+            // Upgrade any underscored colors.
+            if (!!oldTheme.options_color && !oldTheme.optionsColor) {
+                theme.themeContent.optionsColor = oldTheme.options_color;
+            }
+            if (!!oldTheme.main_color && !oldTheme.mainColor) {
+                theme.themeContent.mainColor = oldTheme.main_color;
+            }
+            if (!!oldTheme.background_color && !oldTheme.backgroundColor) {
+                theme.themeContent.backgroundColor = oldTheme.background_color;
+            }
+            if (!!oldTheme.title_color && !oldTheme.titleColor) {
+                theme.themeContent.titleColor = oldTheme.title_color;
+            }
+
+            // Upgrade any theme.colors.
+            if (oldTheme.colors) {
+                if (!!oldTheme.colors.options_color && !oldTheme.optionsColor) {
+                    theme.themeContent.optionsColor = oldTheme.colors.options_color;
+                }
+                if (!!oldTheme.colors.main_color && !oldTheme.mainColor) {
+                    theme.themeContent.mainColor = oldTheme.colors.main_color;
+                }
+                if (!!oldTheme.colors.background_color && !oldTheme.backgroundColor) {
+                    theme.themeContent.backgroundColor = oldTheme.colors.background_color;
+                }
+                if (!!oldTheme.colors.title_color && !oldTheme.titleColor) {
+                    theme.themeContent.titleColor = oldTheme.colors.title_color;
                 }
             }
 

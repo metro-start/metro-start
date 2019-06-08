@@ -315,7 +315,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     return;
                 }
 
-                if (this.data.themeContent['palette-chooser'] === 'automatic') {
+                if (this.data.themeContent && this.data.themeContent['palette-chooser'] === 'automatic') {
                     this.autoPaletteAdjust();
                 }
 
