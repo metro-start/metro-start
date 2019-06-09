@@ -19,6 +19,7 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
 
             init: function() {
                 this.data = storage.get('weather', defaults.defaultWeather);
+                this.upgradeWeather(defaults.defaultWeather);
 
                 this.elems.city.innerText = this.data.city;
                 this.elems.currentTemp.innerText = this.data.currentTemp;
@@ -86,6 +87,7 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
              * @param {any} force Skip timeout check.
              */
             updateWeather: function(force) {
+                this.upgradeWeather(defaults.defaultWeather);
                 // If it has been more than an hour since last check.
                 if (force || new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)) {
                     this.update('weatherUpdateTime', parseInt(new Date().getTime(), 10) + 3600000);
@@ -123,6 +125,12 @@ define(['jquery', '../utils/util', '../utils/defaults', '../utils/storage', 'met
                 this.elems.lowTemp.innerText = this.data.lowTemp;
                 this.elems.condition.innerText = this.data.condition;
                 this.elems.units.innerText = this.data.units[0];
+            },
+
+            upgradeWeather: function(defaultWeather) {
+                if (!this.data.units) {
+                    this.data = defaultWeather;
+                }
             },
         };
         return weather;

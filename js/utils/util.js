@@ -1,10 +1,12 @@
 define(['./defaults'], (defaults) => {
     // Speed up calls to hasOwnProperty
+    let loggingEnabled = true;
     let hasOwnProperty = Object.prototype.hasOwnProperty;
 
     let util = {
         init: function() {
             this.lastLogTime = Date.now();
+            this.loggingEnabled = false;
         },
 
         /**
@@ -12,14 +14,16 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The message to log.
          */
-        // log: function(msg) {
-        //     let time = Date.now();
-        //     // eslint-disable-next-line no-console
-        //     console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        log: function(msg) {
+            if (!loggingEnabled) {
+                return;
+            }
 
-        //     this.lastLogTime = time;
-        // },
-        log: function() {
+            let time = Date.now();
+            // eslint-disable-next-line no-console
+            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
         },
 
         /**
@@ -27,14 +31,16 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The warning to log.
          */
-        // warn: function(msg) {
-        //     let time = Date.now();
-        //     // eslint-disable-next-line no-console
-        //     console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+        warn: function(msg) {
+            if (!loggingEnabled) {
+                return;
+            }
 
-        //     this.lastLogTime = time;
-        // },
-        warn: function() {
+            let time = Date.now();
+            // eslint-disable-next-line no-console
+            console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+
+            this.lastLogTime = time;
         },
 
         /**
@@ -42,13 +48,15 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg  The error to log.
          */
-        // error: function(msg) {
-        //     let time = Date.now();
-        //     // eslint-disable-next-line no-console
-        //     console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
-        //     this.lastLogTime = time;
-        // },
-        error: function() {
+        error: function(msg) {
+            if (!loggingEnabled) {
+                return;
+            }
+
+            let time = Date.now();
+            // eslint-disable-next-line no-console
+            console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+            this.lastLogTime = time;
         },
 
         /**
@@ -57,10 +65,12 @@ define(['./defaults'], (defaults) => {
          * @param {any} key The field that has been changed.
          * @param {any} val The value that was changed to.
          */
-        // logChange: function(key, val) {
-        //     this.log(`setting [${key}] to ${val}`);
-        // },
-        logChange: function() {
+        logChange: function(key, val) {
+            if (!loggingEnabled) {
+                return;
+            }
+
+            this.log(`setting [${key}] to ${val}`);
         },
 
         // Converts an HTML string to a DOM fragment.
@@ -185,47 +195,65 @@ define(['./defaults'], (defaults) => {
          * @return {any} The upgraded theme.
          */
         upgradeTheme: function(oldTheme, defaultTheme) {
-            let themeContent = Object.assign({}, defaultTheme.themeContent, oldTheme.themeContent);
-            let theme = Object.assign({}, defaultTheme, oldTheme);
+            let metadataFields = ['title', 'author', 'online'];
+            let themeContentFields = {
+                'optionsColor': 'options_color',
+                'mainColor': 'main_color',
+                'titleColor': 'title_color',
+                'backgroundColor': 'background_color',
+            };
+            // Ensure we don't miss any field names.
+            for (let defaultField in defaultTheme.themeContent) {
+                if (!Object.keys(themeContentFields).includes(defaultField)) {
+                    themeContentFields[defaultField] = defaultField;
+                }
+            }
 
-            theme.themeContent = themeContent;
+            const valueForMetadata = (obj, field) => {
+                if (obj[field]) {
+                    return obj[field];
+                }
+                // Do not try to re-use default metadata.
+                return '';
+            };
+
+            const valueForPossibleField = (obj, field) => {
+                if (obj.themeContent) {
+                    // If we have themecontent, that's the most up to date so grab that first.
+                    return valueForPossibleField(obj.themeContent, field);
+                }
+                // If we have colors, that probably something we need so grab that next.
+                if (obj.colors) {
+                    return valueForPossibleField(obj.colors, field);
+                }
+                if (obj[field]) {
+                    // If we have it in the current object.
+                    return obj[field];
+                }
+                if (obj[themeContentFields[field]]) {
+                    // Check the old name just in case.
+                    return obj[themeContentFields[field]];
+                }
+                // Fallback to default.
+                return defaultTheme[field];
+            };
+
+            let newTheme = {themeContent: {}};
+
+            for (let metadataField of metadataFields) {
+                newTheme[metadataField] = valueForMetadata(oldTheme, metadataField);
+            }
+
+            for (let valueField of Object.keys(themeContentFields)) {
+                newTheme.themeContent[valueField] = valueForPossibleField(oldTheme, valueField);
+            }
 
             // Upgrade the font.
-            if (!defaults.defaultFonts.concat(['custom']).includes(oldTheme.themeContent['font-chooser'])) {
-                theme.themeContent['font-chooser'] = defaultTheme.themeContent['font-chooser'];
+            if (!defaults.defaultFonts.concat(['custom']).includes(newTheme.themeContent['font-chooser'])) {
+                newTheme.themeContent['font-chooser'] = defaultTheme.themeContent['font-chooser'];
             }
 
-            // Upgrade any underscored colors.
-            if (!!oldTheme.themeContent.options_color && !oldTheme.themeContent.optionsColor) {
-                theme.themeContent.optionsColor = oldTheme.themeContent.options_color;
-            }
-            if (!!oldTheme.themeContent.main_color && !oldTheme.themeContent.mainColor) {
-                theme.themeContent.mainColor = oldTheme.themeContent.main_color;
-            }
-            if (!!oldTheme.themeContent.background_color && !oldTheme.themeContent.backgroundColor) {
-                theme.themeContent.backgroundColor = oldTheme.themeContent.background_color;
-            }
-            if (!!oldTheme.themeContent.title_color && !oldTheme.themeContent.titleColor) {
-                theme.themeContent.titleColor = oldTheme.themeContent.title_color;
-            }
-
-            // Upgrade any theme.colors.
-            if (oldTheme.themeContent.colors) {
-                if (!!oldTheme.themeContent.colors.options_color && !oldTheme.themeContent.optionsColor) {
-                    theme.themeContent.optionsColor = oldTheme.themeContent.colors.options_color;
-                }
-                if (!!oldTheme.themeContent.colors.main_color && !oldTheme.themeContent.mainColor) {
-                    theme.themeContent.mainColor = oldTheme.themeContent.colors.main_color;
-                }
-                if (!!oldTheme.themeContent.colors.background_color && !oldTheme.themeContent.backgroundColor) {
-                    theme.themeContent.backgroundColor = oldTheme.themeContent.colors.background_color;
-                }
-                if (!!oldTheme.themeContent.colors.title_color && !oldTheme.themeContent.titleColor) {
-                    theme.themeContent.titleColor = oldTheme.themeContent.colors.title_color;
-                }
-            }
-
-            return theme;
+            return newTheme;
         },
     };
 

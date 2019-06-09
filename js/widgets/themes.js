@@ -57,7 +57,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
                 this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
 
-                storage.save('currentTheme', script.updateTheme(this.data, this.oldTheme, false));
+                storage.save('currentTheme', script.updateTheme(this.data, null, false));
             },
 
             /**
@@ -315,7 +315,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     return;
                 }
 
-                if (this.data.themeContent['palette-chooser'] === 'automatic') {
+                if (this.data.themeContent && this.data.themeContent['palette-chooser'] === 'automatic') {
                     this.autoPaletteAdjust();
                 }
 
@@ -337,10 +337,12 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     }
 
                     let updatedTheme = script.updateTheme(this.data, this.oldTheme, true);
+                    this.oldTheme = updatedTheme;
                     storage.save('currentTheme', updatedTheme);
                 } else {
                     this.data.themeContent[inputId] = val;
-                    this.oldTheme = script.updateTheme(this.data, this.oldTheme, true);
+                    let updatedTheme = script.updateTheme(this.data, this.oldTheme, true);
+                    this.oldTheme = updatedTheme;
                 }
             },
 
