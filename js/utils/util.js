@@ -6,6 +6,7 @@ define(['./defaults'], (defaults) => {
     let util = {
         init: function() {
             this.lastLogTime = Date.now();
+            this.loggingEnabled = false;
         },
 
         /**
@@ -194,54 +195,6 @@ define(['./defaults'], (defaults) => {
          * @return {any} The upgraded theme.
          */
         upgradeTheme: function(oldTheme, defaultTheme) {
-            if (!oldTheme.themeContent) {
-                return this.upgradeOldTheme(oldTheme, defaultTheme);
-            }
-
-            let themeContent = Object.assign({}, defaultTheme.themeContent, oldTheme.themeContent);
-            let theme = Object.assign({}, defaultTheme, oldTheme);
-
-            theme.themeContent = themeContent;
-
-            // Upgrade the font.
-            if (!defaults.defaultFonts.concat(['custom']).includes(oldTheme.themeContent['font-chooser'])) {
-                theme.themeContent['font-chooser'] = defaultTheme.themeContent['font-chooser'];
-            }
-
-            // Upgrade any underscored colors.
-            if (!!oldTheme.themeContent.options_color && !oldTheme.themeContent.optionsColor) {
-                theme.themeContent.optionsColor = oldTheme.themeContent.options_color;
-            }
-            if (!!oldTheme.themeContent.main_color && !oldTheme.themeContent.mainColor) {
-                theme.themeContent.mainColor = oldTheme.themeContent.main_color;
-            }
-            if (!!oldTheme.themeContent.background_color && !oldTheme.themeContent.backgroundColor) {
-                theme.themeContent.backgroundColor = oldTheme.themeContent.background_color;
-            }
-            if (!!oldTheme.themeContent.title_color && !oldTheme.themeContent.titleColor) {
-                theme.themeContent.titleColor = oldTheme.themeContent.title_color;
-            }
-
-            // Upgrade any theme.colors.
-            if (oldTheme.themeContent.colors) {
-                if (!!oldTheme.themeContent.colors.options_color && !oldTheme.themeContent.optionsColor) {
-                    theme.themeContent.optionsColor = oldTheme.themeContent.colors.options_color;
-                }
-                if (!!oldTheme.themeContent.colors.main_color && !oldTheme.themeContent.mainColor) {
-                    theme.themeContent.mainColor = oldTheme.themeContent.colors.main_color;
-                }
-                if (!!oldTheme.themeContent.colors.background_color && !oldTheme.themeContent.backgroundColor) {
-                    theme.themeContent.backgroundColor = oldTheme.themeContent.colors.background_color;
-                }
-                if (!!oldTheme.themeContent.colors.title_color && !oldTheme.themeContent.titleColor) {
-                    theme.themeContent.titleColor = oldTheme.themeContent.colors.title_color;
-                }
-            }
-
-            return theme;
-        },
-
-        upgradeOldTheme: function(oldTheme, defaultTheme) {
             let metadataFields = ['title', 'author', 'online'];
             let themeContentFields = {
                 'optionsColor': 'options_color',

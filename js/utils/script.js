@@ -13,7 +13,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              */
             updateTheme: function(newTheme, oldTheme, transition) {
                 let duration = (transition === true ? 800 : 0);
-                let theme = util.upgradeOldTheme(newTheme, defaults.defaultTheme);
+                let theme = util.upgradeTheme(newTheme, defaults.defaultTheme);
 
                 if (theme.title === 'randomize') {
                     theme.themeContent['background-chooser'] = util.randomize(['none', 'trianglify']);

@@ -51,7 +51,7 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
             init: function() {
                 // this.data = defaults.defaultTheme;
                 this.data = storage.get('currentTheme', defaults.defaultTheme);
-                this.data = util.upgradeOldTheme(this.data, defaults.defaultTheme);
+                this.data = util.upgradeTheme(this.data, defaults.defaultTheme);
                 this.oldTheme = this.data;
 
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
