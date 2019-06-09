@@ -13,7 +13,7 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              */
             updateTheme: function(newTheme, oldTheme, transition) {
                 let duration = (transition === true ? 800 : 0);
-                let theme = util.upgradeTheme(newTheme, defaults.defaultTheme);
+                let theme = util.upgradeOldTheme(newTheme, defaults.defaultTheme);
 
                 if (theme.title === 'randomize') {
                     theme.themeContent['background-chooser'] = util.randomize(['none', 'trianglify']);
@@ -74,7 +74,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             updateBackground: function(theme, oldTheme, duration) {
                 let jBody = jquery('body');
                 if (theme.themeContent['background-chooser'] === 'trianglify') {
-                    if (theme.themeContent.backgroundColor === oldTheme.themeContent.backgroundColor
+                    if (oldTheme
+                        && oldTheme.themeContent
+                        && theme.themeContent.backgroundColor === oldTheme.themeContent.backgroundColor
                         && theme.themeContent.optionsColor === oldTheme.themeContent.optionsColor
                         && theme.themeContent['trisize-chooser'] === oldTheme.themeContent['trisize-chooser']
                         && theme.themeContent['tristyle-chooser'] === oldTheme.themeContent['tristyle-chooser']
@@ -204,7 +206,10 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
             updateMainColor: function(theme, oldTheme, duration) {
                 let mainColor = theme.themeContent.mainColor;
 
-                if (mainColor === oldTheme.mainColor) {
+                if (oldTheme
+                    && oldTheme.themeContent
+                    && oldTheme.themeContent.mainColor
+                    && mainColor === oldTheme.themeContent.mainColor) {
                     return;
                 }
 
@@ -244,7 +249,10 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              */
             updateTitleColor: function(theme, oldTheme, duration) {
                 let titleColor = theme.themeContent.titleColor;
-                if (titleColor === oldTheme.themeContent.titleColor) {
+                if (oldTheme
+                    && oldTheme.themeContent
+                    && oldTheme.themeContent.titleColor
+                    && titleColor === oldTheme.themeContent.titleColor) {
                     return;
                 }
 
@@ -271,7 +279,10 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              */
             updateOptionsColor: function(theme, oldTheme, duration) {
                 let optionsColor = theme.themeContent.optionsColor;
-                if (optionsColor === oldTheme.themeContent.titleColor) {
+                if (oldTheme
+                    && oldTheme.themeContent
+                    && oldTheme.themeContent.optionsColor
+                    && optionsColor === oldTheme.themeContent.optionsColor) {
                     return;
                 }
                 jquery('.options-color').animate({
@@ -303,7 +314,9 @@ define(['jquery', 'tinycolor2', 'jss', 'trianglify', './util', './storage', './d
              * @param {any} oldTheme The theme object with the old font settings.
              */
             updateFont: function(theme, oldTheme) {
-                if (theme.themeContent['font-chooser'] === oldTheme.themeContent['font-chooser']
+                if (oldTheme
+                    && oldTheme.themeContent
+                    && theme.themeContent['font-chooser'] === oldTheme.themeContent['font-chooser']
                     && theme.themeContent['fontfamily-chooser'] === oldTheme.themeContent['fontfamily-chooser']
                     && theme.themeContent['fontweight-chooser'] === oldTheme.themeContent['fontweight-chooser']
                     && theme.themeContent['fontvariant-chooser'] === oldTheme.themeContent['fontvariant-chooser']) {

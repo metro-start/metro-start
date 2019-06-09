@@ -242,47 +242,65 @@ define(['./defaults'], (defaults) => {
         },
 
         upgradeOldTheme: function(oldTheme, defaultTheme) {
-            let themeContent = Object.assign({}, defaultTheme.themeContent, oldTheme);
-            let theme = Object.assign({}, defaultTheme, oldTheme);
+            let metadataFields = ['title', 'author', 'online'];
+            let themeContentFields = {
+                'optionsColor': 'options_color',
+                'mainColor': 'main_color',
+                'titleColor': 'title_color',
+                'backgroundColor': 'background_color',
+            };
 
-            theme.themeContent = themeContent;
+            // Ensure we don't miss any field names.
+            for (let defaultField in defaultTheme.themeContent) {
+                if (!Object.keys(themeContentFields).includes(defaultField)) {
+                    themeContentFields[defaultField] = defaultField;
+                }
+            }
+
+            const valueForMetadata = (obj, field) => {
+                if (obj[field]) {
+                    return obj[field];
+                }
+                // Do not try to re-use default metadata.
+                return '';
+            };
+            const valueForPossibleField = (obj, field) => {
+                if (obj.themeContent) {
+                    // If we have themecontent, that's the most up to date so grab that first.
+                    return valueForPossibleField(obj.themeContent, field);
+                }
+                if (obj.colors) {
+                    // If we have colors, that probably something we need so grab that next.
+                    return valueForPossibleField(obj.colors, field);
+                }
+                if (obj[field]) {
+                    // If we have it in the current object.
+                    return obj[field];
+                }
+                if (obj[themeContentFields[field]]) {
+                    // Check the old name just in case.
+                    return obj[themeContentFields[field]];
+                }
+                // Fallback to default.
+                return defaultTheme[field];
+            };
+
+            let newTheme = {themeContent: {}};
+
+            for (let metadataField of metadataFields) {
+                newTheme[metadataField] = valueForMetadata(oldTheme, metadataField);
+            }
+
+            for (let valueField of Object.keys(themeContentFields)) {
+                newTheme.themeContent[valueField] = valueForPossibleField(oldTheme, valueField);
+            }
 
             // Upgrade the font.
-            if (!defaults.defaultFonts.concat(['custom']).includes(oldTheme['font-chooser'])) {
-                theme.themeContent['font-chooser'] = defaultTheme['font-chooser'];
+            if (!defaults.defaultFonts.concat(['custom']).includes(newTheme.themeContent['font-chooser'])) {
+                newTheme.themeContent['font-chooser'] = defaultTheme.themeContent['font-chooser'];
             }
 
-            // Upgrade any underscored colors.
-            if (!!oldTheme.options_color && !oldTheme.optionsColor) {
-                theme.themeContent.optionsColor = oldTheme.options_color;
-            }
-            if (!!oldTheme.main_color && !oldTheme.mainColor) {
-                theme.themeContent.mainColor = oldTheme.main_color;
-            }
-            if (!!oldTheme.background_color && !oldTheme.backgroundColor) {
-                theme.themeContent.backgroundColor = oldTheme.background_color;
-            }
-            if (!!oldTheme.title_color && !oldTheme.titleColor) {
-                theme.themeContent.titleColor = oldTheme.title_color;
-            }
-
-            // Upgrade any theme.colors.
-            if (oldTheme.colors) {
-                if (!!oldTheme.colors.options_color && !oldTheme.optionsColor) {
-                    theme.themeContent.optionsColor = oldTheme.colors.options_color;
-                }
-                if (!!oldTheme.colors.main_color && !oldTheme.mainColor) {
-                    theme.themeContent.mainColor = oldTheme.colors.main_color;
-                }
-                if (!!oldTheme.colors.background_color && !oldTheme.backgroundColor) {
-                    theme.themeContent.backgroundColor = oldTheme.colors.background_color;
-                }
-                if (!!oldTheme.colors.title_color && !oldTheme.titleColor) {
-                    theme.themeContent.titleColor = oldTheme.colors.title_color;
-                }
-            }
-
-            return theme;
+            return newTheme;
         },
     };
 

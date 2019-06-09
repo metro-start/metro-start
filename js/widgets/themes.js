@@ -51,13 +51,13 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
             init: function() {
                 // this.data = defaults.defaultTheme;
                 this.data = storage.get('currentTheme', defaults.defaultTheme);
-                this.data = util.upgradeTheme(this.data, defaults.defaultTheme);
+                this.data = util.upgradeOldTheme(this.data, defaults.defaultTheme);
                 this.oldTheme = this.data;
 
                 this.elems.themeEditor.parentNode.removeChild(this.elems.themeEditor);
                 this.elems.editThemeButton.addEventListener('click', this.openThemeEditor.bind(this));
 
-                storage.save('currentTheme', script.updateTheme(this.data, this.oldTheme, false));
+                storage.save('currentTheme', script.updateTheme(this.data, null, false));
             },
 
             /**
@@ -337,10 +337,12 @@ define(['jquery', 'tinycolor2', 'spectrum-colorpicker', 'throttle-debounce', '..
                     }
 
                     let updatedTheme = script.updateTheme(this.data, this.oldTheme, true);
+                    this.oldTheme = updatedTheme;
                     storage.save('currentTheme', updatedTheme);
                 } else {
                     this.data.themeContent[inputId] = val;
-                    this.oldTheme = script.updateTheme(this.data, this.oldTheme, true);
+                    let updatedTheme = script.updateTheme(this.data, this.oldTheme, true);
+                    this.oldTheme = updatedTheme;
                 }
             },
 
