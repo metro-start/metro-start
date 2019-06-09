@@ -249,7 +249,6 @@ define(['./defaults'], (defaults) => {
                 'titleColor': 'title_color',
                 'backgroundColor': 'background_color',
             };
-
             // Ensure we don't miss any field names.
             for (let defaultField in defaultTheme.themeContent) {
                 if (!Object.keys(themeContentFields).includes(defaultField)) {
@@ -264,13 +263,14 @@ define(['./defaults'], (defaults) => {
                 // Do not try to re-use default metadata.
                 return '';
             };
+
             const valueForPossibleField = (obj, field) => {
                 if (obj.themeContent) {
                     // If we have themecontent, that's the most up to date so grab that first.
                     return valueForPossibleField(obj.themeContent, field);
                 }
+                // If we have colors, that probably something we need so grab that next.
                 if (obj.colors) {
-                    // If we have colors, that probably something we need so grab that next.
                     return valueForPossibleField(obj.colors, field);
                 }
                 if (obj[field]) {
