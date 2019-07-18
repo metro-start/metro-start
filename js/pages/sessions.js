@@ -36,10 +36,27 @@ define(['jquery', '../pagebase/pagebase_grouped', '../utils/util'],
              */
             loadSessions: function() {
                 let that = this;
-                chrome.sessions.getDevices(null, (devices) => {
-                    for (let device of devices) {
+                if (chrome.sessions.getDevices) {
+                    chrome.sessions.getDevices(null, (devices) => {
+                        for (let device of devices) {
+                            let data = [];
+                            for (let session of device.sessions) {
+                                if (session.tab) {
+                                    data = data.concat(session);
+                                } else if (session.window) {
+                                    data = data.concat(session.window.tabs);
+                                }
+                            }
+                            that.sessions.addAll({
+                                'heading': device.deviceName,
+                                'data': data,
+                            });
+                        }
+                    });
+                } else {
+                    chrome.sessions.getRecentlyClosed(null, (sessions) => {
                         let data = [];
-                        for (let session of device.sessions) {
+                        for (let session of sessions) {
                             if (session.tab) {
                                 data = data.concat(session);
                             } else if (session.window) {
@@ -47,11 +64,11 @@ define(['jquery', '../pagebase/pagebase_grouped', '../utils/util'],
                             }
                         }
                         that.sessions.addAll({
-                            'heading': device.deviceName,
+                            'heading': 'recently closed',
                             'data': data,
                         });
-                    }
-                });
+                    });
+                }
             },
 
             /**
