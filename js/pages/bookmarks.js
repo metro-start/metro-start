@@ -18,7 +18,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'
                 removeFragment: util.createElement('<span class="option options-color small-text clickable">remove</span>'),
             },
 
-            init: function() {
+            init: function () {
                 this.bookmarks = new PagebasePaneled();
                 this.bookmarks.init(document, this.name, this.elems.rootNode, this.templateFunc.bind(this));
                 this.loadBookmarks();
@@ -29,14 +29,14 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'
              *
              * @param {any} newSort The new sort order.
              */
-            sortChanged: function(newSort) {
+            sortChanged: function (newSort) {
                 this.bookmarks.sortChanged(newSort);
             },
 
             /**
              * Load the current set of bookmarks.
              */
-            loadBookmarks: function() {
+            loadBookmarks: function () {
                 let that = this;
                 chrome.bookmarks.getTree((data) => {
                     that.data = data[0].children;
@@ -50,7 +50,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'
              * @param {any} bookmark The bookmark that should be turned into an element.
              * @return {any} The HTML element.
              */
-            templateFunc: function(bookmark) {
+            templateFunc: function (bookmark) {
                 let fragment = util.createElement('');
                 let titleWrap = this.templates.titleWrapFragment.cloneNode(true);
                 let title = this.templates.titleFragment.cloneNode(true);
@@ -83,7 +83,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'
              * @param {any} bookmark The bookmark that was clicked.
              * @param {any} bookmarkNode The bookmark node has the data to be activated.
              */
-            clickBookmark: function(bookmark, bookmarkNode) {
+            clickBookmark: function (bookmark, bookmarkNode) {
                 let currentPage = bookmarkNode.parentNode.parentNode.id;
                 let itemNode = bookmarkNode.parentNode;
                 let siblings = itemNode.parentNode.children;
@@ -107,7 +107,7 @@ define(['jss', '../pagebase/pagebase_paneled', '../utils/modal', '../utils/util'
              * @param {any} bookmark The bookmark element that will be removed.
              * @param {any} bookmarkNode The bookmark node that has the data to be removed.
              */
-            removeBookmark: function(bookmark, bookmarkNode) {
+            removeBookmark: function (bookmark, bookmarkNode) {
                 modal.createModal(
                     `bookmark-${bookmark.id}`,
                     `${bookmark.title} will be removed.`,

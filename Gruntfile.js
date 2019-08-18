@@ -33,6 +33,9 @@ module.exports = function(grunt) {
                 entry: './js/app.js',
                 devtool: 'inline-source-map',
                 mode: 'production',
+                optimization: {
+                    minimize: false,
+                },
                 output: {
                     filename: 'metro-start.js',
                     path: `${__dirname}/dist`,
@@ -62,16 +65,16 @@ module.exports = function(grunt) {
         copy: {
             dist: {
                 files: [{
-                        expand: true,
-                        src: ['fonts/*', 'icons/*', 'manifest.json'],
-                        dest: 'dist/',
-                    },
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: ['node_modules/spectrum-colorpicker/spectrum.css'],
-                        dest: 'dist/css',
-                    },
+                    expand: true,
+                    src: ['fonts/*', 'icons/*', 'manifest.json'],
+                    dest: 'dist/',
+                },
+                {
+                    expand: true,
+                    flatten: true,
+                    src: ['node_modules/spectrum-colorpicker/spectrum.css'],
+                    dest: 'dist/css',
+                },
                 ],
             },
         },

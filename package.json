@@ -21,14 +21,14 @@
     "metro-select": "^1.0.17",
     "requirejs": "^2.3.2",
     "spectrum-colorpicker": "^1.8.0",
-    "throttle-debounce": "^1.0.1",
+    "throttle-debounce": "^2.1.0",
     "tinycolor2": "^1.4.1",
     "trianglify": "metro-start/trianglify"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "*",
-    "eslint": "*",
-    "eslint-config-google": "^0.9.1",
+    "copy-webpack-plugin": "5.0.4",
+    "eslint": "6.1.0",
+    "eslint-config-google": "^0.13.0",
     "grunt": "*",
     "grunt-cli": "*",
     "grunt-contrib-compress": "*",
@@ -37,12 +37,13 @@
     "grunt-haml2html": "*",
     "grunt-notify": "*",
     "grunt-release": "*",
-    "grunt-sass": "^2.0.0",
+    "grunt-sass": "^3.1.0",
     "grunt-webpack": "*",
-    "gruntify-eslint": "^4.0.0",
+    "gruntify-eslint": "^5.0.0",
+    "node-sass": "^4.12.0",
     "optimize-js-plugin": "*",
-    "uglifyjs-webpack-plugin": "*",
-    "webpack": "*",
-    "webpack-dev-server": "*"
+    "uglifyjs-webpack-plugin": "2.2.0",
+    "webpack": "4.39.2",
+    "webpack-dev-server": "3.8.0"
   }
 }
