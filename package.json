@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "detect-dom-ready": "*",
-    "jquery": "*",
+    "jquery": "^3.5.1",
     "jquery-color": "git+https://github.com/jquery/jquery-color.git",
     "jss": "git+https://github.com/Box9/jss.git",
-    "metro-select": "^1.0.17",
+    "metro-select": "^1.1.10",
     "requirejs": "^2.3.2",
     "spectrum-colorpicker": "^1.8.0",
     "throttle-debounce": "^2.1.0",
@@ -34,16 +34,16 @@
     "grunt-contrib-compress": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-watch": "*",
-    "grunt-haml2html": "*",
+    "grunt-haml2html": "^0.3.1",
     "grunt-notify": "*",
     "grunt-release": "*",
     "grunt-sass": "^3.1.0",
     "grunt-webpack": "*",
     "gruntify-eslint": "^5.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.1",
     "optimize-js-plugin": "*",
     "uglifyjs-webpack-plugin": "2.2.0",
     "webpack": "4.39.2",
-    "webpack-dev-server": "3.8.0"
+    "webpack-dev-server": "^3.11.0"
   }
 }
