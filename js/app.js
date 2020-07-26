@@ -1,62 +1,62 @@
 define([
-  "detect-dom-ready",
-  "./utils/utils",
-  "./widgets/widgets",
-  "./pages/pages",
+    'detect-dom-ready',
+    './utils/utils',
+    './widgets/widgets',
+    './pages/pages',
 ], (domready, utils, widgets, pages) => {
-  "use strict";
+    'use strict';
 
-  let app = {
-    data: {},
+    let app = {
+        data: {},
 
-    elems: {
-      hideRule: document.getElementById("hideRule"),
-    },
+        elems: {
+            hideRule: document.getElementById('hideRule'),
+        },
 
-    showOptions: false,
+        showOptions: false,
 
-    utils: utils,
+        utils: utils,
 
-    modules: [utils, widgets, pages],
+        modules: [utils, widgets, pages],
 
-    init: function () {
-      this.modules.forEach((module) => {
-        module.init(document);
-      });
+        init: function () {
+            this.modules.forEach((module) => {
+                module.init(document);
+            });
 
-      let that = this;
-      let wrench = document.getElementById("wrench");
-      wrench.addEventListener("click", () => {
-        that.clickWrench();
-        pages.changeToValidPage();
-      });
-    },
+            let that = this;
+            let wrench = document.getElementById('wrench');
+            wrench.addEventListener('click', () => {
+                that.clickWrench();
+                pages.changeToValidPage();
+            });
+        },
 
-    /**
-     * Shows the options on the page when the wrench is clicked.
-     */
-    clickWrench: function () {
-      this.showOptions = !this.showOptions;
+        /**
+         * Shows the options on the page when the wrench is clicked.
+         */
+        clickWrench: function () {
+            this.showOptions = !this.showOptions;
 
-      if (this.showOptions) {
-        document.body.removeChild(this.elems.hideRule);
-      } else {
-        document.body.appendChild(this.elems.hideRule);
-      }
-    },
-  };
+            if (this.showOptions) {
+                document.body.removeChild(this.elems.hideRule);
+            } else {
+                document.body.appendChild(this.elems.hideRule);
+            }
+        },
+    };
 
-  // Initialize the app after the storage is done initializing.
-  // This ensures we can retrieve our data before rendering the page.
-  utils.storage.init().done(() => {
-    if (document) {
-      app.init();
-    } else {
-      domready(() => {
-        app.init();
-      });
-    }
-  });
+    // Initialize the app after the storage is done initializing.
+    // This ensures we can retrieve our data before rendering the page.
+    utils.storage.init().done(() => {
+        if (document) {
+            app.init();
+        } else {
+            domready(() => {
+                app.init();
+            });
+        }
+    });
 
-  return app;
+    return app;
 });
