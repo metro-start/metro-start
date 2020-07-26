@@ -78,21 +78,19 @@ define([
 
         changeToValidPage: function () {
             let page = this.page;
-
-            const that = this;
-            if (!apps.enabled) {
+            if (page == 'apps' && !apps.enabled) {
                 page = 'todos';
             }
 
-            if (!bookmarks.enabled) {
+            if (page == 'bookmarks' && !bookmarks.enabled) {
                 page = 'todos';
             }
 
-            if (!sessions.enabled) {
+            if (page == 'sessions' && !sessions.enabled) {
                 page = 'todos';
             }
 
-            that.changePage(page);
+            jquery(this.elems.chooser).metroSelect().select_child(page);
         },
 
         /**
