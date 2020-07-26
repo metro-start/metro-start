@@ -73,8 +73,27 @@ define([
         });
 
         // Set the initial page.
-        that.changePage(that.page);
+        that.changeToValidPage();
       });
+    },
+
+    changeToValidPage: function() {
+      let page = this.page;
+
+      const that = this;
+      if (!apps.enabled) {
+        page = "todos";
+      }
+
+      if (!bookmarks.enabled) {
+        page = "todos";
+      }
+
+      if (!sessions.enabled) {
+        page = "todos";
+      }
+
+      that.changePage(page);
     },
 
     /**

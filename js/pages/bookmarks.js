@@ -81,7 +81,9 @@ define([
     loadBookmarks: function () {
       this.bookmarks.clear();
       if (!this.enabled) {
-        this.bookmarks.addAll([{ title: "Show bookmarks.", url: "url" }]);
+        this.bookmarks.addAll([
+          { title: "View and manage bookmarks.", url: "url" },
+        ]);
         return;
       }
 

@@ -1,20 +1,20 @@
-define(['./defaults'], (defaults) => {
+define(["./defaults"], (defaults) => {
   // Speed up calls to hasOwnProperty
   let loggingEnabled = true;
   let hasOwnProperty = Object.prototype.hasOwnProperty;
 
   let util = {
-    init: function() {
+    init: function () {
       this.lastLogTime = Date.now();
       this.loggingEnabled = false;
     },
 
     /**
-         * Log a message with a marker for how long since an event was logged.
-         *
-         * @param {any} msg The message to log.
-         */
-    log: function(msg) {
+     * Log a message with a marker for how long since an event was logged.
+     *
+     * @param {any} msg The message to log.
+     */
+    log: function (msg) {
       if (!loggingEnabled) {
         return;
       }
@@ -27,45 +27,49 @@ define(['./defaults'], (defaults) => {
     },
 
     /**
-         * Log a warning with a marker for how long since an event was logged.
-         *
-         * @param {any} msg The warning to log.
-         */
-    warn: function(msg) {
+     * Log a warning with a marker for how long since an event was logged.
+     *
+     * @param {any} msg The warning to log.
+     */
+    warn: function (msg) {
       if (!loggingEnabled) {
         return;
       }
 
       let time = Date.now();
       // eslint-disable-next-line no-console
-      console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+      console.warn(
+        `[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`
+      );
 
       this.lastLogTime = time;
     },
 
     /**
-         * Log an error with a marker for how long since an event was logged.
-         *
-         * @param {any} msg  The error to log.
-         */
-    error: function(msg) {
+     * Log an error with a marker for how long since an event was logged.
+     *
+     * @param {any} msg  The error to log.
+     */
+    error: function (msg) {
       if (!loggingEnabled) {
         return;
       }
 
       let time = Date.now();
       // eslint-disable-next-line no-console
-      console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+      console.error(
+        `[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`
+      );
       this.lastLogTime = time;
     },
 
     /**
-         * Log a message that a field has changed.
-         *
-         * @param {any} key The field that has been changed.
-         * @param {any} val The value that was changed to.
-         */
-    logChange: function(key, val) {
+     * Log a message that a field has changed.
+     *
+     * @param {any} key The field that has been changed.
+     * @param {any} val The value that was changed to.
+     */
+    logChange: function (key, val) {
       if (!loggingEnabled) {
         return;
       }
@@ -78,7 +82,7 @@ define(['./defaults'], (defaults) => {
     createElement: function createDom(htmlStr) {
       let fragment = document.createDocumentFragment();
       if (htmlStr) {
-        let temp = document.createElement('div');
+        let temp = document.createElement("div");
         temp.innerHTML = htmlStr;
         fragment.appendChild(temp.firstElementChild);
       }
@@ -86,45 +90,45 @@ define(['./defaults'], (defaults) => {
     },
 
     /**
-         * Add a CSS class to a DOM element.
-         *
-         * @param {any} elem The DOM element to be mondified.
-         * @param {any} newClass The class to be applied to the node.
-         */
+     * Add a CSS class to a DOM element.
+     *
+     * @param {any} elem The DOM element to be mondified.
+     * @param {any} newClass The class to be applied to the node.
+     */
     addClass: function addClass(elem, newClass) {
       if (newClass) {
-        let oldClasses = elem.className ? elem.className.split(' ') : [];
+        let oldClasses = elem.className ? elem.className.split(" ") : [];
         if (oldClasses.indexOf(newClass) === -1) {
           oldClasses.unshift(newClass);
-          elem.className = oldClasses.join(' ');
+          elem.className = oldClasses.join(" ");
         }
       }
     },
 
     /**
-         * Checks is a DOM element has a CSS class.
-         *
-         * @param {any} elem The DOM element to be checked.
-         * @param {any} testClass The class to be checked for.
-         * @return {any} True if the elem has the class; false otherwise.
-         */
+     * Checks is a DOM element has a CSS class.
+     *
+     * @param {any} elem The DOM element to be checked.
+     * @param {any} testClass The class to be checked for.
+     * @return {any} True if the elem has the class; false otherwise.
+     */
     hasClass: function hasClass(elem, testClass) {
-      let oldClass = elem.className.split(' ');
+      let oldClass = elem.className.split(" ");
       return oldClass.indexOf(testClass) !== -1;
     },
 
     /**
-         * Removes a CSS class from a DOM element.
-         *
-         * @param {any} elem The DOM element to be modified.
-         * @param {any} className The class to be addded to the node.
-         */
+     * Removes a CSS class from a DOM element.
+     *
+     * @param {any} elem The DOM element to be modified.
+     * @param {any} className The class to be addded to the node.
+     */
     removeClass: function removeClass(elem, className) {
-      let oldClass = elem.className.split(' ');
+      let oldClass = elem.className.split(" ");
       let index = oldClass.indexOf(className);
       if (index !== -1) {
         oldClass.splice(index, 1);
-        elem.className = oldClass.join(' ');
+        elem.className = oldClass.join(" ");
       }
     },
 
@@ -133,12 +137,12 @@ define(['./defaults'], (defaults) => {
     },
 
     /**
-         * Checks if the provided object is empty.
-         * http://stackoverflow.com/questions/4994201/is-object-empty
-         *
-         * @param {any} obj The obj to test.
-         * @return {any} True if the object is null, undefined or empty. False otherwise.
-         */
+     * Checks if the provided object is empty.
+     * http://stackoverflow.com/questions/4994201/is-object-empty
+     *
+     * @param {any} obj The obj to test.
+     * @return {any} True if the object is null, undefined or empty. False otherwise.
+     */
     isEmpty: function isEmpty(obj) {
       // null and undefined are 'empty'
       if (obj === null || obj === undefined) {
@@ -146,7 +150,7 @@ define(['./defaults'], (defaults) => {
       }
 
       // numbers are not empty.
-      if (typeof obj === 'number') {
+      if (typeof obj === "number") {
         return false;
       }
 
@@ -162,7 +166,7 @@ define(['./defaults'], (defaults) => {
       // If it isn't an object at this point
       // it is empty, but it can't be anything *but* empty
       // Is it empty?  Depends on your application.
-      if (typeof obj !== 'object') {
+      if (typeof obj !== "object") {
         return true;
       }
 
@@ -179,28 +183,28 @@ define(['./defaults'], (defaults) => {
     },
 
     /**
-         * Selects an item from an array at random.
-         * @param {any} arr Array to retrieve a random element of.
-         * @return {any} A random item.
-         */
-    randomize: function(arr) {
+     * Selects an item from an array at random.
+     * @param {any} arr Array to retrieve a random element of.
+     * @return {any} A random item.
+     */
+    randomize: function (arr) {
       return arr[Math.floor(Math.random() * arr.length)];
     },
 
     /**
-         * Upgrade a provided theme to ensure it has all the right fields.
-         *
-         * @param {any} oldTheme The theme to be upgraded.
-         * @param {any} defaultTheme The theme to use to back-fill.
-         * @return {any} The upgraded theme.
-         */
-    upgradeTheme: function(oldTheme, defaultTheme) {
-      let metadataFields = ['title', 'author', 'online'];
+     * Upgrade a provided theme to ensure it has all the right fields.
+     *
+     * @param {any} oldTheme The theme to be upgraded.
+     * @param {any} defaultTheme The theme to use to back-fill.
+     * @return {any} The upgraded theme.
+     */
+    upgradeTheme: function (oldTheme, defaultTheme) {
+      let metadataFields = ["title", "author", "online"];
       let themeContentFields = {
-        'optionsColor': 'options_color',
-        'mainColor': 'main_color',
-        'titleColor': 'title_color',
-        'backgroundColor': 'background_color',
+        optionsColor: "options_color",
+        mainColor: "main_color",
+        titleColor: "title_color",
+        backgroundColor: "background_color",
       };
       // Ensure we don't miss any field names.
       for (let defaultField in defaultTheme.themeContent) {
@@ -214,7 +218,7 @@ define(['./defaults'], (defaults) => {
           return obj[field];
         }
         // Do not try to re-use default metadata.
-        return '';
+        return "";
       };
 
       const valueForPossibleField = (obj, field) => {
@@ -238,19 +242,27 @@ define(['./defaults'], (defaults) => {
         return defaultTheme[field];
       };
 
-      let newTheme = {themeContent: {}};
+      let newTheme = { themeContent: {} };
 
       for (let metadataField of metadataFields) {
         newTheme[metadataField] = valueForMetadata(oldTheme, metadataField);
       }
 
       for (let valueField of Object.keys(themeContentFields)) {
-        newTheme.themeContent[valueField] = valueForPossibleField(oldTheme, valueField);
+        newTheme.themeContent[valueField] = valueForPossibleField(
+          oldTheme,
+          valueField
+        );
       }
 
       // Upgrade the font.
-      if (!defaults.defaultFonts.concat(['custom']).includes(newTheme.themeContent['font-chooser'])) {
-        newTheme.themeContent['font-chooser'] = defaultTheme.themeContent['font-chooser'];
+      if (
+        !defaults.defaultFonts
+          .concat(["custom"])
+          .includes(newTheme.themeContent["font-chooser"])
+      ) {
+        newTheme.themeContent["font-chooser"] =
+          defaultTheme.themeContent["font-chooser"];
       }
 
       return newTheme;
