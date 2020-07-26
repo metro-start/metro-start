@@ -67,7 +67,7 @@ define([
           add_text: "[+]",
           remove_text: "[x]",
           adder_remover_class: "addremove_button option options-color",
-          parent_removed_class: "option",
+          parent_removed_class: "option disabled",
           onchange: that.changePage.bind(that),
           onvisibilitychange: that.visibilityChanged.bind(that),
         });
