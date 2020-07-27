@@ -1,17 +1,31 @@
 {
-    "extends": ["eslint:recommended", "google"],
-    "globals": {
-        "__dirname": true,
-        "chrome": true
-    },
     "env": {
-        "es6": true,
         "browser": true,
         "amd": true,
+        "es6": true,
         "node": true
     },
+    "globals": {
+        "chrome": true
+    },
+    "extends": "eslint:recommended",
     "rules": {
         "max-len": "off",
-        "no-case-declarations": "off"
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
     }
 }

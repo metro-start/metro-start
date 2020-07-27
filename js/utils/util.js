@@ -4,7 +4,7 @@ define(['./defaults'], (defaults) => {
     let hasOwnProperty = Object.prototype.hasOwnProperty;
 
     let util = {
-        init: function() {
+        init: function () {
             this.lastLogTime = Date.now();
             this.loggingEnabled = false;
         },
@@ -14,14 +14,16 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The message to log.
          */
-        log: function(msg) {
+        log: function (msg) {
             if (!loggingEnabled) {
                 return;
             }
 
             let time = Date.now();
             // eslint-disable-next-line no-console
-            console.log(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+            console.log(
+                `[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`
+            );
 
             this.lastLogTime = time;
         },
@@ -31,14 +33,16 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg The warning to log.
          */
-        warn: function(msg) {
+        warn: function (msg) {
             if (!loggingEnabled) {
                 return;
             }
 
             let time = Date.now();
             // eslint-disable-next-line no-console
-            console.warn(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+            console.warn(
+                `[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`
+            );
 
             this.lastLogTime = time;
         },
@@ -48,14 +52,16 @@ define(['./defaults'], (defaults) => {
          *
          * @param {any} msg  The error to log.
          */
-        error: function(msg) {
+        error: function (msg) {
             if (!loggingEnabled) {
                 return;
             }
 
             let time = Date.now();
             // eslint-disable-next-line no-console
-            console.error(`[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`);
+            console.error(
+                `[+${Math.floor((time - this.lastLogTime) / 1000)}s] ${msg}`
+            );
             this.lastLogTime = time;
         },
 
@@ -65,7 +71,7 @@ define(['./defaults'], (defaults) => {
          * @param {any} key The field that has been changed.
          * @param {any} val The value that was changed to.
          */
-        logChange: function(key, val) {
+        logChange: function (key, val) {
             if (!loggingEnabled) {
                 return;
             }
@@ -93,7 +99,9 @@ define(['./defaults'], (defaults) => {
          */
         addClass: function addClass(elem, newClass) {
             if (newClass) {
-                let oldClasses = elem.className ? elem.className.split(' ') : [];
+                let oldClasses = elem.className
+                    ? elem.className.split(' ')
+                    : [];
                 if (oldClasses.indexOf(newClass) === -1) {
                     oldClasses.unshift(newClass);
                     elem.className = oldClasses.join(' ');
@@ -183,7 +191,7 @@ define(['./defaults'], (defaults) => {
          * @param {any} arr Array to retrieve a random element of.
          * @return {any} A random item.
          */
-        randomize: function(arr) {
+        randomize: function (arr) {
             return arr[Math.floor(Math.random() * arr.length)];
         },
 
@@ -194,13 +202,13 @@ define(['./defaults'], (defaults) => {
          * @param {any} defaultTheme The theme to use to back-fill.
          * @return {any} The upgraded theme.
          */
-        upgradeTheme: function(oldTheme, defaultTheme) {
+        upgradeTheme: function (oldTheme, defaultTheme) {
             let metadataFields = ['title', 'author', 'online'];
             let themeContentFields = {
-                'optionsColor': 'options_color',
-                'mainColor': 'main_color',
-                'titleColor': 'title_color',
-                'backgroundColor': 'background_color',
+                optionsColor: 'options_color',
+                mainColor: 'main_color',
+                titleColor: 'title_color',
+                backgroundColor: 'background_color',
             };
             // Ensure we don't miss any field names.
             for (let defaultField in defaultTheme.themeContent) {
@@ -238,19 +246,30 @@ define(['./defaults'], (defaults) => {
                 return defaultTheme[field];
             };
 
-            let newTheme = {themeContent: {}};
+            let newTheme = { themeContent: {} };
 
             for (let metadataField of metadataFields) {
-                newTheme[metadataField] = valueForMetadata(oldTheme, metadataField);
+                newTheme[metadataField] = valueForMetadata(
+                    oldTheme,
+                    metadataField
+                );
             }
 
             for (let valueField of Object.keys(themeContentFields)) {
-                newTheme.themeContent[valueField] = valueForPossibleField(oldTheme, valueField);
+                newTheme.themeContent[valueField] = valueForPossibleField(
+                    oldTheme,
+                    valueField
+                );
             }
 
             // Upgrade the font.
-            if (!defaults.defaultFonts.concat(['custom']).includes(newTheme.themeContent['font-chooser'])) {
-                newTheme.themeContent['font-chooser'] = defaultTheme.themeContent['font-chooser'];
+            if (
+                !defaults.defaultFonts
+                    .concat(['custom'])
+                    .includes(newTheme.themeContent['font-chooser'])
+            ) {
+                newTheme.themeContent['font-chooser'] =
+                    defaultTheme.themeContent['font-chooser'];
             }
 
             return newTheme;
