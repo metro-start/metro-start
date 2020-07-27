@@ -4,5 +4,4 @@
 dist/*
 node_modules/*
 cached_uglify/*
-metro-start.zip
 *.sqlite

@@ -21,9 +21,9 @@ define(() => {
 
         defaultTodos: [
             {
-                name: 'use the wrench to get started. . . ',
+                name: 'use settings to get started. . . ',
                 done: false,
-            },
+            }
         ],
 
         // The default theme for the app.
