@@ -90,17 +90,17 @@ define([
             let bodyPattern = trianglify({
                 width: window.innerWidth,
                 height: window.innerHeight,
-                cell_size: Math.random() * 200 + 40,
-                x_colors: 'random',
+                cellSize: Math.random() * 200 + 40,
+                xColors: 'random',
                 variance: Math.random(),
             });
 
             jss.set('body', {
-                'background-image': `url(${bodyPattern.png()})`,
+                'background-image': `url('data:image/svg+xml, ${bodyPattern.toSVG().outerHTML}')`,
             });
 
             jss.set('.modal-content', {
-                'background-image': `url(${bodyPattern.png()})`,
+                'background-image': `url('data:image/svg+xml, ${bodyPattern.toSVG().outerHTML}')`,
             });
         },
 
@@ -214,27 +214,28 @@ define([
                     width: jBody.prop('scrollWidth'),
                     height: jBody.prop('scrollHeight'),
                     variance: triVariance,
-                    cell_size: triSize,
-                    x_colors: xColors,
+                    cellSize: triSize,
+                    xColors: xColors,
                     seed: 'metro-start',
                 });
                 jss.set('.background-color', {
                     'background-color': theme.themeContent.backgroundColor,
                 });
                 jss.set('body', {
-                    'background-image': `url(${bodyPattern.png()})`,
+                    'background-image': `url('data:image/svg+xml, ${bodyPattern.toSVG().outerHTML}')`,
                 });
 
                 let modalPattern = trianglify({
                     width: jBody.prop('scrollWidth') * 0.75,
                     height: jBody.prop('scrollHeight') * 0.85,
                     variance: triVariance,
-                    cell_size: triSize,
-                    x_colors: xColors,
+                    cellSize: triSize,
+                    xColors: xColors,
                 });
 
+                
                 jss.set('.modal-content', {
-                    'background-image': `url(${modalPattern.png()})`,
+                    'background-image': `url('data:image/svg+xml, ${modalPattern.toSVG().outerHTML}')`,
                 });
             } else {
                 jquery('.background-color').animate(
