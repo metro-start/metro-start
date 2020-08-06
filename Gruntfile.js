@@ -121,7 +121,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-webpack');
-  grunt.loadNpmTasks('grunt-haml2html');
+  grunt.loadNpmTasks('grunt-haml');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compress');
