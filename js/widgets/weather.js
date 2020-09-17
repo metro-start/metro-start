@@ -26,12 +26,12 @@ define([
             this.data = storage.get('weather', defaults.defaultWeather);
             this.upgradeWeather(defaults.defaultWeather);
 
-            this.elems.city.innerText = this.data.city;
-            this.elems.currentTemp.innerText = this.data.currentTemp;
-            this.elems.highTemp.innerText = this.data.highTemp;
-            this.elems.lowTemp.innerText = this.data.lowTemp;
-            this.elems.condition.innerText = this.data.condition;
-            this.elems.units.innerText = this.data.units;
+            this.elems.city.textContext = this.data.city;
+            this.elems.currentTemp.textContext = this.data.currentTemp;
+            this.elems.highTemp.textContext = this.data.highTemp;
+            this.elems.lowTemp.textContext = this.data.lowTemp;
+            this.elems.condition.textContext = this.data.condition;
+            this.elems.units.textContext = this.data.units;
 
             this.elems.saveLocation.addEventListener(
                 'click',
@@ -85,7 +85,7 @@ define([
                 util.addClass(this.elems.weather, 'hide');
             }
 
-            this.elems.toggleWeather.innerText = visible
+            this.elems.toggleWeather.textContext = visible
                 ? 'hide weather'
                 : 'show weather';
             this.update('visible', visible);
@@ -136,12 +136,12 @@ define([
 
             storage.save('weather', this.data);
 
-            this.elems.city.innerText = this.data.city;
-            this.elems.currentTemp.innerText = this.data.currentTemp;
-            this.elems.highTemp.innerText = this.data.highTemp;
-            this.elems.lowTemp.innerText = this.data.lowTemp;
-            this.elems.condition.innerText = this.data.condition;
-            this.elems.units.innerText = this.data.units[0];
+            this.elems.city.textContext = this.data.city;
+            this.elems.currentTemp.textContext = this.data.currentTemp;
+            this.elems.highTemp.textContext = this.data.highTemp;
+            this.elems.lowTemp.textContext = this.data.lowTemp;
+            this.elems.condition.textContext = this.data.condition;
+            this.elems.units.textContext = this.data.units[0];
         },
 
         upgradeWeather: function (defaultWeather) {
