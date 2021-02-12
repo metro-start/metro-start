@@ -1,0 +1,430 @@
+<html lang='en'>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+    <link href='https://fonts.googleapis.com/css?family=IM+Fell+English|Inconsolata|Kurale|Monoton|Raleway|Source+Serif+Pro|Wire+One' rel='stylesheet'>
+    <title>start</title>
+  </head>
+  <body class='background-color'>
+    <h1 class='title-color'>start here . . .</h1>
+    <div class='pages-chooser'>
+      <select class='chooser' id='pages-chooser'>
+        <option class='clickable todos-option'>todos</option>
+        <option class='clickable sessions-option removeable removed'>sessions</option>
+        <option class='clickable apps-option removeable removed'>apps</option>
+        <option class='clickable bookmarks-option removeable removed'>bookmarks</option>
+        <option class='clickable themes-option'>themes</option>
+      </select>
+    </div>
+    <div class='external'>
+      <div class='internal'>
+        <div class='todos collection'>
+          <div id='todos'>
+            <div class='options-color option sort'>
+              <select class='chooser' id='todos-sort-chooser'>
+                <option class='clickable'>
+                  unsorted
+                </option>
+                <option class='clickable'>
+                  sorted
+                </option>
+              </select>
+            </div>
+            <div class='external-selector' id='external-selector-todos'>
+              <div class='internal-selector' id='internal-selector-todos'></div>
+            </div>
+            <div class='add option' id='addTodo'>
+              <input class='option' id='newTodo' name='newTodo' placeholder='new todo' type='text'>
+              <div class='options-color option clickable' id='saveTodo'>save</div>
+            </div>
+          </div>
+        </div>
+        <div class='sessions collection'>
+          <div id='sessions'>
+            <div class='options-color option sort'>
+              <select class='chooser' id='sessions-sort-chooser'>
+                <option class='clickable'>
+                  unsorted
+                </option>
+                <option class='clickable'>
+                  sorted
+                </option>
+              </select>
+            </div>
+            <div class='external-selector' id='external-selector-sessions'>
+              <div class='internal-selector' id='internal-selector-sessions'></div>
+            </div>
+          </div>
+        </div>
+        <div class='apps collection'>
+          <div id='apps'>
+            <div class='options-color option sort'>
+              <select class='chooser' id='apps-sort-chooser'>
+                <option class='clickable'>
+                  unsorted
+                </option>
+                <option class='clickable'>
+                  sorted
+                </option>
+              </select>
+            </div>
+            <div class='external-selector' id='external-selector-apps'>
+              <div class='internal-selector' id='internal-selector-apps'></div>
+            </div>
+          </div>
+        </div>
+        <div class='bookmarks collection'>
+          <div id='bookmarks'>
+            <div class='options-color option sort'>
+              <select class='chooser' id='bookmarks-sort-chooser'>
+                <option class='clickable'>
+                  unsorted
+                </option>
+                <option class='clickable'>
+                  sorted
+                </option>
+              </select>
+            </div>
+            <div class='external-selector' id='external-selector-bookmarks'>
+              <div class='internal-selector' id='internal-selector-bookmarks'></div>
+            </div>
+          </div>
+        </div>
+        <div class='themes collection'>
+          <div id='themes'>
+            <div class='options-color option sort'>
+              <select class='chooser' id='themes-sort-chooser'>
+                <option class='clickable'>
+                  unsorted
+                </option>
+                <option class='clickable'>
+                  sorted
+                </option>
+              </select>
+            </div>
+            <div class='external-selector' id='external-selector-themes'>
+              <div class='internal-selector' id='internal-selector-themes'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='weather'>
+      <div class='options-color option clickable' id='toggleWeather'></div>
+      <div class='hide' id='weather'>
+        <div id='city'></div>
+        <div>
+          <input class='option' id='newLocation' placeholder='vancouver, ca' type='text'>
+          <span class='options-color option clickable' id='saveLocation'>save</span>
+        </div>
+        <div class='options-color option'>
+          <select class='chooser' id='weather-units-chooser'>
+            <option class='clickable'>celsius</option>
+            <option class='clickable'>fahrenheit</option>
+          </select>
+        </div>
+        <p id='temp'><span id='currentTemp'></span>°
+          <span class='options-color' id='units'></span>
+          /
+          <span id='highTemp'></span>
+          <span class='options-color'>hi</span>
+          /
+          <span id='lowTemp'></span>
+          <span class='options-color'>lo</span>
+        </p>
+        <p id='condition'></p>
+      </div>
+    </div>
+    <div class='footer'>
+      <p class='options-color wrench clickable' id='wrench'>wrench</p>
+      <p class='option options-color clickable about-button' id='aboutButton'>about</p>
+      <p class='option options-color clickable theme-button' id='editThemeButton'>edit theme</p>
+    </div>
+    <div id='aboutModal'>
+      <h2 class='title-color'>about metro start</h2>
+      <p>A new tab page for Google Chrome inspired by Zune.</p>
+      <h5 class='options-color'>
+        <div class='small-text'>⚡</div>
+        POWERED BY
+        <div class='small-text'>⚡</div>
+      </h5>
+      <table class='metro-table'>
+        <tbody>
+          <tr>
+            <td>
+              <a href='http://qrohlf.com/trianglify'>Trianglify</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href='https://openweathermap.org'>Open Weather Map</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href='https://bgrins.github.io/spectrum'>Spectrum Colorpicker</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href='https://github.com/metro-start/metro-start/blob/master/package.json'>and others...</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id='themeEditor'>
+      <h3 class='title-color'>theme editor</h3>
+      <div class='picker'>
+        <div class='theme-section-title small-text'>font options</div>
+        <div class='theme-editor-section options-color'>
+          <select class='chooser' id='font-chooser'>
+            <option class='clickable' style='font-family: initial'>system</option>
+            <option class='clickable' style='font-family: initial'>custom</option>
+            <option class='clickable' style='font-family: raleway'>raleway</option>
+            <option class='clickable' style='font-family: kurale'>kurale</option>
+            <option class='clickable' style='font-family: "wire one"'>wire one</option>
+            <option class='clickable' style='font-family: "im fell english"'>im fell english</option>
+            <option class='clickable' style='font-family: "source serif pro"'>source serif pro</option>
+            <option class='clickable' style='font-family: monoton'>monoton</option>
+            <option class='clickable' style='font-family: inconsolata'>inconsolata</option>
+          </select>
+        </div>
+        <div class='theme-editor-section'>
+          <div class='font-chooser-section theme-editor-border' id='custom'>
+            <div class='theme-section-title small-text'>font style options</div>
+            <table class='metro-table'>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class='small-text'>readability aid</span>
+                  </td>
+                  <td>
+                    <div class='options-color'>
+                      <select class='chooser' id='fontreadability-chooser'>
+                        <option class='clickable'>on</option>
+                        <option class='clickable'>off</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>family</span>
+                  </td>
+                  <td>
+                    <div class='options-color'>
+                      <select class='chooser' id='fontfamily-chooser'>
+                        <option class='clickable' style='font-family: initial'>system</option>
+                        <option class='clickable' style='font-family: raleway'>raleway</option>
+                        <option class='clickable' style='font-family: kurale'>kurale</option>
+                        <option class='clickable' style='font-family: "wire one"'>wire one</option>
+                        <option class='clickable' style='font-family: "im fell english"'>im fell english</option>
+                        <option class='clickable' style='font-family: "source serif pro"'>source serif pro</option>
+                        <option class='clickable' style='font-family: monoton'>monoton</option>
+                        <option class='clickable' style='font-family: inconsolata'>inconsolata</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>weight</span>
+                  </td>
+                  <td>
+                    <div class='options-color'>
+                      <select class='chooser' id='fontweight-chooser'>
+                        <option class='clickable'>normal</option>
+                        <option class='clickable'>bold</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>variant</span>
+                  </td>
+                  <td>
+                    <div class='options-color'>
+                      <select class='chooser' id='fontvariant-chooser'>
+                        <option class='clickable'>normal</option>
+                        <option class='clickable'>small-caps</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class='theme-section-title small-text'>color palette options</div>
+        <div class='theme-editor-section options-color'>
+          <select class='chooser' id='palette-chooser'>
+            <option class='clickable'>automatic</option>
+            <option class='clickable'>custom</option>
+          </select>
+        </div>
+        <div class='theme-editor-section'>
+          <div class='theme-editor-border palette-chooser-section' id='automatic'>
+            <table class='metro-table'>
+              <thead>
+                <tr>
+                  <th class='theme-section-title small-text'>automatic color options</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class='small-text'>base</span>
+                  </td>
+                  <td>
+                    <input id='baseColor' size='9' type='text'>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class='theme-editor-border palette-chooser-section' id='custom'>
+            <table class='metro-table'>
+              <thead>
+                <tr>
+                  <th class='theme-section-title small-text'>custom color options</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class='small-text'>title</span>
+                  </td>
+                  <td>
+                    <input id='titleColor' type='text'>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>main</span>
+                  </td>
+                  <td>
+                    <input id='mainColor' type='text'>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>options</span>
+                  </td>
+                  <td>
+                    <input id='optionsColor' type='text'>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>background</span>
+                  </td>
+                  <td>
+                    <input id='backgroundColor' type='text'>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class='theme-section-title small-text'>background options</div>
+        <div class='theme-editor-section options-color'>
+          <select class='chooser theme-editor-section' id='background-chooser'>
+            <option class='clickable'>trianglify</option>
+            <option class='clickable'>none</option>
+          </select>
+        </div>
+        <div class='theme-editor-section'>
+          <div class='background-chooser-section' id='none'></div>
+          <div class='theme-editor-border background-chooser-section' id='trianglify'>
+            <table class='metro-table'>
+              <thead>
+                <tr>
+                  <th class='theme-section-title small-text'>trianglify options</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class='small-text'>style</span>
+                  </td>
+                  <td>
+                    <div class='options-color'>
+                      <select class='chooser' id='tristyle-chooser'>
+                        <option class='clickable'>Triad</option>
+                        <option class='clickable'>Tetrad</option>
+                        <option class='clickable'>Monochromatic</option>
+                        <option class='clickable'>Split Complements</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>size</span>
+                  </td>
+                  <td>
+                    <div class='options-color'>
+                      <select class='chooser' id='trisize-chooser'>
+                        <option class='clickable'>small</option>
+                        <option class='clickable'>medium</option>
+                        <option class='clickable'>large</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>variance</span>
+                  </td>
+                  <td>
+                    <div class='options-color'>
+                      <select class='chooser' id='trivariance-chooser'>
+                        <option class='clickable'>uniform</option>
+                        <option class='clickable'>bent</option>
+                        <option class='clickable'>freeform</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class='theme-section-title small-text'>author info</div>
+        <div class='theme-editor-section'>
+          <div class='theme-editor-border' id='author'>
+            <table class='metro-table'>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class='small-text'>title</span>
+                  </td>
+                  <td>
+                    <input id='title' placeholder='a great theme' type='text'>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class='small-text'>author</span>
+                  </td>
+                  <td>
+                    <input id='author' placeholder='anonymous' type='text'>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Hide options on first load. -->
+    <style id='hideRule' type='text/css'>
+      .option { display: none; }
+      /** Remove extra space that was added for sorting. */
+      .external-selector { height: 100%; }
+      #external-selector-todos { height: 100%; }
+    </style>
+    <script src='metro-start.js'></script>
+  </body>
+</html>

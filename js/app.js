@@ -3,6 +3,9 @@ define([
     './utils/utils',
     './widgets/widgets',
     './pages/pages',
+    '../scss/reset.scss',
+    '../scss/style.scss',
+    'spectrum-colorpicker/spectrum.css'
 ], (domready, utils, widgets, pages) => {
     'use strict';
 
