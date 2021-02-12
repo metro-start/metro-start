@@ -1,3 +1,6 @@
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglify-es');
+
 const sass = require('node-sass');
 
 module.exports = function(grunt) {

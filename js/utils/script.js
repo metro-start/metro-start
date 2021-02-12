@@ -90,17 +90,17 @@ define([
             let bodyPattern = trianglify({
                 width: window.innerWidth,
                 height: window.innerHeight,
-                cellSize: Math.random() * 200 + 40,
-                xColors: 'random',
+                cell_size: Math.random() * 200 + 40,
+                x_colors: 'random',
                 variance: Math.random(),
             });
 
             jss.set('body', {
-                'background-image': `url(data:image/svg+xml,${bodyPattern.toSVGTree()})`,
+                'background-image': `url(${bodyPattern.png()})`,
             });
 
             jss.set('.modal-content', {
-                'background-image': `url(data:image/svg+xml,${bodyPattern.toSVGTree()})`,
+                'background-image': `url(${bodyPattern.png()})`,
             });
         },
 
@@ -214,27 +214,27 @@ define([
                     width: jBody.prop('scrollWidth'),
                     height: jBody.prop('scrollHeight'),
                     variance: triVariance,
-                    cellSize: triSize,
-                    xColors: xColors,
+                    cell_size: triSize,
+                    x_colors: xColors,
                     seed: 'metro-start',
                 });
                 jss.set('.background-color', {
                     'background-color': theme.themeContent.backgroundColor,
                 });
                 jss.set('body', {
-                    'background-image': `url(data:image/svg+xml,${bodyPattern.toSVGTree()})`,
+                    'background-image': `url(${bodyPattern.png()})`,
                 });
 
                 let modalPattern = trianglify({
                     width: jBody.prop('scrollWidth') * 0.75,
                     height: jBody.prop('scrollHeight') * 0.85,
                     variance: triVariance,
-                    cellSize: triSize,
-                    xColors: xColors,
+                    cell_size: triSize,
+                    x_colors: xColors,
                 });
 
                 jss.set('.modal-content', {
-                    'background-image': `url(data:image/svg+xml,${modalPattern.toSVGTree()})`,
+                    'background-image': `url(${modalPattern.png()})`,
                 });
             } else {
                 jquery('.background-color').animate(
