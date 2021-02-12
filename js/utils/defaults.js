@@ -1,83 +1,94 @@
 /**
 The default theme for metro start.
 */
-export default {
-    defaultFonts: [
-        'raleway',
-        'kurale',
-        'wire one',
-        'im fell english',
-        'source serif pro',
-        'monoton',
-        'inconsolata',
-    ],
+define(() => {
+    return {
+        init: function () {},
 
-    defaultWebservice: 'https://api.metro-start.com',
+        // defaultFonts: ['system', 'raleway', 'source', 'wire one', 'im fell'],
 
-    defaultTodos: [{
-        name: 'use the wrench to get started. . . ',
-        done: false,
-    }, ],
+        defaultFonts: [
+            'raleway',
+            'kurale',
+            'wire one',
+            'im fell english',
+            'source serif pro',
+            'monoton',
+            'inconsolata',
+        ],
 
-    // The default theme for the app.
-    defaultTheme: {
-        themeContent: {
-            'font-chooser': 'system',
-            'fontfamily-chooser': 'system',
-            'fontweight-chooser': 'normal',
-            'fontvariant-chooser': 'normal',
-            'fontreadability-chooser': 'off',
+        defaultWebservice: 'https://api.metro-start.com',
 
-            'palette-chooser': 'custom',
-            baseColor: '#aaffaa',
-            mainColor: '#ffffff',
-            titleColor: '#4a4a4a',
-            optionsColor: '#ff0000',
-            backgroundColor: '#000000',
+        defaultTodos: [
+            {
+                name: 'use the wrench to get started. . . ',
+                done: false,
+            },
+        ],
 
-            'background-chooser': 'none',
-            'trivariance-chooser': 'uniform',
-            'trisize-chooser': 'medium',
-            'tristyle-chooser': 'monochromatic',
+        // The default theme for the app.
+        defaultTheme: {
+            themeContent: {
+                'font-chooser': 'system',
+                'fontfamily-chooser': 'system',
+                'fontweight-chooser': 'normal',
+                'fontvariant-chooser': 'normal',
+                'fontreadability-chooser': 'off',
+
+                'palette-chooser': 'custom',
+                baseColor: '#aaffaa',
+                mainColor: '#ffffff',
+                titleColor: '#4a4a4a',
+                optionsColor: '#ff0000',
+                backgroundColor: '#000000',
+
+                'background-chooser': 'none',
+                'trivariance-chooser': 'uniform',
+                'trisize-chooser': 'medium',
+                'tristyle-chooser': 'monochromatic',
+            },
+            title: 'metro start',
+            author: 'metro start',
         },
-        title: 'metro start',
-        author: 'metro start',
-    },
 
-    // The default sorting for pages.
-    defaultSort: {
-        todos: false,
-        apps: false,
-        bookmarks: false,
-        themes: false,
-    },
+        // The default sorting for pages.
+        defaultSort: {
+            todos: false,
+            apps: false,
+            bookmarks: false,
+            themes: false,
+        },
 
-    // The default weather location.
-    defaultWeather: {
-        city: 'vancouver, ca',
-        units: 'celsius',
-        visible: true,
-    },
+        // The default weather location.
+        defaultWeather: {
+            city: 'vancouver, ca',
+            units: 'celsius',
+            visible: true,
+        },
 
-    systemThemes: [{
-        title: 'randomize',
-        author: 'metro start',
+        systemThemes: [
+            {
+                title: 'randomize',
+                author: 'metro start',
 
-        optionsColor: '#ff0000',
-        mainColor: '#ffffff',
-        titleColor: '#4a4a4a',
-        backgroundColor: '#000000',
+                optionsColor: '#ff0000',
+                mainColor: '#ffffff',
+                titleColor: '#4a4a4a',
+                backgroundColor: '#000000',
 
-        online: true,
-    }, {
-        title: 'metro start',
-        author: 'metro start',
+                online: true,
+            },
+            {
+                title: 'metro start',
+                author: 'metro start',
 
-        optionsColor: '#ff0000',
-        mainColor: '#ffffff',
-        titleColor: '#4a4a4a',
-        backgroundColor: '#000000',
+                optionsColor: '#ff0000',
+                mainColor: '#ffffff',
+                titleColor: '#4a4a4a',
+                backgroundColor: '#000000',
 
-        online: true,
-    }, ],
-};
+                online: true,
+            },
+        ],
+    };
+});
