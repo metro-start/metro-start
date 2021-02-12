@@ -1,65 +1,66 @@
-define([
-    'detect-dom-ready',
-    './utils/utils',
-    './widgets/widgets',
-    './pages/pages',
-    '../scss/reset.scss',
-    '../scss/style.scss',
-    'spectrum-colorpicker/spectrum.css'
-], (domready, utils, widgets, pages) => {
-    'use strict';
+import domready from 'detect-dom-ready';
+import utils from './utils/utils';
+import widgets from './widgets/widgets';
+import pages from './pages/pages';
+import '../scss/reset.scss';
+import '../scss/style.scss';
+import 'spectrum-colorpicker/spectrum.css';
 
-    let app = {
-        data: {},
 
-        elems: {
-            hideRule: document.getElementById('hideRule'),
-        },
+let app = {
+    data: {},
 
-        showOptions: false,
+    elems: {
+        hideRule: document.getElementById('hideRule'),
+    },
 
-        utils: utils,
+    showOptions: false,
 
-        modules: [utils, widgets, pages],
+    utils: utils,
 
-        init: function () {
-            this.modules.forEach((module) => {
-                module.init(document);
-            });
+    modules: [utils, widgets, pages],
 
-            let that = this;
-            let wrench = document.getElementById('wrench');
-            wrench.addEventListener('click', () => {
-                that.clickWrench();
-                pages.changeToValidPage();
-            });
-        },
+    init() {
+        this.modules.forEach((module) => {
+            module.init(document);
+        });
 
-        /**
-         * Shows the options on the page when the wrench is clicked.
-         */
-        clickWrench: function () {
-            this.showOptions = !this.showOptions;
+        let that = this;
+        let wrench = document.getElementById('wrench');
+        wrench.addEventListener('click', () => {
+            that.clickWrench();
+            pages.changeToValidPage();
+        });
+    },
 
-            if (this.showOptions) {
-                document.body.removeChild(this.elems.hideRule);
-            } else {
-                document.body.appendChild(this.elems.hideRule);
-            }
-        },
-    };
+    /**
+     * Shows the options on the page when the wrench is clicked.
+     */
+    clickWrench() {
+        this.showOptions = !this.showOptions;
 
-    // Initialize the app after the storage is done initializing.
-    // This ensures we can retrieve our data before rendering the page.
-    utils.storage.init().done(() => {
-        if (document) {
-            app.init();
+        if (this.showOptions) {
+            document.body.removeChild(this.elems.hideRule);
         } else {
-            domready(() => {
-                app.init();
-            });
+            document.body.appendChild(this.elems.hideRule);
         }
-    });
+    },
+};
 
-    return app;
+// Initialize the app after the storage is done initializing.
+// This ensures we can retrieve our data before rendering the page.
+utils.storage.init().done(() => {
+    if (document) {
+        if (app.init) {
+            app.init();
+        }
+    } else {
+        domready(() => {
+            if (app.init) {
+                app.init();
+            }
+        });
+    }
 });
+
+export default app;
