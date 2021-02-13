@@ -3,7 +3,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
-    entry: './js/app.js',
+    entry: './es6/app.js',
     devtool: 'inline-source-map',
     mode: 'production',
     optimization: {
