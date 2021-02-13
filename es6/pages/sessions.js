@@ -1,6 +1,6 @@
 import PagebaseGrouped from '../pagebase/pagebase_grouped';
 import util from '../utils/util';
-let sessions = {
+export default {
     name: 'sessions',
 
     enabled: false,
@@ -138,5 +138,3 @@ let sessions = {
         return fragment;
     },
 };
-
-export default sessions;

@@ -3,7 +3,8 @@ import modal from './modal';
 import storage from './storage';
 import defaults from './defaults';
 import script from './script';
-let utils = {
+
+export default {
     util: util,
     storage: storage,
     defaults: defaults,
@@ -18,4 +19,3 @@ let utils = {
         });
     },
 };
-export default utils;

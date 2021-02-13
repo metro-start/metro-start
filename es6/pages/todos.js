@@ -2,7 +2,7 @@ import PagebaseGrouped from '../pagebase/pagebase_grouped';
 import storage from '../utils/storage';
 import defaults from '../utils/defaults';
 import util from '../utils/util';
-let todos = {
+export default {
     name: 'todos',
 
     data: [],
@@ -173,5 +173,3 @@ let todos = {
         this.loadTodos();
     },
 };
-
-export default todos;

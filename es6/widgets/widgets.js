@@ -1,7 +1,7 @@
 import weather from './weather';
 import themes from './themes';
 import about from './about';
-let widgets = {
+export default {
     weather: weather,
     themes: themes,
     about: about,
@@ -14,5 +14,3 @@ let widgets = {
         });
     },
 };
-
-export default widgets;

@@ -1,6 +1,6 @@
 import Pagebase from '../pagebase/pagebase_grouped';
 import util from '../utils/util';
-const apps = {
+export default {
     name: 'apps',
 
     enabled: false,
@@ -249,5 +249,3 @@ const apps = {
         );
     },
 };
-
-export default apps;

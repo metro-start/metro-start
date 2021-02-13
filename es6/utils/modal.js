@@ -1,7 +1,7 @@
 import jquery from 'jquery';
 import util from '../utils/util';
 import '../utils/storage';
-let modal = {
+export default {
     templates: {
         overlay: util.createElement(
             '<div class="metro-modal overlay-wrap"></div>'
@@ -97,5 +97,3 @@ let modal = {
         }
     },
 };
-
-export default modal;

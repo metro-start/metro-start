@@ -1,5 +1,5 @@
 import modal from '../utils/modal';
-let about = {
+export default {
     elems: {
         aboutModal: document.getElementById('aboutModal'),
         aboutButton: document.getElementById('aboutButton'),
@@ -29,5 +29,3 @@ let about = {
      */
     aboutModalClosed: function() {},
 };
-
-export default about;

@@ -6,7 +6,6 @@ import './../scss/reset.scss';
 import './../scss/style.scss';
 import '../node_modules/spectrum-colorpicker/spectrum.css';
 
-
 let app = {
     data: {},
 

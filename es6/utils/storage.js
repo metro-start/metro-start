@@ -1,6 +1,6 @@
 import jquery from 'jquery';
 import util from './util';
-let storage = {
+export default {
     cache: {},
     deferred: undefined,
 
@@ -44,5 +44,3 @@ let storage = {
         return util.isEmpty(this.cache[key]) ? defaultValue : this.cache[key];
     },
 };
-
-export default storage;

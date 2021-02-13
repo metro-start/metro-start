@@ -9,7 +9,7 @@ import script from '../utils/script';
 import 'metro-select';
 import 'spectrum-colorpicker';
 
-let themes = {
+export default {
     isBound: false,
 
     sessionUpdateCount: 0,
@@ -480,5 +480,3 @@ let themes = {
             .toHexString();
     },
 };
-
-export default themes;

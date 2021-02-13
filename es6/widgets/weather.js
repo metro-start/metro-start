@@ -3,7 +3,7 @@ import util from '../utils/util';
 import defaults from '../utils/defaults';
 import storage from '../utils/storage';
 import 'metro-select';
-let weather = {
+export default {
     data: {},
 
     elems: {
@@ -146,4 +146,3 @@ let weather = {
         }
     },
 };
-export default weather;

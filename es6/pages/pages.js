@@ -7,7 +7,7 @@ import apps from './apps';
 import bookmarks from './bookmarks';
 import themes from './themes';
 import 'metro-select';
-let pages = {
+export default {
     name: 'pages',
 
     elems: {
@@ -111,5 +111,3 @@ let pages = {
         }
     },
 };
-
-export default pages;

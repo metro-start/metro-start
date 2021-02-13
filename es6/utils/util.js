@@ -3,7 +3,7 @@ import defaults from './defaults';
 let loggingEnabled = true;
 let hasOwnProperty = Object.prototype.hasOwnProperty;
 
-let util = {
+export default {
     init: function() {
         this.lastLogTime = Date.now();
         this.loggingEnabled = false;
@@ -274,5 +274,3 @@ let util = {
         return newTheme;
     },
 };
-
-export default util;

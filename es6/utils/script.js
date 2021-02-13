@@ -4,7 +4,7 @@ import jss from 'jss';
 import trianglify from 'trianglify';
 import util from './util';
 import defaults from './defaults';
-let script = {
+export default {
     init: function() {},
 
     /**
@@ -460,5 +460,3 @@ let script = {
         );
     },
 };
-
-export default script;

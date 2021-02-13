@@ -5,7 +5,7 @@ import modal from '../utils/modal';
 import util from '../utils/util';
 import storage from '../utils/storage';
 import defaults from '../utils/defaults';
-let themes = {
+export default {
     name: 'themes',
 
     data: {},
@@ -248,5 +248,3 @@ let themes = {
         }
     },
 };
-
-export default themes;

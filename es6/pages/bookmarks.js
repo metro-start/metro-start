@@ -1,8 +1,8 @@
-import jss from 'jss';
 import PagebasePaneled from '../pagebase/pagebase_paneled';
 import modal from '../utils/modal';
 import util from '../utils/util';
-let bookmarks = {
+
+export default {
     name: 'bookmarks',
 
     enabled: false,
@@ -10,23 +10,23 @@ let bookmarks = {
         let that = this;
         if (visible) {
             chrome.permissions.request({
-                    permissions: ['bookmarks']
-                },
-                function(granted) {
-                    that.enabled = granted;
-                    cb(granted);
-                    that.loadBookmarks();
-                }
+                permissions: ['bookmarks']
+            },
+            function(granted) {
+                that.enabled = granted;
+                cb(granted);
+                that.loadBookmarks();
+            }
             );
         } else {
             chrome.permissions.remove({
-                    permissions: ['bookmarks']
-                },
-                function(granted) {
-                    that.enabled = !granted;
-                    cb(granted);
-                    that.loadBookmarks();
-                }
+                permissions: ['bookmarks']
+            },
+            function(granted) {
+                that.enabled = !granted;
+                cb(granted);
+                that.loadBookmarks();
+            }
             );
         }
     },
@@ -189,5 +189,3 @@ let bookmarks = {
         );
     },
 };
-
-export default bookmarks;
