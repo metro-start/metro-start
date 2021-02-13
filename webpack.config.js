@@ -23,6 +23,25 @@ module.exports = {
             jss: path.resolve(__dirname, './node_modules/jss/jss.min.js'),
         },
     },
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ],
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader',
+                ],
+            },
+        ],
+    },
     plugins: [
         new CopyPlugin({
             patterns: [

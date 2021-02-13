@@ -3,6 +3,9 @@ define([
     './utils/utils',
     './widgets/widgets',
     './pages/pages',
+    './../scss/reset.scss',
+    './../scss/style.scss',
+    '../node_modules/spectrum-colorpicker/spectrum.css',
 ], (jquery, utils, widgets, pages) => {
     'use strict';
 
