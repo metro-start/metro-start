@@ -1,9 +1,9 @@
 define([
-    'detect-dom-ready',
+    'jquery',
     './utils/utils',
     './widgets/widgets',
     './pages/pages',
-], (domready, utils, widgets, pages) => {
+], (jquery, utils, widgets, pages) => {
     'use strict';
 
     let app = {
@@ -52,7 +52,7 @@ define([
         if (document) {
             app.init();
         } else {
-            domready(() => {
+            jquery.ready(() => {
                 app.init();
             });
         }
