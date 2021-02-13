@@ -70,7 +70,7 @@ export default {
             ]);
         }
 
-        this.clearJss();
+        this.clearJss(oldTheme);
         this.updateFont(theme, oldTheme);
         this.updateBackground(theme, oldTheme, duration);
         this.updateMainColor(theme, oldTheme, duration);
@@ -93,11 +93,11 @@ export default {
         }).toCanvas();
 
         jss.set('body', {
-            'background': `url(${bodyPattern.toDataURL('image/png').toString()})`,
+            'background-image': `url(${bodyPattern.toDataURL('image/png').toString()})`,
         });
 
         jss.set('.modal-content', {
-            'background': `url(${bodyPattern.toDataURL('image/png').toString()})`,
+            'background-image': `url(${bodyPattern.toDataURL('image/png').toString()})`,
         });
     },
 
@@ -109,6 +109,7 @@ export default {
      * @param {any} duration How long to animate the transition.
      */
     updateBackground: function(theme, oldTheme, duration) {
+        // console.log('changing to', theme);
         let jBody = jquery('body');
         if (theme.themeContent['background-chooser'] === 'trianglify') {
             if (
@@ -125,7 +126,7 @@ export default {
                 theme.themeContent['trivariance-chooser'] ===
                 oldTheme.themeContent['trivariance-chooser']
             ) {
-                return;
+                // return;
             }
 
             let xColors = [theme.themeContent.backgroundColor];
@@ -219,7 +220,7 @@ export default {
                 'background-color': theme.themeContent.backgroundColor,
             });
             jss.set('body', {
-                'background': `url(${bodyPattern.toDataURL('image/png').toString()})`,
+                'background-image': `url(${bodyPattern.toDataURL('image/png').toString()})`,
             });
 
             let modalPattern = trianglify({
@@ -452,7 +453,15 @@ export default {
         }
     },
 
-    clearJss: function() {
+    clearJss: function(oldTheme) {
+        if (oldTheme && oldTheme.themeContent) {
+            oldTheme.themeContent.backgroundColor = '';
+            oldTheme.themeContent.optionsColor = '';
+            oldTheme.themeContent['trisize-chooser'] = '';
+            oldTheme.themeContent['tristyle-chooser'] = '';
+            oldTheme.themeContent['trivariance-chooser'] = '';
+        }
+
         ['body', '.background-color', '.modal-content'].forEach(
             (element) => {
                 jss.remove(element);
