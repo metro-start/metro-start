@@ -2,48 +2,40 @@
   "name": "metro-start",
   "description": "A new tab page for Google Chrome inspired by Zune",
   "homepage": "http://www.metro-start.com/",
-  "version": "11.0.4",
+  "version": "10.10.1",
   "license": "MIT",
+  "private": true,
   "scripts": {
-    "build": "grunt build",
-    "test": "grunt test",
-    "compress": "grunt compress"
+    "build": "npx webpack"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/metro-start/metro-start.git"
   },
   "dependencies": {
-    "detect-dom-ready": "*",
     "jquery": "^3.5.1",
     "jquery-color": "git+https://github.com/jquery/jquery-color.git",
-    "jss": "git+https://github.com/Box9/jss.git",
-    "metro-select": "^1.1.10",
+    "jss": "git://github.com/Box9/jss.git",
+    "metro-select": "git://github.com/chustar/metro-select.git",
     "requirejs": "^2.3.2",
     "spectrum-colorpicker": "^1.8.1",
-    "throttle-debounce": "^2.1.0",
-    "tinycolor2": "^1.4.1",
-    "trianglify": "^4.0.0"
+    "throttle-debounce": "^3.0.1",
+    "tinycolor2": "^1.4.2",
+    "trianglify": "^4.1.1"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^6.0.3",
-    "eslint": "6.1.0",
-    "eslint-config-google": "^0.13.0",
-    "grunt": "^1.2.1",
-    "grunt-cli": "*",
-    "grunt-contrib-compress": "^1.6.0",
-    "grunt-contrib-copy": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-haml": "^0.9.0",
-    "grunt-notify": "*",
-    "grunt-release": "*",
-    "grunt-sass": "^3.1.0",
-    "grunt-webpack": "^4.0.2",
-    "gruntify-eslint": "^5.0.0",
-    "node-sass": "^4.14.1",
-    "optimize-js-plugin": "*",
-    "uglifyjs-webpack-plugin": "2.2.0",
-    "webpack": "4.39.2",
-    "webpack-dev-server": "^3.11.0"
+    "addons-linter": "^2.18.0",
+    "copy-webpack-plugin": "^7.0.0",
+    "css-loader": "^5.0.2",
+    "eslint": "^7.20.0",
+    "eslint-config-google": "^0.14.0",
+    "sass": "^1.32.7",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.22.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-sources": "^2.2.0",
+    "zip-webpack-plugin": "^4.0.1"
   }
 }

@@ -93,14 +93,14 @@ define([
                 cellSize: Math.random() * 200 + 40,
                 xColors: 'random',
                 variance: Math.random(),
-            });
+            }).toCanvas();
 
             jss.set('body', {
-                'background-image': `url('data:image/svg+xml, ${bodyPattern.toSVG().outerHTML}')`,
+                'background': `url(${bodyPattern.toDataURL('image/png').toString()})`,
             });
 
             jss.set('.modal-content', {
-                'background-image': `url('data:image/svg+xml, ${bodyPattern.toSVG().outerHTML}')`,
+                'background': `url(${bodyPattern.toDataURL('image/png').toString()})`,
             });
         },
 
@@ -217,12 +217,12 @@ define([
                     cellSize: triSize,
                     xColors: xColors,
                     seed: 'metro-start',
-                });
+                }).toCanvas();
                 jss.set('.background-color', {
                     'background-color': theme.themeContent.backgroundColor,
                 });
                 jss.set('body', {
-                    'background-image': `url('data:image/svg+xml, ${bodyPattern.toSVG().outerHTML}')`,
+                    'background': `url(${bodyPattern.toDataURL('image/png').toString()})`,
                 });
 
                 let modalPattern = trianglify({
@@ -231,11 +231,10 @@ define([
                     variance: triVariance,
                     cellSize: triSize,
                     xColors: xColors,
-                });
+                }).toCanvas();
 
-                
                 jss.set('.modal-content', {
-                    'background-image': `url('data:image/svg+xml, ${modalPattern.toSVG().outerHTML}')`,
+                    'background-image': `url(${modalPattern.toDataURL('image/png').toString()})`,
                 });
             } else {
                 jquery('.background-color').animate(
@@ -251,7 +250,7 @@ define([
                 this.jssSetMultiple(
                     ['body', '.modal-content', '.background-color'],
                     {
-                        'background-image': 'none',
+                        'background': 'none',
                         'background-color': theme.themeContent.backgroundColor,
                     }
                 );
