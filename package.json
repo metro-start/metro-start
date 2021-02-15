@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "jquery": "^3.5.1",
-    "jquery-color": "git+https://github.com/jquery/jquery-color.git",
-    "jss": "git://github.com/Box9/jss.git",
-    "metro-select": "git://github.com/chustar/metro-select.git",
+    "jquery-color": "github:jquery/jquery-color",
+    "jss": "github:dvtng/jss",
+    "metro-select": "github:chustar/metro-select",
     "requirejs": "^2.3.2",
     "spectrum-colorpicker": "^1.8.1",
     "throttle-debounce": "^3.0.1",
