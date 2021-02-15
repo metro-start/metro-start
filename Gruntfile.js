@@ -8,6 +8,13 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        haml: {
+            dist: {
+                files: {
+                    'dist/start.html': 'haml/start.haml',
+                },
+            },
+        },
         sass: {
             options: {
                 implementation: sass,
@@ -57,24 +64,17 @@ module.exports = function(grunt) {
         },
         copy: {
             dist: {
-                files: [
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: [ 'html/start.html', 'manifest.json' ],
-                        dest: 'dist/',
-                    },
-                    {
-                        expand: true,
-                        src: [ 'html/*', 'fonts/*', 'icons/*' ],
-                        dest: 'dist/',
-                    },
-                    {
-                        expand: true,
-                        flatten: true,
-                        src: [ 'node_modules/spectrum-colorpicker/spectrum.css' ],
-                        dest: 'dist/css',
-                    },
+                files: [{
+                    expand: true,
+                    src: ['fonts/*', 'icons/*', 'manifest.json'],
+                    dest: 'dist/',
+                },
+                {
+                    expand: true,
+                    flatten: true,
+                    src: ['node_modules/spectrum-colorpicker/spectrum.css'],
+                    dest: 'dist/css',
+                },
                 ],
             },
         },
@@ -121,12 +121,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-notify');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-webpack');
+    grunt.loadNpmTasks('grunt-haml2html');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('gruntify-eslint');
 
-    grunt.registerTask('build', ['webpack', 'sass', 'copy']);
+    grunt.registerTask('build', ['webpack', 'haml', 'sass', 'copy']);
     grunt.registerTask('test', ['build', 'eslint']);
 
     grunt.registerTask('publish', ['test', 'compress']);
