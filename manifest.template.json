@@ -1,7 +1,6 @@
 {
 	"name": "Metro Start",
 	"short_name": "Metro Start",
-	"version": "10.10.0",
 	"manifest_version": 2,
 	"description": "A new tab page for Google Chrome inspired by Zune",
 	"chrome_url_overrides": {
@@ -21,11 +20,5 @@
 		"bookmarks",
 		"sessions",
 		"tabs"
-	],
-	"browser_specific_settings": {
-		"gecko": {
-			"id": "metro-start@metro-start.com",
-			"strict_min_version": "60.0"
-		}
-	}
+	]
 }

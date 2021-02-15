@@ -1,17 +1,14 @@
 const path = require('path');
+const packageJson = require('./package.json');
 const CopyPlugin = require('copy-webpack-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
 
-module.exports = {
+const config = {
     entry: './es6/app.js',
     devtool: 'inline-source-map',
     mode: 'production',
     optimization: {
         minimize: false,
-    },
-    output: {
-        filename: 'metro-start.js',
-        path: `${__dirname}/dist`,
     },
     stats: {
         colors: true,
@@ -41,25 +38,62 @@ module.exports = {
                 ],
             },
         ],
+    }
+};
+
+var chromeConfig = Object.assign({}, config, {
+    output: {
+        filename: 'metro-start.js',
+        path: `${__dirname}/dist/chrome`,
     },
     plugins: [
         new CopyPlugin({
             patterns: [
                 {from: 'html/start.html'},
-                {from: 'icons/*', },
-                {from: 'manifest.json'}
-            ]
-        }),
+                {from: 'icons/*' },
+                {
+                    from: 'manifest.template.json',
+                    to: 'manifest.json',
+                    transform(content) {
+                        let manifest = JSON.parse(content.toString());
+                        manifest.version = packageJson.version;
+                        return JSON.stringify(manifest);
+                    }
+                }]}),
         new ZipPlugin({
-            filename: 'metro-start.zip',
-        })
-        // new UglifyJsPlugin({
-        //     'cache': true,
-        //     'parallel': true,
-        //     'sourceMap': true,
-        //     'uglifyOptions': {
-        //         'ecma': 6,
-        //     },
-        // }),
-    ],
-};
+            path: `${__dirname}/dist`,
+            filename: 'metro-start-chrome.zip',
+        })]
+});
+
+var firefoxConfig = Object.assign({}, config, {
+    output: {
+        filename: 'metro-start.js',
+        path: `${__dirname}/dist/firefox`,
+    },
+    plugins: [new CopyPlugin({
+        patterns: [
+            {from: 'html/start.html'},
+            {from: 'icons/*' },
+            {
+                from: 'manifest.template.json',
+                to: 'manifest.json',
+                transform(content) {
+                    let manifest = JSON.parse(content.toString());
+                    manifest.version = packageJson.version;
+                    manifest.browser_specific_settings = {
+                        gecko: {
+                            id: 'metro-start@metro-start.com',
+                            strict_min_version: '77.0'
+                        }
+                    };
+                    return JSON.stringify(manifest);
+                }
+            }]
+    }),
+    new ZipPlugin({
+        path: `${__dirname}/dist`,
+        filename: 'metro-start-firefox.zip',
+    })]});
+
+module.exports = [chromeConfig, firefoxConfig];
