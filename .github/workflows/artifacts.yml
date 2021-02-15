@@ -15,7 +15,11 @@ jobs:
         node-version: 14.x
     - run: npm ci
     - run: npx webpack
-    - name: Upload Build Artifact
-      uses: actions/upload-artifact@v2.2.2
+    - name: Upload Chrome Artifact
+      uses: actions/upload-artifact@v2
       with:
-        path: 'dist/*.zip'
+        path: 'dist/*chrome.zip'
+    - name: Upload Firefox Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: 'dist/*firefox.zip'
