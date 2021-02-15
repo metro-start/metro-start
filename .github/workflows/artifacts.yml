@@ -18,8 +18,10 @@ jobs:
     - name: Upload Chrome Artifact
       uses: actions/upload-artifact@v2
       with:
+        name: 'metro-start-chrome'
         path: 'dist/*chrome.zip'
     - name: Upload Firefox Artifact
       uses: actions/upload-artifact@v2
       with:
+        name: 'metro-start-firefox'
         path: 'dist/*firefox.zip'
