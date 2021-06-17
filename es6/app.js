@@ -39,8 +39,10 @@ let app = {
         this.showOptions = !this.showOptions;
 
         if (this.showOptions) {
+            jquery(document.body).addClass('show-options');
             document.body.removeChild(this.elems.hideRule);
         } else {
+            jquery(document.body).removeClass('show-options');
             document.body.appendChild(this.elems.hideRule);
         }
     },

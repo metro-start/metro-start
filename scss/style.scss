@@ -6,41 +6,13 @@ $default-background: #fff;
 }
 
 html {
-    font-size: 32px;
     height: 100%;
-}
-
-@media only screen and (max-width: 1048px) {
-    body {
-        transform: scale(.9);
-    }
-}
-
-@media only screen and (max-width: 948px) {
-    body {
-        transform: scale(.8);
-    }
-}
-
-@media only screen and (max-width: 800px) {
-    body {
-        transform: scale(.7);
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    body {
-        transform: scale(.6);
-    }
-}
-
-@media only screen and (max-width: 480px) {
-    body {
-        transform: scale(.5);
-    }
+    // font: -apple-system-body;
 }
 
 body {
+    font: -apple-system-body;
+    font-size: 32px;
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
     height: 100%;
@@ -98,43 +70,9 @@ input {
     cursor: pointer;
 }
 
-h1,
-h2,
-h3 {
-    font-style: normal;
-    font-weight: normal;
+.title-color {
+    white-space: nowrap;
 }
-
-h1 {
-    font-size: 4rem;
-    margin: 0 0 15px 50px;
-}
-
-h2 {
-    font-size: 3.2rem;
-    margin: 12px auto;
-}
-
-h3 {
-    font-size: 2.6rem;
-    margin: 12px auto;
-}
-
-h4 {
-    font-size: 2rem;
-    margin: 12px auto;
-}
-
-h5 {
-    font-size: 1.4rem;
-    margin: 12px auto;
-}
-
-.small-text {
-    display: inline-block;
-    font-size: .8rem;
-}
-
 .item,
 .info {
     >.small-text {
@@ -144,13 +82,6 @@ h5 {
 
 .option {
     display: inline-block;
-}
-
-// Header
-.pages-chooser,
-.sort {
-    margin-bottom: 10px;
-    margin-left: 50px;
 }
 
 // Collection and Panels
@@ -285,11 +216,6 @@ h5 {
     // }
 }
 
-// Todos
-#external-selector-todos {
-    height: calc(100% - 85px);
-}
-
 .add {
     margin-left: 50px;
 }
@@ -320,13 +246,194 @@ h5 {
     margin: 15px;
 }
 
-// Weather
-.weather {
+h1,
+h2,
+h3 {
     font-style: normal;
-    position: absolute;
-    right: 15px;
-    top: 30px;
+    font-weight: normal;
 }
+@media only screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+        margin: 0 0 15px 25px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+        margin: 12px auto;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        margin: 12px auto;
+    }
+
+    h4 {
+        font-size: 0.9rem;
+        margin: 12px auto;
+    }
+
+    h5 {
+        font-size: 0.7rem;
+        margin: 12px auto;
+    }
+
+    .small-text {
+        display: inline-block;
+        font-size: inherit;
+    }
+
+    // Header
+    .pages-chooser,
+    .sort {
+        margin-bottom: 10px;
+        margin-left: 25px;
+    }
+
+    // // Collection and Panels
+    // .external {
+    //     // height: calc(100% - 251px - 153px);
+    //     height: calc(100% - 128px - 128px - 32px - 32px - 25px - 25px - 10px - env(safe-area-inset-bottom));
+    //     overflow: hidden;
+    //     width: 100%;
+    // }
+    
+    // // Todos
+    // #external-selector-todos {
+    //     height: calc(100% - 128px - 128px - 32px - 32px - 25px - 25px - 10px - 64px - env(safe-area-inset-bottom));
+    // }
+
+    // // Collection and Panels
+    // .show-options .external {
+    //     // height: calc(100% - 251px - 153px);
+    //     height: calc(100% - 95px - 128px - 128px - 32px - 32px - 25px - 25px - 10px - env(safe-area-inset-bottom));
+    //     overflow: hidden;
+    //     width: 100%;
+    // }
+    
+    // // Todos
+    // .show-options #external-selector-todos {
+    //     height: calc(100% -95px - 128px - 128px - 32px - 32px - 25px - 25px - 10px - 64px - env(safe-area-inset-bottom));
+    // }
+
+    :root {
+        --weather-height: calc(108px + 25px + 44px);
+        --title-height: calc(92px + 15px);
+        --chooser-height: calc(54px + 10px);
+        --sort-height: 0px;
+        --footer-height: calc(24px + 30px + max(25px, env(safe-area-inset-bottom)));
+        
+        .show-options {
+            --weather-height: calc(203px + 25px + 44px);
+            --title-height: calc(92px + 15px);
+            --chooser-height: calc(54px + 10px);
+            --sort-height: calc(27px + 10px);
+            --footer-height: calc(24px + 30px + max(25px, env(safe-area-inset-bottom)));
+        }
+
+        --other-height: calc(var(--weather-height) + var(--title-height) + var(--sort-height) + var(--chooser-height) + var(--footer-height));
+    }
+
+    // Collection and Panels
+    .external {
+        // height: calc(100% - 251px - 153px);
+        height: calc(100% - var(--other-height));
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    // Todos
+    #external-selector-todos {
+        height: calc(100% - var(--other-height) - var(--sort-height));
+    }
+
+    // Collection and Panels
+    .show-options .external {
+        // height: calc(100% - 251px - 153px);
+        height: calc(100% - var(--other-height));
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    // Todos
+    // .show-options #external-selector-todos {
+    //     height: calc(100% -95px - 128px - 128px - 32px - 32px - 25px - 25px - 10px - 64px - env(safe-area-inset-bottom));
+    // }
+    // Weather
+    .weather {
+        font-style: normal;
+        margin-top: 44px;
+        margin-left: 25px;
+    }
+    // .footer {
+    //     // margin-bottom: env(safe-area-inset-bottom, 25px);
+    // }
+}
+@media only screen and (min-width: 480px) {
+    h1 {
+        font-size: 4rem;
+        margin: 0 0 15px 25px;
+    }
+
+    h2 {
+        font-size: 3.2rem;
+        margin: 12px auto;
+    }
+
+    h3 {
+        font-size: 2.6rem;
+        margin: 12px auto;
+    }
+
+    h4 {
+        font-size: 2rem;
+        margin: 12px auto;
+    }
+
+    h5 {
+        font-size: 1.4rem;
+        margin: 12px auto;
+    }
+
+    .small-text {
+        display: inline-block;
+        font-size: .8rem;
+    }
+
+    // Header
+    .pages-chooser,
+    .sort {
+        margin-bottom: 10px;
+        margin-left: 25px;
+    }
+
+    // Collection and Panels
+    .external {
+        height: calc(100% - 251px);
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    // Todos
+    #external-selector-todos {
+        height: calc(100% - 85px);
+    }
+
+    // Weather
+    .weather {
+        position: absolute;
+        right: 15px;
+        top: 30px;
+        font-style: normal;
+    }
+}
+// Weather
+// .weather {
+//     font-style: normal;
+//     position: absolute;
+//     right: 15px;
+//     top: 30px;
+// }
 
 // Metro Modal
 .overlay-wrap {
