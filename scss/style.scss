@@ -1,13 +1,10 @@
 // Generic Styles
 $default-background: #fff;
-
-* {
+html {
     box-sizing: border-box;
 }
-
-html {
-    height: 100%;
-    // font: -apple-system-body;
+*, *:before, *:after {
+    box-sizing: inherit;
 }
 
 body {
@@ -15,7 +12,9 @@ body {
     font-size: 32px;
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
-    height: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 // Document wide styles
@@ -54,6 +53,7 @@ input {
 
     &[type='text'] {
         padding-left: 8px;
+        width: 100vw;
 
         #newLocation {
             margin-bottom: 8px;
@@ -86,36 +86,31 @@ input {
 
 // Collection and Panels
 .external {
-    height: calc(100% - 251px);
-    overflow: hidden;
+    flex-grow: 1;
     width: 100%;
 
     .internal {
-        height: 100%;
         transition: margin .3s ease-in-out;
         width: 500%;
     }
 }
 
 .external-selector {
-    height: calc(100% - 42px);
     overflow: auto;
     width: 100%;
 
     .internal-selector {
-        height: 100%;
-        margin-left: 50px;
+        margin-left: 25px;
         white-space: nowrap;
     }
 }
 
 .collection {
     float: left;
-    height: 100%;
     width: 20%;
 
     >div {
-        height: 100%;
+        // height: 100%;
     }
 }
 
@@ -129,8 +124,9 @@ input {
 
 .page {
     display: inline-block;
-    flex-basis: auto;
+    flex-grow: 1;
     min-width: 375px;
+    max-width: 100%;
     vertical-align: top;
 
     .item {
@@ -171,14 +167,14 @@ input {
 
     .group {
         display: inline-block;
-        height: 100%;
+        // height: 100%;
         margin-right: 28px;
     }
 
     .page,
     .group>.page {
         border-top: 1px solid;
-        height: calc(100% - 32px);
+        // height: calc(100% - 32px);
         overflow-y: auto;
     }
 }
@@ -197,7 +193,7 @@ input {
 
 .panel-item,
 .item>.title {
-    max-width: 425px;
+    max-width: max(425px, 100%);
     overflow: hidden;
     padding: 10px 0;
     text-overflow: ellipsis;
@@ -337,20 +333,20 @@ h3 {
     // Collection and Panels
     .external {
         // height: calc(100% - 251px - 153px);
-        height: calc(100% - var(--other-height));
+        // height: calc(100% - var(--other-height));
         overflow: hidden;
         width: 100%;
     }
     
     // Todos
-    #external-selector-todos {
-        height: calc(100% - var(--other-height) - var(--sort-height));
-    }
+    // #external-selector-todos {
+        // height: calc(100% - var(--other-height) - var(--sort-height));
+    // }
 
     // Collection and Panels
     .show-options .external {
         // height: calc(100% - 251px - 153px);
-        height: calc(100% - var(--other-height));
+        // height: calc(100% - var(--other-height));
         overflow: hidden;
         width: 100%;
     }
@@ -362,8 +358,8 @@ h3 {
     // Weather
     .weather {
         font-style: normal;
-        margin-top: 44px;
-        margin-left: 25px;
+        margin: 25px;
+        margin-bottom: 0;
     }
     // .footer {
     //     // margin-bottom: env(safe-area-inset-bottom, 25px);
@@ -409,15 +405,15 @@ h3 {
 
     // Collection and Panels
     .external {
-        height: calc(100% - 251px);
+        // height: calc(100% - 251px);
         overflow: hidden;
         width: 100%;
     }
     
     // Todos
-    #external-selector-todos {
-        height: calc(100% - 85px);
-    }
+    // #external-selector-todos {
+    //     height: calc(100% - 85px);
+    // }
 
     // Weather
     .weather {
@@ -425,6 +421,7 @@ h3 {
         right: 15px;
         top: 30px;
         font-style: normal;
+        max-width: 100%;
     }
 }
 // Weather
@@ -438,7 +435,7 @@ h3 {
 // Metro Modal
 .overlay-wrap {
     background-color: $default-background;
-    height: 100%;
+    height: 100vh;
     left: 0;
     opacity: .6;
     position: fixed;
