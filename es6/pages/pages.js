@@ -94,6 +94,9 @@ export default {
             })
             .indexOf(page);
 
+        jquery('.external .internal .collection').addClass('off-screen');
+        jquery(`.external .internal .collection.${page}`).removeClass('off-screen');
+        
         jss.set('.external .internal', {
             'margin-left': `${moduleIndex * -100}%`,
         });

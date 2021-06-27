@@ -1,4 +1,3 @@
-// Generic Styles
 $default-background: #fff;
 html {
     box-sizing: border-box;
@@ -6,38 +5,10 @@ html {
 *, *:before, *:after {
     box-sizing: inherit;
 }
-
-body {
-    font: -apple-system-body;
-    font-size: 32px;
-    -webkit-font-smoothing: antialiased;
-    font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-// Document wide styles
-.show {
-    display: block;
-}
-
-.hide {
-    display: none !important; // sass-lint:disable-line no-important
-}
-
-.done,
-.disabled,
-.empty {
-    opacity: .5;
-    text-decoration: line-through;
-}
-
 a {
     color: inherit;
     text-decoration: none;
 }
-
 input {
     -webkit-font-smoothing: inherit;
     background: none;
@@ -53,33 +24,40 @@ input {
 
     &[type='text'] {
         padding-left: 8px;
-        width: 100vw;
+        width: 100%;
 
         #newLocation {
             margin-bottom: 8px;
         }
     }
 }
-
 ::-webkit-scrollbar {
     height: 10px;
     width: 10px;
 }
 
+.show {
+    display: block;
+}
+.hide {
+    display: none !important; // sass-lint:disable-line no-important
+}
+.done, .disabled, .empty {
+    opacity: .5;
+    text-decoration: line-through;
+}
+
 .clickable {
     cursor: pointer;
 }
-
 .title-color {
     white-space: nowrap;
 }
-.item,
-.info {
+.item, .info {
     >.small-text {
         margin-right: 20px;
     }
 }
-
 .option {
     display: inline-block;
 }
@@ -95,16 +73,6 @@ input {
     }
 }
 
-.external-selector {
-    overflow: auto;
-    width: 100%;
-
-    .internal-selector {
-        margin-left: 25px;
-        white-space: nowrap;
-    }
-}
-
 .collection {
     float: left;
     width: 20%;
@@ -114,12 +82,8 @@ input {
     }
 }
 
-// Pagebase
-.pagebase>.group {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    height: 100%;
+.collection.off-screen {
+    overflow-y: hidden;
 }
 
 .page {
@@ -158,68 +122,20 @@ input {
     }
 }
 
-// Grouped Pagebase
-.pagebase-grouped {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 0;
-    height: calc(100% - 1px); // Minus the number of points the font has increased by...
-
-    .group {
-        display: inline-block;
-        // height: 100%;
-        margin-right: 28px;
-    }
-
-    .page,
-    .group>.page {
-        border-top: 1px solid;
-        // height: calc(100% - 32px);
-        overflow-y: auto;
-    }
-}
-
-.page>.item>div {
-    display: flex;
-    flex-direction: row;
-}
-
-// Paneled Pagebase
-.panel-page {
+// Bookmarks
+#internal-selector-bookmarks>.pagebase-grouped>.page {
     height: 100%;
-    margin-right: 10px;
-    overflow-y: auto;
-}
-
-.panel-item,
-.item>.title {
-    max-width: max(425px, 100%);
-    overflow: hidden;
-    padding: 10px 0;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    &.theme-item {
-        padding-left: 0;
-    }
+    padding-left: 0;
 }
 
 .info {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start; // .small-text {
-    //     margin-right: 20px;
-    // }
+    justify-content: flex-start; 
 }
 
 .add {
     margin-left: 50px;
-}
-
-// Bookmarks
-#internal-selector-bookmarks>.pagebase-grouped>.page {
-    height: 100%;
-    padding-left: 0;
 }
 
 .slash {
@@ -249,6 +165,15 @@ h3 {
     font-weight: normal;
 }
 @media only screen and (max-width: 480px) {
+    body {
+        font: -apple-system-body;
+        font-size: 32px;
+        -webkit-font-smoothing: antialiased;
+        font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+    }
+
     h1 {
         font-size: 1.8rem;
         margin: 0 0 15px 25px;
@@ -279,93 +204,85 @@ h3 {
         font-size: inherit;
     }
 
+    .external-selector {
+        width: 100vw;
+    
+        .internal-selector {
+            margin-left: 25px;
+            white-space: nowrap;
+        }
+    }
+    
     // Header
     .pages-chooser,
     .sort {
         margin-bottom: 10px;
         margin-left: 25px;
     }
-
-    // // Collection and Panels
-    // .external {
-    //     // height: calc(100% - 251px - 153px);
-    //     height: calc(100% - 128px - 128px - 32px - 32px - 25px - 25px - 10px - env(safe-area-inset-bottom));
-    //     overflow: hidden;
-    //     width: 100%;
-    // }
-    
-    // // Todos
-    // #external-selector-todos {
-    //     height: calc(100% - 128px - 128px - 32px - 32px - 25px - 25px - 10px - 64px - env(safe-area-inset-bottom));
-    // }
-
-    // // Collection and Panels
-    // .show-options .external {
-    //     // height: calc(100% - 251px - 153px);
-    //     height: calc(100% - 95px - 128px - 128px - 32px - 32px - 25px - 25px - 10px - env(safe-area-inset-bottom));
-    //     overflow: hidden;
-    //     width: 100%;
-    // }
-    
-    // // Todos
-    // .show-options #external-selector-todos {
-    //     height: calc(100% -95px - 128px - 128px - 32px - 32px - 25px - 25px - 10px - 64px - env(safe-area-inset-bottom));
-    // }
-
-    :root {
-        --weather-height: calc(108px + 25px + 44px);
-        --title-height: calc(92px + 15px);
-        --chooser-height: calc(54px + 10px);
-        --sort-height: 0px;
-        --footer-height: calc(24px + 30px + max(25px, env(safe-area-inset-bottom)));
-        
-        .show-options {
-            --weather-height: calc(203px + 25px + 44px);
-            --title-height: calc(92px + 15px);
-            --chooser-height: calc(54px + 10px);
-            --sort-height: calc(27px + 10px);
-            --footer-height: calc(24px + 30px + max(25px, env(safe-area-inset-bottom)));
+    .pagebase>.group {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+    .pagebase-grouped {
+        display: flex;
+        flex-direction: column;
+        .group {
+            display: inline-block;
+            margin-right: 28px;
         }
 
-        --other-height: calc(var(--weather-height) + var(--title-height) + var(--sort-height) + var(--chooser-height) + var(--footer-height));
+        .page,
+        .group>.page {
+            border-top: 1px solid;
+        }
     }
 
-    // Collection and Panels
-    .external {
-        // height: calc(100% - 251px - 153px);
-        // height: calc(100% - var(--other-height));
+    .page>.item>div {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .panel-page {
+        margin-right: 10px;
+    }
+    .panel-item,
+    .item>.title {
+        max-width: 100vw;
         overflow: hidden;
+        padding: 10px 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.theme-item {
+            padding-left: 0;
+        }
+    }
+    .external {
         width: 100%;
     }
     
-    // Todos
-    // #external-selector-todos {
-        // height: calc(100% - var(--other-height) - var(--sort-height));
-    // }
-
     // Collection and Panels
     .show-options .external {
-        // height: calc(100% - 251px - 153px);
-        // height: calc(100% - var(--other-height));
-        overflow: hidden;
         width: 100%;
     }
-    
-    // Todos
-    // .show-options #external-selector-todos {
-    //     height: calc(100% -95px - 128px - 128px - 32px - 32px - 25px - 25px - 10px - 64px - env(safe-area-inset-bottom));
-    // }
-    // Weather
     .weather {
         font-style: normal;
         margin: 25px;
         margin-bottom: 0;
     }
-    // .footer {
-    //     // margin-bottom: env(safe-area-inset-bottom, 25px);
-    // }
 }
 @media only screen and (min-width: 480px) {
+    body {
+        font: -apple-system-body;
+        font-size: 32px;
+        -webkit-font-smoothing: antialiased;
+        font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
     h1 {
         font-size: 4rem;
         margin: 0 0 15px 25px;
@@ -396,6 +313,16 @@ h3 {
         font-size: .8rem;
     }
 
+    .external-selector {
+        overflow: auto;
+        width: 100%;
+    
+        .internal-selector {
+            margin-left: 25px;
+            white-space: nowrap;
+        }
+    }
+    
     // Header
     .pages-chooser,
     .sort {
@@ -405,15 +332,59 @@ h3 {
 
     // Collection and Panels
     .external {
-        // height: calc(100% - 251px);
         overflow: hidden;
-        width: 100%;
+        width: 100vw;
     }
-    
-    // Todos
-    // #external-selector-todos {
-    //     height: calc(100% - 85px);
-    // }
+        
+    // Pagebase
+    .pagebase>.group {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        height: 100%;
+    }
+
+
+    // Grouped Pagebase
+    .pagebase-grouped {
+        display: flex;
+
+        .group {
+            display: inline-block;
+            // height: 100%;
+            margin-right: 28px;
+        }
+
+        .page,
+        .group>.page {
+            border-top: 1px solid;
+        }
+    }
+
+    .page>.item>div {
+        display: flex;
+        flex-direction: row;
+    }
+
+    // Paneled Pagebase
+    .panel-page {
+        height: 100%;
+        margin-right: 10px;
+        overflow-y: auto;
+    }
+
+    .panel-item,
+    .item>.title {
+        max-width: max(425px, 100%);
+        overflow: hidden;
+        padding: 10px 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.theme-item {
+            padding-left: 0;
+        }
+    }
 
     // Weather
     .weather {
