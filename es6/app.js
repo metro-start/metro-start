@@ -3,7 +3,7 @@ import utils from './utils/utils';
 import widgets from './widgets/widgets';
 import pages from './pages/pages';
 import './../scss/reset.scss';
-import './../scss/style.scss';
+import './../scss/main.scss';
 import '../node_modules/spectrum-colorpicker/spectrum.css';
 
 let app = {
