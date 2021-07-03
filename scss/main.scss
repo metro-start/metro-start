@@ -8,7 +8,6 @@ html {
 }
 body {
     font: -apple-system-body;
-    font-size: 32px;
     -webkit-font-smoothing: antialiased;
     font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
     height: 100vh;
@@ -97,11 +96,9 @@ input {
         width: 500%;
     }
 }
-.external-selector {
-    .internal-selector {
-        margin-left: 25px;
-        white-space: nowrap;
-    }
+.external-selector .internal-selector {
+    margin-left: 25px;
+    white-space: nowrap;
 }
 .pages-chooser, .sort {
     margin-bottom: 10px;
@@ -109,6 +106,12 @@ input {
 }
 .page {
     border-top: 1px solid;
+    .item {
+        div {
+            display: flex;
+            flex-direction: row;
+        }
+    }
 }
 .panel-item, .item > .title {
     overflow: hidden;
@@ -126,13 +129,41 @@ input {
     }
 }
 .item, .info {
-    >.small-text {
+    > .small-text {
         margin-right: 20px;
     }
 }
-.page > .item > div {
+.page {
+    height: 100%;
+    .item  .active {
+        padding-left: 10px;
+    }
+}
+.item {
+    align-items: center;
+    min-width: 0;
+
+    :last-child {
+        margin-bottom: 0;
+    }
+}
+
+.title {
+    display: block;
+    line-height: 100%;
+    padding: 5px 0;
+    white-space: nowrap;
+
+    #internal-selector-sessions {
+        max-width: 375px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+.info {
     display: flex;
     flex-direction: row;
+    justify-content: flex-start; 
 }
 
 @media only screen and (max-width: 480px) {
@@ -263,39 +294,6 @@ input {
         font-style: normal;
         max-width: 100%;
     }
-}
-
-.page {
-    height: 100%;
-    .item  .active {
-        padding-left: 10px;
-    }
-}
-.item {
-    align-items: center;
-    min-width: 0;
-
-    :last-child {
-        margin-bottom: 0;
-    }
-}
-
-.title {
-    display: block;
-    line-height: 100%;
-    padding: 5px 0;
-    white-space: nowrap;
-
-    #internal-selector-sessions {
-        max-width: 375px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
-.info {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start; 
 }
 
 #internal-selector-bookmarks > .pagebase-grouped > .page {
