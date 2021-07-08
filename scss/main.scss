@@ -53,15 +53,24 @@ input {
     opacity: .5;
     text-decoration: line-through;
 }
-.add {
-    margin-left: 50px;
+#addTodo {
+    margin-left: 25px;
+    display: flex;
+    max-width: min(100%, 375px);
+    #newTodo {
+        flex-grow: 1;
+        margin-right: 25px;
+    }
+    #saveTodo {
+        align-self: center;
+    }
 }
 .addremove_button {
     margin-left: 8px;
 }
 .slash {
     align-self: center;
-    font-size: 1.2rem;
+    font-size: 1.2em;
     font-weight: bolder;
     padding-right: 4px;
 }
@@ -75,7 +84,7 @@ input {
 .small-text {
     display: inline-block;
     font-size: inherit;
-    font-size: .8rem;
+    font-size: .8em;
 }
 .collection {
     float: left;
@@ -153,12 +162,6 @@ input {
     line-height: 100%;
     padding: 5px 0;
     white-space: nowrap;
-
-    #internal-selector-sessions {
-        max-width: 375px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
 }
 .info {
     display: flex;
@@ -168,23 +171,23 @@ input {
 
 @media only screen and (max-width: 480px) {
     h1 {
-        font-size: 1.8rem;
+        font-size: 1.8em;
         margin: 0 0 15px 25px;
     }
     h2 {
-        font-size: 1.6rem;
+        font-size: 1.6em;
         margin: 12px auto;
     }
     h3 {
-        font-size: 1.4rem;
+        font-size: 1.4em;
         margin: 12px auto;
     }
     h4 {
-        font-size: 1.2rem;
+        font-size: 1.2em;
         margin: 12px auto;
     }
     h5 {
-        font-size: 1.1rem;
+        font-size: 1.1em;
         margin: 12px auto;
     }
     .show-options #weather {
@@ -221,27 +224,23 @@ input {
 }
 @media only screen and (min-width: 480px) {
     h1 {
-        font-size: 4rem;
+        font-size: 4em;
         margin: 0 0 15px 25px;
     }
-
     h2 {
-        font-size: 3.2rem;
+        font-size: 3.2em;
         margin: 12px auto;
     }
-
     h3 {
-        font-size: 2.6rem;
+        font-size: 2.6em;
         margin: 12px auto;
     }
-
     h4 {
-        font-size: 2rem;
+        font-size: 2em;
         margin: 12px auto;
     }
-
     h5 {
-        font-size: 1.4rem;
+        font-size: 1.4em;
         margin: 12px auto;
     }
     .external-selector {
@@ -249,7 +248,7 @@ input {
         width: 100%;
 
         .internal-selector {
-            margin-left: 50px;
+            margin-left: 25px;
             white-space: nowrap;
         }
     }
