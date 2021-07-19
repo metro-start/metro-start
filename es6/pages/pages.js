@@ -22,21 +22,21 @@ export default {
 
         const that = this;
         chrome.permissions.getAll(function(perms) {
-            if (perms.permissions.includes('management')) {
+            if (chrome.management && perms.permissions.includes('management')) {
                 jquery('.apps-option').removeClass('removed');
                 apps.enabled = true;
             } else if (that.page == 'apps') {
                 that.page = 'todos';
             }
 
-            if (perms.permissions.includes('bookmarks')) {
+            if (chrome.bookmarks && perms.permissions.includes('bookmarks')) {
                 jquery('.bookmarks-option').removeClass('removed');
                 bookmarks.enabled = true;
             } else if (that.page == 'bookmarks') {
                 that.page = 'todos';
             }
 
-            if (perms.permissions.includes('sessions')) {
+            if (chrome.sessions && perms.permissions.includes('sessions')) {
                 jquery('.sessions-option').removeClass('removed');
                 sessions.enabled = true;
             } else if (that.page == 'sessions') {
@@ -108,7 +108,7 @@ export default {
         });
         if (modules.length) {
             let module = modules[0];
-            if (module.setPermissionVisibility) {
+            if (module.setPermissionVisibility && module.supported) {
                 module.setPermissionVisibility(visibility, cb);
             }
         }

@@ -2,8 +2,9 @@ import PagebaseGrouped from '../pagebase/pagebase_grouped';
 import util from '../utils/util';
 export default {
     name: 'sessions',
-
     enabled: false,
+    supported: !!chrome.sessions,
+
     setPermissionVisibility: function(visible, cb) {
         let that = this;
         if (visible) {

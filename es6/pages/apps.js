@@ -2,8 +2,9 @@ import Pagebase from '../pagebase/pagebase_grouped';
 import util from '../utils/util';
 export default {
     name: 'apps',
-
     enabled: false,
+    supported: !!chrome.management,
+    
     setPermissionVisibility: function(visible, cb) {
         let that = this;
         if (visible) {

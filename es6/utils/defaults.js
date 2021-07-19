@@ -59,6 +59,10 @@ export default {
     // The default weather location.
     defaultWeather: {
         city: 'vancouver, ca',
+        currentTemp: 0,
+        highTemp: 0,
+        lowTemp: 0,
+        condition: 'broken clouds',
         units: 'celsius',
         visible: true,
     },

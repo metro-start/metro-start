@@ -4,8 +4,9 @@ import util from '../utils/util';
 
 export default {
     name: 'bookmarks',
-
     enabled: false,
+    supported: !!chrome.bookmarks,
+
     setPermissionVisibility: function(visible, cb) {
         let that = this;
         if (visible) {

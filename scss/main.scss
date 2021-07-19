@@ -46,8 +46,19 @@ input {
 .show {
     display: block;
 }
-.hide {
+.hide, .removed {
     display: none !important; // sass-lint:disable-line no-important
+}
+.option {
+    display: inline-block;
+}
+.show-options .removed {
+    display: inline-block !important; // sass-lint:disable-line no-important
+    text-decoration: line-through;
+    pointer-events: none;
+    .option {
+        pointer-events: all;
+    }
 }
 .done, .disabled, .empty {
     opacity: .5;
@@ -74,26 +85,25 @@ input {
     font-weight: bolder;
     padding-right: 4px;
 }
-
-.option {
-    display: inline-block;
-}
 .clickable {
     cursor: pointer;
 }
 .small-text {
     display: inline-block;
     font-size: inherit;
-    font-size: .8em;
+    font-size: .8em; 
+    margin-right: 20px;
 }
+
 .collection {
     float: left;
     width: 20%;
+    height: 100%;
     &.off-screen {
         height: 1px;
+        overflow: hidden;
     }
 }
-
 .external {
     flex-grow: 1;
     width: 100%;
@@ -108,6 +118,9 @@ input {
 .external-selector .internal-selector {
     margin-left: 25px;
     white-space: nowrap;
+}
+#internal-selector-themes > .group > .page > .item {
+    padding-bottom: 10px;
 }
 .pages-chooser, .sort {
     margin-bottom: 10px;
@@ -137,11 +150,6 @@ input {
         margin-bottom: -8px;
     }
 }
-.item, .info {
-    > .small-text {
-        margin-right: 20px;
-    }
-}
 .page {
     height: 100%;
     .item  .active {
@@ -168,146 +176,13 @@ input {
     flex-direction: row;
     justify-content: flex-start; 
 }
-
-@media only screen and (max-width: 480px) {
-    h1 {
-        font-size: 1.8em;
-        margin: 0 0 15px 25px;
-    }
-    h2 {
-        font-size: 1.6em;
-        margin: 12px auto;
-    }
-    h3 {
-        font-size: 1.4em;
-        margin: 12px auto;
-    }
-    h4 {
-        font-size: 1.2em;
-        margin: 12px auto;
-    }
-    h5 {
-        font-size: 1.1em;
-        margin: 12px auto;
-    }
-    .show-options #weather {
-        #city, #temp, #condition {
-            display: none;
-        }
-    }
-    .external-selector {
-        .internal-selector {
-            white-space: nowrap;
-        }
-    }
-    .pagebase-grouped .group {
-        margin-right: 28px;
-    }
-    .panel-page {
-        margin-right: 10px;
-    }
-    .page {
-        width: 100%;
-    }
-    .panel-item, .item > .title {
-        width: 100%;
-
-        &.theme-item {
-            padding-left: 0;
-        }
-    }
-    .weather {
-        font-style: normal;
-        margin: 25px;
-        margin-bottom: 0;
-    }
-}
-@media only screen and (min-width: 480px) {
-    h1 {
-        font-size: 4em;
-        margin: 0 0 15px 25px;
-    }
-    h2 {
-        font-size: 3.2em;
-        margin: 12px auto;
-    }
-    h3 {
-        font-size: 2.6em;
-        margin: 12px auto;
-    }
-    h4 {
-        font-size: 2em;
-        margin: 12px auto;
-    }
-    h5 {
-        font-size: 1.4em;
-        margin: 12px auto;
-    }
-    .external-selector {
-        overflow: auto;
-        width: 100%;
-
-        .internal-selector {
-            margin-left: 25px;
-            white-space: nowrap;
-        }
-    }
-    .collection, .collection > div {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    .pagebase-grouped {
-        height: 100%;
-        display: flex;
-        
-        .group {
-            margin-right: 28px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .page {
-            overflow-y: auto;
-        }
-    }
-    .page {
-        width: 375px;
-    }
-    .panel-page {
-        height: 100%;
-        margin-right: 10px;
-        overflow-y: auto;
-    }
-    .panel-item, .item > .title {
-        max-width: 375px;
-
-        &.theme-item {
-            padding-left: 0;
-        }
-    }
-    .weather {
-        position: absolute;
-        right: 15px;
-        top: 30px;
-        font-style: normal;
-        max-width: 100%;
-    }
-}
-
-#internal-selector-bookmarks > .pagebase-grouped > .page {
-    padding-left: 0;
-}
-#internal-selector-themes > .group > .page > .item {
-    padding-bottom: 10px;
-}
-
 .footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin: 15px;
 }
+
 
 // Metro Modal
 .overlay-wrap {
@@ -380,15 +255,6 @@ input {
 .theme-editor-section {
     margin-bottom: 16px;
 }
-.theme-editor-border {
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
-    border-left-style: solid;
-    border-left-width: 2px;
-    margin-left: 12.5%;
-    padding-bottom: 4px;
-    padding-left: 4px;
-}
 .tristyle-section, .trisize-section, .trivariance-section {
     align-items: center;
     display: flex;
@@ -409,4 +275,136 @@ input {
         padding-bottom: 4px;
         vertical-align: middle;
     }
+}
+
+@media only screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+        margin: 0 0 15px 25px;
+    }
+    h2 {
+        font-size: 1.6em;
+        margin: 12px auto;
+    }
+    h3 {
+        font-size: 1.4em;
+        margin: 12px auto;
+    }
+    h4 {
+        font-size: 1.2em;
+        margin: 12px auto;
+    }
+    h5 {
+        font-size: 1.1em;
+        margin: 12px auto;
+    }
+    .show-options #weather {
+        #city, #temp, #condition {
+            display: none;
+        }
+    }
+    .external-selector .internal-selector {
+        white-space: nowrap;
+    }
+    .pagebase-grouped .group {
+        margin-right: 25px;
+        margin-bottom: 12px;
+    }
+    .panel-page {
+        margin-right: 10px;
+    }
+    .page {
+        width: 100%;
+    }
+    .weather {
+        font-style: normal;
+        margin: 25px;
+        margin-bottom: 0;
+    }
+    .theme-editor-section input[type="text"] {
+        width: 100%;
+    }
+    .theme-editor-border {
+        border-bottom-style: solid;
+        border-bottom-width: 2px;
+        border-left-style: solid;
+        border-left-width: 2px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+    }    
+}
+@media only screen and (min-width: 480px) {
+    h1 {
+        font-size: 4em;
+        margin: 0 0 15px 25px;
+    }
+    h2 {
+        font-size: 3.2em;
+        margin: 12px auto;
+    }
+    h3 {
+        font-size: 2.6em;
+        margin: 12px auto;
+    }
+    h4 {
+        font-size: 2em;
+        margin: 12px auto;
+    }
+    h5 {
+        font-size: 1.4em;
+        margin: 12px auto;
+    }
+    .external-selector {
+        overflow: auto;
+        width: 100%;
+
+        .internal-selector {
+            margin-left: 25px;
+            white-space: nowrap;
+        }
+    }
+    .collection > div {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .pagebase-grouped {
+        height: 100%;
+        display: flex;
+        .group {
+            margin-right: 28px;
+            display: flex;
+            flex-direction: column;
+        }
+        .page {
+            overflow-y: auto;
+        }
+    }
+    .page {
+        width: 375px;
+    }
+    .panel-page {
+        height: 100%;
+        margin-right: 10px;
+        overflow-y: auto;
+    }
+    .panel-item, .item > .title {
+        max-width: 375px;
+    }
+    .weather {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        font-style: normal;
+        max-width: 100%;
+    }
+    .theme-editor-border {
+        border-bottom-style: solid;
+        border-bottom-width: 2px;
+        border-left-style: solid;
+        border-left-width: 2px;
+        margin-left: 12.5%;
+        padding-bottom: 4px;
+        padding-left: 4px;
+    }    
 }
