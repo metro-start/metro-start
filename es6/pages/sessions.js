@@ -3,17 +3,21 @@ import util from '../utils/util';
 export default {
     name: 'sessions',
     enabled: false,
-    supported: !!chrome.sessions,
+    // supported: !!chrome.sessions,
 
     setPermissionVisibility: function(visible, cb) {
         let that = this;
         if (visible) {
+            util.log('request sessions', chrome.permissions);
             chrome.permissions.request({
                 permissions: ['sessions']
             },
             function(granted) {
+                console.log('granted sessions', granted);
                 that.enabled = granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadSessions();
             }
             );
@@ -23,7 +27,9 @@ export default {
             },
             function(granted) {
                 that.enabled = !granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadSessions();
             }
             );
@@ -74,6 +80,7 @@ export default {
      * Loads the available sessions from local and web storage
      */
     loadSessions: function() {
+        util.log(sessions, this.sessions, chrome.sessions);
         this.sessions.clear();
         if (!this.enabled) {
             this.sessions.addAll({

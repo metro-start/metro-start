@@ -16,7 +16,7 @@
     "jquery": "^3.5.1",
     "jquery-color": "github:jquery/jquery-color",
     "jss": "github:dvtng/jss",
-    "metro-select": "github:chustar/metro-select",
+    "metro-select": "file:../metro-select",
     "requirejs": "^2.3.2",
     "spectrum-colorpicker": "^1.8.1",
     "throttle-debounce": "^3.0.1",
@@ -24,7 +24,6 @@
     "trianglify": "^4.1.1"
   },
   "devDependencies": {
-    "addons-linter": "^2.18.0",
     "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^5.0.2",
     "eslint": "^7.20.0",

@@ -64,6 +64,27 @@ input {
     opacity: .5;
     text-decoration: line-through;
 }
+h1 {
+    font-size: 3.6em;
+    margin: 0 0 15px 25px;
+    white-space: nowrap;
+}
+h2 {
+    font-size: 3.2em;
+    margin: 12px auto;
+}
+h3 {
+    font-size: 2.6em;
+    margin: 12px auto;
+}
+h4 {
+    font-size: 2em;
+    margin: 12px auto;
+}
+h5 {
+    font-size: 1.4em;
+    margin: 12px auto;
+}
 #addTodo {
     margin-left: 25px;
     display: flex;
@@ -276,28 +297,27 @@ input {
         vertical-align: middle;
     }
 }
-
 @media only screen and (max-width: 480px) {
-    h1 {
-        font-size: 1.8em;
-        margin: 0 0 15px 25px;
-    }
-    h2 {
-        font-size: 1.6em;
-        margin: 12px auto;
-    }
-    h3 {
-        font-size: 1.4em;
-        margin: 12px auto;
-    }
-    h4 {
-        font-size: 1.2em;
-        margin: 12px auto;
-    }
-    h5 {
-        font-size: 1.1em;
-        margin: 12px auto;
-    }
+    // h1 {
+    //     font-size: 1.8em;
+    //     margin: 0 0 15px 25px;
+    // }
+    // h2 {
+    //     font-size: 1.6em;
+    //     margin: 12px auto;
+    // }
+    // h3 {
+    //     font-size: 1.4em;
+    //     margin: 12px auto;
+    // }
+    // h4 {
+    //     font-size: 1.2em;
+    //     margin: 12px auto;
+    // }
+    // h5 {
+    //     font-size: 1.1em;
+    //     margin: 12px auto;
+    // }
     .show-options #weather {
         #city, #temp, #condition {
             display: none;
@@ -334,26 +354,26 @@ input {
     }    
 }
 @media only screen and (min-width: 480px) {
-    h1 {
-        font-size: 4em;
-        margin: 0 0 15px 25px;
-    }
-    h2 {
-        font-size: 3.2em;
-        margin: 12px auto;
-    }
-    h3 {
-        font-size: 2.6em;
-        margin: 12px auto;
-    }
-    h4 {
-        font-size: 2em;
-        margin: 12px auto;
-    }
-    h5 {
-        font-size: 1.4em;
-        margin: 12px auto;
-    }
+    // h1 {
+    //     font-size: 4em;
+    //     margin: 0 0 15px 25px;
+    // }
+    // h2 {
+    //     font-size: 3.2em;
+    //     margin: 12px auto;
+    // }
+    // h3 {
+    //     font-size: 2.6em;
+    //     margin: 12px auto;
+    // }
+    // h4 {
+    //     font-size: 2em;
+    //     margin: 12px auto;
+    // }
+    // h5 {
+    //     font-size: 1.4em;
+    //     margin: 12px auto;
+    // }
     .external-selector {
         overflow: auto;
         width: 100%;

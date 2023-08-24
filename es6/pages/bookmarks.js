@@ -15,7 +15,9 @@ export default {
             },
             function(granted) {
                 that.enabled = granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadBookmarks();
             }
             );
@@ -25,7 +27,9 @@ export default {
             },
             function(granted) {
                 that.enabled = !granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadBookmarks();
             }
             );

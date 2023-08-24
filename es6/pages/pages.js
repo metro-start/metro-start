@@ -96,7 +96,8 @@ export default {
 
         jquery('.external .internal .collection').addClass('off-screen');
         jquery(`.external .internal .collection.${page}`).removeClass('off-screen');
-        
+        jquery(`.metro-select-option .${page}-option`).removeClass('removed disabled');
+
         jss.set('.external .internal', {
             'margin-left': `${moduleIndex * -100}%`,
         });
@@ -108,7 +109,8 @@ export default {
         });
         if (modules.length) {
             let module = modules[0];
-            if (module.setPermissionVisibility && module.supported) {
+            console.log('module', module);
+            if (module.setPermissionVisibility) {
                 module.setPermissionVisibility(visibility, cb);
             }
         }

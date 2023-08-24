@@ -13,7 +13,7 @@
 	},
 	"permissions": [
 		"storage",
-		"safari-web-extension://a148dc44-0569-4b6c-bf3c-f944df2502b7/*",
+		"https://metro-start.com/*",
 		"https://api.metro-start.com/*"
 	],
 	"optional_permissions": [

@@ -13,7 +13,9 @@ export default {
             },
             function(granted) {
                 that.enabled = granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadApps();
             }
             );
@@ -23,7 +25,9 @@ export default {
             },
             function(granted) {
                 that.enabled = !granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadApps();
             }
             );
