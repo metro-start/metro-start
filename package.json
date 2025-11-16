@@ -16,7 +16,7 @@
     "jquery": "^3.7.1",
     "jquery-color": "^3.0.0",
     "jss": "git://github.com/Box9/jss.git",
-    "metro-select": "file:../metro-select",
+    "metro-select": "git://github.com/chustar/metro-select.git",
     "requirejs": "^2.3.7",
     "spectrum-colorpicker": "^1.8.1",
     "throttle-debounce": "^5.0.2",
