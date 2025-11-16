@@ -455,8 +455,16 @@ export default {
 
     clearJss: function(oldTheme) {
         if (oldTheme && oldTheme.themeContent) {
+            oldTheme.themeContent.mainColor = '';
+            oldTheme.themeContent.baseColor = '';
+            oldTheme.themeContent.titleColor = '';
             oldTheme.themeContent.backgroundColor = '';
             oldTheme.themeContent.optionsColor = '';
+            oldTheme.themeContent['font-chooser'] = '';
+            oldTheme.themeContent['fontfamily-chooser'] = '';
+            oldTheme.themeContent['fontweight-chooser'] = '';
+            oldTheme.themeContent['fontvariant-chooser'] = '';
+            oldTheme.themeContent['fontreadability-chooser'] = '';
             oldTheme.themeContent['trisize-chooser'] = '';
             oldTheme.themeContent['tristyle-chooser'] = '';
             oldTheme.themeContent['trivariance-chooser'] = '';

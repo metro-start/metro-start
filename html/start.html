@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">  -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
     <link href='https://fonts.googleapis.com/css?family=IM+Fell+English|Inconsolata|Kurale|Monoton|Raleway|Source+Serif+Pro|Wire+One' rel='stylesheet'>
     <title>start</title>
   </head>
   <body class='background-color'>
+    <div class='weather'>
+      <div class='options-color option clickable' id='toggleWeather'></div>
+      <div class='hide' id='weather'>
+        <div id='city'></div>
+        <div>
+          <input class='option' id='newLocation' placeholder='vancouver, ca' type='text'>
+          <span class='options-color option clickable' id='saveLocation'>save</span>
+        </div>
+        <div class='options-color option'>
+          <select class='chooser' id='weather-units-chooser'>
+            <option class='clickable'>celsius</option>
+            <option class='clickable'>fahrenheit</option>
+          </select>
+        </div>
+        <p id='temp'><span id='currentTemp'></span>°
+          <span class='options-color' id='units'></span>
+          /
+          <span id='highTemp'></span>
+          <span class='options-color'>hi</span>
+          /
+          <span id='lowTemp'></span>
+          <span class='options-color'>lo</span>
+        </p>
+        <p id='condition'></p>
+      </div>
+    </div>
     <h1 class='title-color'>start here . . .</h1>
     <div class='pages-chooser'>
       <select class='chooser' id='pages-chooser'>
@@ -30,12 +58,12 @@
                 </option>
               </select>
             </div>
-            <div class='external-selector' id='external-selector-todos'>
-              <div class='internal-selector' id='internal-selector-todos'></div>
-            </div>
             <div class='add option' id='addTodo'>
               <input class='option' id='newTodo' name='newTodo' placeholder='new todo' type='text'>
               <div class='options-color option clickable' id='saveTodo'>save</div>
+            </div>
+            <div class='external-selector' id='external-selector-todos'>
+              <div class='internal-selector' id='internal-selector-todos'></div>
             </div>
           </div>
         </div>
@@ -107,32 +135,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class='weather'>
-      <div class='options-color option clickable' id='toggleWeather'></div>
-      <div class='hide' id='weather'>
-        <div id='city'></div>
-        <div>
-          <input class='option' id='newLocation' placeholder='vancouver, ca' type='text'>
-          <span class='options-color option clickable' id='saveLocation'>save</span>
-        </div>
-        <div class='options-color option'>
-          <select class='chooser' id='weather-units-chooser'>
-            <option class='clickable'>celsius</option>
-            <option class='clickable'>fahrenheit</option>
-          </select>
-        </div>
-        <p id='temp'><span id='currentTemp'></span>°
-          <span class='options-color' id='units'></span>
-          /
-          <span id='highTemp'></span>
-          <span class='options-color'>hi</span>
-          /
-          <span id='lowTemp'></span>
-          <span class='options-color'>lo</span>
-        </p>
-        <p id='condition'></p>
       </div>
     </div>
     <div class='footer'>

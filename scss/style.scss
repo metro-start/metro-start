@@ -1,40 +1,50 @@
 // Generic Styles
 $default-background: #fff;
-
-* {
+html {
     box-sizing: border-box;
 }
-
+*, *:before, *:after {
+    box-sizing: inherit;
+}
 html {
     font-size: 32px;
     height: 100%;
 }
 
-@media only screen and (max-width: 1048px) {
-    body {
-        transform: scale(.9);
-    }
+h1,
+h2,
+h3 {
+    font-style: normal;
+    font-weight: normal;
 }
-
-@media only screen and (max-width: 948px) {
-    body {
-        transform: scale(.8);
-    }
+h1 {
+    font-size: 1.8rem;
+    margin: 0 0 15px 25px;
 }
-
-@media only screen and (max-width: 800px) {
-    body {
-        transform: scale(.7);
-    }
+h2 {
+    font-size: 1.6rem;
+    margin: 12px auto;
 }
-
-@media only screen and (max-width: 600px) {
-    body {
-        transform: scale(.6);
-    }
+h3 {
+    font-size: 1.2rem;
+    margin: 12px auto;
+}
+h4 {
+    font-size: 0.9rem;
+    margin: 12px auto;
+}
+h5 {
+    font-size: 0.7rem;
+    margin: 12px auto;
 }
 
 @media only screen and (max-width: 480px) {
+    body {
+        transform: scale(.5);
+    }
+}
+
+@media only screen and (min-width: 480px) {
     body {
         transform: scale(.5);
     }
@@ -46,18 +56,14 @@ body {
     height: 100%;
 }
 
-// Document wide styles
 .show {
     display: block;
 }
-
 .hide {
     display: none !important; // sass-lint:disable-line no-important
 }
 
-.done,
-.disabled,
-.empty {
+.done, .disabled, .empty {
     opacity: .5;
     text-decoration: line-through;
 }
@@ -98,37 +104,6 @@ input {
     cursor: pointer;
 }
 
-h1,
-h2,
-h3 {
-    font-style: normal;
-    font-weight: normal;
-}
-
-h1 {
-    font-size: 4rem;
-    margin: 0 0 15px 50px;
-}
-
-h2 {
-    font-size: 3.2rem;
-    margin: 12px auto;
-}
-
-h3 {
-    font-size: 2.6rem;
-    margin: 12px auto;
-}
-
-h4 {
-    font-size: 2rem;
-    margin: 12px auto;
-}
-
-h5 {
-    font-size: 1.4rem;
-    margin: 12px auto;
-}
 
 .small-text {
     display: inline-block;

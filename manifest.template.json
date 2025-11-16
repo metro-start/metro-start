@@ -13,6 +13,7 @@
 	},
 	"permissions": [
 		"storage",
+		"https://metro-start.com/*",
 		"https://api.metro-start.com/*"
 	],
 	"optional_permissions": [

@@ -3,7 +3,7 @@ import utils from './utils/utils';
 import widgets from './widgets/widgets';
 import pages from './pages/pages';
 import './../scss/reset.scss';
-import './../scss/style.scss';
+import './../scss/main.scss';
 import '../node_modules/spectrum-colorpicker/spectrum.css';
 
 let app = {
@@ -39,8 +39,10 @@ let app = {
         this.showOptions = !this.showOptions;
 
         if (this.showOptions) {
+            jquery(document.body).addClass('show-options');
             document.body.removeChild(this.elems.hideRule);
         } else {
+            jquery(document.body).removeClass('show-options');
             document.body.appendChild(this.elems.hideRule);
         }
     },
