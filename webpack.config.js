@@ -17,6 +17,7 @@ const config = {
     },
     resolve: {
         alias: {
+            jquery: require.resolve('jquery'),
             jss: path.resolve(__dirname, './node_modules/jss/jss.min.js'),
         },
     },

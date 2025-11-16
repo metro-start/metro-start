@@ -1,7 +1,7 @@
 {
 	"name": "Metro Start",
 	"short_name": "Metro Start",
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"description": "A new tab page for Google Chrome inspired by Zune",
 	"chrome_url_overrides": {
 		"newtab": "start.html"
@@ -12,7 +12,9 @@
 		"128": "icons/icon128.png"
 	},
 	"permissions": [
-		"storage",
+		"storage"
+	],
+	"host_permissions": [
 		"https://metro-start.com/*",
 		"https://api.metro-start.com/*"
 	],
