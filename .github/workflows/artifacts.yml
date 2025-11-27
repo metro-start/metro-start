@@ -2,7 +2,7 @@ name: Artifacts
 
 on:
   push:
-    branches: [ release ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -18,10 +18,10 @@ jobs:
     - name: Upload Chrome Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: 'metro-start-chrome'
+        name: 'Chrome Extension'
         path: 'dist/*chrome.zip'
     - name: Upload Firefox Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: 'metro-start-firefox'
+        name: 'Firefox Extension'
         path: 'dist/*firefox.zip'

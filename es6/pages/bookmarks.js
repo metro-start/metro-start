@@ -1,30 +1,36 @@
 import PagebasePaneled from '../pagebase/pagebase_paneled';
 import modal from '../utils/modal';
 import util from '../utils/util';
+import ext from '../utils/extension';
 
 export default {
     name: 'bookmarks',
-
     enabled: false,
+    supported: !!ext.bookmarks.getTree,
+
     setPermissionVisibility: function(visible, cb) {
         let that = this;
         if (visible) {
-            chrome.permissions.request({
+            ext.permissions.request({
                 permissions: ['bookmarks']
             },
             function(granted) {
                 that.enabled = granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadBookmarks();
             }
             );
         } else {
-            chrome.permissions.remove({
+            ext.permissions.remove({
                 permissions: ['bookmarks']
             },
             function(granted) {
                 that.enabled = !granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadBookmarks();
             }
             );
@@ -89,7 +95,7 @@ export default {
         }
 
         let that = this;
-        chrome.bookmarks.getTree((data) => {
+        ext.bookmarks.getTree((data) => {
             that.data = data[0].children;
             that.bookmarks.addAll(that.data);
         });
@@ -161,7 +167,7 @@ export default {
 
         let that = this;
         this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
-        chrome.bookmarks.getChildren(bookmark.id, (data) => {
+        ext.bookmarks.getChildren(bookmark.id, (data) => {
             if (data.length !== 0) {
                 that.bookmarks.addAll(data);
             }
@@ -179,7 +185,7 @@ export default {
             `bookmark-${bookmark.id}`,
             `${bookmark.title} will be removed.`, (res) => {
                 if (res) {
-                    chrome.bookmarks.removeTree(bookmark.id, () => {
+                    ext.bookmarks.removeTree(bookmark.id, () => {
                         bookmarkNode.parentNode.remove();
                     });
                 }

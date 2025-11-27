@@ -5,3 +5,4 @@ dist/*
 node_modules/*
 cached_uglify/*
 *.sqlite
+.DS_Store

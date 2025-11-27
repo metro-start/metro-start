@@ -1,5 +1,7 @@
 import jquery from 'jquery';
 import util from './util';
+import ext from './extension';
+
 export default {
     cache: {},
     deferred: undefined,
@@ -8,8 +10,9 @@ export default {
         if (!this.deferred) {
             this.deferred = new jquery.Deferred();
             let that = this;
-            chrome.storage.sync.get(null, (container) => {
-                that.cache = jquery.extend(that.cache, container);
+            // Use unified extension API which supports browser/chrome/safari
+            ext.storage.sync.get(null, (container) => {
+                that.cache = jquery.extend(that.cache, container || {});
                 that.deferred.resolve(that);
             });
         }
@@ -30,7 +33,7 @@ export default {
 
         let obj = {};
         obj[key] = value;
-        chrome.storage.sync.set(obj);
+        ext.storage.sync.set(obj);
     },
 
     /**

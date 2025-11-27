@@ -17,6 +17,7 @@ const config = {
     },
     resolve: {
         alias: {
+            jquery: require.resolve('jquery'),
             jss: path.resolve(__dirname, './node_modules/jss/jss.min.js'),
         },
     },
@@ -96,4 +97,28 @@ var firefoxConfig = Object.assign({}, config, {
         filename: 'metro-start-firefox.zip',
     })]});
 
-module.exports = [chromeConfig, firefoxConfig];
+var xcodeConfig = Object.assign({}, config, {
+    output: {
+        filename: 'metro-start.js',
+        path: `${__dirname}/dist/xcode`,
+    },
+    plugins: [new CopyPlugin({
+        patterns: [
+            {from: 'html/start.html'},
+            {from: 'icons/*' },
+            {
+                from: 'manifest.template.json',
+                to: 'manifest.json',
+                transform(content) {
+                    let manifest = JSON.parse(content.toString());
+                    manifest.version = packageJson.version;
+                    return JSON.stringify(manifest);
+                }
+            }]
+    }),
+    new ZipPlugin({
+        path: `${__dirname}/dist`,
+        filename: 'metro-start-xcode.zip',
+    })]});
+    
+module.exports = [chromeConfig, firefoxConfig, xcodeConfig];

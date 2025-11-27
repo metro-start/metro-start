@@ -1,28 +1,36 @@
 import PagebaseGrouped from '../pagebase/pagebase_grouped';
 import util from '../utils/util';
+import ext from '../utils/extension';
 export default {
     name: 'sessions',
-
     enabled: false,
+    supported: !!(ext.sessions && (ext.sessions.getDevices || ext.sessions.getRecentlyClosed)),
+
     setPermissionVisibility: function(visible, cb) {
         let that = this;
         if (visible) {
-            chrome.permissions.request({
+            util.log('request sessions', ext.permissions);
+            ext.permissions.request({
                 permissions: ['sessions']
             },
             function(granted) {
+                console.log('granted sessions', granted);
                 that.enabled = granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadSessions();
             }
             );
         } else {
-            chrome.permissions.request({
+            ext.permissions.remove({
                 permissions: ['sessions']
             },
             function(granted) {
                 that.enabled = !granted;
-                cb(granted);
+                if (cb) {
+                    cb(granted);
+                }
                 that.loadSessions();
             }
             );
@@ -73,6 +81,7 @@ export default {
      * Loads the available sessions from local and web storage
      */
     loadSessions: function() {
+        util.log('sessions shim', this.sessions, ext.sessions);
         this.sessions.clear();
         if (!this.enabled) {
             this.sessions.addAll({
@@ -85,8 +94,8 @@ export default {
         }
 
         let that = this;
-        if (chrome.sessions.getDevices) {
-            chrome.sessions.getDevices(null, (devices) => {
+        if (ext.sessions.getDevices) {
+            ext.sessions.getDevices(null, (devices) => {
                 for (let device of devices) {
                     let data = [];
                     for (let session of device.sessions) {
@@ -103,7 +112,7 @@ export default {
                 }
             });
         } else {
-            chrome.sessions.getRecentlyClosed(null, (sessions) => {
+            ext.sessions.getRecentlyClosed(null, (sessions) => {
                 let data = [];
                 for (let session of sessions) {
                     if (session.tab) {

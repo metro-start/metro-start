@@ -6,6 +6,7 @@ import sessions from './sessions';
 import apps from './apps';
 import bookmarks from './bookmarks';
 import themes from './themes';
+import ext from '../utils/extension';
 import 'metro-select';
 export default {
     name: 'pages',
@@ -21,22 +22,22 @@ export default {
         this.page = storage.get('page', 'todos');
 
         const that = this;
-        chrome.permissions.getAll(function(perms) {
-            if (perms.permissions.includes('management')) {
+        ext.permissions.getAll(function(perms) {
+            if (ext.management && perms.permissions.includes('management')) {
                 jquery('.apps-option').removeClass('removed');
                 apps.enabled = true;
             } else if (that.page == 'apps') {
                 that.page = 'todos';
             }
 
-            if (perms.permissions.includes('bookmarks')) {
+            if (ext.bookmarks && perms.permissions.includes('bookmarks')) {
                 jquery('.bookmarks-option').removeClass('removed');
                 bookmarks.enabled = true;
             } else if (that.page == 'bookmarks') {
                 that.page = 'todos';
             }
 
-            if (perms.permissions.includes('sessions')) {
+            if (ext.sessions && perms.permissions.includes('sessions')) {
                 jquery('.sessions-option').removeClass('removed');
                 sessions.enabled = true;
             } else if (that.page == 'sessions') {
@@ -94,6 +95,10 @@ export default {
             })
             .indexOf(page);
 
+        jquery('.external .internal .collection').addClass('off-screen');
+        jquery(`.external .internal .collection.${page}`).removeClass('off-screen');
+        jquery(`.metro-select-option .${page}-option`).removeClass('removed disabled');
+
         jss.set('.external .internal', {
             'margin-left': `${moduleIndex * -100}%`,
         });
@@ -105,6 +110,7 @@ export default {
         });
         if (modules.length) {
             let module = modules[0];
+            console.log('module', module);
             if (module.setPermissionVisibility) {
                 module.setPermissionVisibility(visibility, cb);
             }

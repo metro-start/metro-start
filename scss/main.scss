@@ -1,0 +1,430 @@
+// Generic Styles
+$default-background: #fff;
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+body {
+    font: -apple-system-body;
+    -webkit-font-smoothing: antialiased;
+    font-family: Helvetica, 'Segoe UI', Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+input {
+    -webkit-font-smoothing: inherit;
+    background: none;
+    background-color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+
+    &[type='submit'] {
+        border: 0;
+        cursor: pointer;
+    }
+
+    &[type='text'] {
+        padding-left: 8px;
+
+        #newLocation {
+            margin-bottom: 8px;
+        }
+    }
+}
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+.show {
+    display: block;
+}
+.hide, .removed {
+    display: none !important; // sass-lint:disable-line no-important
+}
+.option {
+    display: inline-block;
+}
+.show-options .removed {
+    display: inline-block !important; // sass-lint:disable-line no-important
+    text-decoration: line-through;
+    pointer-events: none;
+    .option {
+        pointer-events: all;
+    }
+}
+.done, .disabled, .empty {
+    opacity: .5;
+    text-decoration: line-through;
+}
+h1 {
+    font-size: 3.6em;
+    margin: 0 0 15px 25px;
+    white-space: nowrap;
+}
+h2 {
+    font-size: 3.2em;
+    margin: 12px auto;
+}
+h3 {
+    font-size: 2.6em;
+    margin: 12px auto;
+}
+h4 {
+    font-size: 2em;
+    margin: 12px auto;
+}
+h5 {
+    font-size: 1.4em;
+    margin: 12px auto;
+}
+#addTodo {
+    margin-left: 25px;
+    display: flex;
+    max-width: min(100%, 375px);
+    #newTodo {
+        flex-grow: 1;
+        margin-right: 25px;
+    }
+    #saveTodo {
+        align-self: center;
+    }
+}
+.addremove_button {
+    margin-left: 8px;
+}
+.slash {
+    align-self: center;
+    font-size: 1.2em;
+    font-weight: bolder;
+    padding-right: 4px;
+}
+.clickable {
+    cursor: pointer;
+}
+.small-text {
+    display: inline-block;
+    font-size: inherit;
+    font-size: .8em; 
+    margin-right: 20px;
+}
+
+.collection {
+    float: left;
+    width: 20%;
+    height: 100%;
+    &.off-screen {
+        height: 1px;
+        overflow: hidden;
+    }
+}
+.external {
+    flex-grow: 1;
+    width: 100%;
+    overflow-x: hidden;
+
+    .internal {
+        transition: margin .3s ease-in-out;
+        height: 100%;
+        width: 500%;
+    }
+}
+.external-selector .internal-selector {
+    margin-left: 25px;
+    white-space: nowrap;
+}
+#internal-selector-themes > .group > .page > .item {
+    padding-bottom: 10px;
+}
+.pages-chooser, .sort {
+    margin-bottom: 10px;
+    margin-left: 25px;
+}
+.page {
+    border-top: 1px solid;
+    .item {
+        div {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+}
+.panel-item, .item > .title {
+    overflow: hidden;
+    padding: 10px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.theme-item {
+        padding-left: 0;
+    }
+}
+.group > .page > .item {
+    > .title {
+        margin-bottom: -8px;
+    }
+}
+.page {
+    height: 100%;
+    .item  .active {
+        padding-left: 10px;
+    }
+}
+.item {
+    align-items: center;
+    min-width: 0;
+
+    :last-child {
+        margin-bottom: 0;
+    }
+}
+
+.title {
+    display: block;
+    line-height: 100%;
+    padding: 5px 0;
+    white-space: nowrap;
+}
+.info {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; 
+}
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 15px;
+}
+
+
+// Metro Modal
+.overlay-wrap {
+    background-color: $default-background;
+    height: 100%;
+    left: 0;
+    opacity: .6;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+}
+.modal-content {
+    align-items: center;
+    border: solid 2px;
+    bottom: 0;
+    flex-direction: column;
+    justify-content: center;
+    left: 0;
+    margin: auto;
+    max-height: 85%;
+    overflow-y: auto;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 75%;
+}
+.modal-content > p {
+    height: 10%;
+    margin: 10% 0;
+    text-align: center;
+}
+.modal-section {
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-left-style: solid;
+    border-left-width: 2px;
+    margin-left: 12.5%;
+    padding-bottom: 8px;
+    padding-left: 8px;
+}
+.modal-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .clickable {
+        border: 2px solid;
+        margin-bottom: 8px;
+        margin-right: 4px;
+        padding: 6px;
+
+        :first {
+            margin-right: 4px;
+        }
+    }
+}
+
+// Theme Editor
+#themeEditor {
+    margin: auto;
+    margin-top: 0;
+    width: 75%;
+}
+.theme-section-title {
+    align-content: left;
+    border-bottom: 2px solid;
+    font-style: italic;
+}
+.theme-editor-section {
+    margin-bottom: 16px;
+}
+.tristyle-section, .trisize-section, .trivariance-section {
+    align-items: center;
+    display: flex;
+}
+
+#aboutModal {
+    text-align: center;
+
+    .metro-table {
+        width: 100%;
+    }
+}
+.metro-table {
+    border-spacing: 8px;
+
+    td {
+        padding: 4px;
+        padding-bottom: 4px;
+        vertical-align: middle;
+    }
+}
+@media only screen and (max-width: 480px) {
+    // h1 {
+    //     font-size: 1.8em;
+    //     margin: 0 0 15px 25px;
+    // }
+    // h2 {
+    //     font-size: 1.6em;
+    //     margin: 12px auto;
+    // }
+    // h3 {
+    //     font-size: 1.4em;
+    //     margin: 12px auto;
+    // }
+    // h4 {
+    //     font-size: 1.2em;
+    //     margin: 12px auto;
+    // }
+    // h5 {
+    //     font-size: 1.1em;
+    //     margin: 12px auto;
+    // }
+    .show-options #weather {
+        #city, #temp, #condition {
+            display: none;
+        }
+    }
+    .external-selector .internal-selector {
+        white-space: nowrap;
+    }
+    .pagebase-grouped .group {
+        margin-right: 25px;
+        margin-bottom: 12px;
+    }
+    .panel-page {
+        margin-right: 10px;
+    }
+    .page {
+        width: 100%;
+    }
+    .weather {
+        font-style: normal;
+        margin: 25px;
+        margin-bottom: 0;
+    }
+    .theme-editor-section input[type="text"] {
+        width: 100%;
+    }
+    .theme-editor-border {
+        border-bottom-style: solid;
+        border-bottom-width: 2px;
+        border-left-style: solid;
+        border-left-width: 2px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+    }    
+}
+@media only screen and (min-width: 480px) {
+    // h1 {
+    //     font-size: 4em;
+    //     margin: 0 0 15px 25px;
+    // }
+    // h2 {
+    //     font-size: 3.2em;
+    //     margin: 12px auto;
+    // }
+    // h3 {
+    //     font-size: 2.6em;
+    //     margin: 12px auto;
+    // }
+    // h4 {
+    //     font-size: 2em;
+    //     margin: 12px auto;
+    // }
+    // h5 {
+    //     font-size: 1.4em;
+    //     margin: 12px auto;
+    // }
+    .external-selector {
+        overflow: auto;
+        width: 100%;
+
+        .internal-selector {
+            margin-left: 25px;
+            white-space: nowrap;
+        }
+    }
+    .collection > div {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .pagebase-grouped {
+        height: 100%;
+        display: flex;
+        .group {
+            margin-right: 28px;
+            display: flex;
+            flex-direction: column;
+        }
+        .page {
+            overflow-y: auto;
+        }
+    }
+    .page {
+        width: 375px;
+    }
+    .panel-page {
+        height: 100%;
+        margin-right: 10px;
+        overflow-y: auto;
+    }
+    .panel-item, .item > .title {
+        max-width: 375px;
+    }
+    .weather {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        font-style: normal;
+        max-width: 100%;
+    }
+    .theme-editor-border {
+        border-bottom-style: solid;
+        border-bottom-width: 2px;
+        border-left-style: solid;
+        border-left-width: 2px;
+        margin-left: 12.5%;
+        padding-bottom: 4px;
+        padding-left: 4px;
+    }    
+}
