@@ -16,7 +16,7 @@ export default {
         'inconsolata',
     ],
 
-    defaultWebservice: 'https://api.metro-start.com',
+    defaultWebservice: 'https://api.metro-start.com/api/',
 
     defaultTodos: [{
         name: 'use the wrench to get started. . . ',

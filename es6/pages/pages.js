@@ -6,6 +6,7 @@ import sessions from './sessions';
 import apps from './apps';
 import bookmarks from './bookmarks';
 import themes from './themes';
+import ext from '../utils/extension';
 import 'metro-select';
 export default {
     name: 'pages',
@@ -21,22 +22,22 @@ export default {
         this.page = storage.get('page', 'todos');
 
         const that = this;
-        chrome.permissions.getAll(function(perms) {
-            if (chrome.management && perms.permissions.includes('management')) {
+        ext.permissions.getAll(function(perms) {
+            if (ext.management && perms.permissions.includes('management')) {
                 jquery('.apps-option').removeClass('removed');
                 apps.enabled = true;
             } else if (that.page == 'apps') {
                 that.page = 'todos';
             }
 
-            if (chrome.bookmarks && perms.permissions.includes('bookmarks')) {
+            if (ext.bookmarks && perms.permissions.includes('bookmarks')) {
                 jquery('.bookmarks-option').removeClass('removed');
                 bookmarks.enabled = true;
             } else if (that.page == 'bookmarks') {
                 that.page = 'todos';
             }
 
-            if (chrome.sessions && perms.permissions.includes('sessions')) {
+            if (ext.sessions && perms.permissions.includes('sessions')) {
                 jquery('.sessions-option').removeClass('removed');
                 sessions.enabled = true;
             } else if (that.page == 'sessions') {

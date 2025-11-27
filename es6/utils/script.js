@@ -4,6 +4,7 @@ import jss from 'jss';
 import trianglify from 'trianglify';
 import util from './util';
 import defaults from './defaults';
+
 export default {
     init: function() {},
 
@@ -245,17 +246,17 @@ export default {
             this.jssSetMultiple(
                 ['body', '.modal-content', '.background-color'], {
                     'background-image': 'none',
-                    'background-color': theme.themeContent.backgroundColor,
+                    'background-color': theme.themeContent.backgroundColor ?? '',
                 }
             );
         }
 
         jss.set('::-webkit-scrollbar', {
-            'background-color': theme.themeContent.backgroundColor,
+            'background-color': theme.themeContent.backgroundColor ?? '',
         });
 
         jss.set('input[type="text"]', {
-            'background-color': theme.themeContent.optionsColor,
+            'background-color': theme.themeContent.optionsColor ?? '',
         });
     },
     /**
@@ -266,7 +267,7 @@ export default {
      * @param {any} duration How long to animate the transition.
      */
     updateMainColor: function(theme, oldTheme, duration) {
-        let mainColor = theme.themeContent.mainColor;
+        let mainColor = theme.themeContent.mainColor ?? '';
 
         if (
             oldTheme &&
@@ -312,7 +313,7 @@ export default {
      * @param {any} duration How long to animate the transition.
      */
     updateTitleColor: function(theme, oldTheme, duration) {
-        let titleColor = theme.themeContent.titleColor;
+        let titleColor = theme.themeContent.titleColor ?? '';
         if (
             oldTheme &&
             oldTheme.themeContent &&
@@ -344,7 +345,7 @@ export default {
      * @param {any} duration How long to animate the transition.
      */
     updateOptionsColor: function(theme, oldTheme, duration) {
-        let optionsColor = theme.themeContent.optionsColor;
+        let optionsColor = theme.themeContent.optionsColor ?? '';
         if (
             oldTheme &&
             oldTheme.themeContent &&
@@ -448,6 +449,7 @@ export default {
     },
 
     jssSetMultiple: function(selectors, style) {
+        console.log(selectors, style);
         for (let selector of selectors) {
             jss.set(selector, style);
         }

@@ -1,14 +1,15 @@
 import Pagebase from '../pagebase/pagebase_grouped';
 import util from '../utils/util';
+import ext from '../utils/extension';
 export default {
     name: 'apps',
     enabled: false,
-    supported: !!chrome.management,
+    supported: !!ext.management.getAll,
     
     setPermissionVisibility: function(visible, cb) {
         let that = this;
         if (visible) {
-            chrome.permissions.request({
+            ext.permissions.request({
                 permissions: ['management']
             },
             function(granted) {
@@ -20,7 +21,7 @@ export default {
             }
             );
         } else {
-            chrome.permissions.remove({
+            ext.permissions.remove({
                 permissions: ['management']
             },
             function(granted) {
@@ -98,7 +99,7 @@ export default {
         }
 
         const that = this;
-        chrome.management.getAll((res) => {
+        ext.management.getAll((res) => {
             that.apps.clear();
             that.apps.addAll({
                 heading: 'apps',
@@ -232,7 +233,7 @@ export default {
      */
     toggleEnabled: function(app) {
         const that = this;
-        chrome.management.setEnabled(app.id, !app.enabled, () => {
+        ext.management.setEnabled(app.id, !app.enabled, () => {
             that.loadApps();
         });
     },
@@ -245,7 +246,7 @@ export default {
     removeApp: function(app) {
         const that = this;
 
-        chrome.management.uninstall(
+        ext.management.uninstall(
             app.id, {
                 showConfirmDialog: true,
             }, () => {
