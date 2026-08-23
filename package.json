@@ -1,40 +1,43 @@
 {
   "name": "metro-start",
-  "description": "A new tab page for Google Chrome inspired by Zune",
+  "description": "A cross-browser new tab page inspired by Zune",
   "homepage": "http://www.metro-start.com/",
-  "version": "10.10.1",
+  "version": "10.11.0",
   "license": "MIT",
   "private": true,
+  "packageManager": "bun@1.4.0",
+  "engines": {
+    "bun": ">=1.4.0"
+  },
   "scripts": {
-    "build": "npx webpack"
+    "build": "bun run scripts/build.js chrome",
+    "build:chrome": "bun run scripts/build.js chrome",
+    "build:firefox": "bun run scripts/build.js firefox",
+    "build:xcode": "bun run scripts/build.js xcode",
+    "build:all": "bun run scripts/build.js all",
+    "lint": "eslint es6 scripts test",
+    "test": "bun test",
+    "validate:builds": "bun run scripts/validate-builds.js",
+    "check": "bun run lint && bun test && bun run build:all && bun run validate:builds",
+    "build:demo": "bun run build && bun run scripts/generate-demo.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/metro-start/metro-start.git"
   },
   "dependencies": {
-    "jquery": "^3.7.1",
-    "jquery-color": "^3.0.0",
-    "jss": "git://github.com/Box9/jss.git",
-    "metro-select": "git://github.com/chustar/metro-select.git",
-    "requirejs": "^2.3.7",
-    "spectrum-colorpicker": "^1.8.1",
+    "metro-select": "^3.1.0",
+    "@simonwep/pickr": "^1.10.1",
     "throttle-debounce": "^5.0.2",
     "tinycolor2": "^1.6.0",
     "trianglify": "^4.1.1"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^13.0.1",
-    "css-loader": "^7.1.2",
-    "eslint": "^9.39.1",
-    "eslint-config-google": "^0.14.0",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.1",
+    "globals": "^17.11.0",
+    "happy-dom": "^20.11.6",
     "sass": "^1.94.0",
-    "sass-loader": "^16.0.6",
-    "style-loader": "^4.0.0",
-    "webpack": "^5.102.1",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "webpack-sources": "^3.3.3",
-    "zip-webpack-plugin": "^4.0.3"
+    "fflate": "^0.8.2"
   }
 }

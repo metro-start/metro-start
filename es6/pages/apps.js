@@ -4,15 +4,15 @@ import ext from '../utils/extension';
 export default {
     name: 'apps',
     enabled: false,
-    supported: !!ext.management.getAll,
+    supported: Boolean(ext.management.getAll),
     
-    setPermissionVisibility: function(visible, cb) {
-        let that = this;
+    setPermissionVisibility(visible, cb) {
+        const that = this;
         if (visible) {
             ext.permissions.request({
                 permissions: ['management']
             },
-            function(granted) {
+            (granted) => {
                 that.enabled = granted;
                 if (cb) {
                     cb(granted);
@@ -24,7 +24,7 @@ export default {
             ext.permissions.remove({
                 permissions: ['management']
             },
-            function(granted) {
+            (granted) => {
                 that.enabled = !granted;
                 if (cb) {
                     cb(granted);
@@ -60,7 +60,7 @@ export default {
         ),
     },
 
-    init: function(document) {
+    init(document) {
         this.elems.rootNode = document.getElementById(
             'internal-selector-apps'
         );
@@ -81,11 +81,11 @@ export default {
      *
      * @param {any} newSort The new sort order.
      */
-    sortChanged: function(newSort) {
-        this.bookmarks.sortChanged(newSort, false);
+    sortChanged(newSort) {
+        this.apps.sortChanged(newSort, false);
     },
 
-    loadApps: function() {
+    loadApps() {
         this.apps.clear();
         if (!this.enabled) {
             this.apps.addAll({
@@ -100,6 +100,7 @@ export default {
 
         const that = this;
         ext.management.getAll((res) => {
+            const items = Array.isArray(res) ? res : [];
             that.apps.clear();
             that.apps.addAll({
                 heading: 'apps',
@@ -108,7 +109,7 @@ export default {
                     appLaunchUrl: 'https://chrome.google.com/webstore',
                     enabled: true,
                 }, ].concat(
-                    res.filter((item) => {
+                    items.filter((item) => {
                         return (
                             item.type !== 'extension' &&
                             item.type !== 'theme'
@@ -118,13 +119,13 @@ export default {
             });
             that.apps.addAll({
                 heading: 'extensions',
-                data: res.filter((item) => {
+                data: items.filter((item) => {
                     return item.type === 'extension';
                 }),
             });
             that.apps.addAll({
                 heading: 'themes',
-                data: res.filter((item) => {
+                data: items.filter((item) => {
                     return item.type === 'theme';
                 }),
             });
@@ -137,15 +138,19 @@ export default {
      * @param {any} app The app that should be turned into an element.
      * @return {any} The HTML element.
      */
-    templateFunc: function(app) {
+    templateFunc(app) {
         const fragment = util.createElement('');
 
         const title = this.templates.titleFragment.cloneNode(true);
         title.firstElementChild.textContent = app.name;
-        title.firstElementChild.addEventListener(
-            'click',
-            this.openAppLaunchUrl.bind(this, app)
-        );
+        if (app.appLaunchUrl) {
+            title.firstElementChild.addEventListener(
+                'click',
+                this.openAppLaunchUrl.bind(this, app)
+            );
+        } else {
+            util.removeClass(title.firstElementChild, 'clickable');
+        }
 
         if (!app.enabled) {
             util.addClass(title.firstElementChild, 'disabled');
@@ -153,7 +158,7 @@ export default {
 
         fragment.appendChild(title);
 
-        if (app.homepageUrl !== '') {
+        if (app.homepageUrl) {
             const homepage = this.templates.homepageFragment.cloneNode(
                 true
             );
@@ -174,12 +179,10 @@ export default {
         }
 
         if (app.type) {
-            let toggle = null;
-            if (app.enabled) {
-                toggle = this.templates.disableFragment.cloneNode(true);
-            } else {
-                toggle = this.templates.enableFragment.cloneNode(true);
-            }
+            const toggle = (app.enabled
+                ? this.templates.disableFragment
+                : this.templates.enableFragment
+            ).cloneNode(true);
             toggle.firstElementChild.addEventListener(
                 'click',
                 this.toggleEnabled.bind(this, app)
@@ -204,7 +207,7 @@ export default {
      *
      * @param {any} app The app to open launch URl.
      */
-    openAppLaunchUrl: function(app) {
+    openAppLaunchUrl(app) {
         window.location.href = app.appLaunchUrl;
     },
 
@@ -213,7 +216,7 @@ export default {
      *
      * @param {any} app The app to open its homepage.
      */
-    openHomepageUrl: function(app) {
+    openHomepageUrl(app) {
         window.location.href = app.homepageUrl;
     },
 
@@ -222,7 +225,7 @@ export default {
      *
      * @param {any} app The app to open its options.
      */
-    openOptionsUrl: function(app) {
+    openOptionsUrl(app) {
         window.location.href = app.optionsUrl;
     },
 
@@ -231,7 +234,7 @@ export default {
      *
      * @param {any} app The app to disable.
      */
-    toggleEnabled: function(app) {
+    toggleEnabled(app) {
         const that = this;
         ext.management.setEnabled(app.id, !app.enabled, () => {
             that.loadApps();
@@ -243,7 +246,7 @@ export default {
      *
      * @param {any} app The app to be uninstalled.
      */
-    removeApp: function(app) {
+    removeApp(app) {
         const that = this;
 
         ext.management.uninstall(

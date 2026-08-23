@@ -1,10 +1,10 @@
-import jquery from 'jquery';
 import PagebaseGrouped from '../pagebase/pagebase_grouped';
 import themesWidget from '../widgets/themes';
 import modal from '../utils/modal';
 import util from '../utils/util';
 import storage from '../utils/storage';
 import defaults from '../utils/defaults';
+import {getThemes} from '../utils/api';
 export default {
     name: 'themes',
 
@@ -18,7 +18,7 @@ export default {
 
     onlineThemes: {},
 
-    themesWidget: themesWidget,
+    themesWidget,
 
     templates: {
         itemFragment: util.createElement('<div class="theme_item"></div>'),
@@ -40,7 +40,7 @@ export default {
         infoFragment: util.createElement('<span class="info"></span>'),
     },
 
-    init: function() {
+    init() {
         this.elems.rootNode = document.getElementById(
             'internal-selector-themes'
         );
@@ -63,14 +63,14 @@ export default {
      *
      * @param {any} newSort The new sort order.
      */
-    sortChanged: function(newSort) {
+    sortChanged(newSort) {
         this.themes.sortChanged(newSort, false);
     },
 
     /**
      * Loads the available themes from local and web storage
      */
-    loadThemes: function() {
+    async loadThemes() {
         this.themes.clear();
         this.themes.addAll({
             heading: 'my themes',
@@ -83,26 +83,24 @@ export default {
         });
 
         // Load online themes.
-        jquery.get(
-            `${defaults.defaultWebservice}/themes`, (downloadedThemes) => {
-                if (!downloadedThemes || downloadedThemes.length === 0) {
-                    util.warn('No online themes available.');
-                    return;
-                }
-
-                this.onlineThemes = downloadedThemes;
-                for (let theme of this.onlineThemes) {
-                    theme.online = true;
-                }
-
-                this.themes.addAll({
-                    heading: 'online themes',
-                    data: this.onlineThemes,
-                }, (error) => {
-                    util.error('Could not load online themes', error);
-                });
+        try {
+            const downloadedThemes = await getThemes(defaults.defaultWebservice);
+            if (!downloadedThemes?.length) {
+                util.warn('No online themes available.');
+                return;
             }
-        );
+
+            this.onlineThemes = downloadedThemes.map((theme) => ({
+                ...theme,
+                online: true,
+            }));
+            this.themes.addAll({
+                heading: 'online themes',
+                data: this.onlineThemes,
+            }, (error) => util.error('Could not load online themes', error));
+        } catch (error) {
+            util.error(`Could not load online themes: ${error}`);
+        }
     },
 
     /**
@@ -111,10 +109,10 @@ export default {
      * @param {any} theme The theme that should be turned into an element.
      * @return {any} The HTML element.
      */
-    templateFunc: function(theme) {
-        let fragment = util.createElement('');
+    templateFunc(theme) {
+        const fragment = util.createElement('');
 
-        let title = this.templates.titleFragment.cloneNode(true);
+        const title = this.templates.titleFragment.cloneNode(true);
         title.firstElementChild.id = `theme_${theme.id}`;
         title.firstElementChild.textContent = theme.title;
         title.firstElementChild.addEventListener(
@@ -122,7 +120,7 @@ export default {
             this.applyTheme.bind(this, title.firstElementChild, theme)
         );
 
-        let titleWrap = this.templates.titleWrapFragment.cloneNode(true);
+        const titleWrap = this.templates.titleWrapFragment.cloneNode(true);
         titleWrap.firstElementChild.appendChild(title);
 
         if (this.themesWidget.data.title === theme.title) {
@@ -131,20 +129,20 @@ export default {
 
         fragment.appendChild(titleWrap);
 
-        let options = this.templates.infoFragment.cloneNode(true);
-        let author = this.templates.authorFragment.cloneNode(true);
+        const options = this.templates.infoFragment.cloneNode(true);
+        const author = this.templates.authorFragment.cloneNode(true);
         author.firstElementChild.textContent = theme.author;
         options.firstElementChild.appendChild(author);
 
         if (!theme.online) {
-            let share = this.templates.shareFragment.cloneNode(true);
+            const share = this.templates.shareFragment.cloneNode(true);
             share.firstElementChild.addEventListener(
                 'click',
                 this.shareTheme.bind(this, theme)
             );
             options.firstElementChild.appendChild(share);
 
-            let remove = this.templates.removeFragment.cloneNode(true);
+            const remove = this.templates.removeFragment.cloneNode(true);
             remove.firstElementChild.addEventListener(
                 'click',
                 this.removeTheme.bind(this, theme)
@@ -157,19 +155,19 @@ export default {
         return fragment;
     },
 
-    applyTheme: function(themeNode, theme) {
+    applyTheme(themeNode, theme) {
         this.themesWidget.updateCurrentTheme('currentTheme', theme);
 
-        let itemNode = themeNode.parentNode;
-        let siblings = jquery(this.elems.rootNode).find('.panel-item-wrap');
-        Array.prototype.slice.call(siblings).forEach((item) => {
+        const itemNode = themeNode.parentNode;
+        const siblings = this.elems.rootNode.querySelectorAll('.panel-item-wrap');
+        siblings.forEach((item) => {
             util.removeClass(item, 'active');
         });
         util.addClass(itemNode, 'active');
     },
 
-    shareTheme: function(theme) {
-        let title = theme.title;
+    shareTheme(theme) {
+        const title = theme.title;
         let message;
         let okay;
         let cancel;
@@ -212,7 +210,7 @@ export default {
         );
     },
 
-    removeTheme: function(theme) {
+    removeTheme(theme) {
         modal.createModal(
             'removeThemeAlert',
             `${theme.title} will be removed.`, (result) => {
@@ -226,15 +224,15 @@ export default {
         );
     },
 
-    themeAdded: function() {
+    themeAdded() {
         this.loadThemes();
     },
 
-    themeRemoved: function() {
+    themeRemoved() {
         this.loadThemes();
     },
 
-    themeSharedHandler: function(title, result, status) {
+    themeSharedHandler(title, result, status) {
         if (result) {
             this.loadThemes();
         } else {

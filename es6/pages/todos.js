@@ -25,7 +25,7 @@ export default {
         ),
     },
 
-    init: function(document) {
+    init(document) {
         this.elems.saveTodo.addEventListener(
             'click',
             this.addTodo.bind(this)
@@ -47,14 +47,14 @@ export default {
      *
      * @param {any} newSort The new sort order.
      */
-    sortChanged: function(newSort) {
+    sortChanged(newSort) {
         this.todos.sortChanged(newSort, false);
     },
 
     /**
      * Loads the todos from storage into the DOM.
      */
-    loadTodos: function() {
+    loadTodos() {
         this.data = storage.get('todos', defaults.defaultTodos);
 
         this.todos.clear();
@@ -67,7 +67,7 @@ export default {
         this.todos.addAll({
             heading: 'done',
             data: this.data.filter((todo) => {
-                return !!todo.done;
+                return Boolean(todo.done);
             }),
         });
     },
@@ -78,10 +78,10 @@ export default {
      * @param {any} todo The todo that should be turned into an element.
      * @return {any} The HTML element.
      */
-    templateFunc: function(todo) {
-        let fragment = util.createElement('');
+    templateFunc(todo) {
+        const fragment = util.createElement('');
 
-        let title = this.templates.titleFragment.cloneNode(true);
+        const title = this.templates.titleFragment.cloneNode(true);
         title.firstElementChild.textContent = todo.name;
         title.firstElementChild.addEventListener(
             'click',
@@ -90,14 +90,14 @@ export default {
         util.addClass(title.firstElementChild, todo.done ? 'done' : '');
         fragment.appendChild(title);
 
-        let edit = this.templates.editFragment.cloneNode(true);
+        const edit = this.templates.editFragment.cloneNode(true);
         edit.firstElementChild.addEventListener(
             'click',
             this.editTodo.bind(this, todo)
         );
         fragment.appendChild(edit);
 
-        let remove = this.templates.removeFragment.cloneNode(true);
+        const remove = this.templates.removeFragment.cloneNode(true);
         remove.firstElementChild.addEventListener(
             'click',
             this.removeTodo.bind(this, todo)
@@ -112,9 +112,9 @@ export default {
      *
      * @param {any} event This parameter is unused.
      */
-    addTodo: function(event) {
+    addTodo(event) {
         event.preventDefault();
-        let title = this.elems.newTodo.value.trim();
+        const title = this.elems.newTodo.value.trim();
         if (title === '') {
             return;
         }
@@ -132,7 +132,7 @@ export default {
         this.loadTodos();
 
         this.todoToEdit = null;
-        this.elems.addTodo.reset();
+        this.elems.newTodo.value = '';
     },
 
     /**
@@ -140,7 +140,7 @@ export default {
      *
      * @param {any} todo The todo to be edited.
      */
-    todoToggle: function(todo) {
+    todoToggle(todo) {
         todo.done = !todo.done;
         storage.save('todos', this.data);
         this.loadTodos();
@@ -151,7 +151,7 @@ export default {
      * The todo to be edited.
      * @param {any} todo
      */
-    editTodo: function(todo) {
+    editTodo(todo) {
         this.todoToEdit = todo;
         this.elems.newTodo.value = todo.name;
     },
@@ -161,7 +161,7 @@ export default {
      *
      * @param {any} todo The todo to be removed.
      */
-    removeTodo: function(todo) {
+    removeTodo(todo) {
         for (let i = 0; i < this.data.length; i++) {
             if (this.data[i] === todo) {
                 this.data.splice(i, 1);

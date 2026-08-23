@@ -2,7 +2,7 @@
 The default theme for metro start.
 */
 export default {
-    init: function() {},
+    init() {},
 
     // defaultFonts: ['system', 'raleway', 'source', 'wire one', 'im fell'],
 
@@ -16,7 +16,7 @@ export default {
         'inconsolata',
     ],
 
-    defaultWebservice: 'https://api.metro-start.com/api/',
+    defaultWebservice: 'https://api.metro-start.com/api',
 
     defaultTodos: [{
         name: 'use the wrench to get started. . . ',

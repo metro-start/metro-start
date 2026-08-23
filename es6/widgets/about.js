@@ -5,7 +5,7 @@ export default {
         aboutButton: document.getElementById('aboutButton'),
     },
 
-    init: function() {
+    init() {
         this.elems.aboutModal.parentNode.removeChild(this.elems.aboutModal);
         this.elems.aboutButton.addEventListener(
             'click',
@@ -16,7 +16,7 @@ export default {
     /**
      * Shows the about modal modal window.
      */
-    openAboutModal: function() {
+    openAboutModal() {
         modal.createModal(
             'aboutModal',
             this.elems.aboutModal,
@@ -27,5 +27,5 @@ export default {
     /**
      * This function is unused.
      */
-    aboutModalClosed: function() {},
+    aboutModalClosed() {},
 };

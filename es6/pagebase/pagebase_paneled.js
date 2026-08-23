@@ -1,7 +1,7 @@
 import util from '../utils/util';
 import Pagebase from './pagebase';
 
-let templates = {
+const templates = {
     column: util.createElement('<div class="page panel-page"></div>'),
 };
 
@@ -18,8 +18,8 @@ export default class PagebasePaneled extends Pagebase {
      */
     addAllNodes(nodes) {
         if (nodes.length) {
-            let pageIndex = this.rootNode.children.length;
-            let columnNode = templates.column.cloneNode(true);
+            const pageIndex = this.rootNode.children.length;
+            const columnNode = templates.column.cloneNode(true);
             columnNode.firstElementChild.id = `${this.name}_${pageIndex}`;
 
             for (let i = 0; i < nodes.length; i++) {
@@ -34,17 +34,17 @@ export default class PagebasePaneled extends Pagebase {
      * @param {any} newSort The new sort order.
      */
     sortChanged(newSort) {
-        let currentSort = this.getSort();
+        const currentSort = this.getSort();
         if (newSort === currentSort) {
             return;
         }
 
         this.updateSort(newSort);
 
-        let columns = this.rootNode.children;
+        const columns = this.rootNode.children;
         for (let i = 0; i < columns.length; i++) {
-            let column = columns[i];
-            let rows = [];
+            const column = columns[i];
+            const rows = [];
             while (column.lastChild) {
                 rows.push(column.lastChild);
                 column.removeChild(column.lastChild);
@@ -73,7 +73,7 @@ export default class PagebasePaneled extends Pagebase {
      * @param {any} pageNumber The panel number to start removing.
      */
     truncatePages(pageNumber) {
-        let nodes = Array.prototype.slice.call(this.rootNode.children);
+        const nodes = Array.prototype.slice.call(this.rootNode.children);
         nodes.splice(0, parseInt(pageNumber, 10) + 1);
         nodes.forEach((node) => {
             node.remove();

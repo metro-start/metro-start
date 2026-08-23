@@ -1,8 +1,8 @@
-import jquery from 'jquery';
+import MetroSelect from 'metro-select';
 import util from '../utils/util';
 import defaults from '../utils/defaults';
 import storage from '../utils/storage';
-import 'metro-select';
+import {getWeather} from '../utils/api';
 export default {
     data: {},
 
@@ -20,7 +20,7 @@ export default {
         units: document.getElementById('units'),
     },
 
-    init: function() {
+    init() {
         this.data = storage.get('weather', defaults.defaultWeather);
         this.upgradeWeather(defaults.defaultWeather);
 
@@ -39,14 +39,12 @@ export default {
             this.setWeatherVisibility(!this.data.visible);
         });
 
-        let chooser = jquery('#weather-units-chooser');
-
-        chooser.metroSelect({
+        this.unitChooser = new MetroSelect(document.getElementById('weather-units-chooser'), {
             initial: this.data.units,
-            onchange: this.updateWeatherUnit.bind(this),
+            onChange: this.updateWeatherUnit.bind(this),
         });
 
-        this.updateWeather(true);
+        this.updateWeather(false);
         this.setWeatherVisibility(this.data.visible);
     },
 
@@ -55,7 +53,7 @@ export default {
      *
      * @param {any} newWeatherUnit The new weather units.
      */
-    updateWeatherUnit: function(newWeatherUnit) {
+    updateWeatherUnit(newWeatherUnit) {
         this.update('units', newWeatherUnit);
         this.updateWeather(true);
     },
@@ -63,8 +61,8 @@ export default {
     /**
      * Updates the current weather location when the weather form is submitted.
      */
-    updateLocation: function() {
-        let location = this.elems.newLocation.value;
+    updateLocation() {
+        const location = this.elems.newLocation.value;
         if (this.data.city !== location) {
             this.update('city', location);
             this.updateWeather(true);
@@ -76,7 +74,7 @@ export default {
      *
      * @param {any} visible: True is the weather element should be visible.
      */
-    setWeatherVisibility: function(visible) {
+    setWeatherVisibility(visible) {
         if (visible) {
             util.removeClass(this.elems.weather, 'hide');
         } else {
@@ -92,40 +90,54 @@ export default {
      *
      * @param {any} force Skip timeout check.
      */
-    updateWeather: function(force) {
+    async updateWeather(force) {
         this.upgradeWeather(defaults.defaultWeather);
         // If it has been more than an hour since last check.
         if (
             force ||
             new Date().getTime() > parseInt(this.data.weatherUpdateTime, 10)
         ) {
-            this.update(
-                'weatherUpdateTime',
-                parseInt(new Date().getTime(), 10) + 3600000
-            );
-            let units =
-                this.data.units == 'celsius' ? 'metric' : 'imperial';
-            let url = `${defaults.defaultWebservice}/weather?location=${this.data.city}&units=${units}`;
-            let that = this;
-            jquery.ajax(url).done((result) => {
-                if (result) {
-                    let city = `${result.name}, ${result.country}`;
-                    util.log(url);
-                    util.log(JSON.stringify(result));
-                    that.data.city = city.toLowerCase();
-                    that.data.currentTemp = parseInt(result.temp, 10);
-                    that.data.highTemp = parseInt(result.tempMax, 10);
-                    that.data.lowTemp = parseInt(result.tempMin, 10);
-                    that.data.condition = result.description.toLowerCase();
-
-                    storage.save('weather', that.data);
-                    that.update();
+            const units =
+                this.data.units === 'celsius' ? 'metric' : 'imperial';
+            // If running from file:// (demo) or no network, skip remote fetch and use stored data
+            try {
+                if (typeof window !== 'undefined' && window.location && window.location.protocol === 'file:') {
+                    util.log('Demo mode detected — skipping remote weather fetch');
+                    // Ensure UI is updated from stored data
+                    this.update();
+                    return;
                 }
-            });
+            } catch {
+                // ignore and proceed to attempt ajax
+            }
+
+            try {
+                const result = await getWeather(
+                    defaults.defaultWebservice,
+                    this.data.city,
+                    units
+                );
+                if (result) {
+                    const city = `${result.name}, ${result.country}`;
+                    this.data.city = city.toLowerCase();
+                    this.data.currentTemp = Number.parseInt(result.temp, 10);
+                    this.data.highTemp = Number.parseInt(result.tempMax, 10);
+                    this.data.lowTemp = Number.parseInt(result.tempMin, 10);
+                    this.data.condition = result.description
+                        ? result.description.toLowerCase()
+                        : this.data.condition;
+                    this.data.weatherUpdateTime = Date.now() + 3600000;
+                    storage.save('weather', this.data);
+                }
+            } catch (error) {
+                util.log(`Weather fetch failed: ${error}`);
+                this.data.weatherUpdateTime = Date.now() + 300000;
+            }
+            this.update();
         }
     },
 
-    update: function(key, value) {
+    update(key, value) {
         if (key) {
             this.data[key] = value;
         }
@@ -137,12 +149,12 @@ export default {
         this.elems.highTemp.innerText = this.data.highTemp;
         this.elems.lowTemp.innerText = this.data.lowTemp;
         this.elems.condition.innerText = this.data.condition;
-        this.elems.units.innerText = this.data.units[0];
+        this.elems.units.innerText = this.data.units ? this.data.units[0] : '';
     },
 
-    upgradeWeather: function(defaultWeather) {
+    upgradeWeather(defaultWeather) {
         if (!this.data.units) {
-            this.data = defaultWeather;
+            this.data = util.clone(defaultWeather);
         }
     },
 };

@@ -1,4 +1,3 @@
-import jquery from 'jquery';
 import util from '../utils/util';
 import '../utils/storage';
 export default {
@@ -21,7 +20,7 @@ export default {
 
     modalCallbacks: {},
 
-    init: function() {},
+    init() {},
 
     /**
      * Creates a new modal window.
@@ -32,22 +31,22 @@ export default {
      * @param {any} confirmText The text to display for confirmation. If empty, no confirm button will be shown.
      * @param {any} cancelText The tex to display for cancellation. If empty, no cancel button will be shown.
      */
-    createModal: function(id, content, callback, confirmText, cancelText) {
+    createModal(id, content, callback, confirmText, cancelText) {
         this.modalCallbacks[id] = callback;
 
-        let overlay = this.templates.overlay.cloneNode(true);
+        const overlay = this.templates.overlay.cloneNode(true);
         overlay.firstElementChild.addEventListener(
             'click',
             this.modalClosed.bind(this, id, false)
         );
         util.addClass(overlay.firstElementChild, id);
 
-        let modalContent = this.templates.modalContent.cloneNode(true);
-        let info = this.templates.info.cloneNode(true);
+        const modalContent = this.templates.modalContent.cloneNode(true);
+        const info = this.templates.info.cloneNode(true);
 
         if (confirmText) {
             // Do not show confirm button if the text is empty.
-            let confirm = this.templates.confirm.cloneNode(true);
+            const confirm = this.templates.confirm.cloneNode(true);
             confirm.firstElementChild.textContent = confirmText;
             confirm.firstElementChild.addEventListener(
                 'click',
@@ -58,7 +57,7 @@ export default {
 
         if (cancelText) {
             // Do not show cancel button if the text is empty.
-            let cancel = this.templates.cancel.cloneNode(true);
+            const cancel = this.templates.cancel.cloneNode(true);
             cancel.firstElementChild.textContent = cancelText;
             cancel.firstElementChild.addEventListener(
                 'click',
@@ -69,14 +68,16 @@ export default {
 
         modalContent.firstElementChild.id = id;
         util.addClass(modalContent.firstElementChild, id);
-        modalContent.firstElementChild.appendChild(
-            typeof content === 'string' ? util.createElement(`<p>${content}</p>`) : content
-        );
+        if (typeof content === 'string') {
+            const paragraph = document.createElement('p');
+            paragraph.textContent = content;
+            modalContent.firstElementChild.appendChild(paragraph);
+        } else {
+            modalContent.firstElementChild.appendChild(content);
+        }
         modalContent.firstElementChild.appendChild(info);
 
-        let body = jquery('body');
-        body.append(overlay);
-        body.append(modalContent);
+        document.body.append(overlay, modalContent);
     },
 
     /**
@@ -85,14 +86,14 @@ export default {
      * @param {any} id The id of the modal that closed.
      * @param {any} res The result of the closing modal.
      */
-    modalClosed: function(id, res) {
-        let elems = document.getElementsByClassName(id);
+    modalClosed(id, res) {
+        const elems = document.getElementsByClassName(id);
         while (elems.length > 0) {
             elems[0].remove();
         }
 
         // If there are any callbacks for this modal.
-        if (!!this.modalCallbacks && !!this.modalCallbacks[id]) {
+        if (Boolean(this.modalCallbacks) && Boolean(this.modalCallbacks[id])) {
             this.modalCallbacks[id](res);
         }
     },

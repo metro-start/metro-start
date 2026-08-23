@@ -1,5 +1,5 @@
-import jquery from 'jquery';
-import jss from 'jss';
+import MetroSelect from 'metro-select';
+import styles from '../utils/styles';
 import storage from '../utils/storage';
 import todos from './todos';
 import sessions from './sessions';
@@ -7,7 +7,6 @@ import apps from './apps';
 import bookmarks from './bookmarks';
 import themes from './themes';
 import ext from '../utils/extension';
-import 'metro-select';
 export default {
     name: 'pages',
 
@@ -17,30 +16,37 @@ export default {
 
     modules: [todos, sessions, apps, bookmarks, themes],
 
-    init: function(document) {
+    init(document) {
         this.showOptions = false;
         this.page = storage.get('page', 'todos');
 
         const that = this;
-        ext.permissions.getAll(function(perms) {
-            if (ext.management && perms.permissions.includes('management')) {
-                jquery('.apps-option').removeClass('removed');
+        ext.permissions.getAll((perms) => {
+            const permissions = (perms && perms.permissions) || [];
+            if (ext.management && permissions.includes('management')) {
+                document.querySelectorAll('.apps-option').forEach((element) => {
+                    element.classList.remove('removed');
+                });
                 apps.enabled = true;
-            } else if (that.page == 'apps') {
+            } else if (that.page === 'apps') {
                 that.page = 'todos';
             }
 
-            if (ext.bookmarks && perms.permissions.includes('bookmarks')) {
-                jquery('.bookmarks-option').removeClass('removed');
+            if (ext.bookmarks && permissions.includes('bookmarks')) {
+                document.querySelectorAll('.bookmarks-option').forEach((element) => {
+                    element.classList.remove('removed');
+                });
                 bookmarks.enabled = true;
-            } else if (that.page == 'bookmarks') {
+            } else if (that.page === 'bookmarks') {
                 that.page = 'todos';
             }
 
-            if (ext.sessions && perms.permissions.includes('sessions')) {
-                jquery('.sessions-option').removeClass('removed');
+            if (ext.sessions && permissions.includes('sessions')) {
+                document.querySelectorAll('.sessions-option').forEach((element) => {
+                    element.classList.remove('removed');
+                });
                 sessions.enabled = true;
-            } else if (that.page == 'sessions') {
+            } else if (that.page === 'sessions') {
                 that.page = 'todos';
             }
 
@@ -48,14 +54,14 @@ export default {
                 module.init(document);
             });
 
-            jquery(that.elems.chooser).metroSelect({
+            that.chooser = new MetroSelect(that.elems.chooser, {
                 initial: that.page,
-                add_text: '[+]',
-                remove_text: '[x]',
-                adder_remover_class: 'addremove_button option options-color',
-                parent_removed_class: 'option disabled',
-                onchange: that.changePage.bind(that),
-                onvisibilitychange: that.visibilityChanged.bind(that),
+                addText: '+',
+                removeText: '×',
+                addRemoveClass: 'addremove_button option options-color',
+                parentRemovedClass: 'option disabled',
+                onChange: that.changePage.bind(that),
+                onVisibilityChange: that.visibilityChanged.bind(that),
             });
 
             // Set the initial page.
@@ -63,21 +69,24 @@ export default {
         });
     },
 
-    changeToValidPage: function() {
+    changeToValidPage() {
         let page = this.page;
-        if (page == 'apps' && !apps.enabled) {
+        if (!page) {
+            page = 'todos';
+        }
+        if (page === 'apps' && !apps.enabled) {
             page = 'todos';
         }
 
-        if (page == 'bookmarks' && !bookmarks.enabled) {
+        if (page === 'bookmarks' && !bookmarks.enabled) {
             page = 'todos';
         }
 
-        if (page == 'sessions' && !sessions.enabled) {
+        if (page === 'sessions' && !sessions.enabled) {
             page = 'todos';
         }
 
-        jquery(this.elems.chooser).metroSelect().select_child(page);
+        this.chooser.select(page);
     },
 
     /**
@@ -95,22 +104,30 @@ export default {
             })
             .indexOf(page);
 
-        jquery('.external .internal .collection').addClass('off-screen');
-        jquery(`.external .internal .collection.${page}`).removeClass('off-screen');
-        jquery(`.metro-select-option .${page}-option`).removeClass('removed disabled');
+        document.querySelectorAll('.external .internal .collection').forEach(
+            (element) => element.classList.add('off-screen')
+        );
+        document.querySelectorAll(`.external .internal .collection.${page}`).forEach(
+            (element) => element.classList.remove('off-screen')
+        );
+        document.querySelectorAll(`.${page}-option`).forEach((element) => {
+            element.classList.remove('removed', 'disabled');
+        });
 
-        jss.set('.external .internal', {
+        if (moduleIndex < 0) {
+            moduleIndex = 0;
+        }
+        styles.set('.external .internal', {
             'margin-left': `${moduleIndex * -100}%`,
         });
     },
 
     visibilityChanged: function visibilityChanged(page, visibility, cb) {
-        let modules = this.modules.filter((m) => {
-            return m.name == page;
+        const modules = this.modules.filter((m) => {
+            return m.name === page;
         });
         if (modules.length) {
-            let module = modules[0];
-            console.log('module', module);
+            const module = modules[0];
             if (module.setPermissionVisibility) {
                 module.setPermissionVisibility(visibility, cb);
             }

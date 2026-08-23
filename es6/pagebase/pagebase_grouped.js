@@ -1,7 +1,7 @@
 import util from '../utils/util';
 import Pagebase from './pagebase';
 
-let templates = {
+const templates = {
     group: util.createElement('<div class="group"></div>'),
     column: util.createElement('<div class="page"></div>'),
     item: util.createElement('<div class="item"></div>'),
@@ -20,14 +20,14 @@ export default class PagebaseGrouped extends Pagebase {
      * @param {any} rows The rows to be added.
      */
     addAll(rows) {
-        let group = {};
+        const group = {};
         group.heading = rows.heading;
         group.nodes = [];
 
-        if (!!rows && !!rows.data) {
+        if (Boolean(rows) && Boolean(rows.data)) {
             for (let i = 0; i < rows.data.length; i++) {
                 if (rows.data[i] !== null) {
-                    let item = templates.item.cloneNode(true);
+                    const item = templates.item.cloneNode(true);
                     item.id = `${this.name}_${i}`;
                     item.firstElementChild.id = `${this.name}_${i}`;
                     item.firstElementChild.appendChild(
@@ -45,14 +45,14 @@ export default class PagebaseGrouped extends Pagebase {
      * @param {any} group The group of nodes to be added.
      */
     addAllNodes(group) {
-        let nodes = group.nodes;
-        let groupNode = templates.group.cloneNode(true);
+        const nodes = group.nodes;
+        const groupNode = templates.group.cloneNode(true);
 
-        let heading = templates.heading.cloneNode(true);
+        const heading = templates.heading.cloneNode(true);
         heading.firstElementChild.textContent = group.heading;
         groupNode.firstElementChild.appendChild(heading);
 
-        let columnNode = templates.column.cloneNode(true);
+        const columnNode = templates.column.cloneNode(true);
 
         if (nodes.length) {
             for (let i = 0; i < nodes.length; i++) {
@@ -77,17 +77,17 @@ export default class PagebaseGrouped extends Pagebase {
      * @param {any} newSort The new sort order.
      */
     sortChanged(newSort) {
-        let currentSort = this.getSort();
+        const currentSort = this.getSort();
         if (newSort === currentSort) {
             return;
         }
 
         this.updateSort(newSort);
 
-        let groups = this.rootNode.children;
+        const groups = this.rootNode.children;
         for (let i = 0; i < groups.length; i++) {
-            let column = groups[i].children[1];
-            let rows = [];
+            const column = groups[i].children[1];
+            const rows = [];
             while (column.lastChild) {
                 rows.push(column.lastChild);
                 column.removeChild(column.lastChild);

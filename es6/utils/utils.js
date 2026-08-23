@@ -5,15 +5,15 @@ import defaults from './defaults';
 import script from './script';
 
 export default {
-    util: util,
-    storage: storage,
-    defaults: defaults,
-    script: script,
-    modal: modal,
+    util,
+    storage,
+    defaults,
+    script,
+    modal,
 
     modules: [util, storage, defaults, script, modal],
 
-    init: function() {
+    init() {
         this.modules.forEach((module) => {
             module.init(document);
         });

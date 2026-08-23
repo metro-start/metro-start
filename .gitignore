@@ -2,7 +2,9 @@
 .vs/*
 .vscode/*
 dist/*
+demo/*
 node_modules/*
+package-lock.json
 cached_uglify/*
 *.sqlite
 .DS_Store

@@ -1,9 +1,8 @@
-import jquery from 'jquery';
+import MetroSelect from 'metro-select';
 import util from '../utils/util';
 import storage from '../utils/storage';
 import defaults from '../utils/defaults';
-import 'metro-select';
-let templates = {
+const templates = {
     column: util.createElement('<div class="page"></div>'),
     item: util.createElement('<div class="item"></div>'),
 };
@@ -26,10 +25,11 @@ export default class Pagebase {
 
         util.addClass(this.rootNode, this.className);
 
-        if (jquery(`#${this.name}-sort-chooser`).length !== 0) {
-            jquery(`#${this.name}-sort-chooser`).metroSelect({
+        const sortChooser = document.getElementById(`${this.name}-sort-chooser`);
+        if (sortChooser) {
+            this.sortChooser = new MetroSelect(sortChooser, {
                 initial: this.getSort(),
-                onchange: this.sortChanged.bind(this),
+                onChange: this.sortChanged.bind(this),
             });
         }
     }
@@ -48,9 +48,9 @@ export default class Pagebase {
      * @param {any} rows The new ros to be added to the page.
      */
     addAll(rows) {
-        let nodes = [];
+        const nodes = [];
         for (let i = 0; i < rows.length; i++) {
-            let item = templates.item.cloneNode(true);
+            const item = templates.item.cloneNode(true);
             item.id = `${this.name}_${i}`;
             item.firstElementChild.id = `${this.name}_${i}`;
             item.firstElementChild.appendChild(
@@ -74,8 +74,8 @@ export default class Pagebase {
      */
     addAllNodes(nodes) {
         if (nodes.length) {
-            let pageIndex = this.rootNode.children.length;
-            let columnNode = templates.column.cloneNode(true);
+            const pageIndex = this.rootNode.children.length;
+            const columnNode = templates.column.cloneNode(true);
             columnNode.firstElementChild.id = `${this.name}_${pageIndex}`;
 
             for (let i = 0; i < nodes.length; i++) {
@@ -101,15 +101,15 @@ export default class Pagebase {
      * @param {any} saveSort Whether the new sort should be saved.
      */
     sortChanged(newSort, saveSort) {
-        let currentSort = this.getSort();
+        const currentSort = this.getSort();
         if (saveSort === currentSort) {
             return;
         }
 
         this.updateSort(newSort);
 
-        if (!!this.rootNode && this.rootNode.childElementCount !== 0) {
-            let items = Array.prototype.slice.call(this.rootNode.children);
+        if (Boolean(this.rootNode) && this.rootNode.childElementCount !== 0) {
+            const items = Array.prototype.slice.call(this.rootNode.children);
             while (this.rootNode.lastChild) {
                 this.rootNode.removeChild(this.rootNode.lastChild);
             }
@@ -153,8 +153,8 @@ export default class Pagebase {
      * @return {any} True if the first element is larger, false otherwise.
      */
     compareFunc(a, b) {
-        let nameA = a.toUpperCase();
-        let nameB = b.toUpperCase();
+        const nameA = a.toUpperCase();
+        const nameB = b.toUpperCase();
         if (nameA < nameB) {
             return -1;
         } else if (nameA > nameB) {
@@ -167,7 +167,7 @@ export default class Pagebase {
      * @return {any} True if the page should be sorted, false otherwise.
      */
     getSort() {
-        let sort = storage.get('sort', defaults.defaultSort);
+        const sort = storage.get('sort', defaults.defaultSort);
         return sort[this.name];
     }
     /**
@@ -176,7 +176,7 @@ export default class Pagebase {
      * @param {any} newSort The new sort order.
      */
     updateSort(newSort) {
-        let sort = storage.get('sort', defaults.defaultSort);
+        const sort = storage.get('sort', defaults.defaultSort);
         sort[this.name] = newSort;
         storage.save('sort', sort);
     }

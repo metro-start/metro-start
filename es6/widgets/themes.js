@@ -1,13 +1,29 @@
-import jquery from 'jquery';
-import tinycolor from 'tinycolor2';
+import MetroSelect from 'metro-select';
+import '@simonwep/pickr/dist/themes/nano.min.css';
 import {throttle} from 'throttle-debounce';
 import modal from '../utils/modal';
 import util from '../utils/util';
 import storage from '../utils/storage';
 import defaults from '../utils/defaults';
 import script from '../utils/script';
-import 'metro-select';
-import 'spectrum-colorpicker';
+import {shareTheme as postTheme} from '../utils/api';
+// Lazy-load the color tools only when the theme editor is used.
+let _tinycolor = null;
+const getTinycolor = async () => {
+    if (!_tinycolor) {
+        const mod = await import('tinycolor2');
+        _tinycolor = mod.default || mod;
+    }
+    return _tinycolor;
+};
+let pickrModule;
+const getPickr = async () => {
+    if (!pickrModule) {
+        const module = await import('@simonwep/pickr');
+        pickrModule = module.default;
+    }
+    return pickrModule;
+};
 
 export default {
     isBound: false,
@@ -17,6 +33,10 @@ export default {
     data: {},
 
     oldTheme: {},
+
+    colorPickers: new Map(),
+
+    selectControls: new Map(),
 
     elems: {
         themeEditor: document.getElementById('themeEditor'),
@@ -53,10 +73,10 @@ export default {
         document.getElementById('tristyle-chooser'),
     ],
 
-    themeAdded: function() {},
-    themeRemoved: function() {},
+    themeAdded() {},
+    themeRemoved() {},
 
-    init: function() {
+    init() {
         // this.data = defaults.defaultTheme;
         this.data = storage.get('currentTheme', defaults.defaultTheme);
         this.data = util.upgradeTheme(this.data, defaults.defaultTheme);
@@ -79,25 +99,24 @@ export default {
     /**
      * Reset the input elements to match this.data.
      */
-    resetInputs: function() {
+    resetInputs() {
         // Do not try to reset inputs if they haven't been bound.
         if (this.isBound) {
             for (let i = 0; i < this.textInputs.length; i++) {
-                let inputElement = this.textInputs[i];
-                inputElement.value = this.data.themeContent[inputElement.id] ? this.data.themeContent[inputElement.id] : '';
+                const inputElement = this.textInputs[i];
+                inputElement.value = this.data[inputElement.id] || '';
             }
 
             for (let j = 0; j < this.colorInputs.length; j++) {
-                let value = this.data.themeContent[this.colorInputs[j].id];
-                let color = jquery(this.colorInputs[j]);
-                color.spectrum('set', value);
+                const value = this.data.themeContent[this.colorInputs[j].id];
+                this.colorPickers.get(this.colorInputs[j])?.setColor(value, true);
             }
 
             for (let k = 0; k < this.selectInputs.length; k++) {
-                let text = this.data.themeContent[this.selectInputs[k].id];
-                jquery(`#${this.selectInputs[k].id}`)
-                    .metroSelect()
-                    .set_active(text);
+                const text = this.data.themeContent[this.selectInputs[k].id];
+                this.selectControls.get(this.selectInputs[k])?.select(text, {
+                    emit: false,
+                });
             }
         }
     },
@@ -105,7 +124,7 @@ export default {
     /**
      * Shows the theme editor modal window.
      */
-    openThemeEditor: function() {
+    openThemeEditor() {
         this.sessionUpdateCount = 0;
 
         this.data = storage.get('currentTheme', defaults.defaultTheme);
@@ -148,7 +167,7 @@ export default {
      *
      * @param {any} res How the modal was closed. True if the 'okay' option was selected.
      */
-    themeEditorClosed: function(res) {
+    themeEditorClosed(res) {
         util.log(`theme editor closed with result: ${res}`);
 
         if (!res) {
@@ -185,7 +204,7 @@ export default {
             // Ensure no duplicate local themes are created.
             let themeFound = false;
             let themeIndex = 0;
-            let themesLocal = storage.get('themesLocal', []);
+            const themesLocal = storage.get('themesLocal', []);
             for (themeIndex in themesLocal) {
                 if (
                     themesLocal[themeIndex].title.toLowerCase() ===
@@ -212,14 +231,9 @@ export default {
      *
      * @param {any} inputElement The name of the field to collect inputs from.
      */
-    bindTextInput: function(inputElement) {
-        jquery(inputElement).on('input', (event) => {
-            let target = jquery(event.target);
-            if (target.data('lastval') !== target.val()) {
-                target.data('lastval', target.val());
-
-                this.data[inputElement.id] = target.val();
-            }
+    bindTextInput(inputElement) {
+        inputElement.addEventListener('input', (event) => {
+            this.data[inputElement.id] = event.target.value;
         });
     },
 
@@ -228,11 +242,12 @@ export default {
      *
      * @param {any} inputElement The name of the field to turn into a metro-select.
      */
-    bindSelectInput: function(inputElement) {
-        jquery(inputElement).metroSelect({
+    bindSelectInput(inputElement) {
+        const control = new MetroSelect(inputElement, {
             initial: this.data.themeContent[inputElement.id],
-            onchange: this.updateSelect.bind(this, inputElement.id),
+            onChange: this.updateSelect.bind(this, inputElement.id),
         });
+        this.selectControls.set(inputElement, control);
 
         this.updateSelect(
             inputElement.id,
@@ -241,24 +256,43 @@ export default {
     },
 
     /**
-     * Create new color picker element for the given inputElement.
+     * Create a Pickr color picker for the given input element.
      *
-     * @param {any} inputElement The name of the field to turn into a spectrum.
+     * @param {any} inputElement The name of the field to turn into a color picker.
      */
-    bindColorInput: function(inputElement) {
-        jquery(inputElement).spectrum({
-            chooseText: 'save color',
-            replacerClassName: 'spectrum-replacer',
-            appendTo: inputElement.parentNode,
-            showButtons: false,
-            color: this.data.themeContent[inputElement.id],
-            move: throttle(
-                125,
-                this.updateColor.bind(this, inputElement.id),
-                true
-            ),
-        });
+    async bindColorInput(inputElement) {
+        try {
+            const Pickr = await getPickr();
+            const picker = Pickr.create({
+                el: inputElement,
+                theme: 'nano',
+                default: this.data.themeContent[inputElement.id],
+                components: {
+                    preview: true,
+                    hue: true,
+                    interaction: {
+                        hex: true,
+                        input: true,
+                        save: true,
+                    },
+                },
+            });
+            const updateColor = throttle(125, (color) => {
+                if (color) {
+                    this.updateColor(inputElement.id, color.toHEXA().toString());
+                }
+            });
+            picker.on('change', updateColor);
+            picker.on('save', (color) => {
+                updateColor(color);
+                picker.hide();
+            });
+            this.colorPickers.set(inputElement, picker);
+        } catch (error) {
+            util.error(`Failed to load Pickr: ${error}`);
+        }
     },
+
 
     /**
      * Handles changes to metro-select elements.
@@ -266,7 +300,7 @@ export default {
      * @param {any} inputId The name of the metro-select that's changing.
      * @param {any} val The new value.
      */
-    updateSelect: function(inputId, val) {
+    updateSelect(inputId, val) {
         if (this.data[inputId] === val) {
             return;
         }
@@ -275,13 +309,14 @@ export default {
         case 'background-chooser':
         case 'palette-chooser':
         case 'font-chooser':
-        case 'fontfamily-chooser':
-            var elems = document.getElementsByClassName(
+        case 'fontfamily-chooser': {
+            const elems = document.getElementsByClassName(
                 `${inputId}-section`
             );
             for (let i = 0; i < elems.length; i++) {
                 // If this element has the same id as our new select value, make it visible.
-                if (elems[i].id === val) {
+                const choice = elems[i].dataset.choice || elems[i].id;
+                if (choice === val) {
                     util.removeClass(elems[i], 'hide');
                     // Otherwise ensure its hidden.
                 } else if (!util.hasClass(elems[i], 'hide')) {
@@ -289,6 +324,7 @@ export default {
                 }
             }
             break;
+        }
         }
 
         this.updateCurrentTheme(inputId, val);
@@ -298,13 +334,13 @@ export default {
      * Handles changes to color elements.
      *
      * @param {any} inputId The name of the color field that's changing.
-     * @param {any} color The new color.
+     * @param {string} color The new color.
      */
-    updateColor: function(inputId, color) {
-        if (this.data[inputId] === color.toHexString()) {
+    updateColor(inputId, color) {
+        if (this.data[inputId] === color) {
             return;
         }
-        this.updateCurrentTheme(inputId, color.toHexString());
+        this.updateCurrentTheme(inputId, color);
     },
 
     /**
@@ -313,23 +349,15 @@ export default {
      * @param {any} theme The theme to be shared.
      * @param {function} callback Function to call sharing completes.
      */
-    shareTheme: function(theme, callback) {
-        let url = `${defaults.defaultWebservice}/newtheme`;
-        jquery.ajax({
-            url: url,
-            type: 'POST',
-            data: JSON.stringify(theme),
-            success: function() {
-                util.log('Theme shared to the web.');
-                callback(true, '');
-            },
-            error: function(jqxhr, status, ex) {
-                util.error(
-                    `Theme was not shared to the web with status: ${status} and ex: ${ex}`
-                );
-                callback(false, status);
-            },
-        });
+    async shareTheme(theme, callback) {
+        try {
+            await postTheme(defaults.defaultWebservice, theme);
+            util.log('Theme shared to the web.');
+            callback(true, '');
+        } catch (error) {
+            util.error(`Theme was not shared to the web: ${error}`);
+            callback(false, String(error));
+        }
     },
 
     /**
@@ -337,8 +365,8 @@ export default {
      *
      * @param {any} theme The theme to be removed. Only checks by name.
      */
-    removeTheme: function(theme) {
-        let themesLocal = storage.get('themesLocal', []);
+    removeTheme(theme) {
+        const themesLocal = storage.get('themesLocal', []);
 
         for (let i = 0; i < themesLocal.length; i++) {
             if (theme.title === themesLocal[i].title) {
@@ -357,7 +385,7 @@ export default {
      * @param {any} inputId The theme setting that has changed.
      * @param {any} val The new theme setting.
      */
-    updateCurrentTheme: function(inputId, val) {
+    updateCurrentTheme(inputId, val) {
         if (this.data[inputId] === val) {
             return;
         }
@@ -379,20 +407,21 @@ export default {
             this.data = util.clone(val);
 
             // Create an id, if one does not exist.
-            if (this.data.id) {
+            if (!this.data.id) {
                 this.data.id =
                     this.data.title +
                     this.data.author +
-                    new Date().getUTCSeconds;
+                    new Date().getTime();
             }
 
             // If its an online theme, clear the 'metadata'.
-            if (this.data.isOnline) {
+            if (this.data.online) {
                 this.data.title = '';
                 this.data.author = '';
+                this.data.online = false;
             }
 
-            let updatedTheme = script.updateTheme(
+            const updatedTheme = script.updateTheme(
                 this.data,
                 this.oldTheme,
                 true
@@ -401,7 +430,7 @@ export default {
             storage.save('currentTheme', updatedTheme);
         } else {
             this.data.themeContent[inputId] = val;
-            let updatedTheme = script.updateTheme(
+            const updatedTheme = script.updateTheme(
                 this.data,
                 this.oldTheme,
                 true
@@ -410,20 +439,62 @@ export default {
         }
     },
 
-    autoPaletteAdjust: function() {
-        let baseColor = tinycolor(this.data.themeContent.baseColor);
-        this.data.themeContent.backgroundColor = baseColor.toHexString();
-        this.data.themeContent.titleColor = this.getReadable(
-            tinycolor(this.data.themeContent.baseColor), -1.6
-        );
-        this.data.themeContent.mainColor = this.getReadable(
-            tinycolor(this.data.themeContent.baseColor),
-            1.8
-        );
-        this.data.themeContent.optionsColor = this.getReadable(
-            tinycolor(this.data.themeContent.baseColor),
-            1.25
-        );
+    autoPaletteAdjust() {
+        // Lazy-load tinycolor and compute palette asynchronously
+        getTinycolor().then((tinycolor) => {
+            try {
+                const baseColor = tinycolor(this.data.themeContent.baseColor);
+                this.data.themeContent.backgroundColor = baseColor.toHexString();
+
+                const computeReadable = (color, multiplier) => {
+                    return tinycolor
+                        .mostReadable(
+                            color,
+                            [
+                                tinycolor(color.toHexString()).spin(multiplier * 38),
+                                tinycolor(color.toHexString()).spin(multiplier * 100),
+                                tinycolor(color.toHexString()).spin(multiplier * 190),
+                                tinycolor(color.toHexString()).spin(multiplier * 242),
+                                tinycolor(color.toHexString()).spin(multiplier * 303),
+                                tinycolor(color.toHexString()).spin(multiplier * 38).darken(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 100).darken(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 190).darken(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 242).darken(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 303).darken(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 38).brighten(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 100).brighten(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 190).brighten(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 242).brighten(25),
+                                tinycolor(color.toHexString()).spin(multiplier * 303).brighten(25),
+                            ],
+                            { includeFallbackColors: false }
+                        )
+                        .toHexString();
+                };
+
+                this.data.themeContent.titleColor = computeReadable(
+                    tinycolor(this.data.themeContent.baseColor),
+                    -1.6
+                );
+                this.data.themeContent.mainColor = computeReadable(
+                    tinycolor(this.data.themeContent.baseColor),
+                    1.8
+                );
+                this.data.themeContent.optionsColor = computeReadable(
+                    tinycolor(this.data.themeContent.baseColor),
+                    1.25
+                );
+
+                // Apply updated theme
+                const updatedTheme = script.updateTheme(this.data, this.oldTheme, true);
+                this.oldTheme = updatedTheme;
+                storage.save('currentTheme', updatedTheme);
+            } catch (e) {
+                util.error(`Failed to compute auto palette: ${  e}`);
+            }
+        }).catch((e) => {
+            util.error(`Could not load tinycolor for auto palette: ${  e}`);
+        });
     },
 
     /**
@@ -433,50 +504,4 @@ export default {
      * @param {any} multiplier A value to scale the spin by to add some variance.
      * @return {any} The most readable color.
      */
-    getReadable: function(color, multiplier) {
-        return tinycolor
-            .mostReadable(
-                color, [
-                    // My reckons for good color stops :shrug:
-                    tinycolor(color.toHexString()).spin(multiplier * 38),
-                    tinycolor(color.toHexString()).spin(multiplier * 100),
-                    tinycolor(color.toHexString()).spin(multiplier * 190),
-                    tinycolor(color.toHexString()).spin(multiplier * 242),
-                    tinycolor(color.toHexString()).spin(multiplier * 303),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 38)
-                        .darken(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 100)
-                        .darken(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 190)
-                        .darken(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 242)
-                        .darken(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 303)
-                        .darken(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 38)
-                        .brighten(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 100)
-                        .brighten(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 190)
-                        .brighten(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 242)
-                        .brighten(25),
-                    tinycolor(color.toHexString())
-                        .spin(multiplier * 303)
-                        .brighten(25),
-                ], {
-                    includeFallbackColors: false,
-                }
-            )
-            .toHexString();
-    },
 };

@@ -6,15 +6,15 @@ import ext from '../utils/extension';
 export default {
     name: 'bookmarks',
     enabled: false,
-    supported: !!ext.bookmarks.getTree,
+    supported: Boolean(ext.bookmarks.getTree),
 
-    setPermissionVisibility: function(visible, cb) {
-        let that = this;
+    setPermissionVisibility(visible, cb) {
+        const that = this;
         if (visible) {
             ext.permissions.request({
                 permissions: ['bookmarks']
             },
-            function(granted) {
+            (granted) => {
                 that.enabled = granted;
                 if (cb) {
                     cb(granted);
@@ -26,7 +26,7 @@ export default {
             ext.permissions.remove({
                 permissions: ['bookmarks']
             },
-            function(granted) {
+            (granted) => {
                 that.enabled = !granted;
                 if (cb) {
                     cb(granted);
@@ -60,7 +60,7 @@ export default {
         ),
     },
 
-    init: function() {
+    init() {
         this.bookmarks = new PagebasePaneled();
         this.bookmarks.init(
             document,
@@ -77,14 +77,14 @@ export default {
      *
      * @param {any} newSort The new sort order.
      */
-    sortChanged: function(newSort) {
+    sortChanged(newSort) {
         this.bookmarks.sortChanged(newSort);
     },
 
     /**
      * Load the current set of bookmarks.
      */
-    loadBookmarks: function() {
+    loadBookmarks() {
         this.bookmarks.clear();
         if (!this.enabled) {
             this.bookmarks.addAll([{
@@ -94,9 +94,11 @@ export default {
             return;
         }
 
-        let that = this;
+        const that = this;
         ext.bookmarks.getTree((data) => {
-            that.data = data[0].children;
+            const tree = Array.isArray(data) ? data : [];
+            const root = tree[0] && tree[0].children ? tree[0].children : [];
+            that.data = root;
             that.bookmarks.addAll(that.data);
         });
     },
@@ -107,10 +109,10 @@ export default {
      * @param {any} bookmark The bookmark that should be turned into an element.
      * @return {any} The HTML element.
      */
-    templateFunc: function(bookmark) {
-        let fragment = util.createElement('');
-        let titleWrap = this.templates.titleWrapFragment.cloneNode(true);
-        let title = this.templates.titleFragment.cloneNode(true);
+    templateFunc(bookmark) {
+        const fragment = util.createElement('');
+        const titleWrap = this.templates.titleWrapFragment.cloneNode(true);
+        const title = this.templates.titleFragment.cloneNode(true);
         title.firstElementChild.textContent = bookmark.title;
         title.firstElementChild.id = `bookmark_${bookmark.id}`;
 
@@ -134,7 +136,7 @@ export default {
             );
         }
 
-        let remove = this.templates.removeFragment.cloneNode(true);
+        const remove = this.templates.removeFragment.cloneNode(true);
         remove.firstElementChild.addEventListener(
             'click',
             this.removeBookmark.bind(
@@ -156,16 +158,16 @@ export default {
      * @param {any} bookmark The bookmark that was clicked.
      * @param {any} bookmarkNode The bookmark node has the data to be activated.
      */
-    clickBookmark: function(bookmark, bookmarkNode) {
-        let currentPage = bookmarkNode.parentNode.parentNode.id;
-        let itemNode = bookmarkNode.parentNode;
-        let siblings = itemNode.parentNode.children;
+    clickBookmark(bookmark, bookmarkNode) {
+        const currentPage = bookmarkNode.parentNode.parentNode.id;
+        const itemNode = bookmarkNode.parentNode;
+        const siblings = itemNode.parentNode.children;
         Array.prototype.slice.call(siblings).forEach((item) => {
             util.removeClass(item.firstElementChild, 'active');
         });
         util.addClass(itemNode.firstElementChild, 'active');
 
-        let that = this;
+        const that = this;
         this.bookmarks.truncatePages(currentPage.replace('bookmarks_', ''));
         ext.bookmarks.getChildren(bookmark.id, (data) => {
             if (data.length !== 0) {
@@ -180,7 +182,7 @@ export default {
      * @param {any} bookmark The bookmark element that will be removed.
      * @param {any} bookmarkNode The bookmark node that has the data to be removed.
      */
-    removeBookmark: function(bookmark, bookmarkNode) {
+    removeBookmark(bookmark, bookmarkNode) {
         modal.createModal(
             `bookmark-${bookmark.id}`,
             `${bookmark.title} will be removed.`, (res) => {

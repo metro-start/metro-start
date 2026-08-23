@@ -1,12 +1,11 @@
-import jquery from 'jquery';
 import utils from './utils/utils';
 import widgets from './widgets/widgets';
 import pages from './pages/pages';
 import './../scss/reset.scss';
 import './../scss/main.scss';
-import '../node_modules/spectrum-colorpicker/spectrum.css';
+import 'metro-select/metro-select.css';
 
-let app = {
+const app = {
     data: {},
 
     elems: {
@@ -15,19 +14,18 @@ let app = {
 
     showOptions: false,
 
-    utils: utils,
+    utils,
 
     modules: [utils, widgets, pages],
 
-    init: function() {
+    init() {
         this.modules.forEach((module) => {
             module.init(document);
         });
 
-        let that = this;
-        let wrench = document.getElementById('wrench');
+        const wrench = document.getElementById('wrench');
         wrench.addEventListener('click', () => {
-            that.clickWrench();
+            this.clickWrench();
             pages.changeToValidPage();
         });
     },
@@ -35,14 +33,14 @@ let app = {
     /**
      * Shows the options on the page when the wrench is clicked.
      */
-    clickWrench: function() {
+    clickWrench() {
         this.showOptions = !this.showOptions;
 
         if (this.showOptions) {
-            jquery(document.body).addClass('show-options');
+            document.body.classList.add('show-options');
             document.body.removeChild(this.elems.hideRule);
         } else {
-            jquery(document.body).removeClass('show-options');
+            document.body.classList.remove('show-options');
             document.body.appendChild(this.elems.hideRule);
         }
     },
@@ -50,12 +48,12 @@ let app = {
 
 // Initialize the app after the storage is done initializing.
 // This ensures we can retrieve our data before rendering the page.
-utils.storage.init().done(() => {
-    if (document) {
+utils.storage.init().then(() => {
+    if (document.readyState !== 'loading') {
         app.init();
     } else {
-        jquery.ready(() => {
-            app.init();
+        document.addEventListener('DOMContentLoaded', () => app.init(), {
+            once: true,
         });
     }
 });
