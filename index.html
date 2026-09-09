@@ -1,69 +1,65 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<title>metro start</title>
-	<link type="text/css" rel="stylesheet" href="css/reset.css" />
-	<link type="text/css" rel="stylesheet" href="css/main.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.1.0/trianglify.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.4.1/tinycolor.min.js"></script>
-	<script src="js/jquery.cycle.all.latest.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101816">
+    <meta name="description" content="Metro Start is a fast, personal new-tab page with workspaces, tasks, saved sessions, notes, bookmarks, weather, and themes.">
+    <title>Metro Start — your new tab, made yours</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/script.js" defer></script>
 </head>
-<body style="width: 960px; margin: auto">
-	<h1>metro start</h1>
-	<p class="info">A modern new tab page for the web.</p>
-	<p class="info smaller">Inspired by Zune.</p>
-	<p class="info smaller">
-		<a href="https://chrome.google.com/webstore/detail/metro-start/bbhdfpmfdplolnnkpdepnelcfdmikjfd">Get Metro Start Now.</a>
-	</p>
-	<p class="info smaller">
-		<span id="pause_bg" class="clickable">(pause background)</span>	
-	</p>
-	<div class="slideshow">
-		<img class="banner" src="img/banner1.png" alt="metro start apps page." />
-		<img class="banner" src="img/banner2.png" alt="metro start bookmarks page." />
-		<img class="banner" src="img/banner3.png" alt="metro start theme editor." />
-	</div>
-	<a href="https://github.com/metro-start/metro-start">
-		<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub" />
-	</a>
-
-	<script type="text/javascript">
-		$('.slideshow').cycle({
-			fx: 'scrollLeft'
-		});
-
-		var variance = Math.random();
-		var cell_size = Math.random() * 200 + 40;
-		var x_colors = Trianglify({x_colors: 'random'}).opts.x_colors;
-
-		var updateBg = () => {
-			variance = (variance <= 0 ? 1 : (variance - 0.1));
-			cell_size = (cell_size <= 40 ? 250 : (cell_size - 25));
-			x_colors = x_colors.map(c => tinycolor(c).spin(25).toHexString());
-
-			var bodyPattern = Trianglify({
-				width: window.innerWidth,
-				height: window.innerHeight,
-				cell_size: cell_size,
-				variance: variance,
-				x_colors: x_colors
-			});
-			document.body.style.backgroundImage = 'url(' + bodyPattern.png() + ')';
-		};
-
-		$('#pause_bg').click(() => {
-			if (!!this.interval) {
-				$('#pause_bg').text('(resume background)')
-				window.clearInterval(this.interval);
-				this.interval = undefined;
-			} else {
-				$('#pause_bg').text('(pause background)')
-				this.interval = window.setInterval(updateBg, 1000);
-			}
-		}).click();
-
-		updateBg();
-	</script>
+<body>
+    <div class="ambient" aria-hidden="true"><div class="ambient__layer ambient__layer--active"></div><div class="ambient__layer"></div></div>
+    <header class="site-header shell">
+        <a class="wordmark" href="#top" aria-label="Metro Start home"><span class="wordmark__mark" aria-hidden="true"></span><span>metro start</span></a>
+        <nav aria-label="Primary navigation"><a href="#features">Features</a><a href="#inside">Preview</a><a href="#get">Get it</a><a href="https://github.com/metro-start/metro-start">GitHub</a></nav>
+    </header>
+    <main id="top">
+        <section class="hero shell">
+            <div class="hero__copy">
+                <p class="eyebrow"><span></span>A calmer place to begin</p>
+                <h1>Your new tab,<br><em>made yours.</em></h1>
+                <p class="lede">Launch what matters, remember what’s next, and keep the web organized—without turning your start page into a feed.</p>
+                <div class="hero__actions"><a class="button button--primary" href="https://chromewebstore.google.com/detail/metro-start/bbhdfpmfdplolnnkpdepnelcfdmikjfd">Add to Chrome <span aria-hidden="true">↗</span></a><a class="button button--quiet" href="#inside">See it in action <span aria-hidden="true">↓</span></a></div>
+                <p class="microcopy">Open source · Local-first · No attention traps</p>
+            </div>
+            <div class="hero__stage" aria-label="Metro Start preview">
+                <div class="browser-frame"><div class="browser-frame__bar" aria-hidden="true"><span></span><span></span><span></span><div>New tab</div></div><img src="img/banner1.png" alt="Metro Start apps view with weather and a personalized theme"></div>
+                <div class="feature-chip feature-chip--top"><strong>One start.</strong><span>Every workspace.</span></div>
+                <div class="feature-chip feature-chip--bottom"><strong>Your data.</strong><span>Kept in your browser.</span></div>
+            </div>
+        </section>
+        <section class="manifesto shell" aria-label="Metro Start principles"><p>Nearly twenty years of starting simply.</p><div><span>Fast by default</span><span>Personal by design</span><span>Quiet on purpose</span></div></section>
+        <section class="features shell" id="features">
+            <div class="section-heading"><p class="eyebrow"><span></span>Everything in reach</p><h2>A launchpad that works<br>the way you do.</h2></div>
+            <div class="feature-grid">
+                <article class="feature feature--large"><span class="feature__number">01</span><div class="feature__icon" aria-hidden="true">⌘</div><h3>Spaces for every mode</h3><p>Separate work, personal projects, and whatever comes next with focused workspaces.</p></article>
+                <article class="feature"><span class="feature__number">02</span><div class="feature__icon" aria-hidden="true">✓</div><h3>Lightweight planning</h3><p>Capture tasks, recurring reminders, and notes without opening another app.</p></article>
+                <article class="feature"><span class="feature__number">03</span><div class="feature__icon" aria-hidden="true">↗</div><h3>Pick up where you left off</h3><p>Save a browser session, restore missing tabs, and keep useful links close.</p></article>
+                <article class="feature feature--wide"><span class="feature__number">04</span><div><div class="feature__icon" aria-hidden="true">◐</div><h3>Make it unmistakably yours</h3><p>Choose a theme, tune the type, and shape a start page that feels at home on every display.</p></div><div class="swatches" aria-label="Example Metro Start theme colors"><span style="--swatch:#82d8be"></span><span style="--swatch:#ff696f"></span><span style="--swatch:#97a9ff"></span><span style="--swatch:#f4c96b"></span></div></article>
+            </div>
+        </section>
+        <section class="inside shell" id="inside">
+            <div class="section-heading section-heading--row"><div><p class="eyebrow"><span></span>Inside Metro Start</p><h2>Familiar at a glance.<br>Better every day.</h2></div><div class="carousel-controls" aria-label="Preview controls"><button type="button" data-carousel="previous" aria-label="Previous preview">←</button><button type="button" data-carousel="next" aria-label="Next preview">→</button></div></div>
+            <div class="carousel" aria-live="polite">
+                <figure class="slide slide--active"><img src="img/banner1.png" alt="Metro Start apps page"><figcaption><span>01</span><strong>Launch</strong><p>Your shortcuts and browser tools, arranged for quick scanning.</p></figcaption></figure>
+                <figure class="slide"><img src="img/banner2.png" alt="Metro Start bookmarks page"><figcaption><span>02</span><strong>Organize</strong><p>Move through bookmarks and saved places without losing context.</p></figcaption></figure>
+                <figure class="slide"><img src="img/banner3.png" alt="Metro Start theme editor"><figcaption><span>03</span><strong>Personalize</strong><p>Build a palette and make every new tab feel like your own.</p></figcaption></figure>
+                <div class="carousel__progress" aria-hidden="true"><span></span><span></span><span></span></div>
+            </div>
+        </section>
+        <section class="privacy shell"><p class="privacy__mark" aria-hidden="true">◎</p><div><p class="eyebrow"><span></span>Local-first</p><h2>Your start page<br>is your business.</h2></div><p>Workspaces, notes, tasks, links, and preferences stay in browser storage. Metro Start is designed to help you focus, not profile you.</p></section>
+        <section class="get shell" id="get">
+            <div class="get__intro"><p class="eyebrow"><span></span>Choose your browser</p><h2>Start here.</h2><p>Metro Start is rolling out across modern browsers. Published stores link directly; the others will light up as soon as their listings are ready.</p></div>
+            <div class="store-list">
+                <a class="store-row" href="https://chromewebstore.google.com/detail/metro-start/bbhdfpmfdplolnnkpdepnelcfdmikjfd"><span class="store-row__icon" aria-hidden="true">C</span><strong>Chrome</strong><small>Available now</small><span aria-hidden="true">↗</span></a>
+                <div class="store-row store-row--pending" aria-label="Firefox version coming soon"><span class="store-row__icon" aria-hidden="true">F</span><strong>Firefox</strong><small>Store listing coming soon</small><span>Soon</span></div>
+                <div class="store-row store-row--pending" aria-label="Edge version coming soon"><span class="store-row__icon" aria-hidden="true">E</span><strong>Edge</strong><small>Store listing coming soon</small><span>Soon</span></div>
+                <div class="store-row store-row--pending" aria-label="Safari version planned"><span class="store-row__icon" aria-hidden="true">S</span><strong>Safari</strong><small>App Store release planned</small><span>Planned</span></div>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer shell"><a class="wordmark" href="#top"><span class="wordmark__mark" aria-hidden="true"></span><span>metro start</span></a><p>Start with what matters.</p><div><a href="https://github.com/metro-start/metro-start">Source</a><a href="https://github.com/metro-start/metro-start/issues">Support</a><span>© <span data-year></span></span></div></footer>
 </body>
 </html>
