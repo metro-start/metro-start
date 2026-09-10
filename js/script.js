@@ -1,108 +1,218 @@
 (() => {
     'use strict';
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const canvases = [...document.querySelectorAll('.background__layer')];
     const track = document.querySelector('.slideshow__track');
-    const pauseButton = document.getElementById('pause_bg');
+    const canvas = document.getElementById('background_canvas');
+
+    // --------------------------------------------------------------------- log
+    // Set localStorage.setItem('metro-start:debug', '0') (or run
+    // log.level = 'silent') to quieten this; 'debug' is the default because the
+    // background is randomised per load and is otherwise hard to reason about.
+    const log = {
+        level: (() => {
+            try {
+                return window.localStorage.getItem('metro-start:debug') || 'debug';
+            } catch (error) {
+                return 'debug';
+            }
+        })(),
+        tag: '[metro-start:bg]',
+        enabled(kind) {
+            const order = { silent: 0, error: 1, warn: 2, info: 3, debug: 4 };
+            return (order[kind] ?? 4) <= (order[this.level] ?? 4);
+        },
+        emit(kind, message, ...rest) {
+            if (!this.enabled(kind)) return;
+            const method = kind === 'debug' ? 'log' : kind;
+            const label = `${this.tag} ${kind.toUpperCase().padEnd(5)}`;
+            (console[method] || console.log)(label, message, ...rest);
+        },
+        debug(message, ...rest) { this.emit('debug', message, ...rest); },
+        info(message, ...rest) { this.emit('info', message, ...rest); },
+        warn(message, ...rest) { this.emit('warn', message, ...rest); },
+        error(message, ...rest) { this.emit('error', message, ...rest); },
+        group(label) { if (this.enabled('debug')) console.groupCollapsed(`${this.tag} ${label}`); },
+        groupEnd() { if (this.enabled('debug')) console.groupEnd(); },
+    };
+    window.metroStartBackground = { log, palettes: null, lastRender: null };
+
+    // ---------------------------------------------------------------- palettes
+    // A fresh Trianglify mesh is generated on every page load: random cell size,
+    // random variance, and one of these palettes. Each palette runs light ->
+    // dark, matching the way Trianglify shades a mesh (lightest corner to
+    // darkest), and stays inside one or two adjacent hues so nothing clashes.
+    //
+    // Most palettes lead with a pastel. That is safe because the page sets a
+    // dark text shadow (see --text-shadow in css/main.css), which carries the
+    // contrast for white text over even the brightest cell.
+    // tools/check-palettes.js verifies both facts against the real vendored
+    // Trianglify colour maths.
     const palettes = [
-        ['#151133', '#355ca8', '#e6447c'],
-        ['#102f33', '#138b8c', '#b7d339'],
-        ['#291339', '#77428c', '#e15465'],
-        ['#17214a', '#336f91', '#63c5b5'],
+        ['#b8a9e8', '#5f4a9e', '#33285c', '#171430'],   // lavender
+        ['#a9c8e8', '#41729e', '#26415c', '#141d30'],   // periwinkle
+        ['#b5d6b0', '#4a7d5c', '#2a4a38', '#141f1a'],   // sage
+        ['#e8b8c8', '#9e5a72', '#5c3446', '#241521'],   // blush
+        ['#a8d8d0', '#3f8a84', '#275654', '#121f22'],   // sea glass
+        ['#f0cba8', '#b07a4a', '#6b4526', '#2a1a10'],   // sand
+        ['#c8d8a8', '#6b8a4a', '#3f5528', '#1a2013'],   // pistachio
+        ['#d8b8e0', '#8a5f9e', '#4f3460', '#1e1428'],   // lilac
     ];
-    let backgroundIndex = 0;
-    let activeCanvas = 0;
+    window.metroStartBackground.palettes = palettes;
+
+    const pick = list => list[Math.floor(Math.random() * list.length)];
+    const round = (value, places = 2) => Number(value.toFixed(places));
+
+    // ------------------------------------------------------------------ render
+    let renderCount = 0;
+
+    const drawBackground = (reason = 'initial') => {
+        const started = performance.now();
+        const index = Math.floor(Math.random() * palettes.length);
+        const palette = palettes[index];
+        // Trianglify's `scaling: 'auto'` multiplies the canvas backing store by
+        // devicePixelRatio for us and pins the CSS size to these logical
+        // dimensions, so we must pass logical pixels here, not device pixels.
+        const width = Math.max(window.innerWidth, 1);
+        const height = Math.max(window.innerHeight, 1);
+        const cellSize = 55 + Math.random() * 105;
+        const variance = 0.55 + Math.random() * 0.5;
+        const options = {
+            width,
+            height,
+            // No seed, so Trianglify generates a fresh mesh every time.
+            cellSize,
+            variance,
+            xColors: palette,
+        };
+
+        log.group(`render #${++renderCount} (${reason})`);
+        log.debug('viewport', {
+            innerWidth: width,
+            innerHeight: height,
+            devicePixelRatio: window.devicePixelRatio,
+            scaling: 'auto (trianglify applies devicePixelRatio)',
+        });
+        log.info(`palette ${index + 1}/${palettes.length}`, {
+            name: palette[0],
+            stops: palette.join(' -> '),
+            lightEnd: palette[0],
+            darkEnd: palette[palette.length - 1],
+        });
+        log.debug('trianglify options', {
+            width: options.width,
+            height: options.height,
+            cellSize: round(cellSize),
+            variance: round(variance),
+            seed: null,
+        });
+
+        if (typeof window.trianglify !== 'function') {
+            log.error('window.trianglify is not available - is js/trianglify.bundle.js loaded before this script?');
+            log.groupEnd();
+            return;
+        }
+
+        try {
+            const pattern = window.trianglify(options);
+            const polys = pattern && pattern.polys ? pattern.polys.length : 0;
+            log.debug(`mesh built: ${polys} triangles`);
+
+            const rendered = pattern.toCanvas(canvas);
+            if (!rendered) {
+                log.error('toCanvas returned nothing');
+                log.groupEnd();
+                return;
+            }
+
+            // The backing store should be the logical size times the ratio
+            // Trianglify chose; anything else means the canvas is misconfigured.
+            const expectedRatio = Math.min(window.devicePixelRatio || 1, 2);
+            const expectedWidth = Math.round(width * expectedRatio);
+            if (canvas.width !== expectedWidth) {
+                log.warn('canvas backing store is not the expected size', {
+                    expected: `${expectedWidth}x${Math.round(height * expectedRatio)}`,
+                    actual: `${canvas.width}x${canvas.height}`,
+                    devicePixelRatio: window.devicePixelRatio,
+                });
+            }
+
+            const elapsed = performance.now() - started;
+            window.metroStartBackground.lastRender = {
+                reason,
+                palette: index,
+                cellSize: round(cellSize),
+                variance: round(variance),
+                triangles: polys,
+                logicalWidth: width,
+                logicalHeight: height,
+                canvasWidth: canvas.width,
+                canvasHeight: canvas.height,
+                elapsedMs: round(elapsed, 1),
+            };
+            log.info(`rendered in ${round(elapsed, 1)}ms`, {
+                canvas: `${canvas.width}x${canvas.height}`,
+                css: `${width}x${height}`,
+                triangles: polys,
+                trianglesPerMs: elapsed > 0 ? round(polys / elapsed, 2) : 'n/a',
+            });
+        } catch (error) {
+            log.error('failed to render background', error);
+        }
+        log.groupEnd();
+    };
+
+    // --------------------------------------------------------------- slideshow
     let slideIndex = 0;
-    let backgroundTimer;
     let slideTimer;
     let resizeTimer;
-    let paused = reducedMotion.matches;
-    const hexToRgb = hex => [1, 3, 5].map(index => Number.parseInt(hex.slice(index, index + 2), 16));
-    const mix = (a, b, amount) => a.map((value, index) => Math.round(value + (b[index] - value) * amount));
-
-    const drawBackground = (canvas, palette) => {
-        const ratio = Math.min(window.devicePixelRatio || 1, 2);
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        canvas.width = Math.round(width * ratio);
-        canvas.height = Math.round(height * ratio);
-        const context = canvas.getContext('2d');
-        context.scale(ratio, ratio);
-        const colors = palette.map(hexToRgb);
-        const size = Math.max(72, Math.min(150, width / 9));
-        const columns = Math.ceil(width / size) + 2;
-        const rows = Math.ceil(height / size) + 2;
-        const points = Array.from({length: rows}, (_, row) => Array.from({length: columns}, (_, column) => ({
-            x: (column - 1) * size + (row % 2 ? size / 2 : 0),
-            y: (row - 1) * size,
-        })));
-        for (let row = 0; row < rows - 1; row++) {
-            for (let column = 0; column < columns - 1; column++) {
-                const triangles = row % 2
-                    ? [[points[row][column], points[row + 1][column], points[row][column + 1]], [points[row][column + 1], points[row + 1][column], points[row + 1][column + 1]]]
-                    : [[points[row][column], points[row + 1][column], points[row + 1][column + 1]], [points[row][column], points[row + 1][column + 1], points[row][column + 1]]];
-                for (const triangle of triangles) {
-                    const position = Math.min(1, Math.max(0, triangle[0].x / Math.max(width, 1)));
-                    const band = position < .5 ? mix(colors[0], colors[1], position * 2) : mix(colors[1], colors[2], (position - .5) * 2);
-                    const shade = .78 + Math.random() * .35;
-                    context.fillStyle = `rgb(${band.map(value => Math.min(255, Math.round(value * shade))).join(' ')})`;
-                    context.beginPath();
-                    context.moveTo(triangle[0].x, triangle[0].y);
-                    context.lineTo(triangle[1].x, triangle[1].y);
-                    context.lineTo(triangle[2].x, triangle[2].y);
-                    context.closePath();
-                    context.fill();
-                }
-            }
-        }
-    };
-
-    const advanceBackground = () => {
-        backgroundIndex = (backgroundIndex + 1) % palettes.length;
-        const nextCanvas = activeCanvas === 0 ? 1 : 0;
-        drawBackground(canvases[nextCanvas], palettes[backgroundIndex]);
-        canvases[nextCanvas].classList.add('background__layer--active');
-        canvases[activeCanvas].classList.remove('background__layer--active');
-        activeCanvas = nextCanvas;
-    };
     const advanceSlide = () => {
         slideIndex = (slideIndex + 1) % 3;
+        log.debug(`slideshow -> index ${slideIndex}`);
         track.style.transform = `translateX(-${slideIndex * 33.3333}%)`;
-    };
-    const startBackground = () => {
-        window.clearInterval(backgroundTimer);
-        if (paused) return;
-        backgroundTimer = window.setInterval(advanceBackground, 12000);
     };
     const startSlides = () => {
         window.clearInterval(slideTimer);
-        if (reducedMotion.matches) return;
+        if (reducedMotion.matches) {
+            log.info('slideshow paused: prefers-reduced-motion is set');
+            return;
+        }
         slideTimer = window.setInterval(advanceSlide, 5000);
+        log.debug('slideshow timer started (5000ms)');
     };
 
-    drawBackground(canvases[0], palettes[0]);
-    drawBackground(canvases[1], palettes[1]);
-    pauseButton.textContent = paused ? '(resume background)' : '(pause background)';
-    pauseButton.setAttribute('aria-pressed', String(paused));
-    startBackground();
+    log.info('background initialising', {
+        level: log.level,
+        palettes: palettes.length,
+        reducedMotion: reducedMotion.matches,
+        trianglify: typeof window.trianglify,
+    });
+    if (typeof window.trianglify !== 'function') {
+        log.error('trianglify bundle missing; check the script order in index.html');
+    }
+    drawBackground('initial');
     startSlides();
-    pauseButton.addEventListener('click', () => {
-        paused = !paused;
-        pauseButton.textContent = paused ? '(resume background)' : '(pause background)';
-        pauseButton.setAttribute('aria-pressed', String(paused));
-        startBackground();
-    });
+
     window.addEventListener('resize', () => {
+        log.debug('resize observed; regenerating shortly', {
+            innerWidth: window.innerWidth,
+            innerHeight: window.innerHeight,
+        });
         window.clearTimeout(resizeTimer);
-        resizeTimer = window.setTimeout(() => drawBackground(canvases[activeCanvas], palettes[backgroundIndex]), 150);
+        resizeTimer = window.setTimeout(() => drawBackground('resize'), 150);
     });
+
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            window.clearInterval(backgroundTimer);
+            log.debug('tab hidden; stopping the slideshow timer');
             window.clearInterval(slideTimer);
         } else {
-            startBackground();
+            log.debug('tab visible; restarting the slideshow timer');
             startSlides();
         }
+    });
+
+    reducedMotion.addEventListener('change', event => {
+        log.info(`prefers-reduced-motion changed to ${event.matches}`);
+        startSlides();
     });
 })();

@@ -2,6 +2,11 @@
     color-scheme: dark;
     font-family: "Segoe UI Variable", "Segoe UI", Helvetica, Arial, sans-serif;
     font-synthesis: none;
+    /* Palettes are allowed a pastel light end, so some mesh cells are far too
+       bright for white text on their own. This shadow is what makes the text
+       readable over them; tools/check-palettes.js reads it and verifies every
+       cell on the canvas still reaches AA contrast. */
+    --text-shadow: rgb(0 0 0 / 60%);
 }
 
 * { box-sizing: border-box; }
@@ -15,17 +20,18 @@ body {
     font-size: clamp(1.125rem, 2.9vw, 1.75rem);
     font-weight: 350;
     line-height: 1.3;
+    text-shadow: 0 .06em .2em var(--text-shadow);
 }
-.background, .background__layer, .background__shade {
+/* The canvas is rendered above the device pixel ratio and scaled back down
+   here, so the triangle edges stay clean on high-density displays. */
+.background, .background > canvas, .background__shade {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
 }
 .background { z-index: 0; background: #000; }
-.background__layer { opacity: 0; transition: opacity 5s ease-in-out; }
-.background__layer--active { opacity: 1; }
-.background__shade { background: rgb(0 0 0 / 18%); }
+.background__shade { background: rgb(0 0 0 / 24%); }
 .shell {
     position: relative;
     z-index: 1;
@@ -43,20 +49,12 @@ h1 {
 }
 .info { margin: 0 0 clamp(.75rem, 2vw, 1.25rem); }
 .smaller { font-size: .8em; }
-a, .clickable {
+a {
     color: #f33;
     text-decoration: none;
     text-underline-offset: .16em;
 }
-a:hover, a:focus-visible, .clickable:hover, .clickable:focus-visible { text-decoration: underline; }
-.clickable {
-    padding: .2em .35em;
-    border: 0;
-    color: #f33;
-    background: transparent;
-    font: inherit;
-    cursor: pointer;
-}
+a:hover, a:focus-visible { text-decoration: underline; }
 :focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 .slideshow {
     width: 100%;
@@ -96,5 +94,5 @@ a:hover, a:focus-visible, .clickable:hover, .clickable:focus-visible { text-deco
     .github-ribbon { top: 1.6rem; right: -4rem; font-size: .65rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .background__layer, .slideshow__track { transition: none; }
+    .slideshow__track { transition: none; }
 }

@@ -7,12 +7,12 @@
     <meta name="description" content="A modern new tab page for the web. Inspired by Zune.">
     <title>metro start</title>
     <link rel="stylesheet" href="css/main.css">
+    <script src="js/trianglify.bundle.js"></script>
     <script src="js/script.js" defer></script>
 </head>
 <body>
     <div class="background" aria-hidden="true">
-        <canvas class="background__layer background__layer--active"></canvas>
-        <canvas class="background__layer"></canvas>
+        <canvas id="background_canvas"></canvas>
         <div class="background__shade"></div>
     </div>
 
@@ -23,9 +23,6 @@
             <p class="info smaller">Inspired by Zune.</p>
             <p class="info smaller">
                 <a href="https://chromewebstore.google.com/detail/metro-start/bbhdfpmfdplolnnkpdepnelcfdmikjfd">Get Metro Start Now.</a>
-            </p>
-            <p class="info smaller">
-                <button class="clickable" id="pause_bg" type="button" aria-pressed="false">(pause background)</button>
             </p>
         </header>
 
